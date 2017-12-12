@@ -2,7 +2,7 @@
   "name": "epub-maker",
   "version": "1.2.0",
   "description": "Easily create downloadable epub files with javascript",
-  "main": "epub-maker.min.js",
+  "main": "src/js-epub-maker.js",
   "scripts": {
     "test": "gulp test"
   },

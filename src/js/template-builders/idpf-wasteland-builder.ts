@@ -3,8 +3,8 @@
     'use strict';
     
     var D = require('d.js');
-    var console = require('../../js/util/console')();
-    var ajax = require('../../js/util/ajax');
+    var console = require('../util/console')();
+    var ajax = require('../util/ajax');
     
     var templates = {
         mimetype: '@@import src/epub_templates/from_idpf_epub3/wasteland/mimetype',

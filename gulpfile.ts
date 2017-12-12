@@ -23,14 +23,14 @@ gulp.task('clean', function() {
 });
 
 gulp.task('analyse', function() {
-    gulp.src(['./src/js-epub-maker.js'])
+    gulp.src(['./src/js-epub-maker.ts'])
         .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish'))
         .pipe($.jshint.reporter('fail'));
 });
 
 gulp.task('browserifyAndInject', function() {
-    return browserify({entries: ['./src/js-epub-maker.js']}).bundle()
+    return browserify({entries: ['./src/js-epub-maker.ts']}).bundle()
         .pipe(source('js-epub-maker-browserified.js'))
         .pipe(buffer())
         .pipe($.jsTextInject({ basepath: './' }))
@@ -39,7 +39,7 @@ gulp.task('browserifyAndInject', function() {
 
 gulp.task('build', ['clean', 'analyse', 'browserifyAndInject'], function() {
     return gulp.src(['debug/**/*.js'])
-        .pipe($.concat("js-epub-maker.js"))
+        .pipe($.concat("js-epub-maker.ts"))
         .pipe($.size('test'))
         .pipe(gulp.dest('dist'));
 });
@@ -53,7 +53,7 @@ gulp.task('dist', ['build'], function() {
 });
 
 var testAndGather = lazypipe()
-    .pipe($.coverage.instrument, { pattern: ['dist/js-epub-maker.js'], debugDirectory: 'debug' })
+    .pipe($.coverage.instrument, { pattern: ['dist/js-epub-maker.ts'], debugDirectory: 'debug' })
     .pipe($.jasmine, { includeStackTrace: true })
     .pipe($.coverage.gather);
 

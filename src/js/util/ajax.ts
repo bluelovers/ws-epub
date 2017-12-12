@@ -3,7 +3,7 @@
     'use strict';
     
     var D = require('d.js');
-    var console = require('../../js/util/console')();
+    var console = require('./console')();
     
     module.exports = function ajax(url, data) {
         var deferred = D();
