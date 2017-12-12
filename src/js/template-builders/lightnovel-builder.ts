@@ -7,7 +7,7 @@ import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
 import { ajax } from '../util/ajax';
 
-var templates = {
+let templates = {
 	mimetype: '@@import src/epub_templates/lightnovel/mimetype',
 	container: '@@import src/epub_templates/lightnovel/META-INF/container.xml',
 	opf: '@@import src/epub_templates/lightnovel/EPUB/lightnovel.opf',
@@ -22,15 +22,15 @@ var templates = {
 	sectionsOPFSpineTemplate: '@@import src/epub_templates/lightnovel/EPUB/sections-opf-spine-template.xml'
 };
 
-var Builder = function ()
+let Builder = function ()
 {
 
 	this.make = function (epubConfig)
 	{
 		console.debug('building epub', epubConfig);
-		var zip = new JSZip();
+		let zip = new JSZip();
 
-		var deferred = D();
+		let deferred = D();
 		addAditionalInfo(epubConfig);
 		D.all(
 			addMimetype(zip),
@@ -70,7 +70,7 @@ var Builder = function ()
 		{
 			section.needPage = true;
 		}
-		for (var i = 0; i < section.subSections.length; i++)
+		for (let i = 0; i < section.subSections.length; i++)
 		{
 			section.subSections[i].rank = i;
 			addInfoSection(section.subSections[i], titlePrefix, namePrefix);
@@ -82,7 +82,7 @@ var Builder = function ()
 		//Default options
 		epubConfig.options.tocName = epubConfig.options.tocName || 'Menu';
 		//Generate name and full title for each section/subsection
-		for (var i = 0; i < epubConfig.sections.length; i++)
+		for (let i = 0; i < epubConfig.sections.length; i++)
 		{
 			epubConfig.sections[i].rank = i;
 			addInfoSection(epubConfig.sections[i]);
@@ -108,7 +108,7 @@ var Builder = function ()
 
 	function addCover(zip, epubConfig)
 	{
-		var deferred = D();
+		let deferred = D();
 
 		if (epubConfig.coverUrl)
 		{
@@ -148,7 +148,7 @@ var Builder = function ()
 
 	function addStylesheets(zip, epubConfig)
 	{
-		var deferred = D();
+		let deferred = D();
 		if (epubConfig.stylesheet.url)
 		{
 			return ajax(epubConfig.stylesheet.url).then(function (result)
@@ -165,7 +165,7 @@ var Builder = function ()
 
 		function compileAndAddCss()
 		{
-			var styles = {
+			let styles = {
 				original: epubConfig.stylesheet.replaceOriginal ? '' : templates.css,
 				custom: epubConfig.styles
 			};
@@ -176,11 +176,11 @@ var Builder = function ()
 
 	function addFiles(zip, epubConfig)
 	{
-		var deferred_list = [];
-		for (var i = 0; i < epubConfig.additionalFiles.length; i++)
+		let deferred_list = [];
+		for (let i = 0; i < epubConfig.additionalFiles.length; i++)
 		{
-			var file = epubConfig.additionalFiles[i];
-			var deferred = new D();
+			let file = epubConfig.additionalFiles[i];
+			let deferred = new D();
 			JSZipUtils.getBinaryContent(file.url, (function (file, deferred)
 			{
 				return function (err, data)
@@ -214,7 +214,7 @@ var Builder = function ()
 				zip.folder('EPUB').file(section.name + '.html', compile(templates.content, section));
 			}
 		}
-		for (var i = 0; i < section.subSections.length; i++)
+		for (let i = 0; i < section.subSections.length; i++)
 		{
 			addSection(zip, section.subSections[i]);
 		}
@@ -222,7 +222,7 @@ var Builder = function ()
 
 	function addContent(zip, epubConfig)
 	{
-		for (var i = 0; i < epubConfig.sections.length; i++)
+		for (let i = 0; i < epubConfig.sections.length; i++)
 		{
 			addSection(zip, epubConfig.sections[i]);
 		}
