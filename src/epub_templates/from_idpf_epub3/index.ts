@@ -2,10 +2,10 @@
 
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
-import { Handlebars } from '../handlebar-helpers';
+import { Handlebars } from '../lib/handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
-import { ajax } from '../ajax';
+import { ajax } from '../lib/ajax';
 import * as path from 'path';
 
 // @ts-ignore
