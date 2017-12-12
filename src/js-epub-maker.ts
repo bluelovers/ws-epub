@@ -209,7 +209,7 @@ export class EpubMaker
 		return filename + ext;
 	}
 
-	makeEpub()
+	makeEpub(options?)
 	{
 		let self = this;
 
@@ -221,13 +221,15 @@ export class EpubMaker
 		return templateManagers[this.epubConfig.templateName].make(this.epubConfig).then(function (epubZip)
 		{
 			let generateOptions = Object.assign({
-				type: 'blob',
+				//type: 'blob',
+				type: 'nodebuffer',
 				mimeType: 'application/epub+zip',
 				compression: 'DEFLATE'
-			}, self.epubConfig.options.generateOptions);
+			}, self.epubConfig.options.generateOptions, options);
 
 			console.info('generating epub for: ' + self.epubConfig.title);
 			let content = epubZip.generateAsync(generateOptions);
+
 			return content;
 		});
 	}
