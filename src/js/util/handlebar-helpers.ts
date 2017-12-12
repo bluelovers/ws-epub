@@ -1,4 +1,6 @@
 import Handlebars from 'handlebars';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export const mimetypes = {
 	'jpeg': 'image/jpeg',
@@ -19,8 +21,22 @@ Handlebars.registerHelper('mimetype', function (str)
 	return mimetypes[ext(str)];
 });
 
+Handlebars.registerHelper('import', function (filePath, options)
+{
+	filePath = path.normalize(filePath);
+
+	let source = fs.readFileSync(filePath).toString();
+
+	return new Handlebars.SafeString(Handlebars.compile(source)(Object.create(this)));
+});
+
 function ext(str)
 {
+	if (str === undefined)
+	{
+		return str;
+	}
+
 	return str.substr(str.lastIndexOf('.') + 1);
 }
 
