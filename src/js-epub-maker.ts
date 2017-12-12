@@ -1,6 +1,7 @@
 import * as slugify from 'slugify';
 import './js/util/handlebar-helpers';
 import { saveAs } from 'file-saver';
+import * as moment from 'moment';
 
 export const templateManagers = {
 	// @ts-ignore
@@ -14,160 +15,212 @@ export interface IEpubConfig
 	uuid?: string;
 	templateName?: string;
 	title?: string;
-	slug?;
+	slug?: string;
 	lang?: string;
 	author?: string;
-	publisher?;
-	modificationDate?;
-	modificationDateYMD?;
-	rights?;
-	coverUrl?;
-	coverRights?;
-	attributionUrl?;
-	stylesheet?;
-	sections?;
-	toc?;
-	landmarks?;
+	publisher?: string;
+
+	rights?: IRightsConfig;
+	coverUrl?: string;
+	coverRights?: IRightsConfig;
+	attributionUrl?: string;
+	stylesheet?: {
+		url,
+		styles,
+		replaceOriginal,
+	};
+	sections?: EpubMaker.Section[];
+	toc?: EpubMaker.Section[];
+	landmarks?: EpubMaker.Section[];
 	options?;
-	additionalFiles?;
-	publicationDate?;
-	publicationDateYMD?;
+	additionalFiles?: IFiles[];
+
+	modification?: moment.Moment;
+	modificationDate?: string;
+	modificationDateYMD?: string;
+	publication?: moment.Moment;
+	publicationDate?: string;
+	publicationDateYMD?: string;
 }
 
-export function EpubMaker()
+export interface IRightsConfig
 {
-	let self = this;
-	let epubConfig = {
+	description?: string,
+	license?: string,
+}
+
+export interface IFiles
+{
+	url: string,
+	folder: string,
+	filename: string
+}
+
+export class EpubMaker
+{
+	public epubConfig = {
 		toc: [],
 		landmarks: [],
 		sections: [],
 		stylesheet: {},
 		additionalFiles: [],
-		options: {}
+		options: {},
 	} as IEpubConfig;
 
-	this.withUuid = function (uuid)
+	constructor(options?, config?: IEpubConfig)
 	{
-		epubConfig.uuid = uuid;
-		return self;
-	};
+		Object.assign(this.epubConfig, config);
+		Object.assign(this.epubConfig.options, options);
+	}
 
-	this.withTemplate = function (templateName)
+	static create(options?, ...argv)
 	{
-		epubConfig.templateName = templateName;
-		return self;
-	};
+		return new this(options, ...argv);
+	}
 
-	this.withTitle = function (title)
+	withUuid(uuid: string)
 	{
-		epubConfig.title = title;
+		this.epubConfig.uuid = uuid;
+		return this;
+	}
+
+	withTemplate(templateName: string)
+	{
+		this.epubConfig.templateName = templateName;
+		return this;
+	}
+
+	withTitle(title: string)
+	{
+		this.epubConfig.title = title;
 		// @ts-ignore
-		epubConfig.slug = slugify(title);
-		return self;
-	};
+		this.epubConfig.slug = slugify(title);
+		return this;
+	}
 
-	this.withLanguage = function (lang)
+	withLanguage(lang: string)
 	{
-		epubConfig.lang = lang;
-		return self;
-	};
+		this.epubConfig.lang = lang;
+		return this;
+	}
 
-	this.withAuthor = function (fullName)
+	withAuthor(fullName: string)
 	{
-		epubConfig.author = fullName;
-		return self;
-	};
+		this.epubConfig.author = fullName;
+		return this;
+	}
 
-	this.withPublisher = function (publisher)
+	withPublisher(publisher: string)
 	{
-		epubConfig.publisher = publisher;
-		return self;
-	};
+		this.epubConfig.publisher = publisher;
+		return this;
+	}
 
-	this.withModificationDate = function (modificationDate)
+	withModificationDate(modificationDate, ...argv)
 	{
-		epubConfig.modificationDate = modificationDate.toISOString();
-		epubConfig.modificationDateYMD = epubConfig.modificationDate.substr(0, 10);
-		return self;
-	};
+		let data = moment(modificationDate, ...argv).local();
 
-	this.withRights = function (rightsConfig)
-	{
-		epubConfig.rights = rightsConfig;
-		return self;
-	};
+		this.epubConfig.modification = data;
+		this.epubConfig.modificationDate = data.format(EpubMaker.dataFormat);
+		this.epubConfig.modificationDateYMD = data.format('YYYY-MM-DD');
+		return this;
+	}
 
-	this.withCover = function (coverUrl, rightsConfig)
+	withRights(rightsConfig: IRightsConfig)
 	{
-		epubConfig.coverUrl = coverUrl;
-		epubConfig.coverRights = rightsConfig;
-		return self;
-	};
+		this.epubConfig.rights = rightsConfig;
+		return this;
+	}
 
-	this.withAttributionUrl = function (attributionUrl)
+	withCover(coverUrl, rightsConfig: IRightsConfig)
 	{
-		epubConfig.attributionUrl = attributionUrl;
-		return self;
-	};
+		this.epubConfig.coverUrl = coverUrl;
+		this.epubConfig.coverRights = rightsConfig;
+		return this;
+	}
 
-	this.withStylesheetUrl = function (stylesheetUrl, replaceOriginal)
+	withAttributionUrl(attributionUrl)
 	{
-		epubConfig.stylesheet = {
+		this.epubConfig.attributionUrl = attributionUrl;
+		return this;
+	}
+
+	withStylesheetUrl(stylesheetUrl, replaceOriginal)
+	{
+		this.epubConfig.stylesheet = {
 			url: stylesheetUrl,
 			styles: '',
 			replaceOriginal: replaceOriginal
 		};
-		return self;
-	};
+		return this;
+	}
 
-	this.withSection = function (section)
+	withSection(section: EpubMaker.Section)
 	{
-		epubConfig.sections.push(section);
-		Array.prototype.push.apply(epubConfig.toc, section.collectToc());
-		Array.prototype.push.apply(epubConfig.landmarks, section.collectLandmarks());
-		return self;
-	};
+		section.parentEpubMaker = this;
 
-	this.withAdditionalFile = function (fileUrl, folder, filename)
+		this.epubConfig.sections.push(section);
+		Array.prototype.push.apply(this.epubConfig.toc, section.collectToc());
+		Array.prototype.push.apply(this.epubConfig.landmarks, section.collectLandmarks());
+		return this;
+	}
+
+	withAdditionalFile(fileUrl, folder, filename)
 	{
-		epubConfig.additionalFiles.push({
+		this.epubConfig.additionalFiles.push({
 			url: fileUrl,
 			folder: folder,
 			filename: filename
 		});
-		return self;
-	};
+		return this;
+	}
 
-	this.withOption = function (key, value)
+	withOption(key: string, value)
 	{
-		epubConfig.options[key] = value;
-		return self;
-	};
+		this.epubConfig.options[key] = value;
+		return this;
+	}
 
-	this.makeEpub = function ()
+	setPublicationDate(new_data?)
 	{
-		epubConfig.publicationDate = new Date().toISOString();
-		epubConfig.publicationDateYMD = epubConfig.publicationDate.substr(0, 10);
-		return templateManagers[epubConfig.templateName].make(epubConfig).then(function (epubZip)
+		let data = moment(new_data);
+
+		this.epubConfig.publication = data;
+		this.epubConfig.publicationDate = data.format(EpubMaker.dataFormat);
+		this.epubConfig.publicationDateYMD = data.format('YYYY-MM-DD');
+
+		return this;
+	}
+
+	makeEpub()
+	{
+		let self = this;
+
+		if (!this.epubConfig.publication)
 		{
-			console.info('generating epub for: ' + epubConfig.title);
-			var content = epubZip.generate({ type: 'blob', mimeType: 'application/epub+zip', compression: 'DEFLATE' });
+			this.setPublicationDate();
+		}
+
+		return templateManagers[this.epubConfig.templateName].make(this.epubConfig).then(function (epubZip)
+		{
+			console.info('generating epub for: ' + self.epubConfig.title);
+			let content = epubZip.generate({ type: 'blob', mimeType: 'application/epub+zip', compression: 'DEFLATE' });
 			return content;
 		});
-	};
+	}
 
-	this.downloadEpub = function (callback, useTitle)
+	downloadEpub(callback, useTitle)
 	{
-		self.makeEpub().then(function (epubZipContent)
+		return this.makeEpub().then(function (epubZipContent)
 		{
-			var filename;
+			let filename;
 			if (useTitle)
 			{
-				filename = epubConfig.title + '.epub';
+				filename = this.epubConfig.title + '.epub';
 			}
 			else
 			{
-				filename = epubConfig.slug + '.epub';
+				filename = this.epubConfig.slug + '.epub';
 			}
 			console.debug('saving "' + filename + '"...');
 			if (callback && typeof(callback) === 'function')
@@ -176,11 +229,13 @@ export function EpubMaker()
 			}
 			saveAs(epubZipContent, filename);
 		});
-	};
+	}
 }
 
 export namespace EpubMaker
 {
+	export let dataFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore
 	export const epubtypes = require('./js/epub-types.js');
@@ -190,43 +245,62 @@ export namespace EpubMaker
 	 * @id Optional, but required if section should be included in toc and / or landmarks
 	 * @content Optional. Should not be empty if there will be no subsections added to this section. Format: { title, content, renderTitle }
 	 */
-	export function Section(epubType, id, content, includeInToc, includeInLandmarks)
+	export class Section
 	{
-		var self = this;
-		this.epubType = epubType;
-		this.id = id;
-		this.content = content;
-		this.includeInToc = includeInToc;
-		this.includeInLandmarks = includeInLandmarks;
-		this.subSections = [];
+		public epubType;
+		public id;
+		public content;
+		public includeInToc: boolean;
+		public includeInLandmarks: boolean;
+		public subSections: Section[] = [];
 
-		if (content)
+		public parentSection: Section;
+		public parentEpubMaker: EpubMaker;
+
+		constructor(epubType, id, content, includeInToc: boolean, includeInLandmarks: boolean)
 		{
-			content.renderTitle = content.renderTitle !== false; // 'undefined' should default to true
+			this.epubType = epubType;
+			this.id = id;
+			this.content = content;
+			this.includeInToc = includeInToc;
+			this.includeInLandmarks = includeInLandmarks;
+			this.subSections = [];
+
+			if (content)
+			{
+				content.renderTitle = content.renderTitle !== false; // 'undefined' should default to true
+			}
 		}
 
-		this.withSubSection = function (subsection)
+		static create(epubType, id, content, includeInToc: boolean, includeInLandmarks: boolean, ...argv)
 		{
-			self.subSections.push(subsection);
-			return self;
+			return new this(epubType, id, content, includeInToc, includeInLandmarks, ...argv);
+		}
+
+		withSubSection(subsection: Section)
+		{
+			subsection.parentSection = this;
+
+			this.subSections.push(subsection);
+			return this;
 		};
 
-		this.collectToc = function ()
+		collectToc()
 		{
-			return collectSections(this, 'includeInToc');
+			return this.collectSections(this, 'includeInToc');
 		};
 
-		this.collectLandmarks = function ()
+		collectLandmarks()
 		{
-			return collectSections(this, 'includeInLandmarks');
+			return this.collectSections(this, 'includeInLandmarks');
 		};
 
-		function collectSections(section, prop)
+		collectSections(section: Section, prop: string): Section[]
 		{
-			var sections = section[prop] ? [section] : [];
-			for (var i = 0; i < section.subSections.length; i++)
+			let sections = section[prop] ? [section] : [];
+			for (let i = 0; i < section.subSections.length; i++)
 			{
-				Array.prototype.push.apply(sections, collectSections(section.subSections[i], prop));
+				Array.prototype.push.apply(sections, this.collectSections(section.subSections[i], prop));
 			}
 			return sections;
 		}
