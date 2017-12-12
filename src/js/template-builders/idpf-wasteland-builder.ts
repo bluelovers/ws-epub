@@ -7,7 +7,7 @@ import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
 import { ajax } from '../util/ajax';
 
-var templates = {
+let templates = {
 	mimetype: '@@import src/epub_templates/from_idpf_epub3/wasteland/mimetype',
 	container: '@@import src/epub_templates/from_idpf_epub3/wasteland/META-INF/container.xml',
 	opf: '@@import src/epub_templates/from_idpf_epub3/wasteland/EPUB/wasteland.opf',
@@ -18,15 +18,15 @@ var templates = {
 	sectionsTemplate: '@@import src/epub_templates/from_idpf_epub3/wasteland/EPUB/sections-template.xhtml'
 };
 
-var Builder = function ()
+let Builder = function ()
 {
 
 	this.make = function (epubConfig)
 	{
 		console.debug('building epub', epubConfig);
-		var zip = new JSZip();
+		let zip = new JSZip();
 
-		var deferred = D();
+		let deferred = D();
 		D.all(
 			addMimetype(zip),
 			addContainerInfo(zip, epubConfig),
@@ -61,7 +61,7 @@ var Builder = function ()
 
 	function addCover(zip, epubConfig)
 	{
-		var deferred = D();
+		let deferred = D();
 
 		if (epubConfig.coverUrl)
 		{
@@ -69,7 +69,7 @@ var Builder = function ()
 			{
 				if (!err)
 				{
-					var ext = epubConfig.coverUrl.substr(epubConfig.coverUrl.lastIndexOf('.') + 1);
+					let ext = epubConfig.coverUrl.substr(epubConfig.coverUrl.lastIndexOf('.') + 1);
 					zip.folder('EPUB').file(epubConfig.slug + '-cover.' + ext, data, { binary: true });
 					deferred.resolve('');
 				}
@@ -98,7 +98,7 @@ var Builder = function ()
 
 	function addStylesheets(zip, epubConfig)
 	{
-		var deferred = D();
+		let deferred = D();
 		if (epubConfig.stylesheet.url)
 		{
 			return ajax(epubConfig.stylesheet.url).then(function (result)
@@ -115,7 +115,7 @@ var Builder = function ()
 
 		function compileAndAddCss()
 		{
-			var styles = {
+			let styles = {
 				original: epubConfig.stylesheet.replaceOriginal ? '' : templates.css,
 				custom: epubConfig.styles
 			};
