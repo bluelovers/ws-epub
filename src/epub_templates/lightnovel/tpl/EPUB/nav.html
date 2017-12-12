@@ -6,9 +6,9 @@
         <link rel="stylesheet" type="text/css" href="css/main.css"> 
     </head>
     <body>
-        <div class="cover divimage">
-            {{#if options.coverFilename}}
-            <img src="images/{{options.coverFilename}}" alt="Cover" />
+        <div class="cover divimage" style="width: 100%; height: 100%;">
+            {{#if coverUrl}}
+            <img src="{{slug}}-cover.{{extension coverUrl}}" alt="Cover" />
             {{/if}}
         </div>
         <div class="center">

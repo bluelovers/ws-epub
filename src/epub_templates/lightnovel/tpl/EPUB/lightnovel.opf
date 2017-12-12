@@ -30,7 +30,7 @@
         <item id="{{filename}}" href="{{folder}}/{{filename}}" media-type="{{mimetype filename}}" />
         {{/each}}
         {{#if coverUrl}}
-        <item id="cover" href="images/{{options.coverFilename}}" media-type="{{mimetype options.coverFilename}}" properties="cover-image" />
+             <item id="cover" href="{{slug}}-cover.{{extension coverUrl}}" media-type="{{mimetype coverUrl}}" properties="cover-image" />
         {{/if}}
         <item id="css" href="css/main.css" media-type="text/css" />
         <!-- ncx included for 2.0 reading system compatibility: -->
