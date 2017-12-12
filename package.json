@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bluelovers/js-epub-maker"
+    "url": "git+https://github.com/bluelovers/js-epub-maker.git"
   },
   "keywords": [
     "epub",
@@ -20,16 +20,14 @@
     "comic",
     "novel"
   ],
-  "author": {
-    "name": "Benny Bottema",
-    "url": "http://blog.projectnibble.org"
-  },
+  "author": "Benny Bottema (http://blog.projectnibble.org)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bluelovers/js-epub-maker/issues"
   },
   "homepage": "https://github.com/bluelovers/js-epub-maker",
   "devDependencies": {
+    "@types/node": "^8.0.58",
     "d.js": "^0.7.3"
   },
   "dependencies": {
@@ -42,5 +40,9 @@
     "moment": "^2.19.4",
     "slugify": "^1.2.6",
     "xmlhttprequest": "^1.8.0"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
   }
 }
