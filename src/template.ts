@@ -64,14 +64,8 @@ export class TemplateManagers
 
 	async _get(t): Promise<IBuilder>
 	{
-		if (!t)
+		let fn = async function (b)
 		{
-			//
-		}
-		else if (typeof t == 'string')
-		{
-			let b = await import(t);
-
 			if (!b)
 			{
 				//
@@ -84,6 +78,10 @@ export class TemplateManagers
 			{
 				return b.builder;
 			}
+			else if (b.Builder && typeof b.Builder.make == 'function')
+			{
+				return b.Builder;
+			}
 			else if (b.Builder)
 			{
 				return await new b.Builder();
@@ -92,22 +90,30 @@ export class TemplateManagers
 			{
 				return await b();
 			}
-		}
-		else if (typeof t.make == 'function')
+
+			throw new ReferenceError(`tpl "${name}" not exists`);
+		};
+
+		let r;
+
+		if (!t)
 		{
-			return t;
+			//
 		}
-		else if (t.builder && typeof t.builder.make == 'function')
+		else if (typeof t == 'string')
 		{
-			return t.builder;
+			let b = await import(t);
+
+			r = await fn(b);
 		}
-		else if (t.Builder)
+		else
 		{
-			return await new t.Builder();
+			r = await fn(t);
 		}
-		else if (typeof t == 'function')
+
+		if (r)
 		{
-			return await t();
+			return r;
 		}
 
 		throw new ReferenceError(`tpl "${name}" not exists`);
@@ -125,7 +131,7 @@ export class TemplateManagers
 
 	async exec(name: string, epubConfig: IEpubConfig, options?)
 	{
-		let builder = await this.get(name);
+		let builder = await this.get(name) as IBuilder;
 
 		return builder.make(epubConfig, options);
 	}

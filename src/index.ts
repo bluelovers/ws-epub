@@ -71,7 +71,7 @@ export class EpubMaker
 		let data = moment(modificationDate, ...argv).local();
 
 		this.epubConfig.modification = data;
-		this.epubConfig.modificationDate = data.format(EpubMaker.dataFormat);
+		this.epubConfig.modificationDate = data.format(EpubMaker.dateFormat);
 		this.epubConfig.modificationDateYMD = data.format('YYYY-MM-DD');
 		return this;
 	}
@@ -136,7 +136,7 @@ export class EpubMaker
 		let data = moment(new_data);
 
 		this.epubConfig.publication = data;
-		this.epubConfig.publicationDate = data.format(EpubMaker.dataFormat);
+		this.epubConfig.publicationDate = data.format(EpubMaker.dateFormat);
 		this.epubConfig.publicationDateYMD = data.format('YYYY-MM-DD');
 
 		return this;
@@ -144,7 +144,7 @@ export class EpubMaker
 
 	getFilename(useTitle?: boolean): string
 	{
-		let ext = this.epubConfig.options.ext || '.epub';
+		let ext = this.epubConfig.options.ext || EpubMaker.defaultExt;
 		let filename;
 
 		if (useTitle)
@@ -159,7 +159,7 @@ export class EpubMaker
 		return filename + ext;
 	}
 
-	makeEpub(options?)
+	build(options?)
 	{
 		let self = this;
 
@@ -168,10 +168,22 @@ export class EpubMaker
 			this.setPublicationDate();
 		}
 
-		return templateManagers.exec(this.epubConfig.templateName, this.epubConfig, options).then(function (epubZip)
+		return templateManagers.exec(this.epubConfig.templateName, this.epubConfig, options);
+	}
+
+	/**
+	 * for node.js
+	 *
+	 * @param options
+	 * @returns {Promise<T>}
+	 */
+	makeEpub<T = Buffer>(options?): Promise<T>
+	{
+		let self = this;
+
+		return this.build(options).then(function (epubZip)
 		{
 			let generateOptions = Object.assign({
-				//type: 'blob',
 				type: 'nodebuffer',
 				mimeType: 'application/epub+zip',
 				compression: 'DEFLATE'
@@ -184,27 +196,42 @@ export class EpubMaker
 		});
 	}
 
-	downloadEpub(callback, useTitle?: boolean)
+	/**
+	 * for web
+	 *
+	 * @param callback
+	 * @param options
+	 * @returns {Promise<Blob>}
+	 */
+	downloadEpub(callback, options?): Promise<Blob>
 	{
+		options = Object.assign({
+			type: 'blob',
+			useTitle: false,
+		}, options);
+
 		let self = this;
 
-		return this.makeEpub().then(function (epubZipContent)
+		return this.makeEpub<Blob>(options).then(async function (epubZipContent)
 		{
-			let filename = self.getFilename(useTitle);
+			let filename = self.getFilename(options.useTitle);
 
 			console.debug('saving "' + filename + '"...');
 			if (callback && typeof(callback) === 'function')
 			{
-				callback(epubZipContent, filename);
+				await callback(epubZipContent, filename);
 			}
 			saveAs(epubZipContent, filename);
+
+			return epubZipContent;
 		});
 	}
 }
 
 export namespace EpubMaker
 {
-	export let dataFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+	export let defaultExt = '.epub';
+	export let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
 
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore

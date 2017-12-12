@@ -6,7 +6,7 @@
     var console = require('./js/util/console')();
     var slugify = require('./js/util/slugify');
 
-    require('./epub_templates/handlebar-helpers');
+    require('./epub_templates/lib/handlebar-helpers');
 
     var templateManagers = {
         'idpf-wasteland': require('./epub_templates/from_idpf_epub3/index.ts').builder,

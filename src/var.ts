@@ -57,5 +57,10 @@ export interface IBuilder
 	make(epubConfig: IEpubConfig, options?): Promise<any>;
 }
 
+export interface IBuilderCallback<T, U> extends Function
+{
+	(zip: T, epubConfig: IEpubConfig, options?, ...argv): Promise<U>;
+}
+
 // @ts-ignore
 export default exports;

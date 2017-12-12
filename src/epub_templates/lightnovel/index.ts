@@ -1,58 +1,62 @@
 
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
-import { Handlebars } from '../handlebar-helpers';
+import { Handlebars } from '../lib/handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
-import { ajax } from '../ajax';
+import { ajax } from '../lib/ajax';
 // @ts-ignore
 import * as path from 'path';
+import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 
 // @ts-ignore
-const EPUB_TEMPLATES_PATH = path.join(__dirname);
-const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl');
+export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
+export const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl') as string;
 
-let templates = {
-	mimetype: 'mimetype',
-	container: 'META-INF/container.xml',
-	opf: 'EPUB/lightnovel.opf',
-	ncx: 'EPUB/lightnovel.ncx',
-	nav: 'EPUB/nav.html',
-	css: 'EPUB/css/main.css',
-	content: 'EPUB/content.html',
-	autoToc: 'EPUB/auto-toc.html',
-	sectionsNavTemplate: 'EPUB/sections-nav-template.html',
-	sectionsNCXTemplate: 'EPUB/sections-ncx-template.xml',
-	sectionsOPFManifestTemplate: 'EPUB/sections-opf-manifest-template.xml',
-	sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml'
-};
-
-for (let i in templates)
+export namespace Builder
 {
-	templates[i] = `\{\{import \'${path.join(EPUB_TEMPLATES_TPL, templates[i])}'\}\}`;
-}
+	export let templates = {
+		mimetype: 'mimetype',
+		container: 'META-INF/container.xml',
+		opf: 'EPUB/lightnovel.opf',
+		ncx: 'EPUB/lightnovel.ncx',
+		nav: 'EPUB/nav.html',
+		css: 'EPUB/css/main.css',
+		content: 'EPUB/content.html',
+		autoToc: 'EPUB/auto-toc.html',
+		sectionsNavTemplate: 'EPUB/sections-nav-template.html',
+		sectionsNCXTemplate: 'EPUB/sections-ncx-template.xml',
+		sectionsOPFManifestTemplate: 'EPUB/sections-opf-manifest-template.xml',
+		sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml'
+	};
 
-let Builder = function ()
-{
-
-	this.make = function (epubConfig): Promise<JSZip>
+	for (let i in templates)
 	{
-		console.debug('building epub', epubConfig);
+		templates[i] = `\{\{import \'${path.join(EPUB_TEMPLATES_TPL, templates[i])}'\}\}`;
+	}
+
+	export function make<T = JSZip>(epubConfig: IEpubConfig, options?): Promise<T>
+	{
+		options = Object.assign({}, {
+			templates: templates,
+		}, options);
+
+		console.debug('building epub', epubConfig, options);
 		let zip = new JSZip();
 
-		addAditionalInfo(epubConfig);
+		addAditionalInfo(zip, epubConfig, options);
 
 		return Promise
 			.all([
-				addMimetype(zip),
-				addContainerInfo(zip, epubConfig),
-				addManifestOpf(zip, epubConfig),
-				addCover(zip, epubConfig),
-				addFiles(zip, epubConfig),
-				addEpub2Nav(zip, epubConfig),
-				addEpub3Nav(zip, epubConfig),
-				addStylesheets(zip, epubConfig),
-				addContent(zip, epubConfig),
+				addMimetype(zip, epubConfig, options),
+				addContainerInfo(zip, epubConfig, options),
+				addManifestOpf(zip, epubConfig, options),
+				addCover(zip, epubConfig, options),
+				addFiles(zip, epubConfig, options),
+				addEpub2Nav(zip, epubConfig, options),
+				addEpub3Nav(zip, epubConfig, options),
+				addStylesheets(zip, epubConfig, options),
+				addContent(zip, epubConfig, options),
 			])
 			.then(function ()
 			{
@@ -60,9 +64,9 @@ let Builder = function ()
 			})
 			.catch(err => console.log(err))
 			;
-	};
+	}
 
-	function addInfoSection(section, titlePrefix?, namePrefix?)
+	export function addInfoSection(section, titlePrefix?, namePrefix?)
 	{
 		if (!section.content)
 		{
@@ -89,7 +93,7 @@ let Builder = function ()
 		}
 	}
 
-	function addAditionalInfo(epubConfig)
+	export function addAditionalInfo(zip, epubConfig: IEpubConfig, options)
 	{
 		//Default options
 		epubConfig.options.tocName = epubConfig.options.tocName || 'Menu';
@@ -101,24 +105,24 @@ let Builder = function ()
 		}
 	}
 
-	function addMimetype(zip)
+	export function addMimetype(zip: JSZip, epubConfig: IEpubConfig, options)
 	{
-		zip.file('mimetype', templates.mimetype);
+		zip.file('mimetype', options.templates.mimetype);
 	}
 
-	function addContainerInfo(zip, epubConfig)
+	export function addContainerInfo(zip, epubConfig, options)
 	{
-		zip.folder('META-INF').file('container.xml', compile(templates.container, epubConfig));
+		zip.folder('META-INF').file('container.xml', compile(options.templates.container, epubConfig));
 	}
 
-	function addManifestOpf(zip, epubConfig)
+	export function addManifestOpf(zip, epubConfig, options)
 	{
-		Handlebars.registerPartial('sectionsOPFManifestTemplate', templates.sectionsOPFManifestTemplate);
-		Handlebars.registerPartial('sectionsOPFSpineTemplate', templates.sectionsOPFSpineTemplate);
-		zip.folder('EPUB').file('lightnovel.opf', compile(templates.opf, epubConfig));
+		Handlebars.registerPartial('sectionsOPFManifestTemplate', options.templates.sectionsOPFManifestTemplate);
+		Handlebars.registerPartial('sectionsOPFSpineTemplate', options.templates.sectionsOPFSpineTemplate);
+		zip.folder('EPUB').file('lightnovel.opf', compile(options.templates.opf, epubConfig));
 	}
 
-	async function addCover(zip, epubConfig)
+	export async function addCover(zip, epubConfig, options)
 	{
 		if (epubConfig.coverUrl)
 		{
@@ -147,19 +151,19 @@ let Builder = function ()
 		}
 	}
 
-	function addEpub2Nav(zip, epubConfig)
+	export function addEpub2Nav(zip, epubConfig, options)
 	{
-		Handlebars.registerPartial('sectionsNCXTemplate', templates.sectionsNCXTemplate);
-		zip.folder('EPUB').file('lightnovel.ncx', compile(templates.ncx, epubConfig));
+		Handlebars.registerPartial('sectionsNCXTemplate', options.templates.sectionsNCXTemplate);
+		zip.folder('EPUB').file('lightnovel.ncx', compile(options.templates.ncx, epubConfig));
 	}
 
-	function addEpub3Nav(zip, epubConfig)
+	export function addEpub3Nav(zip, epubConfig, options)
 	{
-		Handlebars.registerPartial('sectionsNavTemplate', templates.sectionsNavTemplate);
-		zip.folder('EPUB').file('nav.html', compile(templates.nav, epubConfig));
+		Handlebars.registerPartial('sectionsNavTemplate', options.templates.sectionsNavTemplate);
+		zip.folder('EPUB').file('nav.html', compile(options.templates.nav, epubConfig));
 	}
 
-	function addStylesheets(zip, epubConfig)
+	export function addStylesheets(zip, epubConfig, options)
 	{
 		let deferred = D();
 		if (epubConfig.stylesheet.url)
@@ -179,7 +183,7 @@ let Builder = function ()
 		function compileAndAddCss()
 		{
 			let styles = {
-				original: epubConfig.stylesheet.replaceOriginal ? '' : templates.css,
+				original: epubConfig.stylesheet.replaceOriginal ? '' : options.templates.css,
 				custom: epubConfig.styles
 			};
 			zip.folder('EPUB').folder('css').file('main.css', compile('{{{original}}}{{{custom}}}', styles, true));
@@ -187,7 +191,7 @@ let Builder = function ()
 		}
 	}
 
-	function addFiles(zip, epubConfig)
+	export function addFiles(zip, epubConfig, options)
 	{
 		let deferred_list = [];
 		for (let i = 0; i < epubConfig.additionalFiles.length; i++)
@@ -214,58 +218,58 @@ let Builder = function ()
 		return D.all(deferred_list);
 	}
 
-	function addSection(zip, section)
+	export function addSection(zip, section, options)
 	{
 		if (section.needPage)
 		{
 			if (section.epubType == 'auto-toc')
 			{
-				zip.folder('EPUB').file(section.name + '.html', compile(templates.autoToc, section));
+				zip.folder('EPUB').file(section.name + '.html', compile(options.templates.autoToc, section));
 			}
 			else
 			{
-				zip.folder('EPUB').file(section.name + '.html', compile(templates.content, section));
+				zip.folder('EPUB').file(section.name + '.html', compile(options.templates.content, section));
 			}
 		}
 		for (let i = 0; i < section.subSections.length; i++)
 		{
-			addSection(zip, section.subSections[i]);
+			addSection(zip, section.subSections[i], options);
 		}
 	}
 
-	function addContent(zip, epubConfig)
+	export function addContent(zip, epubConfig, options)
 	{
 		for (let i = 0; i < epubConfig.sections.length; i++)
 		{
-			addSection(zip, epubConfig.sections[i]);
+			addSection(zip, epubConfig.sections[i], options);
 		}
 	}
 
-	function compile(template, content, skipFormatting?)
+	export function compile(template, content, skipFormatting?: boolean): string
 	{
-		return formatHTML(Handlebars.compile(template)(content));
-
-		function formatHTML(htmlstr)
-		{
-			/*jslint camelcase:false*/
-			return (skipFormatting || typeof html_beautify === 'undefined') ? htmlstr : html_beautify(htmlstr, {
-				'end_with_newline': false,
-				'indent_char': '\t',
-				'indent_inner_html': true,
-				'indent_size': '1',
-				'preserve_newlines': false,
-				'wrap_line_length': '0',
-				'unformatted': [],
-				'selector_separator_newline': false,
-				'newline_between_rules': true
-			});
-			/*jslint camelcase:true*/
-		}
+		return formatHTML(Handlebars.compile(template)(content), skipFormatting);
 	}
-};
 
-export const builder = new Builder();
-export default builder;
+	export function formatHTML(htmlstr, skipFormatting?: boolean): string
+	{
+		/*jslint camelcase:false*/
+		return (skipFormatting || typeof html_beautify === 'undefined') ? htmlstr : html_beautify(htmlstr, {
+			'end_with_newline': false,
+			'indent_char': '\t',
+			'indent_inner_html': true,
+			'indent_size': '1',
+			'preserve_newlines': false,
+			'wrap_line_length': '0',
+			'unformatted': [],
+			'selector_separator_newline': false,
+			'newline_between_rules': true
+		});
+		/*jslint camelcase:true*/
+	}
+}
+
+export const builder = Builder as IBuilder;
+export default builder as IBuilder;
 
 if (typeof window !== 'undefined')
 {
