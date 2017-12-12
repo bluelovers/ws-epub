@@ -7,7 +7,9 @@
     </head>
     <body>
         <div class="cover divimage">
+            {{#if options.coverFilename}}
             <img src="images/{{options.coverFilename}}" alt="Cover" />
+            {{/if}}
         </div>
         <div class="center">
             <h1>{{title}}</h1>
