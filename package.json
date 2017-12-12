@@ -8,13 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bbottema/epub-maker"
+    "url": "https://github.com/bluelovers/js-epub-maker"
   },
   "keywords": [
     "epub",
     "generator",
     "creator",
-    "maker"
+    "maker",
+    "book",
+    "mobile",
+    "comic",
+    "novel"
   ],
   "author": {
     "name": "Benny Bottema",
