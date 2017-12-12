@@ -40,6 +40,8 @@ let Builder = function ()
 		console.debug('building epub', epubConfig);
 		let zip = new JSZip();
 
+		addAditionalInfo(epubConfig);
+
 		return Promise
 			.all([
 				addMimetype(zip),
@@ -126,9 +128,10 @@ let Builder = function ()
 				{
 					if (!err)
 					{
+						let ext = epubConfig.coverUrl.substr(epubConfig.coverUrl.lastIndexOf('.') + 1);
 						zip.folder('EPUB')
-							.folder('images')
-							.file(epubConfig.options.coverFilename, data, { binary: true });
+							//.folder('images')
+							.file(epubConfig.slug + '-cover.' + ext, data, { binary: true });
 						resolve('');
 					}
 					else
