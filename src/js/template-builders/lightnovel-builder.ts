@@ -6,21 +6,31 @@ import { Handlebars } from '../util/handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
 import { ajax } from '../util/ajax';
+import * as path from 'path';
+
+// @ts-ignore
+const EPUB_TEMPLATES_PATH = path.join(__dirname, '../../epub_templates');
+const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'lightnovel');
 
 let templates = {
-	mimetype: '@@import src/epub_templates/lightnovel/mimetype',
-	container: '@@import src/epub_templates/lightnovel/META-INF/container.xml',
-	opf: '@@import src/epub_templates/lightnovel/EPUB/lightnovel.opf',
-	ncx: '@@import src/epub_templates/lightnovel/EPUB/lightnovel.ncx',
-	nav: '@@import src/epub_templates/lightnovel/EPUB/nav.html',
-	css: '@@import src/epub_templates/lightnovel/EPUB/css/main.css',
-	content: '@@import src/epub_templates/lightnovel/EPUB/content.html',
-	autoToc: '@@import src/epub_templates/lightnovel/EPUB/auto-toc.html',
-	sectionsNavTemplate: '@@import src/epub_templates/lightnovel/EPUB/sections-nav-template.html',
-	sectionsNCXTemplate: '@@import src/epub_templates/lightnovel/EPUB/sections-ncx-template.xml',
-	sectionsOPFManifestTemplate: '@@import src/epub_templates/lightnovel/EPUB/sections-opf-manifest-template.xml',
-	sectionsOPFSpineTemplate: '@@import src/epub_templates/lightnovel/EPUB/sections-opf-spine-template.xml'
+	mimetype: 'mimetype',
+	container: 'META-INF/container.xml',
+	opf: 'EPUB/lightnovel.opf',
+	ncx: 'EPUB/lightnovel.ncx',
+	nav: 'EPUB/nav.html',
+	css: 'EPUB/css/main.css',
+	content: 'EPUB/content.html',
+	autoToc: 'EPUB/auto-toc.html',
+	sectionsNavTemplate: 'EPUB/sections-nav-template.html',
+	sectionsNCXTemplate: 'EPUB/sections-ncx-template.xml',
+	sectionsOPFManifestTemplate: 'EPUB/sections-opf-manifest-template.xml',
+	sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml'
 };
+
+for (let i in templates)
+{
+	templates[i] = `\{\{import \'${path.join(EPUB_TEMPLATES_TPL, templates[i])}'\}\}`;
+}
 
 let Builder = function ()
 {
