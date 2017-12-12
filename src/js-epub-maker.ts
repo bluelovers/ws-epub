@@ -192,6 +192,23 @@ export class EpubMaker
 		return this;
 	}
 
+	getFilename(useTitle?: boolean): string
+	{
+		let ext = this.epubConfig.options.ext || '.epub';
+		let filename;
+
+		if (useTitle)
+		{
+			filename = this.epubConfig.title;
+		}
+		else
+		{
+			filename = this.epubConfig.slug;
+		}
+
+		return filename + ext;
+	}
+
 	makeEpub()
 	{
 		let self = this;
@@ -203,25 +220,26 @@ export class EpubMaker
 
 		return templateManagers[this.epubConfig.templateName].make(this.epubConfig).then(function (epubZip)
 		{
+			let generateOptions = Object.assign({
+				type: 'blob',
+				mimeType: 'application/epub+zip',
+				compression: 'DEFLATE'
+			}, self.epubConfig.options.generateOptions);
+
 			console.info('generating epub for: ' + self.epubConfig.title);
-			let content = epubZip.generate({ type: 'blob', mimeType: 'application/epub+zip', compression: 'DEFLATE' });
+			let content = epubZip.generateAsync(generateOptions);
 			return content;
 		});
 	}
 
-	downloadEpub(callback, useTitle)
+	downloadEpub(callback, useTitle?: boolean)
 	{
+		let self = this;
+
 		return this.makeEpub().then(function (epubZipContent)
 		{
-			let filename;
-			if (useTitle)
-			{
-				filename = this.epubConfig.title + '.epub';
-			}
-			else
-			{
-				filename = this.epubConfig.slug + '.epub';
-			}
+			let filename = self.getFilename(useTitle);
+
 			console.debug('saving "' + filename + '"...');
 			if (callback && typeof(callback) === 'function')
 			{
