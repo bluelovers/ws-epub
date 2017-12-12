@@ -6,11 +6,11 @@
     var console = require('./js/util/console')();
     var slugify = require('./js/util/slugify');
 
-    require('./js/util/handlebar-helpers');
+    require('./epub_templates/handlebar-helpers');
 
     var templateManagers = {
-        'idpf-wasteland': require('../src/js/template-builders/idpf-wasteland-builder.ts').builder,
-        'lightnovel': require('../src/js/template-builders/lightnovel-builder.ts').builder
+        'idpf-wasteland': require('./epub_templates/from_idpf_epub3/index.ts').builder,
+        'lightnovel': require('./epub_templates/lightnovel/index.ts').builder
     };
 
     var EpubMaker = function () {
@@ -129,7 +129,7 @@
     };
 
     // epubtypes and descriptions, useful for vendors implementing a GUI
-    EpubMaker.epubtypes = require('../src/js/epub-types.ts');
+    EpubMaker.epubtypes = require('./epub-types.ts');
 
     /**
      * @epubType Optional. Allows you to add specific epub type content such as [epub:type="titlepage"]

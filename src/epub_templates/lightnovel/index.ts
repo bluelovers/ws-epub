@@ -1,16 +1,16 @@
-/* global module, require, exports, JSZip, JSZipUtils, Handlebars, html_beautify */
 
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
-import { Handlebars } from '../util/handlebar-helpers';
+import { Handlebars } from '../handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
-import { ajax } from '../util/ajax';
+import { ajax } from '../ajax';
+// @ts-ignore
 import * as path from 'path';
 
 // @ts-ignore
-const EPUB_TEMPLATES_PATH = path.join(__dirname, '../../epub_templates');
-const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'lightnovel');
+const EPUB_TEMPLATES_PATH = path.join(__dirname);
+const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl');
 
 let templates = {
 	mimetype: 'mimetype',
@@ -35,29 +35,29 @@ for (let i in templates)
 let Builder = function ()
 {
 
-	this.make = function (epubConfig)
+	this.make = function (epubConfig): Promise<JSZip>
 	{
 		console.debug('building epub', epubConfig);
 		let zip = new JSZip();
 
-		let deferred = D();
-		addAditionalInfo(epubConfig);
-		D.all(
-			addMimetype(zip),
-			addContainerInfo(zip, epubConfig),
-			addManifestOpf(zip, epubConfig),
-			addCover(zip, epubConfig),
-			addFiles(zip, epubConfig),
-			addEpub2Nav(zip, epubConfig),
-			addEpub3Nav(zip, epubConfig),
-			addStylesheets(zip, epubConfig),
-			addContent(zip, epubConfig)
-		).then(function ()
-		{
-			deferred.resolve(zip);
-		}, function (err) { console.log(err); });
-
-		return deferred.promise;
+		return Promise
+			.all([
+				addMimetype(zip),
+				addContainerInfo(zip, epubConfig),
+				addManifestOpf(zip, epubConfig),
+				addCover(zip, epubConfig),
+				addFiles(zip, epubConfig),
+				addEpub2Nav(zip, epubConfig),
+				addEpub3Nav(zip, epubConfig),
+				addStylesheets(zip, epubConfig),
+				addContent(zip, epubConfig),
+			])
+			.then(function ()
+			{
+				return zip;
+			})
+			.catch(err => console.log(err))
+			;
 	};
 
 	function addInfoSection(section, titlePrefix?, namePrefix?)
@@ -116,32 +116,32 @@ let Builder = function ()
 		zip.folder('EPUB').file('lightnovel.opf', compile(templates.opf, epubConfig));
 	}
 
-	function addCover(zip, epubConfig)
+	async function addCover(zip, epubConfig)
 	{
-		let deferred = D();
-
 		if (epubConfig.coverUrl)
 		{
-			JSZipUtils.getBinaryContent(epubConfig.coverUrl, function (err, data)
+			return new Promise(function (resolve, reject)
 			{
-				if (!err)
+				JSZipUtils.getBinaryContent(epubConfig.coverUrl, function (err, data)
 				{
-					zip.folder('EPUB')
-						.folder('images')
-						.file(epubConfig.options.coverFilename, data, { binary: true });
-					deferred.resolve('');
-				}
-				else
-				{
-					deferred.reject(err);
-				}
+					if (!err)
+					{
+						zip.folder('EPUB')
+							.folder('images')
+							.file(epubConfig.options.coverFilename, data, { binary: true });
+						resolve('');
+					}
+					else
+					{
+						reject(err);
+					}
+				});
 			});
 		}
 		else
 		{
-			deferred.resolve(true);
+			return true;
 		}
-		return deferred.promise;
 	}
 
 	function addEpub2Nav(zip, epubConfig)

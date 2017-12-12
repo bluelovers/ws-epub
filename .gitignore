@@ -11,3 +11,4 @@ reports/
 *.bak
 *.js
 *.d.ts
+/dist/

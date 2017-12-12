@@ -1,5 +1,7 @@
 import Handlebars from 'handlebars';
+// @ts-ignore
 import * as path from 'path';
+// @ts-ignore
 import * as fs from 'fs';
 
 export const mimetypes = {

@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+/test/
+/.codeclimate.yml
+/.coveralls.yml
+/.travis.yml
+/bower.json
+*.bak
+/node_modules/
+/demo/
+/.idea/

@@ -1,60 +1,10 @@
 import * as slugify from 'slugify';
-import './js/util/handlebar-helpers';
+//import './epub_templates/handlebar-helpers';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
 
-export const templateManagers = {
-	// @ts-ignore
-	'idpf-wasteland': require('./js/template-builders/idpf-wasteland-builder.js').builder,
-	// @ts-ignore
-	'lightnovel': require('./js/template-builders/lightnovel-builder.js').builder,
-};
-
-export interface IEpubConfig
-{
-	uuid?: string;
-	templateName?: string;
-	title?: string;
-	slug?: string;
-	lang?: string;
-	author?: string;
-	publisher?: string;
-
-	rights?: IRightsConfig;
-	coverUrl?: string;
-	coverRights?: IRightsConfig;
-	attributionUrl?: string;
-	stylesheet?: {
-		url,
-		styles,
-		replaceOriginal,
-	};
-	sections?: EpubMaker.Section[];
-	toc?: EpubMaker.Section[];
-	landmarks?: EpubMaker.Section[];
-	options?;
-	additionalFiles?: IFiles[];
-
-	modification?: moment.Moment;
-	modificationDate?: string;
-	modificationDateYMD?: string;
-	publication?: moment.Moment;
-	publicationDate?: string;
-	publicationDateYMD?: string;
-}
-
-export interface IRightsConfig
-{
-	description?: string,
-	license?: string,
-}
-
-export interface IFiles
-{
-	url: string,
-	folder: string,
-	filename: string
-}
+import { IEpubConfig, IRightsConfig } from './var';
+import { templateManagers } from './template';
 
 export class EpubMaker
 {
@@ -84,7 +34,7 @@ export class EpubMaker
 		return this;
 	}
 
-	withTemplate(templateName: string)
+	withTemplate(templateName)
 	{
 		this.epubConfig.templateName = templateName;
 		return this;
@@ -218,7 +168,7 @@ export class EpubMaker
 			this.setPublicationDate();
 		}
 
-		return templateManagers[this.epubConfig.templateName].make(this.epubConfig).then(function (epubZip)
+		return templateManagers.exec(this.epubConfig.templateName, this.epubConfig, options).then(function (epubZip)
 		{
 			let generateOptions = Object.assign({
 				//type: 'blob',
@@ -258,7 +208,7 @@ export namespace EpubMaker
 
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore
-	export const epubtypes = require('./js/epub-types.js');
+	export const epubtypes = require('./epub-types.js');
 
 	/**
 	 * @epubType Optional. Allows you to add specific epub type content such as [epub:type="titlepage"]

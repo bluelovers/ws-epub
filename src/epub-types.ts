@@ -1,5 +1,13 @@
+
+export interface IEpubtypes
+{
+	'name': string;
+	'group': string;
+	'description': string;
+}
+
 // source: http://www.idpf.org/epub/vocab/structure/epub-vocab-structure-20150826.html
-let epubtypes = [
+export const epubtypes = [
 	{
 		'name': 'abstract',
 		'group': 'Front Matter',
@@ -74,17 +82,19 @@ let epubtypes = [
 		'name': 'rearnote',
 		'group': 'Back Matter',
 		'description': 'A note appearing in the rear (backmatter) of the work, or at the end of a section.'
-	}
-];
+	},
+] as IEpubtypes[];
 
-export let groups = {};
+export let groups = {} as {
+	[index: string]: IEpubtypes[];
+};
 for (let i = 0; i < epubtypes.length; i++)
 {
 	let group = epubtypes[i].group;
 	(groups[group] || (groups[group] = [])).push(epubtypes[i]);
 }
 
-export function getGroup(epubtype)
+export function getGroup(epubtype: string): string
 {
 	return {
 		'abstract': 'frontmatter',

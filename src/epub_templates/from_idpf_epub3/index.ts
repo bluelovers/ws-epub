@@ -2,25 +2,25 @@
 
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
-import { Handlebars } from '../util/handlebar-helpers';
+import { Handlebars } from '../handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
-import { ajax } from '../util/ajax';
+import { ajax } from '../ajax';
 import * as path from 'path';
 
 // @ts-ignore
-const EPUB_TEMPLATES_PATH = path.join(__dirname, '../../epub_templates');
-const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'from_idpf_epub3');
+const EPUB_TEMPLATES_PATH = path.join(__dirname);
+const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl');
 
 let templates = {
-	mimetype: 'wasteland/mimetype',
-	container: 'wasteland/META-INF/container.xml',
-	opf: 'wasteland/EPUB/wasteland.opf',
-	ncx: 'wasteland//EPUB/wasteland.ncx',
-	nav: 'wasteland/EPUB/wasteland-nav.xhtml',
-	css: 'wasteland/EPUB/wasteland.css',
-	content: 'wasteland/EPUB/wasteland-content.xhtml',
-	sectionsTemplate: 'wasteland/EPUB/sections-template.xhtml',
+	mimetype: 'mimetype',
+	container: 'META-INF/container.xml',
+	opf: 'EPUB/wasteland.opf',
+	ncx: 'EPUB/wasteland.ncx',
+	nav: 'EPUB/wasteland-nav.xhtml',
+	css: 'EPUB/wasteland.css',
+	content: 'EPUB/wasteland-content.xhtml',
+	sectionsTemplate: 'EPUB/sections-template.xhtml',
 };
 
 for (let i in templates)
