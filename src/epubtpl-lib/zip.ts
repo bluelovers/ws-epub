@@ -4,7 +4,7 @@
 
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
-import { compileTpl } from 'src/epubtpl-lib/handlebar-helpers';
+import { compileTpl } from './handlebar-helpers';
 import { IEpubConfig } from '../var';
 
 export { JSZip, JSZipUtils }
