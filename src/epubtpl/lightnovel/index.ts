@@ -1,6 +1,7 @@
 import zipLib, { JSZip, JSZipUtils } from '../../epubtpl-lib/zip';
 import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
 import { ajax } from '../../epubtpl-lib/ajax';
+import { compileCss } from '../../epubtpl-lib/postcss';
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 import { EpubMaker } from '../../index';
@@ -160,7 +161,7 @@ export namespace Builder
 
 			let css = await compileTpl(`${styles.original}\n${styles.custom}`, styles, true);
 
-			css = await epubTplLib.compileCss(css);
+			css = await compileCss(css);
 
 			return zip.folder('EPUB')
 				.folder('css')
