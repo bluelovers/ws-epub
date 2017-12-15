@@ -3,14 +3,26 @@ import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
 import { ajax } from '../../epubtpl-lib/ajax';
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
-
-//import * as Promise from 'bluebird';
+import { EpubMaker } from '../../index';
+import * as Promise from 'bluebird';
 
 import epubTplLib, {} from '../../epubtpl-lib';
 
 // @ts-ignore
 export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
 export const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl') as string;
+
+declare module '../../index'
+{
+	namespace EpubMaker
+	{
+		interface Section
+		{
+			needPage: boolean;
+			name: string;
+		}
+	}
+}
 
 export namespace Builder
 {
@@ -51,7 +63,7 @@ export namespace Builder
 				zipLib.addContainerInfo(zip, epubConfig, options),
 				addManifestOpf(zip, epubConfig, options),
 				zipLib.addCover(zip, epubConfig, options),
-				addFiles(zip, epubConfig, options),
+				zipLib.addFiles(zip, epubConfig, options),
 				addEpub2Nav(zip, epubConfig, options),
 				addEpub3Nav(zip, epubConfig, options),
 				addStylesheets(zip, epubConfig, options),
@@ -85,6 +97,7 @@ export namespace Builder
 		{
 			section.needPage = true;
 		}
+
 		for (let i = 0; i < section.subSections.length; i++)
 		{
 			section.subSections[i].rank = i;
@@ -149,77 +162,68 @@ export namespace Builder
 
 			css = await epubTplLib.compileCss(css);
 
-			await zip.folder('EPUB')
+			return zip.folder('EPUB')
 				.folder('css')
 				.file('main.css', css)
-			;
-
-			return true;
+				;
 		}
 	}
 
-	export function addFiles(zip, epubConfig, options)
+	export function addSection(zip: JSZip, section: EpubMaker.Section, epubConfig, options)
 	{
-		let deferred_list = [];
-
-		for (let i = 0; i < epubConfig.additionalFiles.length; i++)
+		return zipLib.addSubSections(zip, section, function (zip, section, epubConfig, options)
 		{
-			let file = epubConfig.additionalFiles[i];
-
-			let p = new Promise(function (resolve, reject)
+			if (section.needPage)
 			{
-				JSZipUtils.getBinaryContent(file.url, async function (err, data)
+				let name = section.name + '.html';
+
+				if (section.epubType == 'auto-toc')
 				{
-					if (!err)
-					{
-						await zip
-							.folder('EPUB')
-							.folder(file.folder)
-							.file(file.filename, data, { binary: true })
+					return zip
+						.folder('EPUB')
+						.file(name, compileTpl(options.templates.autoToc, section))
 						;
+				}
+				else
+				{
+					return zip
+						.folder('EPUB')
+						.file(name, compileTpl(options.templates.content, section))
+						;
+				}
+			}
 
-						resolve('');
-					}
-					else
-					{
-						reject(err);
-					}
-				});
-			});
+			return false;
+		}, epubConfig, options);
 
-			deferred_list.push(p);
-		}
-
-		return Promise.all(deferred_list);
-	}
-
-	export function addSection(zip, section, options)
-	{
+		/*
 		if (section.needPage)
 		{
-			let name = section.name;
+			let name = section.name + '.html';
 
 			if (section.epubType == 'auto-toc')
 			{
-				zip.folder('EPUB').file(name + '.html', compileTpl(options.templates.autoToc, section));
+				zip.folder('EPUB').file(name, compileTpl(options.templates.autoToc, section));
 			}
 			else
 			{
-				zip.folder('EPUB').file(name + '.html', compileTpl(options.templates.content, section));
+				zip.folder('EPUB').file(name, compileTpl(options.templates.content, section));
 			}
 		}
-		for (let i = 0; i < section.subSections.length; i++)
+
+		return Promise.map(section.subSections, function (subSection: EpubMaker.Section)
 		{
-			addSection(zip, section.subSections[i], options);
-		}
+			return addSection(zip, subSection, options);
+		});
+		*/
 	}
 
 	export function addContent(zip, epubConfig, options)
 	{
-		for (let i = 0; i < epubConfig.sections.length; i++)
+		return Promise.map(epubConfig.sections, function (section)
 		{
-			addSection(zip, epubConfig.sections[i], options);
-		}
+			return addSection(zip, section, epubConfig, options);
+		});
 	}
 }
 
