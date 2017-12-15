@@ -61,7 +61,7 @@ export namespace Builder
 			{
 				return zip;
 			})
-			.catch(err => console.log(err))
+			//.catch(err => console.log(err))
 			;
 	}
 
