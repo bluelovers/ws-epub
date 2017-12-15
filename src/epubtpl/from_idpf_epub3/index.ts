@@ -49,7 +49,7 @@ let Builder = function ()
 			{
 				return zip;
 			})
-			.catch(err => console.log(err))
+			//.catch(err => console.log(err))
 			;
 	};
 
