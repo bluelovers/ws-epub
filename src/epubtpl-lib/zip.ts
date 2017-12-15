@@ -53,7 +53,7 @@ export async function addCover(zip: JSZip, epubConfig: IEpubConfig, options)
 
 				return zip.folder('EPUB')
 					//.folder('images')
-					.file(epubConfig.slug + '-cover.' + ext, data, { binary: true });
+					.file(epubConfig.slug + '-cover' + ext, data, { binary: true });
 			})
 		;
 	}
