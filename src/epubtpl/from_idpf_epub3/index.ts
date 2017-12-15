@@ -1,5 +1,5 @@
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
-import { JSZip, JSZipUtils, addMimetype, addContainerInfo, addCover } from '../../epubtpl-lib/zip';
+import zipLib, { JSZip, JSZipUtils } from '../../epubtpl-lib/zip';
 import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
 import { ajax } from '../../epubtpl-lib/ajax';
 import * as path from 'path';
@@ -36,10 +36,10 @@ let Builder = function ()
 
 		return Promise
 			.all([
-				addMimetype(zip, epubConfig, options),
-				addContainerInfo(zip, epubConfig, options),
+				zipLib.addMimetype(zip, epubConfig, options),
+				zipLib.addContainerInfo(zip, epubConfig, options),
 				addManifestOpf(zip, epubConfig, options),
-				addCover(zip, epubConfig, options),
+				zipLib.addCover(zip, epubConfig, options),
 				addEpub2Nav(zip, epubConfig, options),
 				addEpub3Nav(zip, epubConfig, options),
 				addStylesheets(zip, epubConfig, options),
