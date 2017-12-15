@@ -1,11 +1,10 @@
-
 <li>
-    {{#if needPage}}
-    <a href="{{name}}.html">{{content.title}}</a>
-    {{/if}}
-    {{#if subSections}}
-    <ol>
-        {{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
-    </ol>
-    {{/if}}
+	{{#if needPage}}
+	<a href="{{name}}.html">{{content.title}}</a>
+	{{/if}}
+	{{#if subSections}}
+	<ol>
+		{{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
+	</ol>
+	{{/if}}
 </li>

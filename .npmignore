@@ -3,7 +3,7 @@
 /.codeclimate.yml
 /.coveralls.yml
 /.travis.yml
-/bower.json
+/bower.json.bak
 *.bak
 /node_modules/
 /demo/

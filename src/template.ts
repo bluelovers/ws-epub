@@ -179,6 +179,10 @@ export class TemplateManagers
 
 				return ret;
 			})
+			.catch(function ()
+			{
+				return fn(path.join('@epubtpl', name));
+			})
 			;
 	}
 }

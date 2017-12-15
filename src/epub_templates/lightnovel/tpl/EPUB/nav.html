@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>{{options.tocName}}</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css"> 
-    </head>
-    <body>
-        <div class="cover divimage" style="width: 100%; height: 100%;">
-            {{#if coverUrl}}
-            <img src="{{slug}}-cover.{{extension coverUrl}}" alt="Cover" />
-            {{/if}}
-        </div>
-        <div class="center">
-            <h1>{{title}}</h1>
-            <div>{{author}}</div>
-            <div>{{publisher}}</div>
-            <div>{{modificationDateYMD}}</div>
-        </div>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="{{langMain}}">
+<head>
+	<meta charset="utf-8">
+	<title>{{options.tocName}}</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
 
-        <nav epub:type="toc" id="toc">
-            <ol>
-                {{#each sections}}{{> sectionsNavTemplate}}{{/each}}
-            </ol>
-        </nav>
-        <nav class="hidden" epub:type="landmarks">
-            <ol>
-                <li><a epub:type="toc" href="#toc">{{options.tocName}}</a></li>
-            </ol>
-        </nav>
-    </body>
+	<figure class="cover divimage fullpage" epub:type="frontmatter cover" epub-type="frontmatter cover">
+		{{#if coverUrl}}
+		<img src="{{slug}}-cover.{{extension coverUrl}}" alt="Cover" />
+		{{/if}}
+	</figure>
+
+	<div class="center">
+		<h1>{{title}}</h1>
+		<div>{{author}}</div>
+		<div>{{publisher}}</div>
+		<div>{{modificationDateYMD}}</div>
+	</div>
+
+	<nav id="toc" epub:type="toc" epub-type="toc">
+		<ol>
+			{{#each sections}}{{> sectionsNavTemplate}}{{/each}}
+		</ol>
+	</nav>
+
+	<nav class="hidden" epub:type="landmarks" epub-type="landmarks">
+		<ol>
+			<li><a epub:type="toc" href="#toc">{{options.tocName}}</a></li>
+		</ol>
+	</nav>
+</body>
 </html>

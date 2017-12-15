@@ -2,108 +2,229 @@
 @namespace "http://www.w3.org/1999/xhtml";
 @namespace epub "http://www.idpf.org/2007/ops";
 
-body {
-    padding: 0%;
-    margin-top: 0%;
-    margin-bottom: 0%;
-    margin-left: 1%;
-    margin-right: 1%;
-    line-height: 130%;
-    text-align: justify;
-    background-color: rgb(255, 255, 245);
+ol ul, ul ol, ul ul, ol ol {
+	-webkit-margin-before: 0px;
+	-webkit-margin-after: 0px;
 }
 
-div {
-    margin: 0px;
-    padding: 0px;
-    line-height: 130%;
-    text-align: justify;
+section
+{
+	margin: auto;
 }
 
-p {
-    text-align: justify;
-    text-indent: 2em;
-    line-height: 130%;
-    margin-bottom: -0.8em;
+body, html
+{
+	text-align: justify;
+	/*
+	background-color: rgb(255, 255, 245);
+	*/
 }
 
-.divimage {
-    page-break-after: always;
+html
+{
+	margin: 0px;
+	padding: 0px;
 }
 
-.cover {
-    width: 100%;
-    padding: 0px;
+body
+{
+	margin: 0px;
+	padding: 10pt;
 }
 
-.center {
-    text-align: center;
-    margin-left: 0%;
-    margin-right: 0%;
+p
+{ min-height: 1.35em; }
+
+body[lang*=zh], html[lang*=zh], section[lang*=zh]
+{
+	font-family: Noto Sans SC, sans-serif;
+	line-height: 1.45em;
+	line-height: 1.6em;
+	-webkit-text-stroke: 0.6px;
+	-webkit-text-stroke: 0.6px;
+	text-shadow: 0 0.5px 0 rgba(228, 228, 228, 0.8), 0 0 1px rgba(0, 0, 0, 0.75);
 }
 
-.left {
-    text-align: center;
-    margin-left: 0%;
-    margin-right: 0%;
+[epub|type*='frontmatter']
+{
+	padding: 0;
 }
 
-.right {
-    text-align: right;
-    margin-left: 0%;
-    margin-right: 0%;
+body[epub-type*='frontmatter']
+{
+	padding: 0;
 }
 
-.quote {
-    margin-top: 0%;
-    margin-bottom: 0%;
-    margin-left: 1em;
-    margin-right: 1em;
-    text-align: justify;
+[epub|type*='bodymatter']
+{
+	padding: 0.5em 1em;
 }
 
-.hidden {
-    display: none;
+body[epub-type*='bodymatter']
+{
+	padding: 0.5em 1em;
 }
 
-h1 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: xx-large;
+section[epub-type*="chapter"]
+{
+	padding: 0.5em 1.5em 0.5em 1em;
 }
 
-h2 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: x-large;
+section[lang*=zh] p
+{ min-height: 1.6em; }
+
+div, p
+{
+	margin: auto;
+	padding: 0px;
 }
 
-h3 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: large;
+.divimage
+{
+	page-break-after: always;
 }
 
-h4 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: medium;
+.cover
+{
+	width: 100%;
+	padding: 0px;
 }
 
-h5 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: small;
+.center
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-h6 {
-    line-height: 130%;
-    text-align: center;
-    font-weight: bold;
-    font-size: x-small;
+.left
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.right
+{
+	text-align: right;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.quote
+{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align: justify;
+}
+
+.hidden
+{
+	display: none;
+}
+
+h1
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: xx-large;
+}
+
+h2
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: x-large;
+}
+
+h3
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: large;
+}
+
+h4
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: medium;
+}
+
+h5
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: small;
+}
+
+h6
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: x-small;
+}
+
+.vertical-container
+{
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+.fullpage
+{
+	height: 100%;
+}
+
+figure.fullpage
+{
+	max-height: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	display: block;
+
+	display: -webkit-flex;
+	display: flex;
+
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+figure:before
+{ content: ''; display: inline-block; vertical-align: middle; height: 100%; }
+
+figure img
+{
+	max-height: 100%;
+	margin: auto;
+	padding: 0;
+}
+
+p.linegroup, .calibre1, .softbreak
+{ display: block; }
+
+.linegroup, p, .softbreak, .calibre1
+{ margin: auto; }
+
+.linegroup:before, p:before, .calibre1:before, .softbreak:before
+{ content: ''; display: inline-block; }
+
+#toc li, #toc ol, #toc ul
+{
+	text-align: left;
 }

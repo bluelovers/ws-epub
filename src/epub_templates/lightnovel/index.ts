@@ -1,13 +1,14 @@
-
 import * as JSZip from 'jszip';
 import * as JSZipUtils from 'jszip-utils';
 import { Handlebars } from '../lib/handlebar-helpers';
 import { html_beautify } from 'js-beautify';
 import * as D from 'd.js';
 import { ajax } from '../lib/ajax';
-// @ts-ignore
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
+import * as postcss from 'postcss';
+import * as autoprefixer from 'autoprefixer';
+import * as postcss_epub from 'postcss-epub';
 
 // @ts-ignore
 export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
@@ -180,13 +181,33 @@ export namespace Builder
 		}
 		return deferred.promise;
 
-		function compileAndAddCss()
+		async function compileAndAddCss()
 		{
 			let styles = {
 				original: epubConfig.stylesheet.replaceOriginal ? '' : options.templates.css,
-				custom: epubConfig.styles
+				custom: epubConfig.styles || '',
 			};
-			zip.folder('EPUB').folder('css').file('main.css', compile('{{{original}}}{{{custom}}}', styles, true));
+
+			let css = await compile(`${styles.original}\n${styles.custom}`, styles, true);
+
+			let result = await postcss([
+					postcss_epub,
+					autoprefixer({
+						add: true,
+						remove: false,
+						flexbox: false,
+					})
+				])
+				.process(css)
+			;
+
+			console.log(result.css);
+
+			zip.folder('EPUB')
+				.folder('css')
+				.file('main.css', result.css)
+			;
+
 			deferred.resolve(true);
 		}
 	}
@@ -222,13 +243,15 @@ export namespace Builder
 	{
 		if (section.needPage)
 		{
+			let name = section.name;
+
 			if (section.epubType == 'auto-toc')
 			{
-				zip.folder('EPUB').file(section.name + '.html', compile(options.templates.autoToc, section));
+				zip.folder('EPUB').file(name + '.html', compile(options.templates.autoToc, section));
 			}
 			else
 			{
-				zip.folder('EPUB').file(section.name + '.html', compile(options.templates.content, section));
+				zip.folder('EPUB').file(name + '.html', compile(options.templates.content, section));
 			}
 		}
 		for (let i = 0; i < section.subSections.length; i++)
