@@ -54,6 +54,11 @@ export class EpubMaker
 		return this;
 	}
 
+	get lang()
+	{
+		return this.epubConfig.lang;
+	}
+
 	withAuthor(fullName: string)
 	{
 		this.epubConfig.author = fullName;
@@ -168,6 +173,14 @@ export class EpubMaker
 			this.setPublicationDate();
 		}
 
+		[]
+			.concat(this.epubConfig.sections, this.epubConfig.toc, this.epubConfig.landmarks)
+			.forEach(function (section: EpubMaker.Section, index)
+			{
+				section._EpubMaker_ = self;
+			})
+		;
+
 		return templateManagers.exec(this.epubConfig.templateName, this.epubConfig, options);
 	}
 
@@ -228,6 +241,11 @@ export class EpubMaker
 	}
 }
 
+export interface ISectionConfig
+{
+	lang?: string;
+}
+
 export namespace EpubMaker
 {
 	export let defaultExt = '.epub';
@@ -244,12 +262,16 @@ export namespace EpubMaker
 	 */
 	export class Section
 	{
+		public _EpubMaker_: EpubMaker;
+
 		public epubType;
 		public id;
 		public content;
 		public includeInToc: boolean;
 		public includeInLandmarks: boolean;
 		public subSections: Section[] = [];
+
+		public sectionConfig: ISectionConfig = {};
 
 		public parentSection: Section;
 		public parentEpubMaker: EpubMaker;
@@ -267,6 +289,21 @@ export namespace EpubMaker
 			{
 				content.renderTitle = content.renderTitle !== false; // 'undefined' should default to true
 			}
+		}
+
+		get epubTypeGroup()
+		{
+			return epubtypes.getGroup(this.epubType);
+		}
+
+		get lang()
+		{
+			return this.sectionConfig.lang || (this._EpubMaker_ ? this._EpubMaker_.lang : null) || null;
+		}
+
+		get langMain()
+		{
+			return (this._EpubMaker_ ? this._EpubMaker_.lang : null) || null;
 		}
 
 		static create(epubType, id, content, includeInToc: boolean, includeInLandmarks: boolean, ...argv)
