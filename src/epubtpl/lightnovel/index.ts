@@ -6,7 +6,7 @@ import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 
 //import * as Promise from 'bluebird';
 
-import epubTplLib, {  } from '../../epubtpl-lib';
+import epubTplLib, {} from '../../epubtpl-lib';
 
 // @ts-ignore
 export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
@@ -104,8 +104,6 @@ export namespace Builder
 		}
 	}
 
-
-
 	export function addManifestOpf(zip, epubConfig, options)
 	{
 		Handlebars.registerPartial('sectionsOPFManifestTemplate', options.templates.sectionsOPFManifestTemplate);
@@ -113,8 +111,6 @@ export namespace Builder
 
 		zip.folder('EPUB').file('lightnovel.opf', compileTpl(options.templates.opf, epubConfig));
 	}
-
-
 
 	export function addEpub2Nav(zip, epubConfig, options)
 	{
@@ -169,7 +165,7 @@ export namespace Builder
 		for (let i = 0; i < epubConfig.additionalFiles.length; i++)
 		{
 			let file = epubConfig.additionalFiles[i];
-			
+
 			let p = new Promise(function (resolve, reject)
 			{
 				JSZipUtils.getBinaryContent(file.url, async function (err, data)
