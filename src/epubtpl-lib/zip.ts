@@ -35,7 +35,7 @@ export async function addCover(zip, epubConfig, options)
 						//.folder('images')
 						.file(epubConfig.slug + '-cover.' + ext, data, { binary: true });
 
-					resolve('');
+					resolve(true);
 				}
 				else
 				{
@@ -45,7 +45,7 @@ export async function addCover(zip, epubConfig, options)
 		});
 	}
 
-	return true;
+	return false;
 }
 
 // @ts-ignore
