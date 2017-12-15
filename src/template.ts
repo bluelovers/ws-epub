@@ -8,11 +8,11 @@ import * as Promise from 'bluebird';
 import { IEpubConfig, IRightsConfig, IBuilder } from './var';
 
 // @ts-ignore
-export const defaultPath = __dirname as string;
+export const defaultPath = path.join(__dirname, './epubtpl') as string;
 
 export const defaultList = {
-	'idpf-wasteland': path.join(defaultPath, './epub_templates/from_idpf_epub3'),
-	'lightnovel': path.join(defaultPath, './epub_templates/lightnovel'),
+	'idpf-wasteland': path.join(defaultPath, './from_idpf_epub3'),
+	'lightnovel': path.join(defaultPath, './lightnovel'),
 } as IList;
 
 export interface IOptions

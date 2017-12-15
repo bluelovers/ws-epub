@@ -4,6 +4,8 @@ import * as path from 'path';
 // @ts-ignore
 import * as fs from 'fs';
 
+import epubTplLib, {  } from '.';
+
 export const mimetypes = {
 	'jpeg': 'image/jpeg',
 	'jpg': 'image/jpeg',
@@ -40,6 +42,11 @@ function ext(str)
 	}
 
 	return str.substr(str.lastIndexOf('.') + 1);
+}
+
+export function compileTpl(template, content, skipFormatting?: boolean): string
+{
+	return epubTplLib.formatHTML(Handlebars.compile(template)(content), skipFormatting);
 }
 
 export { Handlebars };
