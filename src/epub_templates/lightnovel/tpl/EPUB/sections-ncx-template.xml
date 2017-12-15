@@ -1,10 +1,9 @@
-
 <navPoint id="{{name}}">
     <navLabel>
         <text>{{content.title}}</text>
     </navLabel>
     {{#if needPage}}
-    <content src="{{name}}.html"/>
+    <content src="{{name}}.html" />
     {{/if}}
     {{#each subSections}} {{> sectionsNCXTemplate}} {{/each}}
 </navPoint>
