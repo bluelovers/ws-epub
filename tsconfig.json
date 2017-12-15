@@ -24,14 +24,14 @@
 
     //"removeComments": true,
 
-    "baseUrl": ".",
-    "sourceRoot": ".",
-    "rootDir": ".",
-    "outDir": ".",
+//    "baseUrl": ".",
+//    "sourceRoot": ".",
+//    "rootDir": ".",
+//    "outDir": ".",
 
-    "paths": {
-
-    },
+//    "paths": {
+//
+//    },
 
     "traceResolution": true,
     "newLine": "lf"
