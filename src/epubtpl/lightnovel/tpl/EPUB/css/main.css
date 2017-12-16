@@ -36,6 +36,27 @@ body
 	padding: 10pt;
 }
 
+a
+{
+	text-decoration: none;
+}
+
+.list_none, #toc *
+{
+	margin: auto;
+	padding: 0px;
+}
+
+.list_none, .list_none *, .list_none li, .list_none ol, #toc *
+{
+	list-style: none;
+}
+
+ol ol
+{
+	margin-bottom: 0.5em;
+}
+
 p
 { min-height: 1.35em; }
 
@@ -194,8 +215,8 @@ h6
 
 figure.fullpage
 {
-	max-height: 100%;
-	height: 100%;
+	max-height: 90%;
+	height: 90%;
 	margin: 0;
 	padding: 0;
 	display: block;
@@ -214,7 +235,7 @@ figure:before
 
 figure img
 {
-	max-height: 100%;
+	max-height: 95%;
 	margin: auto;
 	padding: 0;
 }
