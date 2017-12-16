@@ -2,9 +2,10 @@
  * Created by user on 2017/12/12/012.
  */
 
+import { JSZip } from './epubtpl-lib/zip';
 import * as moment from 'moment';
 
-import { EpubMaker } from './js-epub-maker';
+import { EpubMaker } from './index';
 
 export interface IEpubConfig
 {
@@ -54,7 +55,7 @@ export interface IFiles
 
 export interface IBuilder
 {
-	make(epubConfig: IEpubConfig, options?): Promise<any>;
+	make<T = JSZip>(epubConfig: IEpubConfig, options?): Promise<JSZip>;
 }
 
 export interface IBuilderCallback<T, U> extends Function
@@ -62,5 +63,7 @@ export interface IBuilderCallback<T, U> extends Function
 	(zip: T, epubConfig: IEpubConfig, options?, ...argv): Promise<U>;
 }
 
+import * as self from './var';
+
 // @ts-ignore
-export default exports;
+export default self;
