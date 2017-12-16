@@ -2,9 +2,11 @@ import * as slugify from 'slugify';
 //import './epub_templates/handlebar-helpers';
 import { saveAs } from 'file-saver';
 import * as moment from 'moment';
-
-import { IEpubConfig, IRightsConfig } from './var';
+import { IEpubConfig, IRightsConfig, ICover } from './var';
 import { templateManagers } from './template';
+import * as shortid from 'shortid';
+import * as hashSum from 'hash-sum';
+import * as path from 'path';
 
 export class EpubMaker
 {
@@ -44,7 +46,8 @@ export class EpubMaker
 	{
 		this.epubConfig.title = title;
 		// @ts-ignore
-		this.epubConfig.slug = slugify(title);
+		this.epubConfig.slug = slugify(title) || hashSum(title);
+
 		return this;
 	}
 
@@ -87,10 +90,53 @@ export class EpubMaker
 		return this;
 	}
 
-	withCover(coverUrl, rightsConfig: IRightsConfig)
+	withCover(coverUrl: string | ICover, rightsConfig?: IRightsConfig)
 	{
-		this.epubConfig.coverUrl = coverUrl;
-		this.epubConfig.coverRights = rightsConfig;
+		let cover: ICover;
+
+		if (typeof coverUrl == 'string')
+		{
+			let r = /^(?:\w+:)?\/{2,3}.+/;
+
+			//console.log(path.isAbsolute(coverUrl), coverUrl, r.exec(coverUrl));
+
+			if (!path.isAbsolute(coverUrl) && r.exec(coverUrl))
+			{
+				cover = {
+					url: coverUrl,
+				};
+			}
+			else
+			{
+				let cwd = this.epubConfig.cwd || process.cwd();
+
+				cover = {
+					file: path.isAbsolute(coverUrl) ? coverUrl : path.join(cwd, coverUrl),
+				};
+			}
+
+			//console.log(cover);
+		}
+		else if (coverUrl && (coverUrl.url || coverUrl.file))
+		{
+			cover = coverUrl;
+		}
+
+		if (cover && rightsConfig)
+		{
+			cover.rights = rightsConfig;
+		}
+
+		if (!cover)
+		{
+			throw new ReferenceError();
+		}
+
+		this.epubConfig.cover = Object.assign(this.epubConfig.cover || {}, cover);
+
+		//this.epubConfig.coverUrl = coverUrl;
+		//this.epubConfig.coverRights = rightsConfig;
+
 		return this;
 	}
 
@@ -152,7 +198,11 @@ export class EpubMaker
 		let ext = this.epubConfig.options.ext || EpubMaker.defaultExt;
 		let filename;
 
-		if (useTitle)
+		if (this.epubConfig.filename)
+		{
+			filename = this.epubConfig.filename;
+		}
+		else if (useTitle && this.epubConfig.title)
 		{
 			filename = this.epubConfig.title;
 		}
@@ -164,6 +214,23 @@ export class EpubMaker
 		return filename + ext;
 	}
 
+	vaild()
+	{
+		let ret = [];
+
+		if (!this.epubConfig.title || !this.epubConfig.slug)
+		{
+			ret.push('title, slug');
+		}
+
+		if (ret.length)
+		{
+			return ret;
+		}
+
+		return null;
+	}
+
 	build(options?)
 	{
 		let self = this;
@@ -173,6 +240,20 @@ export class EpubMaker
 			this.setPublicationDate();
 		}
 
+		if (!this.epubConfig.uuid)
+		{
+			this.withUuid(shortid());
+		}
+
+		let chk = this.vaild();
+
+		if (chk)
+		{
+			throw chk;
+		}
+
+		this.epubConfig.langMain = this.epubConfig.langMain || this.epubConfig.lang;
+
 		[]
 			.concat(this.epubConfig.sections, this.epubConfig.toc, this.epubConfig.landmarks)
 			.forEach(function (section: EpubMaker.Section, index)
@@ -181,7 +262,7 @@ export class EpubMaker
 			})
 		;
 
-		return templateManagers.exec(this.epubConfig.templateName, this.epubConfig, options);
+		return templateManagers.exec(this.epubConfig.templateName, this, options);
 	}
 
 	/**
@@ -249,7 +330,7 @@ export interface ISectionConfig
 export namespace EpubMaker
 {
 	export let defaultExt = '.epub';
-	export let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+	export let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SZ';
 
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore
@@ -276,7 +357,7 @@ export namespace EpubMaker
 		public parentSection: Section;
 		public parentEpubMaker: EpubMaker;
 
-		constructor(epubType, id, content, includeInToc: boolean, includeInLandmarks: boolean)
+		constructor(epubType, id, content, includeInToc?: boolean, includeInLandmarks?: boolean)
 		{
 			this.epubType = epubType;
 			this.id = id;
