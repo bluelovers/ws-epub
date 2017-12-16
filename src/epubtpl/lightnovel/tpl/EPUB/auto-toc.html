@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:epub="http://www.idpf.org/2007/ops"  xml:lang="{{langMain}}" lang="{{langMain}}">
 <head>
 	<meta charset="utf-8">
 	<title>{{content.fullTitle}}</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
 	{{#if content.renderTitle}}<h2>{{content.title}}</h2>{{/if}}
+
+	{{#if content.content}}
+	<article>
+		{{{content.content}}}
+	</article>
+	{{/if}}
+
 	{{#if subSections}}
-	<ol>
+	<ol class="list_none">
 		{{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
 	</ol>
 	{{/if}}
