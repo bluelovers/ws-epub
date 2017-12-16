@@ -190,11 +190,11 @@ export class EpubMaker
 	 * @param options
 	 * @returns {Promise<T>}
 	 */
-	makeEpub<T = Buffer>(options?): Promise<T>
+	makeEpub<T = Buffer | Blob>(options?): Promise<T | any | Buffer | Blob>
 	{
 		let self = this;
 
-		return this.build(options).then(function (epubZip)
+		return this.build(options).then(async function (epubZip)
 		{
 			let generateOptions = Object.assign({
 				type: 'nodebuffer',
@@ -203,7 +203,7 @@ export class EpubMaker
 			}, self.epubConfig.options.generateOptions, options);
 
 			console.info('generating epub for: ' + self.epubConfig.title);
-			let content = epubZip.generateAsync(generateOptions);
+			let content = await epubZip.generateAsync(generateOptions);
 
 			return content;
 		});
@@ -225,7 +225,7 @@ export class EpubMaker
 
 		let self = this;
 
-		return this.makeEpub<Blob>(options).then(async function (epubZipContent)
+		return this.makeEpub<Blob>(options).then(async function (epubZipContent: Blob)
 		{
 			let filename = self.getFilename(options.useTitle);
 
