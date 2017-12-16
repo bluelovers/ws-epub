@@ -3,3 +3,5 @@
  */
 
 export * from './src';
+import { EpubMaker } from './src';
+export default EpubMaker;
