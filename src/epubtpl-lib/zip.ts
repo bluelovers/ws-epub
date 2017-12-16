@@ -71,5 +71,5 @@ export async function addSubSections(zip: JSZip, section: EpubMaker.Section, cb,
 	});
 }
 
-// @ts-ignore
-export default exports;
+import * as self from './zip';
+export default self;
