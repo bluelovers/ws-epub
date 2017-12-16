@@ -1,0 +1,17 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:epub="http://www.idpf.org/2007/ops"  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+  <meta charset="UTF-8" />
+  <title>Table of Contents</title>
+  <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}">
+  <h3 class="P_TOC_Heading"><a id="tableofcontents"/>Table of Contents</h3>
+
+  <ol class="list_none">
+    {{#each sections}}{{> sectionsNavTemplate}}{{/each}}
+  </ol>
+</body>
+</html>
