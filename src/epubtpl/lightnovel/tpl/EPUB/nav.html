@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="{{langMain}}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"  xml:lang="{{langMain}}" lang="{{langMain}}">
 <head>
 	<meta charset="utf-8">
 	<title>{{options.tocName}}</title>
@@ -8,16 +8,18 @@
 <body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
 
 	<figure class="cover divimage fullpage" epub:type="frontmatter cover" epub-type="frontmatter cover">
-		{{#if coverUrl}}
-		<img src="{{slug}}-cover.{{extension coverUrl}}" alt="Cover" />
+		{{#if cover}}
+			{{#if cover.name}}
+				<img src="{{cover.name}}" alt="Cover" />
+			{{/if}}
 		{{/if}}
 	</figure>
 
 	<div class="center">
 		<h1>{{title}}</h1>
-		<div>{{author}}</div>
-		<div>{{publisher}}</div>
-		<div>{{modificationDateYMD}}</div>
+		{{#if author}}<div>{{author}}</div>{{/if}}
+		{{#if publisher}}<div>{{publisher}}</div>{{/if}}
+		{{#if modificationDateYMD}}<div>{{modificationDateYMD}}</div>{{/if}}
 	</div>
 
 	<nav id="toc" epub:type="toc" epub-type="toc">

@@ -6,6 +6,7 @@
 import * as path from 'path';
 import * as Promise from 'bluebird';
 import { IEpubConfig, IRightsConfig, IBuilder } from './var';
+import { EpubMaker } from './index';
 
 // @ts-ignore
 export const defaultPath = path.join(__dirname, './epubtpl') as string;
@@ -123,15 +124,17 @@ export class TemplateManagers
 	{
 		if (this.has(name))
 		{
-			return this._get(this.list[name]);
+			return await this._get(this.list[name]);
 		}
 
-		return this._get(await this.search(name));
+		return await this._get(await this.search(name));
 	}
 
-	async exec(name: string, epubConfig: IEpubConfig, options?)
+	async exec(name: string, epub: EpubMaker, options?)
 	{
-		return this.get(name).make(epubConfig, options);
+		let builder = await this.get(name);
+
+		return builder.make(epub, options);
 	}
 
 	search(name: string): string
