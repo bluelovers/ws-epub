@@ -123,17 +123,15 @@ export class TemplateManagers
 	{
 		if (this.has(name))
 		{
-			return await this._get(this.list[name]);
+			return this._get(this.list[name]);
 		}
 
-		return await this._get(await this.search(name));
+		return this._get(await this.search(name));
 	}
 
 	async exec(name: string, epubConfig: IEpubConfig, options?)
 	{
-		let builder = await this.get(name) as IBuilder;
-
-		return builder.make(epubConfig, options);
+		return this.get(name).make(epubConfig, options);
 	}
 
 	search(name: string): string
@@ -189,5 +187,6 @@ export class TemplateManagers
 
 export const templateManagers = new TemplateManagers();
 
+import * as self from './template';
 // @ts-ignore
-export default exports;
+export default self;
