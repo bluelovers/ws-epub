@@ -32,8 +32,8 @@
     "Chrome"
   ],
   "devDependencies": {
-    "@types/node": "^8.0.58",
-    "d.js": "^0.7.3"
+    "@types/jszip": "^3.1.2",
+    "@types/node": "^8.0.58"
   },
   "dependencies": {
     "autoprefixer": "^7.2.2",
