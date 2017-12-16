@@ -21,5 +21,5 @@ export function formatHTML(htmlstr, skipFormatting?: boolean): string
 	/*jslint camelcase:true*/
 }
 
-// @ts-ignore
-export default exports;
+import * as self from './index';
+export default self;

@@ -25,5 +25,5 @@ export async function compileCss(css)
 	return result.css;
 }
 
-// @ts-ignore
-export default exports;
+import * as self from './postcss';
+export default self;
