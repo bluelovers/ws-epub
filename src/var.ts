@@ -7,19 +7,38 @@ import * as moment from 'moment';
 
 import { EpubMaker } from './index';
 
+export interface ICover
+{
+	name?: string;
+	ext?: string;
+
+	file?,
+	url?: string,
+	rights?: IRightsConfig,
+}
+
 export interface IEpubConfig
 {
 	uuid?: string;
 	templateName?: string;
+
+	filename?: string;
+
 	title?: string;
 	slug?: string;
+
 	lang?: string;
 	author?: string;
 	publisher?: string;
 
 	rights?: IRightsConfig;
-	coverUrl?: string;
-	coverRights?: IRightsConfig;
+
+	cover?: ICover;
+	cwd?: string;
+
+	//coverUrl?: string;
+	//coverRights?: IRightsConfig;
+
 	attributionUrl?: string;
 	stylesheet?: {
 		url,
@@ -55,7 +74,7 @@ export interface IFiles
 
 export interface IBuilder
 {
-	make<T = JSZip>(epubConfig: IEpubConfig, options?): Promise<JSZip>;
+	make(epub: EpubMaker, options?): Promise<JSZip>;
 }
 
 export interface IBuilderCallback<T, U> extends Function
