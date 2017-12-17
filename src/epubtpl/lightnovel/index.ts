@@ -45,6 +45,8 @@ export namespace Builder
 
 		coverPage: 'EPUB/CoverPage.html',
 		tableOfContents: 'EPUB/TableOfContents.html',
+
+		contents: 'EPUB/contents.html',
 	};
 
 	for (let i in templates)
@@ -134,6 +136,11 @@ export namespace Builder
 		zip
 			.folder('EPUB')
 			.file('TableOfContents.html', compileTpl(options.templates.tableOfContents, epub.epubConfig))
+		;
+
+		zip
+			.folder('EPUB')
+			.file('contents.html', compileTpl(options.templates.contents, epub.epubConfig))
 		;
 	}
 
