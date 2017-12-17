@@ -1,35 +1,107 @@
 
-export function xhr()
+import * as fs from 'fs-extra';
+import * as fetch from 'isomorphic-fetch';
+import * as path from "path";
+import { IFiles } from '../config';
+import * as fileType from 'file-type';
+import * as hashSum from 'hash-sum';
+
+export { fetch }
+
+export async function fetchFile(file: IFiles, ...argv)
 {
-	// @ts-ignore
-	if ((null, typeof XMLHttpRequest) !== 'undefined')
+	let _file;
+	let err;
+
+	if (file.data)
 	{
-		return XMLHttpRequest;
-	}
-	// @ts-ignore
-	else if ((null, typeof ActiveXObject) !== 'undefined')
-	{
-		return ActiveXObject;
+		_file = file.data;
 	}
 
-	// @ts-ignore
-	return require("xmlhttprequest-ssl").XMLHttpRequest;
-}
-
-export function ajax(url, data?): Promise<any>
-{
-	return new Promise(function (resolve, reject)
+	if (!_file && file.url)
 	{
-		let x = new (xhr())('MSXML2.XMLHTTP.3.0');
-		x.open(data ? 'POST' : 'GET', url, 1);
-		x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-		x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		x.onreadystatechange = function ()
+		_file = await fetch(file.url, ...argv)
+			.then(function (ret)
+			{
+
+				try
+				{
+					if (!file.name && !file.basename && ret.headers.raw()['content-disposition'][0].match(/filename=(['"])?([^\'"]+)\1/))
+					{
+						let filename = RegExp.$2;
+
+						file.name = path.basename(filename);
+
+						//console.log(file.name);
+					}
+				}
+				catch (e)
+				{
+
+				}
+
+				//console.log(ret.headers, ret.headers.raw()['content-disposition'][0]);
+				//.getResponseHeader('Content-Disposition')
+
+				return ret.buffer()
+			})
+			.catch(function (e)
+			{
+				err = e;
+			})
+		;
+	}
+
+	if (!_file && file.file)
+	{
+		_file = await fs.readFile(file.file);
+	}
+
+	if (!_file)
+	{
+		let e = err || new ReferenceError();
+		e.data = file;
+
+		throw e;
+	}
+
+	if (file.name && file.ext !== '')
+	{
+		file.ext = file.ext || path.extname(file.name);
+
+		if (!file.ext)
 		{
-			x.readyState > 3 && resolve({ 'data': x.responseText, 'xhr': x });
-		};
-		x.send(data);
-	});
+			file.ext = null;
+		}
+	}
+
+	if (!file.ext || file.mime)
+	{
+		let data = fileType(_file);
+
+		if (data)
+		{
+			if (file.ext !== '')
+			{
+				file.ext = file.ext || '.' + data.ext;
+			}
+
+			file.mime = file.mime || data.mime;
+		}
+		else if (file.ext !== '')
+		{
+			file.ext = file.ext || '.unknow';
+		}
+	}
+
+	if (!file.name)
+	{
+		file.name = (file.basename || hashSum(file)) + file.ext;
+	}
+
+	file.data = _file;
+
+	return file;
 }
 
-export default ajax;
+export default fetch;
