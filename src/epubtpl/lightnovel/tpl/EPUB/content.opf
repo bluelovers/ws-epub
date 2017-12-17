@@ -4,10 +4,14 @@
          unique-identifier="uid"
          xml:lang="en-US"
          prefix="cc: http://creativecommons.org/ns#">
-    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-        <dc:identifier id="uid">{{uuid}}</dc:identifier>
+    <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata"
+              xmlns:dc="http://purl.org/dc/elements/1.1/"
+              xmlns:dcterms="http://purl.org/dc/terms/"
+              xmlns:opf="http://www.idpf.org/2007/opf"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <dc:identifier id="uid" opf:scheme="uuid">{{uuid}}</dc:identifier>
         <dc:title>{{title}}</dc:title>
-        <dc:creator>{{author}}</dc:creator>
+        <dc:creator opf:role="aut" opf:file-as="{{author}}">{{author}}</dc:creator>
         <meta property="file-as">{{author}}</meta>
         <dc:language>{{lang}}</dc:language>
         <dc:date>{{publicationDate}}</dc:date>
@@ -28,9 +32,15 @@
       <meta name="cover" content="cover" />
         {{/if}}
       {{#if collection}}
-      <meta property="collection-type">{{collection.type}}</meta>
-        {{#if collection.name}}<meta property="belongs-to-collection">{{collection.name}}</meta>{{/if}}
-      {{#if collection.position}}<meta property="group-position">{{collection.position}}</meta>{{/if}}
+      <meta property="collection-type" refines="#col-series">{{collection.type}}</meta>
+        {{#if collection.name}}
+      <meta property="belongs-to-collection" id="col-series">{{collection.name}}</meta>
+      <meta name="calibre:series" content="{{collection.name}}" />
+      {{/if}}
+      {{#if collection.position}}
+      <meta property="group-position" refines="#col-series">{{collection.position}}</meta>
+      <meta name="calibre:series_index" content="{{collection.position}}" />
+      {{/if}}
       {{/if}}
       {{#if infoPreface}}<dc:description>{{infoPreface}}</dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
@@ -48,6 +58,7 @@
         {{/each}}
         <item id="nav" href="nav.html" properties="nav" media-type="application/xhtml+xml" />
         <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+      <item href="contents.html" id="contents" media-type="application/xhtml+xml"/>
         <item id="css" href="css/main.css" media-type="text/css" />
         {{#if cover}}
             {{#if cover.name}}
