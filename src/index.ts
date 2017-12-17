@@ -75,6 +75,8 @@ export class EpubMaker
 	{
 		this.epubConfig.collection = Object.assign(this.epubConfig.collection || {}, data);
 
+		console.log(this.epubConfig.collection);
+
 		return this;
 	}
 
