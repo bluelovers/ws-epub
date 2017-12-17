@@ -159,6 +159,32 @@ export class EpubMaker
 		return this;
 	}
 
+	withInfoPreface(str: string)
+	{
+		this.epubConfig.infoPreface = str.toString();
+		return this;
+	}
+
+	addTag(tag)
+	{
+		tag = (Array.isArray(tag) ? tag : [tag]).reduce(function (a, b)
+		{
+			if (Array.isArray(b))
+			{
+				return a.concat(b);
+			}
+			else
+			{
+				a.push(b);
+			}
+
+			return a;
+		}, []);
+
+		this.epubConfig.tags = (this.epubConfig.tags || []).concat(tag);
+		return this;
+	}
+
 	setPublicationDate(new_data?)
 	{
 		let data = moment(new_data);
