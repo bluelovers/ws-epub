@@ -1,6 +1,6 @@
-import zipLib, { JSZip, JSZipUtils } from '../../epubtpl-lib/zip';
+import zipLib, { JSZip } from '../../epubtpl-lib/zip';
 import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
-import { ajax } from '../../epubtpl-lib/ajax';
+import { fetchFile } from '../../epubtpl-lib/ajax';
 import { compileCss } from '../../epubtpl-lib/postcss';
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
@@ -30,8 +30,8 @@ declare module '../../index'
 export namespace Builder
 {
 	export let templates = {
-		mimetype: 'mimetype',
-		container: 'META-INF/container.xml',
+		//mimetype: 'mimetype',
+		//container: 'META-INF/container.xml',
 		opf: 'EPUB/content.opf',
 		ncx: 'EPUB/toc.ncx',
 		nav: 'EPUB/nav.html',
@@ -54,6 +54,16 @@ export namespace Builder
 
 	let playOrder = 0;
 
+	export let staticFiles = {
+		'mimetype': 'mimetype',
+		'META-INF/container.xml': 'META-INF/container.xml',
+	};
+
+	for (let i in staticFiles)
+	{
+		staticFiles[i] = path.join(EPUB_TEMPLATES_TPL, staticFiles[i]);
+	}
+
 	export async function make(epub: EpubMaker, options?): Promise<JSZip>
 	{
 		//let epubConfig = epub.epubConfig;
@@ -72,9 +82,10 @@ export namespace Builder
 			.mapSeries([
 				addAditionalInfo,
 
-				zipLib.addMimetype,
-				zipLib.addContainerInfo,
+				//zipLib.addMimetype,
+				//zipLib.addContainerInfo,
 				addCover,
+				addStaticFiles,
 				zipLib.addFiles,
 
 				addStylesheets,
@@ -98,6 +109,24 @@ export namespace Builder
 			})
 			//.catch(err => console.log(err))
 			;
+	}
+
+	export async function addStaticFiles(zip, epub: EpubMaker, options)
+	{
+		let ls = Object.keys(staticFiles).reduce(function (a, key)
+		{
+			let b = {
+				name: key,
+				ext: '',
+				file: staticFiles[key],
+			};
+
+			a.push(b);
+
+			return a;
+		}, []);
+
+		return zipLib.addStaticFiles(zip, ls);
 	}
 
 	export async function tableOfContents(zip, epub: EpubMaker, options)
@@ -183,14 +212,11 @@ export namespace Builder
 
 	export async function addStylesheets(zip, epub: EpubMaker, options)
 	{
-		if (epub.epubConfig.stylesheet.url)
+		if (epub.epubConfig.stylesheet.url || epub.epubConfig.stylesheet.file)
 		{
-			return ajax(epub.epubConfig.stylesheet.url).then(function (result)
-			{
-				epub.epubConfig.styles = result.data;
+			let file = await fetchFile(epub.epubConfig.stylesheet);
 
-				return compileAndAddCss();
-			});
+			epub.epubConfig.stylesheet.styles += "\n" + file.data.toString();
 		}
 
 		return compileAndAddCss();
@@ -199,7 +225,7 @@ export namespace Builder
 		{
 			let styles = {
 				original: epub.epubConfig.stylesheet.replaceOriginal ? '' : options.templates.css,
-				custom: epub.epubConfig.styles || '',
+				custom: epub.epubConfig.stylesheet.styles || '',
 			};
 
 			let css = await compileTpl(`${styles.original}\n${styles.custom}`, styles, true);
@@ -239,27 +265,6 @@ export namespace Builder
 
 			return false;
 		}, epub, options);
-
-		/*
-		if (section.needPage)
-		{
-			let name = section.name + '.html';
-
-			if (section.epubType == 'auto-toc')
-			{
-				zip.folder('EPUB').file(name, compileTpl(options.templates.autoToc, section));
-			}
-			else
-			{
-				zip.folder('EPUB').file(name, compileTpl(options.templates.content, section));
-			}
-		}
-
-		return Promise.map(section.subSections, function (subSection: EpubMaker.Section)
-		{
-			return addSection(zip, subSection, options);
-		});
-		*/
 	}
 
 	export function addContent(zip, epub: EpubMaker, options)

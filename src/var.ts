@@ -3,74 +3,11 @@
  */
 
 import { JSZip } from './epubtpl-lib/zip';
-import * as moment from 'moment';
+import { IEpubConfig } from './config';
 
 import { EpubMaker } from './index';
 
-export interface ICover
-{
-	name?: string;
-	ext?: string;
-
-	file?,
-	url?: string,
-	rights?: IRightsConfig,
-}
-
-export interface IEpubConfig
-{
-	uuid?: string;
-	templateName?: string;
-
-	filename?: string;
-
-	title?: string;
-	slug?: string;
-
-	lang?: string;
-	author?: string;
-	publisher?: string;
-
-	rights?: IRightsConfig;
-
-	cover?: ICover;
-	cwd?: string;
-
-	//coverUrl?: string;
-	//coverRights?: IRightsConfig;
-
-	attributionUrl?: string;
-	stylesheet?: {
-		url,
-		styles,
-		replaceOriginal,
-	};
-	sections?: EpubMaker.Section[];
-	toc?: EpubMaker.Section[];
-	landmarks?: EpubMaker.Section[];
-	options?;
-	additionalFiles?: IFiles[];
-
-	modification?: moment.Moment;
-	modificationDate?: string;
-	modificationDateYMD?: string;
-	publication?: moment.Moment;
-	publicationDate?: string;
-	publicationDateYMD?: string;
-}
-
-export interface IRightsConfig
-{
-	description?: string,
-	license?: string,
-}
-
-export interface IFiles
-{
-	url: string,
-	folder: string,
-	filename: string
-}
+export { IEpubConfig };
 
 export interface IBuilder
 {

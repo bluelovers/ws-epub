@@ -41,10 +41,16 @@ a
 	text-decoration: none;
 }
 
-.list_none, #toc *
+.list_none, #toc ol
 {
 	margin: auto;
 	padding: 0px;
+}
+
+.list_none ol, #toc ol ol
+{
+	margin-left: auto;
+	padding-left: 2em;
 }
 
 .list_none, .list_none *, .list_none li, .list_none ol, #toc *

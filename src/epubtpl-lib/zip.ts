@@ -3,22 +3,17 @@
  */
 
 import * as JSZip from 'jszip';
-import * as JSZipUtils from 'jszip-utils';
-import * as util from 'util';
+import { IFiles, ICover } from '../config';
 import { compileTpl } from './handlebar-helpers';
-import { IEpubConfig } from '../var';
 import * as path from 'path';
 import * as Promise from 'bluebird';
 import { EpubMaker } from '../index';
-import { xhr } from './ajax';
-// @ts-ignore
-import * as fs from 'fs-extra';
+import { fetchFile } from './ajax';
 
-export { JSZip, JSZipUtils }
+export { JSZip }
 
-JSZipUtils.getBinaryContentAsync = Promise.promisify(JSZipUtils.getBinaryContent);
-
-export function addMimetype(zip: JSZip, epub: EpubMaker, options)
+/*
+export async function addMimetype(zip: JSZip, epub: EpubMaker, options)
 {
 	return zip.file('mimetype', options.templates.mimetype);
 }
@@ -27,109 +22,90 @@ export function addContainerInfo(zip: JSZip, epub: EpubMaker, options)
 {
 	return zip.folder('META-INF').file('container.xml', compileTpl(options.templates.container, epub.epubConfig));
 }
+*/
+
+export function parseFileSetting(coverUrl): IFiles
+{
+	let cover: ICover;
+
+	if (typeof coverUrl == 'string')
+	{
+		let r = /^(?:\w+:)?\/{2,3}.+/;
+
+		//console.log(path.isAbsolute(coverUrl), coverUrl, r.exec(coverUrl));
+
+		if (!path.isAbsolute(coverUrl) && r.exec(coverUrl))
+		{
+			cover = {
+				url: coverUrl,
+			};
+		}
+		else
+		{
+			let cwd = this.epubConfig.cwd || process.cwd();
+
+			cover = {
+				file: path.isAbsolute(coverUrl) ? coverUrl : path.join(cwd, coverUrl),
+			};
+		}
+
+		//console.log(cover);
+	}
+	else if (coverUrl && (coverUrl.url || coverUrl.file))
+	{
+		cover = coverUrl;
+	}
+
+	return cover;
+}
+
+export async function addStaticFiles(zip, staticFiles: IFiles[])
+{
+	return await Promise.map(staticFiles, async function (_file: IFiles)
+	{
+		let file = await fetchFile(_file);
+
+		zip
+			.folder(file.folder)
+			.file(file.name, file.data)
+		;
+
+		return file;
+	});
+}
 
 export function addFiles(zip: JSZip, epub: EpubMaker, options)
 {
-	JSZipUtils.xhr = JSZipUtils.xhr || xhr();
-
-	return Promise.mapSeries(epub.epubConfig.additionalFiles, function (file)
+	let staticFiles = epub.epubConfig.additionalFiles.reduce(function (a, file)
 	{
-		return JSZipUtils.getBinaryContentAsync(file.url)
-			.then(function (data)
-			{
-				return zip
-					.folder('EPUB')
-					.folder(file.folder)
-					.file(file.filename, data, { binary: true })
-					;
-			})
-			.tapCatch(function (err)
-			{
-				console.error(err);
-			})
-		;
-	});
+		a.push(Object.assign({}, file, {
+			folder: file.folder ? path.join('EPUB', file.folder) : 'EPUB',
+		}));
+
+		return a;
+	}, []);
+
+	return addStaticFiles(zip, staticFiles);
 }
 
 export async function addCover(zip: JSZip, epub: EpubMaker, options)
 {
 	if (epub.epubConfig.cover)
 	{
-		let file;
-		let err;
+		epub.epubConfig.cover.basename = 'CoverDesign';
+		let file = await fetchFile(epub.epubConfig.cover);
 
-		if (epub.epubConfig.cover.url)
-		{
-			JSZipUtils.xhr = JSZipUtils.xhr || xhr();
+		//file.name = `CoverDesign${file.ext}`;
 
-			file = await JSZipUtils.getBinaryContentAsync(epub.epubConfig.cover.url)
-				.then(function (data)
-				{
-					let ext = epub.epubConfig.cover.ext = epub.epubConfig.cover.ext || path.extname(epub.epubConfig.cover.url);
+		let filename = file.name = file.folder ? path.join(file.folder, file.name) : file.name;
 
-					epub.epubConfig.cover.name = epub.epubConfig.cover.name
-						|| `CoverDesign${ext}`
-						|| epub.epubConfig.slug + '-cover' + ext
-					;
+		zip
+			.folder('EPUB')
+			//.folder('images')
+			.file(filename, file.data)
+		;
 
-					zip.folder('EPUB')
-						//.folder('images')
-						.file(epub.epubConfig.cover.name, data, {
-							//binary: true
-						})
-					;
-
-					console.log([
-						//(data instanceof Blob),
-						(data instanceof Uint8Array),
-						(data instanceof Buffer),
-					]);
-
-					fs.writeFile(path.join('./temp/', epub.epubConfig.cover.name), data)
-
-					return epub.epubConfig.cover.name;
-				})
-				.catch(function (e)
-				{
-					err = e;
-				})
-				;
-		}
-
-		if (!file && epub.epubConfig.cover.file)
-		{
-			let data = await fs.readFile(epub.epubConfig.cover.file);
-
-			let ext = epub.epubConfig.cover.ext = epub.epubConfig.cover.ext || path.extname(epub.epubConfig.cover.file);
-
-			epub.epubConfig.cover.name = epub.epubConfig.cover.name
-				|| `CoverDesign${ext}`
-				|| epub.epubConfig.slug + '-cover' + ext
-			;
-
-			zip.folder('EPUB')
-				//.folder('images')
-				.file(epub.epubConfig.cover.name, data);
-
-			file = epub.epubConfig.cover.name;
-		}
-
-		if (!file)
-		{
-			let e = err || new ReferenceError();
-			e.data = epub.epubConfig.cover;
-
-			throw e;
-		}
-		else if (err)
-		{
-			//console.error(err);
-		}
-
-		if (file)
-		{
-			return true;
-		}
+		return filename;
 	}
 
 	return false;
@@ -146,4 +122,5 @@ export async function addSubSections(zip: JSZip, section: EpubMaker.Section, cb,
 }
 
 import * as self from './zip';
+
 export default self;
