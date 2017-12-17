@@ -32,7 +32,6 @@
       <meta name="cover" content="cover" />
         {{/if}}
       {{#if collection}}
-      <meta property="collection-type" refines="#col-series">{{collection.type}}</meta>
         {{#if collection.name}}
       <meta property="belongs-to-collection" id="col-series">{{collection.name}}</meta>
       <meta name="calibre:series" content="{{collection.name}}" />
@@ -41,6 +40,7 @@
       <meta property="group-position" refines="#col-series">{{collection.position}}</meta>
       <meta name="calibre:series_index" content="{{collection.position}}" />
       {{/if}}
+      <meta property="collection-type" refines="#col-series">{{collection.type}}</meta>
       {{/if}}
       {{#if infoPreface}}<dc:description>{{infoPreface}}</dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}

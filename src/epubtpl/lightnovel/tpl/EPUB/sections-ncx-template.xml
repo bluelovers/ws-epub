@@ -3,7 +3,7 @@
         <text>{{content.title}}</text>
     </navLabel>
     {{#if needPage}}
-    <content src="{{name}}.html" />
+    <content src="{{name}}.html" title="{{content.title}}" />
     {{/if}}
     {{#each subSections}} {{> sectionsNCXTemplate}} {{/each}}
 </navPoint>

@@ -1,2 +1,2 @@
-<itemref idref="{{name}}" />
+<itemref idref="{{name}}" title="{{content.title}}" />
 {{#each subSections}}{{> sectionsOPFSpineTemplate}}{{/each}}

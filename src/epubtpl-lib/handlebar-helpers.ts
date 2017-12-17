@@ -12,7 +12,9 @@ export const mimetypes = {
 	'bmp': 'image/bmp',
 	'png': 'image/png',
 	'svg': 'image/svg+xml',
-	'gif': 'image/gif'
+	'gif': 'image/gif',
+	'ttf': 'application/x-font-truetype',
+	'css': 'text/css',
 };
 
 Handlebars.registerHelper('extension', function (str)

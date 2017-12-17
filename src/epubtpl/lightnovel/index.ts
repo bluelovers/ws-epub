@@ -22,7 +22,7 @@ declare module '../../index'
 			needPage: boolean;
 			name: string;
 
-			rank: number;
+			rank: number | string;
 		}
 	}
 }
@@ -75,7 +75,7 @@ export namespace Builder
 		}, options);
 
 		console.debug('[building epub]', epub.epubConfig);
-		console.debug('[building epub]', options);
+		//console.debug('[building epub]', options);
 		let zip = new JSZip();
 
 		//await addAditionalInfo(zip, epub, options);
@@ -103,7 +103,7 @@ export namespace Builder
 			})
 			.tap(function ()
 			{
-				console.log(epub.epubConfig.cover);
+				//console.log(epub.epubConfig.cover);
 			})
 			.then(function ()
 			{
@@ -159,6 +159,8 @@ export namespace Builder
 
 	export function addInfoSection(section, titlePrefix?, namePrefix?)
 	{
+		let c = '_';
+
 		if (!section.content)
 		{
 			section.content = {};
@@ -166,7 +168,7 @@ export namespace Builder
 		if (titlePrefix)
 		{
 			titlePrefix = section.content.fullTitle = titlePrefix + ' - ' + section.content.title;
-			namePrefix = section.name = namePrefix + '-' + section.rank;
+			namePrefix = section.name = namePrefix + c + section.rank;
 		}
 		else
 		{
@@ -180,7 +182,7 @@ export namespace Builder
 
 		for (let i = 0; i < section.subSections.length; i++)
 		{
-			section.subSections[i].rank = i;
+			section.subSections[i].rank = i.toString().padStart(3, '0');
 			addInfoSection(section.subSections[i], titlePrefix, namePrefix);
 		}
 	}
@@ -192,7 +194,7 @@ export namespace Builder
 		//Generate name and full title for each section/subsection
 		for (let i = 0; i < epub.epubConfig.sections.length; i++)
 		{
-			epub.epubConfig.sections[i].rank = i;
+			epub.epubConfig.sections[i].rank = i.toString().padStart(3, '0');
 			addInfoSection(epub.epubConfig.sections[i]);
 		}
 	}
