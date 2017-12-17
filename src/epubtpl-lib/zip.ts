@@ -3,7 +3,7 @@
  */
 
 import * as JSZip from 'jszip';
-import { IFiles, ICover } from '../config';
+import { IFiles, ICover, EpubConfig, IEpubConfig } from '../config';
 import { compileTpl } from './handlebar-helpers';
 import * as path from 'path';
 import * as Promise from 'bluebird';
@@ -24,7 +24,7 @@ export function addContainerInfo(zip: JSZip, epub: EpubMaker, options)
 }
 */
 
-export function parseFileSetting(coverUrl): IFiles
+export function parseFileSetting(coverUrl, epubConfig: IEpubConfig): IFiles
 {
 	let cover: ICover;
 
@@ -42,7 +42,7 @@ export function parseFileSetting(coverUrl): IFiles
 		}
 		else
 		{
-			let cwd = this.epubConfig.cwd || process.cwd();
+			let cwd = epubConfig.cwd || process.cwd();
 
 			cover = {
 				file: path.isAbsolute(coverUrl) ? coverUrl : path.join(cwd, coverUrl),
