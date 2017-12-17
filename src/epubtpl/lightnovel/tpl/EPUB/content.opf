@@ -32,6 +32,7 @@
         {{#if collection.name}}<meta property="belongs-to-collection">{{collection.name}}</meta>{{/if}}
       {{#if collection.position}}<meta property="group-position">{{collection.position}}</meta>{{/if}}
       {{/if}}
+      {{#if infoPreface}}<dc:description>{{infoPreface}}</dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
     </metadata>
     <manifest>

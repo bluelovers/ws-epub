@@ -93,6 +93,8 @@ export interface IEpubConfig
 	 * <dc:subject>
 	 */
 	tags?: string[];
+
+	infoPreface?: string;
 }
 
 export class EpubConfig implements IEpubConfig
@@ -145,6 +147,8 @@ export class EpubConfig implements IEpubConfig
 	 * <dc:subject>
 	 */
 	tags?: string[];
+
+	infoPreface?: string;
 
 	constructor(epubConfig: IEpubConfig = {}, options: any = {})
 	{
