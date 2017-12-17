@@ -8,6 +8,7 @@
         <dc:identifier id="uid">{{uuid}}</dc:identifier>
         <dc:title>{{title}}</dc:title>
         <dc:creator>{{author}}</dc:creator>
+        <meta property="file-as">{{author}}</meta>
         <dc:language>{{lang}}</dc:language>
         <dc:date>{{publicationDate}}</dc:date>
         <meta property="dcterms:modified">{{modificationDate}}</meta>
@@ -19,11 +20,19 @@
         {{#if cover}}
             {{#if cover.rights}}
       {{#if cover.rights.license}}<link rel="cc:license" refines="#cover" href="{{coverRights.license}}" />{{/if}}
-      {{#if cover.rights.attributionUrl}}<link rel="cc:attributionURL" refines="#cover" href="{{coverRights.attributionUrl}}" />{{/if}}
+      {{#if cover.rights.attributionUrl}}<link rel="cc:attributionURL"
+                                               refines="#cover"
+                                               href="{{coverRights.attributionUrl}}" />{{/if}}
             {{/if}}
       <!-- cover meta element included for 2.0 reading system compatibility: -->
       <meta name="cover" content="cover" />
         {{/if}}
+      {{#if collection}}
+      <meta property="collection-type">{{collection.type}}</meta>
+        {{#if collection.name}}<meta property="belongs-to-collection">{{collection.name}}</meta>{{/if}}
+      {{#if collection.position}}<meta property="group-position">{{collection.position}}</meta>{{/if}}
+      {{/if}}
+      {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
     </metadata>
     <manifest>
         {{#if cover}}
