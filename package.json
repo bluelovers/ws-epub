@@ -1,7 +1,7 @@
 {
-  "name": "epub-maker-node2",
+  "name": "epub-maker2",
   "version": "2.0.0",
-  "description": "Easily create downloadable epub files with javascript for nodejs",
+  "description": "Easily create epub files with javascript",
   "main": "index",
   "scripts": {
     "test": "npx mocha"
