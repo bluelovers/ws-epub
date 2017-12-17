@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Easily create epub files with javascript",
   "main": "index",
   "scripts": {

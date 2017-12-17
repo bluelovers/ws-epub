@@ -16,10 +16,13 @@ let TXT_PATH = './res';
 		.withTemplate('lightnovel')
 		.withLanguage('zh')
 		.withTitle('黒の魔王')
-		.withAuthor('菱影代理')
+		.addAuthor('菱影代理', 'http://ncode.syosetu.com/n2627t/')
 		.withPublisher('publisher')
 		.withCover('./res/cover.jpg')
 		.withCover('https://2.bp.blogspot.com/-qG7giNZTRuI/VkpMgj44IfI/AAAAAAAAAL4/MldUKuehBaE/s1600/volumen-1-0.jpg')
+		.withCollection({
+			name: '黒の魔王',
+		})
 	;
 
 	await fs.readdir(TXT_PATH)
