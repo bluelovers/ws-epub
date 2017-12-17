@@ -36,6 +36,13 @@ export interface IFiles
 	data?;
 }
 
+export interface ICollection
+{
+	name?: string,
+	type?: string,
+	position?: number,
+}
+
 export interface IEpubConfig
 {
 	uuid?: string;
@@ -80,11 +87,7 @@ export interface IEpubConfig
 	 * <meta refines="#id-2" property="collection-type">series</meta>
 	 * <meta refines="#id-2" property="group-position">1</meta>
 	 */
-	collection?: {
-		name: string,
-		type?: string,
-		position?: number,
-	};
+	collection?: ICollection;
 
 	/**
 	 * <dc:subject>
@@ -136,11 +139,7 @@ export class EpubConfig implements IEpubConfig
 	 * <meta refines="#id-2" property="collection-type">series</meta>
 	 * <meta refines="#id-2" property="group-position">1</meta>
 	 */
-	collection?: {
-		name: string,
-		type?: string,
-		position?: number,
-	};
+	collection?: ICollection;
 
 	/**
 	 * <dc:subject>
