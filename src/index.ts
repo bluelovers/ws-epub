@@ -1,12 +1,11 @@
 import * as slugify from 'slugify';
-
 import * as moment from 'moment';
 import { templateManagers } from './template';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
-import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet } from './config';
+import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
 
 export class EpubMaker
 {
@@ -60,7 +59,7 @@ export class EpubMaker
 		return this;
 	}
 
-	addAuthor(fullName: string, url: string)
+	addAuthor(fullName: string, url?: string)
 	{
 		this.epubConfig.addAuthor(fullName, url);
 		return this;
@@ -69,6 +68,13 @@ export class EpubMaker
 	withPublisher(publisher: string)
 	{
 		this.epubConfig.publisher = publisher;
+		return this;
+	}
+
+	withCollection(data: ICollection)
+	{
+		this.epubConfig.collection = Object.assign(this.epubConfig.collection || {}, data);
+
 		return this;
 	}
 
@@ -90,7 +96,7 @@ export class EpubMaker
 
 	withCover(coverUrl: string | ICover, rightsConfig?: IRightsConfig)
 	{
-		let cover = parseFileSetting(coverUrl) as ICover;
+		let cover = parseFileSetting(coverUrl, this.epubConfig) as ICover;
 
 		if (cover && rightsConfig)
 		{
@@ -118,9 +124,9 @@ export class EpubMaker
 
 	withStylesheetUrl(stylesheetUrl, replaceOriginal?: boolean)
 	{
-		let data = parseFileSetting(stylesheetUrl) as IStylesheet;
+		let data = parseFileSetting(stylesheetUrl, this.epubConfig) as IStylesheet;
 
-		Object.assign(this.epubConfig.stylesheet, data, {
+		this.epubConfig.stylesheet = Object.assign(this.epubConfig.stylesheet, data, {
 			replaceOriginal: replaceOriginal,
 		});
 
@@ -215,6 +221,8 @@ export class EpubMaker
 		{
 			this.withUuid(shortid());
 		}
+
+		this.epubConfig.$auto();
 
 		let chk = this.vaild();
 
