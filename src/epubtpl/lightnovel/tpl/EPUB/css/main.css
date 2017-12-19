@@ -30,6 +30,8 @@ html
 {
 	margin: 0px;
 	padding: 0px;
+
+	-webkit-text-stroke: 0.6px;
 }
 
 body

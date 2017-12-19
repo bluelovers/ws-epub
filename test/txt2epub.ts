@@ -7,7 +7,7 @@ import EpubMaker from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 
-let TXT_PATH = './res';
+let TXT_PATH = './res/黒の魔王';
 
 (async () =>
 {
@@ -17,7 +17,7 @@ let TXT_PATH = './res';
 		.withLanguage('zh')
 		.withTitle('黒の魔王')
 		.addAuthor('菱影代理', 'http://ncode.syosetu.com/n2627t/')
-		.withPublisher('publisher')
+		.withPublisher('syosetu')
 		.withCover('./res/cover.jpg')
 		.withCover('https://2.bp.blogspot.com/-qG7giNZTRuI/VkpMgj44IfI/AAAAAAAAAL4/MldUKuehBaE/s1600/volumen-1-0.jpg')
 		.withCollection({
