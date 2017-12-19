@@ -33,7 +33,8 @@
   ],
   "devDependencies": {
     "@types/jszip": "^3.1.2",
-    "@types/node": "^8.0.58"
+    "@types/node": "^8.0.58",
+    "mdconf": "0.0.2"
   },
   "peerDependencies": {
     "file-saver": "^1.3.3"
@@ -54,7 +55,8 @@
     "postcss-epub": "^3.0.1",
     "require-extension-vue": "^1.3.1",
     "shortid": "^2.2.8",
-    "slugify": "^1.2.6"
+    "slugify": "^1.2.6",
+    "str-util": "^2.0.0"
   },
   "directories": {
     "doc": "docs",
