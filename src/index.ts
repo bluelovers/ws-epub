@@ -7,6 +7,8 @@ import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
 
+export { slugify, shortid, hashSum }
+
 export class EpubMaker
 {
 	public epubConfig: EpubConfig;
