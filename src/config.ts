@@ -4,6 +4,7 @@ import { EpubMaker } from './index';
 import * as deepmerge from 'deepmerge';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
+import { array_unique } from './lib/array';
 
 export interface ICover extends IFiles
 {
@@ -246,6 +247,11 @@ export class EpubConfig implements IEpubConfig
 		[
 			self.tags,
 		].forEach(a => (a || []).filter(v => v).map(v => v.toString()));
+
+		if (self.tags)
+		{
+			self.tags = array_unique(self.tags);
+		}
 
 		if (!self.author && self.authors)
 		{
