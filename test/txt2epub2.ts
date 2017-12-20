@@ -3,7 +3,7 @@
  */
 
 import * as fs from 'fs-extra';
-import EpubMaker, { hashSum } from '..';
+import EpubMaker, { hashSum, slugify } from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as globby from 'globby';
@@ -13,7 +13,7 @@ import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 
 let novelID: string;
 novelID = '黒の魔王';
-novelID = '四度目は嫌な死属性魔術師';
+//novelID = '四度目は嫌な死属性魔術師';
 
 //let TXT_PATH = './res/四度目は嫌な死属性魔術師';
 let TXT_PATH = path.join(__dirname, 'res', novelID);
@@ -35,12 +35,32 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 		.addAuthor(meta.novel.author)
 		.withPublisher('syosetu')
 		//.withCover('./res/cover.jpg')
-		.withCover(meta.novel.cover)
+		//.withCover(meta.novel.cover)
 		.withCollection({
 			name: meta.novel.title,
 		})
 		.withInfoPreface(meta.novel.preface)
 		.addTag(meta.novel.tags)
+	;
+
+	if (meta.novel.cover)
+	{
+		epub.withCover(meta.novel.cover);
+	}
+
+	await globby([
+		'cover.*',
+	], {
+		cwd: TXT_PATH,
+		absolute: true,
+	})
+		.then(ls =>
+		{
+			if (ls.length)
+			{
+				epub.withCover(ls[0]);
+			}
+		})
 	;
 
 	await globby([
@@ -138,11 +158,37 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 			return Promise
 				.mapSeries(Object.keys(_ls), async function (dirname)
 				{
-					let volume = new EpubMaker.Section('auto-toc', `volume${idx++}`, {
+					let vid = `volume${idx++}`;
+
+					let volume = new EpubMaker.Section('auto-toc', vid, {
 						title: dirname,
 					}, false, true);
 
 					let ls = _ls[dirname];
+
+					await globby([
+						'cover.*',
+					], {
+						cwd: path.join(TXT_PATH, dirname),
+						absolute: true,
+					})
+						.then(ls =>
+						{
+							if (ls.length)
+							{
+								let ext = path.extname(ls[0]);
+								let name = `${vid}-cover${ext}`;
+
+								epub.withAdditionalFile(ls[0], null, name);
+
+								volume.setContent({
+									cover: {
+										name: name
+									}
+								});
+							}
+						})
+					;
 
 					//console.log(dirname);
 
@@ -167,6 +213,67 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 						volume.withSubSection(chapter);
 					});
+
+					await globby([
+						'*.{jpg,gif,png,jpeg,svg}',
+						'!cover.*',
+						'!*.txt',
+					], {
+						cwd: path.join(TXT_PATH, dirname),
+						absolute: true,
+					})
+						.then(ls =>
+						{
+							let arr = [];
+
+							for (let i in ls)
+							{
+								let img = ls[i];
+
+								let ext = path.extname(img);
+
+								let basename = path.basename(img, ext);
+
+								// @ts-ignore
+								let name = slugify(basename);
+
+								if (!name || arr.includes(name))
+								{
+									name = hashSum([img, i, name]);
+								}
+
+								name = `${vid}/${i}-` + name + ext;
+
+								arr.push('image/' + name);
+
+								epub.withAdditionalFile(img, 'image', name);
+							}
+
+							if (arr.length)
+							{
+								console.log(arr);
+
+								if (volume.content && volume.content.cover && volume.content.cover.name)
+								{
+									arr.unshift(volume.content.cover.name);
+								}
+
+								let chapter = new EpubMaker.Section('non-specific backmatter', `image${idx++}`, {
+									title: '插圖',
+									content: arr.reduce(function (a, b)
+									{
+										let html = `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${b}" alt="Cover" /></figure>`;
+
+										a.push(html);
+
+										return a;
+									}, []).join("\n"),
+								}, true, false);
+
+								volume.withSubSection(chapter);
+							}
+						})
+					;
 
 					epub.withSection(volume);
 

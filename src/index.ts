@@ -149,11 +149,15 @@ export class EpubMaker
 
 	withAdditionalFile(fileUrl, folder, filename)
 	{
-		this.epubConfig.additionalFiles.push({
-			url: fileUrl,
+		let _file = parseFileSetting(fileUrl, this.epubConfig) as ICover;
+
+		_file = Object.assign({}, _file, {
 			folder: folder,
 			name: filename
 		});
+
+		this.epubConfig.additionalFiles.push(_file);
+
 		return this;
 	}
 
@@ -305,6 +309,16 @@ export interface ISectionConfig
 	lang?: string;
 }
 
+export interface ISectionContent
+{
+	title?: string;
+	content?: string;
+
+	renderTitle?: boolean;
+
+	cover?
+}
+
 export namespace EpubMaker
 {
 	export let defaultExt = '.epub';
@@ -325,7 +339,7 @@ export namespace EpubMaker
 
 		public epubType;
 		public id;
-		public content;
+		public content: ISectionContent;
 		public includeInToc: boolean;
 		public includeInLandmarks: boolean;
 		public subSections: Section[] = [];
@@ -339,15 +353,64 @@ export namespace EpubMaker
 		{
 			this.epubType = epubType;
 			this.id = id;
-			this.content = content;
+
 			this.includeInToc = includeInToc;
 			this.includeInLandmarks = includeInLandmarks;
 			this.subSections = [];
 
+			/*
+			this.content = content;
 			if (content)
 			{
 				content.renderTitle = content.renderTitle !== false; // 'undefined' should default to true
 			}
+			*/
+
+			this.setContent(content, true);
+		}
+
+		/**
+		 *
+		 * @param {ISectionContent|string} content
+		 * @param {boolean} allow_null
+		 * @returns {this}
+		 */
+		setContent(content: ISectionContent, allow_null?: boolean)
+		{
+			let o = {} as ISectionContent;
+
+			if (typeof content == 'string')
+			{
+				o.content = content;
+			}
+			else if (content.title || content.content || content.renderTitle || content.cover)
+			{
+				o = content;
+			}
+
+			if (Object.keys(o).length)
+			{
+				if (this.content)
+				{
+					this.content = Object.assign(this.content, o);
+				}
+				else
+				{
+					this.content = o;
+				}
+
+				this.content.renderTitle = this.content.renderTitle !== false;
+
+			} else if (content)
+			{
+				this.content = content;
+			}
+			else if (!allow_null)
+			{
+				throw new ReferenceError();
+			}
+
+			return this;
 		}
 
 		get epubTypeGroup()

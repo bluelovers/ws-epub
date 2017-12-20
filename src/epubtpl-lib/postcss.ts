@@ -5,8 +5,10 @@
 import * as postcss from 'postcss';
 import * as autoprefixer from 'autoprefixer';
 import * as postcss_epub from 'postcss-epub';
+import * as postcssStripInlineComments from 'postcss-strip-inline-comments';
+import * as postcssScss from 'postcss-scss';
 
-export { postcss, autoprefixer, postcss_epub }
+export { postcss, autoprefixer, postcss_epub, postcssStripInlineComments }
 
 export async function compileCss(css)
 {
@@ -17,12 +19,20 @@ export async function compileCss(css)
 				add: true,
 				remove: false,
 				flexbox: false,
-			})
+			}),
 		])
-			.process(css)
+			.process(css, {
+				// @ts-ignore
+				processors: [
+					postcssStripInlineComments,
+				],
+			})
 	;
 
-	return result.css;
+	console.log(result);
+
+	//return result.css;
+	return result.content;
 }
 
 import * as self from './postcss';
