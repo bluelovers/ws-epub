@@ -3,12 +3,13 @@
  */
 
 import * as fs from 'fs-extra';
-import * as mdconf from 'mdconf';
 import EpubMaker, { hashSum } from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as globby from 'globby';
 import * as StrUtil from 'str-util';
+import * as moment from 'moment';
+import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 
 let novelID: string;
 novelID = '黒の魔王';
@@ -19,11 +20,8 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 (async () =>
 {
-	let meta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
-		.then(function (data)
-		{
-			return mdconf(data.toString());
-		})
+	let meta: IMdconfMeta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
+		.then(mdconf_meta)
 	;
 
 	let epub = new EpubMaker()
@@ -56,7 +54,7 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 		'!**/英語.txt',
 	], {
 		cwd: TXT_PATH,
-		})
+	})
 		.then(ls =>
 		{
 			return ls.reduce(function (a, b)
@@ -84,6 +82,8 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 				return a;
 			}, {});
 		})
+		.then(p_sort_list)
+		/*
 		.then(ls =>
 		{
 			//console.log(ls);
@@ -130,6 +130,7 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 			return ls;
 		})
+		*/
 		.then(_ls =>
 		{
 			let idx = 1;
@@ -179,7 +180,7 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 	await fs.outputFile('./temp/' + epub.getFilename(), data);
 
-	//console.log(epub);
+	console.log(epub.getFilename(), moment());
 
 })();
 
@@ -197,6 +198,62 @@ function splitTxt(txt)
 		+ '</p>')
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
 		.replace(/<p>/g, '<p class="linegroup calibre1">')
+		;
+}
+
+function p_sort_list(ls: {
+	[key: string]: {
+		[key: string]: any,
+	}
+})
+{
+	return Promise.resolve(ls)
+		.then(ls =>
+		{
+			//console.log(ls);
+
+			let ks = Object.keys(ls)
+				.reduce(function (a, b)
+				{
+					a[StrUtil.zh2num(b)] = b;
+
+					return a;
+				}, {})
+			;
+
+			let ks2 = Object.keys(ks);
+			ks2.sort();
+
+			let ks3 = ks2.reduce(function (a, b)
+			{
+				let key = ks[b];
+
+				a[key] = ls[key];
+
+				return a;
+			}, {});
+
+			return ks3;
+		})
+		.then(ls =>
+		{
+			//console.log(ls);
+
+			for (let dir in ls)
+			{
+				let a = Object.keys(ls[dir]);
+				a.sort();
+
+				ls[dir] = Object.values(a.reduce(function (a, b)
+				{
+					a[b] = ls[dir][b];
+
+					return a;
+				}, {}));
+			}
+
+			return ls;
+		})
 		;
 }
 
