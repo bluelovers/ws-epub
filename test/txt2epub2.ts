@@ -4,17 +4,22 @@
 
 import * as fs from 'fs-extra';
 import * as mdconf from 'mdconf';
-import EpubMaker from '..';
+import EpubMaker, { hashSum } from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as globby from 'globby';
 import * as StrUtil from 'str-util';
 
-let TXT_PATH = './res/四度目は嫌な死属性魔術師';
+let novelID: string;
+novelID = '黒の魔王';
+novelID = '四度目は嫌な死属性魔術師';
+
+//let TXT_PATH = './res/四度目は嫌な死属性魔術師';
+let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 (async () =>
 {
-	let meta = await fs.readFile('./res/四度目は嫌な死属性魔術師/meta.md')
+	let meta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
 		.then(function (data)
 		{
 			return mdconf(data.toString());
@@ -24,6 +29,10 @@ let TXT_PATH = './res/四度目は嫌な死属性魔術師';
 	let epub = new EpubMaker()
 		.withTemplate('lightnovel')
 		.withLanguage('zh')
+		.withUuid(hashSum([
+			meta.novel.title,
+			meta.novel.author,
+		]))
 		.withTitle(meta.novel.title)
 		.addAuthor(meta.novel.author)
 		.withPublisher('syosetu')
@@ -33,15 +42,18 @@ let TXT_PATH = './res/四度目は嫌な死属性魔術師';
 			name: meta.novel.title,
 		})
 		.withInfoPreface(meta.novel.preface)
-		.addTag([
-			'syosetu',
-			'异界', '穿越', '冒险', '后宫',
-			//'病嬌',
-		])
+		.addTag(meta.novel.tags)
 	;
 
 	await globby([
 		'**/*.txt',
+		'!**/*.raw.txt',
+		'!**/*.new.txt',
+		'!**/out/**/*',
+		'!**/raw/**/*',
+		'!**/*_out/**/*',
+		'!**/待修正屏蔽字.txt',
+		'!**/英語.txt',
 	], {
 		cwd: TXT_PATH,
 		})
@@ -58,9 +70,11 @@ let TXT_PATH = './res/四度目は嫌な死属性魔術師';
 
 				let r = /^第?(\d+)話.+$/;
 
-				if (r.test(StrUtil.zh2num(file)))
+				let s2 = StrUtil.zh2num(file) as string;
+
+				if (r.test(s2))
 				{
-					a[dir][StrUtil.zh2num(file).replace(r, '$1')] = file;
+					a[dir][s2.replace(r, '$1')] = file;
 				}
 				else
 				{
@@ -175,6 +189,10 @@ function splitTxt(txt)
 		'<p>' +
 		txt
 			.replace(/\r\n|\r(?!\n)|\n/g, "\n")
+
+			.replace(/\u003C/g, '&lt;')
+			.replace(/\u003E/g, '&gt;')
+
 			.replace(/\n/g, '</p><p>')
 		+ '</p>')
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
