@@ -223,6 +223,14 @@ h6
 	height: 100%;
 }
 
+figure
+{
+	margin-before: 0;
+	margin-after: 0;
+	margin-start: 0;
+	margin-end: 0;
+}
+
 figure.fullpage
 {
 	max-height: 90%;
@@ -262,4 +270,20 @@ p.linegroup, .calibre1, .softbreak
 #toc li, #toc ol, #toc ul
 {
 	text-align: left;
+}
+
+.page-break-before
+{
+	page-break-before:always;
+}
+
+.page-break-after
+{
+	page-break-after: always;
+}
+
+.page-break-all
+{
+	page-break-before:always;
+	page-break-after: always;
 }
