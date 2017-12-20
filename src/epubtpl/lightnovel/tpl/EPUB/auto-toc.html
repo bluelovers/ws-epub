@@ -17,9 +17,17 @@
 	{{/if}}
 
 	{{#if subSections}}
-	<ol class="list_none">
+	<ol class="list_none ">
 		{{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
 	</ol>
+	{{/if}}
+
+	{{#if content.cover}}
+	{{#if content.cover.name}}
+		<figure class="cover fullpage ImageContainer page-break-before" epub-type="cover">
+			<img id="CoverImage" class="CoverImage" src="{{content.cover.name}}" alt="Cover" />
+		</figure>
+	{{/if}}
 	{{/if}}
 </body>
 </html>
