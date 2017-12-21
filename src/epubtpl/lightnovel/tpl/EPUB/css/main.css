@@ -17,6 +17,11 @@ section
 	-webkit-column-break-before: avoid;
 }
 
+:root
+{
+
+}
+
 body, html
 {
 	text-align: justify;
@@ -286,4 +291,28 @@ p.linegroup, .calibre1, .softbreak
 {
 	page-break-before:always;
 	page-break-after: always;
+}
+
+header h2
+{
+	margin-top: 0.1em;
+	margin-before: 0.1em;
+	-webkit-margin-before: 0.1em;
+}
+
+.chapter-header-001
+{
+	padding-bottom: 0.1em;
+}
+
+.chapter-header-001 > h2
+{
+	text-align: left;
+	padding-bottom: 0.1em;
+	border-bottom: 0.1em solid #000;
+	border-bottom: 0.1em solid currentColor;
+	margin-after: 0.3em;
+	margin-bottom: 0.3em;
+	-webkit-margin-after: 0.3em;
+	font-size: large;
 }
