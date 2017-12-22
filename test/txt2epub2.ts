@@ -11,16 +11,23 @@ import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 
+/**
+ * 小說資料夾名稱
+ */
 let novelID: string;
 
 novelID = '黒の魔王';
 //novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
-novelID = '讨厌第四次的死属性魔术师_(2206)';
+//novelID = '讨厌第四次的死属性魔术师_(2206)';
 
+/**
+ * 小說 txt 的主資料夾路徑
+ * @type {string}
+ */
 let TXT_PATH = path.join(__dirname, 'res', novelID);
-TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 
 (async () =>
 {
@@ -153,12 +160,12 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 							data = splitTxt(data.toString());
 						}
 
-						if (row.file == '0000_插画.71349')
-						{
-							//console.log(data);
-
-							//process.exit();
-						}
+//						if (row.file == '0000_插画.71349')
+//						{
+//							//console.log(data);
+//
+//							//process.exit();
+//						}
 
 						//let name = path.basename(filename, path.extname(filename));
 						let name = row.chapter_title;
