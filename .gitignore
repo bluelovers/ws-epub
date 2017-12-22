@@ -12,3 +12,5 @@ reports/
 *.js
 *.d.ts
 /dist/
+/test/temp/
+/test/res/
