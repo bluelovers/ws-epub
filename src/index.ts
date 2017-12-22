@@ -173,6 +173,12 @@ export class EpubMaker
 		return this;
 	}
 
+	addIdentifier(type: string, id?: string)
+	{
+		this.epubConfig.addIdentifier(type, id);
+		return this;
+	}
+
 	addTag(tag)
 	{
 		tag = (Array.isArray(tag) ? tag : [tag]).reduce(function (a, b)

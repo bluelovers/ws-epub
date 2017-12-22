@@ -263,6 +263,18 @@ figure img
 	padding: 0;
 }
 
+hr, .linehr
+{
+	border: none;
+	border: 0px none currentcolor;
+	border-bottom: 0.2em dashed currentcolor;
+
+	margin: 0.5em auto;
+	opacity: 0.7;
+
+	text-align: center;
+}
+
 p.linegroup, .calibre1, .softbreak
 { display: block; }
 

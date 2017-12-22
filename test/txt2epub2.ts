@@ -12,11 +12,15 @@ import * as moment from 'moment';
 import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 
 let novelID: string;
+
 novelID = '黒の魔王';
 //novelID = '四度目は嫌な死属性魔術師';
 
-//let TXT_PATH = './res/四度目は嫌な死属性魔術師';
+//novelID = '那个人，后来_(2272)';
+novelID = '讨厌第四次的死属性魔术师_(2206)';
+
 let TXT_PATH = path.join(__dirname, 'res', novelID);
+TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 
 (async () =>
 {
@@ -63,6 +67,10 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 		})
 	;
 
+	let globby_options = {
+		cwd: TXT_PATH,
+	};
+
 	await globby([
 		'**/*.txt',
 		'!**/*.raw.txt',
@@ -72,104 +80,41 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 		'!**/*_out/**/*',
 		'!**/待修正屏蔽字.txt',
 		'!**/英語.txt',
-	], {
-		cwd: TXT_PATH,
-	})
-		.then(ls =>
+	], globby_options)
+		.then(function (ls)
 		{
-			return ls.reduce(function (a, b)
-			{
-				let dir = path.dirname(b);
-				let file = path.basename(b);
-
-				//console.log(b);
-
-				a[dir] = a[dir] || {};
-
-				let r = /^第?(\d+)話.+$/;
-
-				let s2 = StrUtil.zh2num(file) as string;
-
-				if (r.test(s2))
-				{
-					a[dir][s2.replace(r, '$1')] = file;
-				}
-				else
-				{
-					a[dir][file] = file;
-				}
-
-				return a;
-			}, {});
+			return glob_to_list(ls, globby_options);
 		})
 		.then(p_sort_list)
-		/*
-		.then(ls =>
+		.then(function (ls)
 		{
-			//console.log(ls);
+			console.log(ls);
 
-			let ks = Object.keys(ls)
-				.reduce(function (a, b)
-				{
-					a[StrUtil.zh2num(b)] = b;
-
-					return a;
-				}, {})
-			;
-
-			let ks2 = Object.keys(ks);
-			ks2.sort();
-
-			let ks3 = ks2.reduce(function (a, b)
-			{
-				let key = ks[b];
-
-				a[key] = ls[key];
-
-				return a;
-			}, {});
-
-			return ks3;
-		})
-		.then(ls =>
-		{
-			//console.log(ls);
-
-			for (let dir in ls)
-			{
-				let a = Object.keys(ls[dir]);
-				a.sort();
-
-				ls[dir] = Object.values(a.reduce(function (a, b)
-				{
-					a[b] = ls[dir][b];
-
-					return a;
-				}, {}));
-			}
+			//process.exit();
 
 			return ls;
 		})
-		*/
 		.then(_ls =>
 		{
 			let idx = 1;
 
 			return Promise
-				.mapSeries(Object.keys(_ls), async function (dirname)
+				.mapSeries(Object.keys(_ls), async function (val_dir)
 				{
 					let vid = `volume${idx++}`;
 
-					let volume = new EpubMaker.Section('auto-toc', vid, {
-						title: dirname,
-					}, false, true);
+					let ls = _ls[val_dir];
+					let dirname = ls[0].path_dir;
+					let volume_title = ls[0].volume_title;
 
-					let ls = _ls[dirname];
+					let volume = new EpubMaker.Section('auto-toc', vid, {
+						title: volume_title,
+					}, false, true);
 
 					await globby([
 						'cover.*',
 					], {
-						cwd: path.join(TXT_PATH, dirname),
+						cwd: dirname,
 						absolute: true,
 					})
 						.then(ls =>
@@ -194,21 +139,35 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 					//volume.withSubSection(new EpubMaker.Section('auto-toc', null, null, false, false));
 
-					await Promise.mapSeries(ls, async function (filename)
+					await Promise.mapSeries(ls, async function (row)
 					{
 						//console.log(filename);
 
-						let data = await fs.readFile(path.join(TXT_PATH, dirname, filename));
+						//let data = await fs.readFile(path.join(TXT_PATH, dirname, filename));
+						let data = await fs.readFile(row.path);
 
 						//console.log(data);
 
-						data = splitTxt(data.toString());
+						if (row.ext == '.txt')
+						{
+							data = splitTxt(data.toString());
+						}
 
-						let name = path.basename(filename, path.extname(filename));
+						if (row.file == '0000_插画.71349')
+						{
+							//console.log(data);
+
+							//process.exit();
+						}
+
+						//let name = path.basename(filename, path.extname(filename));
+						let name = row.chapter_title;
+
+						console.log(row);
 
 						let chapter = new EpubMaker.Section('chapter', `chapter${idx++}`, {
 							title: name,
-							content: data,
+							content: data.toString().replace(/\r\n|\r(?!\n)|\n/g, "\n"),
 						}, true, false);
 
 						volume.withSubSection(chapter);
@@ -219,7 +178,7 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 						'!cover.*',
 						'!*.txt',
 					], {
-						cwd: path.join(TXT_PATH, dirname),
+						cwd: dirname,
 						absolute: true,
 					})
 						.then(ls =>
@@ -251,7 +210,7 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 
 							if (arr.length)
 							{
-								console.log(arr);
+								//console.log(arr);
 
 								if (volume.content && volume.content.cover && volume.content.cover.name)
 								{
@@ -301,11 +260,78 @@ function splitTxt(txt)
 			.replace(/\u003C/g, '&lt;')
 			.replace(/\u003E/g, '&gt;')
 
+			.replace(/&lt;(img.+)\/?&gt;/gm, function (...m)
+			{
+				//console.log(m);
+
+				return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
+			})
+
+			.replace(/^[－＝\-\=]{3,}$/mg, '<hr/>')
+
 			.replace(/\n/g, '</p><p>')
 		+ '</p>')
+
+		.replace(/<p><hr\/><\/p>/g, '<hr class="linehr"/>')
+
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
 		.replace(/<p>/g, '<p class="linegroup calibre1">')
 		;
+}
+
+function glob_to_list(glob_ls: string[], options = {})
+{
+	return Promise.resolve(glob_ls)
+		.then(ls =>
+		{
+			return ls.reduce(function (a, b)
+			{
+				let dir = path.dirname(b);
+				let ext = path.extname(b);
+				let file = path.basename(b, ext);
+
+				//console.log(b);
+
+				let row = {
+					path: options.cwd && !path.isAbsolute(b) ? path.join(options.cwd, b) : b,
+					path_dir: options.cwd && !path.isAbsolute(dir) ? path.join(options.cwd, dir) : dir,
+
+					dir: dir,
+					file: file,
+					ext: ext,
+
+					volume_title: dir,
+					chapter_title: file,
+
+					val_file: file,
+					val_dir: dir,
+				};
+
+				if (row.volume_title.match(/^\d+(.+)_\(\d+\)$/))
+				{
+					row.volume_title = RegExp.$1.trim();
+				}
+
+				if (row.chapter_title.match(/^\d+_(.+)\.\d+$/))
+				{
+					row.chapter_title = RegExp.$1.trim();
+				}
+
+				let r = /^第?(\d+)話/;
+				let s2 = StrUtil.zh2num(row.val_file) as string;
+
+				if (r.test(s2))
+				{
+					row.val_file = s2.replace(r, '$1');
+				}
+
+				a[row.val_dir] = a[row.val_dir] || {};
+				a[row.val_dir][row.val_file] = row;
+
+				return a;
+			}, {});
+		})
+	;
 }
 
 function p_sort_list(ls: {
