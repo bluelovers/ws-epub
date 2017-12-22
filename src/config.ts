@@ -68,6 +68,8 @@ export interface IEpubConfig
 	cover?: ICover;
 	cwd?: string;
 
+	identifiers?: string[];
+
 	attributionUrl?: string;
 	stylesheet?: IStylesheet;
 	sections?: EpubMaker.Section[];
@@ -121,6 +123,8 @@ export class EpubConfig implements IEpubConfig
 
 	cover?: ICover;
 	cwd?: string;
+
+	identifiers?: string[];
 
 	attributionUrl?: string;
 	stylesheet?: IStylesheet;
@@ -196,6 +200,8 @@ export class EpubConfig implements IEpubConfig
 
 		let self = this as IEpubConfig;
 		self.modification = data.local();
+
+		return this;
 	}
 
 	setPublication(val, ...argv)
@@ -213,6 +219,8 @@ export class EpubConfig implements IEpubConfig
 
 		let self = this as IEpubConfig;
 		self.publication = data.local();
+
+		return this;
 	}
 
 	addAuthor(name: string, url: string = null)
@@ -227,6 +235,42 @@ export class EpubConfig implements IEpubConfig
 		self.authors = self.authors || {};
 
 		self.authors[name] = url;
+
+		return this;
+	}
+
+	/**
+	 * isbn:xxx
+	 * calibre:xxx
+	 * uuid:xxx
+	 *
+	 * @param {string} type
+	 * @param {string} id
+	 * @returns {this}
+	 */
+	addIdentifier(type: string, id?: string)
+	{
+		this.identifiers = this.identifiers || [];
+
+		let ids = [];
+
+		if (type && type !== '')
+		{
+			ids.push(type.toString());
+		}
+		if (id && id !== '')
+		{
+			ids.push(id.toString());
+		}
+
+		if (!ids.length)
+		{
+			throw new ReferenceError();
+		}
+
+		this.identifiers.push(ids.join(':'));
+
+		return this;
 	}
 
 	$clone()
@@ -247,6 +291,10 @@ export class EpubConfig implements IEpubConfig
 		[
 			self.tags,
 		].forEach(a => (a || []).filter(v => v).map(v => v.toString()));
+
+		self.tags = self.tags || [];
+
+		self.tags.push('epub-maker2');
 
 		if (self.tags)
 		{
@@ -283,6 +331,8 @@ export class EpubConfig implements IEpubConfig
 		{
 			self.collection.type = self.collection.type || 'series';
 		}
+
+		return this;
 	}
 
 	entries(auto = true): IEpubConfig
