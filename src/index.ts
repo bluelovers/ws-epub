@@ -77,7 +77,7 @@ export class EpubMaker
 	{
 		this.epubConfig.collection = Object.assign(this.epubConfig.collection || {}, data);
 
-		console.log(this.epubConfig.collection);
+		//console.log(this.epubConfig.collection);
 
 		return this;
 	}
@@ -169,7 +169,11 @@ export class EpubMaker
 
 	withInfoPreface(str: string)
 	{
-		this.epubConfig.infoPreface = str.toString();
+		if (str)
+		{
+			this.epubConfig.infoPreface = str.toString();
+		}
+
 		return this;
 	}
 
