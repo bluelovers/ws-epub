@@ -9,6 +9,7 @@ import * as path from 'path';
 import * as globby from 'globby';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
+import * as deepmerge from 'deepmerge';
 import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 
 /**
@@ -22,18 +23,27 @@ novelID = '黒の魔王';
 //novelID = '那个人，后来_(2272)';
 //novelID = '讨厌第四次的死属性魔术师_(2206)';
 
+//novelID = '野生のラスボスが現れた！';
+//novelID = '野生的最终boss出现了_(2014)';
+
+novelID = '由于世界魔物满载';
+
 /**
  * 小說 txt 的主資料夾路徑
  * @type {string}
  */
 let TXT_PATH = path.join(__dirname, 'res', novelID);
+TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8_out', novelID);
 
 (async () =>
 {
 	let meta: IMdconfMeta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
 		.then(mdconf_meta)
 	;
+
+	//console.log(meta, meta.novel.preface);
 
 	let epub = new EpubMaker()
 		.withTemplate('lightnovel')
@@ -91,6 +101,42 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 		.then(function (ls)
 		{
 			return glob_to_list(ls, globby_options);
+		})
+		.then(async function (ls)
+		{
+			// do something here
+
+			if (0)
+			{
+				let novelID = '野生のラスボスが現れた！';
+				let TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
+
+				let _globby_options = Object.assign({}, globby_options, {
+					cwd: TXT_PATH
+				});
+
+				await globby([
+					'**/*.txt',
+					'!**/*.raw.txt',
+					'!**/*.new.txt',
+					'!**/out/**/*',
+					'!**/raw/**/*',
+					'!**/*_out/**/*',
+					'!**/待修正屏蔽字.txt',
+					'!**/英語.txt',
+				], _globby_options)
+					.then(function (ls)
+					{
+						return glob_to_list(ls, _globby_options);
+					})
+					.then(function (ls2)
+					{
+						ls = Object.assign(ls, ls2);
+					})
+				;
+			}
+
+			return ls;
 		})
 		.then(p_sort_list)
 		.then(function (ls)
@@ -170,6 +216,8 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 						//let name = path.basename(filename, path.extname(filename));
 						let name = row.chapter_title;
 
+
+
 						console.log(row);
 
 						let chapter = new EpubMaker.Section('chapter', `chapter${idx++}`, {
@@ -208,7 +256,8 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 									name = hashSum([img, i, name]);
 								}
 
-								name = `${vid}/${i}-` + name + ext;
+								//name = `${vid}/${i}-` + name + ext;
+								name = `${vid}/` + name + ext;
 
 								arr.push('image/' + name);
 
@@ -262,6 +311,7 @@ function splitTxt(txt)
 	return (
 		'<p>' +
 		txt
+			.toString()
 			.replace(/\r\n|\r(?!\n)|\n/g, "\n")
 
 			.replace(/\u003C/g, '&lt;')
@@ -307,30 +357,54 @@ function glob_to_list(glob_ls: string[], options = {})
 					file: file,
 					ext: ext,
 
-					volume_title: dir,
-					chapter_title: file,
+					volume_title: dir.trim(),
+					chapter_title: file.trim(),
 
-					val_file: file,
-					val_dir: dir,
+					val_file: file.trim(),
+					val_dir: dir.trim(),
 				};
 
-				if (row.volume_title.match(/^\d+(.+)_\(\d+\)$/))
+				let r: RegExp;
+
+				if (/^\d+\s*(.+)(_\(\d+\))$/.exec(row.volume_title))
 				{
-					row.volume_title = RegExp.$1.trim();
+					row.volume_title = RegExp.$1;
+				}
+				else if (/^\d+\s*(.+)(_\(\d+\))?$/.exec(row.volume_title))
+				{
+					row.volume_title = RegExp.$1;
 				}
 
-				if (row.chapter_title.match(/^\d+_(.+)\.\d+$/))
+				if (/^\d+_(.+)\.\d+$/.exec(row.chapter_title))
 				{
-					row.chapter_title = RegExp.$1.trim();
+					row.chapter_title = RegExp.$1;
 				}
 
-				let r = /^第?(\d+)話/;
+				r = /^第?(\d+)話/;
 				let s2 = StrUtil.zh2num(row.val_file) as string;
 
 				if (r.test(s2))
 				{
 					row.val_file = s2.replace(r, '$1');
 				}
+				else if (/^[^\d]*\d+/.test(s2))
+				{
+					row.val_file = s2.replace(/\d+/g, function ($0)
+					{
+						return $0.padStart(4, '0');
+					});
+				}
+
+				r = /^(web)版(\d+)/;
+				if (r.test(row.val_file))
+				{
+					row.val_file = row.val_file.replace(r, '$1$2');
+				}
+
+				row.volume_title = row.volume_title.trim();
+				row.chapter_title = row.chapter_title.trim();
+				row.val_dir = row.val_dir.trim();
+				row.val_file = row.val_file.trim();
 
 				a[row.val_dir] = a[row.val_dir] || {};
 				a[row.val_dir][row.val_file] = row;
@@ -396,6 +470,3 @@ function p_sort_list(ls: {
 		})
 		;
 }
-
-// @ts-ignore
-export default exports;
