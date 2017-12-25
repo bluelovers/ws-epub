@@ -22,7 +22,15 @@ export { mdconf }
 
 export function mdconf_meta(data): IMdconfMeta
 {
-	return mdconf(data.toString()) as IMdconfMeta;
+	let ret = mdconf(data.toString()) as IMdconfMeta;
+
+	ret.novel.preface = (ret.novel.preface
+		&& ret.novel.preface.length
+		&& Array.isArray(ret.novel.preface)) ?
+		ret.novel.preface.join("\n") : ret.novel.preface
+	;
+
+	return ret;
 }
 
 export default self;
