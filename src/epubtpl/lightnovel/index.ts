@@ -74,7 +74,7 @@ export namespace Builder
 			templates: templates,
 		}, options);
 
-		console.debug('[building epub]', epub.epubConfig);
+		//console.debug('[building epub]', epub.epubConfig);
 		//console.debug('[building epub]', options);
 		let zip = new JSZip();
 
