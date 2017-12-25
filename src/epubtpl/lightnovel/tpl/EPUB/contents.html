@@ -10,16 +10,41 @@
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}">
-	<h3>Table of Contents</h3>
-	<ol class="list_none">
-		{{#each sections}}
-		{{#if needPage}}
-		<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
+
+	<section class="center">
+		<h1>{{title}}</h1>
+		{{#if author}}
+		<div>{{author}}</div>
 		{{/if}}
-		{{#each subSections}}
-		<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
-		{{/each}}
-		{{/each}}
-	</ol>
+		{{#if publisher}}
+		<div>{{publisher}}</div>
+		{{/if}}
+		{{#if modificationDateYMD}}
+		<div>{{modificationDateYMD}}</div>
+		{{/if}}
+		<div class="state-indicator"></div>
+	</section>
+
+	<section>
+
+		<header>
+			<h3>Table of Contents</h3>
+		</header>
+
+		<nav>
+			<ol class="list_none toc">
+				{{#each sections}}
+				{{#if needPage}}
+				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
+				{{/if}}
+				{{#each subSections}}
+				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
+				{{/each}}
+				{{/each}}
+			</ol>
+		</nav>
+
+	</section>
+
 </body>
 </html>

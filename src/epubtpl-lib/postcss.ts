@@ -29,7 +29,7 @@ export async function compileCss(css)
 			})
 	;
 
-	console.log(result);
+	//console.log(result);
 
 	//return result.css;
 	return result.content;
