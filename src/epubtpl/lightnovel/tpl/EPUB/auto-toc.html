@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:epub="http://www.idpf.org/2007/ops"
 	  xml:lang="{{langMain}}" lang="{{langMain}}">
@@ -8,7 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
 <body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
-	{{#if content.renderTitle}}<h2>{{content.title}}</h2>{{/if}}
+
+	<section lang="{{lang}}">
+
+
+		{{#if content.renderTitle}}<header><h2>{{content.title}}</h2></header>{{/if}}
 
 	{{#if content.content}}
 	<article>
@@ -17,10 +23,14 @@
 	{{/if}}
 
 	{{#if subSections}}
-	<ol class="list_none ">
+		<nav>
+	<ol class="list_none toc">
 		{{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
 	</ol>
+		</nav>
 	{{/if}}
+
+	</section>
 
 	{{#if content.cover}}
 	{{#if content.cover.name}}
