@@ -98,6 +98,7 @@ export interface IEpubConfig
 	tags?: string[];
 
 	infoPreface?: string;
+	infoPrefaceHTML?: string;
 }
 
 export class EpubConfig implements IEpubConfig
@@ -154,6 +155,7 @@ export class EpubConfig implements IEpubConfig
 	tags?: string[];
 
 	infoPreface?: string;
+	infoPrefaceHTML?: string;
 
 	constructor(epubConfig: IEpubConfig = {}, options: any = {})
 	{
@@ -323,6 +325,13 @@ export class EpubConfig implements IEpubConfig
 		{
 			this.setPublication(true);
 		}
+
+		if (self.infoPreface)
+		{
+			self.infoPrefaceHTML = self.infoPreface.replace(/\n/g, '<br>')
+		}
+
+		//console.log(self.infoPreface, self.infoPrefaceHTML);
 
 		self.publicationDate = self.publication.format(EpubConfig.dateFormat);
 		self.publicationDateYMD = self.publication.format('YYYY-MM-DD');
