@@ -44,6 +44,11 @@
       {{/if}}
       {{#if infoPreface}}<dc:description>{{infoPreface}}</dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
+      {{#if authors}}
+        {{#if authorsJSON}}
+          <opf:meta property="calibre:author_link_map">{{ authorsJSON }}</opf:meta>
+        {{/if}}
+      {{/if}}
     </metadata>
     <manifest>
         {{#if cover}}
