@@ -57,9 +57,11 @@ export interface IEpubConfig
 	lang?: string;
 
 	author?: string;
+	authorUrl?: string;
 	authors?: {
 		[index: string]: string,
 	};
+	authorsJSON?: string;
 
 	publisher?: string;
 
@@ -114,9 +116,11 @@ export class EpubConfig implements IEpubConfig
 	lang?: string;
 
 	author?: string;
+	authorUrl?: string;
 	authors?: {
 		[index: string]: string,
 	};
+	authorsJSON?: string;
 
 	publisher?: string;
 
@@ -290,22 +294,57 @@ export class EpubConfig implements IEpubConfig
 	{
 		let self = this as IEpubConfig;
 
+		self.tags = self.tags || [];
+
 		[
 			self.tags,
 		].forEach(a => (a || []).filter(v => v).map(v => v.toString()));
 
-		self.tags = self.tags || [];
-
-		self.tags.push('epub-maker2');
-
-		if (self.tags)
 		{
-			self.tags = array_unique(self.tags);
+			if (self.authors)
+			{
+				self.author = self.author || Object.keys(self.authors)[0];
+				self.authorUrl = self.authorUrl || self.authors[self.author];
+			}
+
+			if (self.author)
+			{
+				let o = {};
+
+				o[self.author] = (self.authorUrl || '').toString();
+
+				self.authors = Object.assign(o, self.authors, o);
+			}
+
+			if (self.authors && Object.keys(self.authors).length)
+			{
+				for (let name in self.authors)
+				{
+					self.authors[name] = (self.authors[name] || '').toString();
+
+					self.tags.push(name);
+				}
+
+				self.authorsJSON = JSON.stringify(self.authors);
+			}
+			else
+			{
+				self.authors = null;
+			}
 		}
 
-		if (!self.author && self.authors)
+		if (self.publisher)
 		{
-			self.author = Object.keys(self.authors)[0];
+			self.tags.push(self.publisher);
+		}
+
+		{
+			self.tags.push('epub-maker2');
+
+			if (self.tags)
+			{
+				self.tags = array_unique(self.tags);
+			}
 		}
 
 		self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : shortid();
@@ -328,7 +367,7 @@ export class EpubConfig implements IEpubConfig
 
 		if (self.infoPreface)
 		{
-			self.infoPrefaceHTML = self.infoPreface.replace(/\n/g, '<br>')
+			self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br>')
 		}
 
 		//console.log(self.infoPreface, self.infoPrefaceHTML);

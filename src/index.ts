@@ -55,15 +55,42 @@ export class EpubMaker
 		return this.epubConfig.lang;
 	}
 
-	withAuthor(fullName: string)
+	withAuthor(fullName: string, url?: string)
 	{
 		this.epubConfig.author = fullName;
+		this.epubConfig.authorUrl = url;
 		return this;
 	}
 
 	addAuthor(fullName: string, url?: string)
+	addAuthor(fullName: string[])
+	addAuthor(fullName: { [key: string]: string; })
+	addAuthor(fullName: string
+		| string[]
+		| { [key: string]: string; }
+		, url?: string
+	)
 	{
-		this.epubConfig.addAuthor(fullName, url);
+		let self = this;
+
+		if (Array.isArray(fullName))
+		{
+			fullName.forEach(name => {
+				name && self.epubConfig.addAuthor(name);
+			});
+		}
+		else if (typeof fullName == 'object')
+		{
+			for (let name in fullName)
+			{
+				name && self.epubConfig.addAuthor(name, fullName[name]);
+			}
+		}
+		else if (fullName)
+		{
+			self.epubConfig.addAuthor(fullName as string, url);
+		}
+
 		return this;
 	}
 

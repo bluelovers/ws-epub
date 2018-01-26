@@ -13,6 +13,10 @@ export interface IMdconfMeta
 		cover: string,
 		preface: string,
 		tags: string[],
+		date: string,
+		status: string,
+
+		publisher?: string,
 	},
 
 	contribute: string[],
