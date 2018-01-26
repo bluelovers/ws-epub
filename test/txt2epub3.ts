@@ -11,7 +11,7 @@ import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import * as deepmerge from 'deepmerge';
 import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
-import { globbyASync, globToList } from 'node-novel-globby';
+import * as novelGlobby from 'node-novel-globby';
 
 /**
  * 小說資料夾名稱
@@ -21,7 +21,7 @@ let novelID: string;
 //novelID = '黒の魔王';
 novelID = '黑之魔王';
 
-//novelID = '四度目は嫌な死属性魔術師';
+novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
 //novelID = '讨厌第四次的死属性魔术师_(2206)';
@@ -146,61 +146,19 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		})
 	;
 
-	let globby_options = {
+	let globby_patterns: string[];
+	let globby_options: novelGlobby.IOptions = {
 		cwd: TXT_PATH,
+		useDefaultPatternsExclude: true,
 	};
 
-	await globby([
-		'**/*.txt',
-		'!**/*.raw.txt',
-		'!**/*.new.txt',
-		'!**/out/**/*',
-		'!**/raw/**/*',
-		'!**/*_out/**/*',
-		'!**/待修正屏蔽字.txt',
-		'!**/英語.txt',
-	], globby_options)
-		.then(function (ls)
-		{
-			return glob_to_list(ls, globby_options);
-		})
-		.then(async function (ls)
-		{
-			// do something here
+	{
+		let ret = novelGlobby.getOptions(globby_options);
+		[globby_patterns, globby_options] = [ret.patterns, ret.options];
+	}
 
-			if (0)
-			{
-				let novelID = '野生のラスボスが現れた！';
-				let TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
-
-				let _globby_options = Object.assign({}, globby_options, {
-					cwd: TXT_PATH
-				});
-
-				await globby([
-					'**/*.txt',
-					'!**/*.raw.txt',
-					'!**/*.new.txt',
-					'!**/out/**/*',
-					'!**/raw/**/*',
-					'!**/*_out/**/*',
-					'!**/待修正屏蔽字.txt',
-					'!**/英語.txt',
-				], _globby_options)
-					.then(function (ls)
-					{
-						return glob_to_list(ls, _globby_options);
-					})
-					.then(function (ls2)
-					{
-						ls = Object.assign(ls, ls2);
-					})
-				;
-			}
-
-			return ls;
-		})
-		.then(p_sort_list)
+	await novelGlobby
+		.globbyASync(globby_patterns, globby_options)
 		.then(function (ls)
 		{
 			console.log(ls);
@@ -393,179 +351,5 @@ function splitTxt(txt)
 
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
 		.replace(/<p>/g, '<p class="linegroup calibre1">')
-		;
-}
-
-function glob_to_list(glob_ls: string[], options = {})
-{
-	if (!glob_ls.length)
-	{
-		throw new Error('glob_to_list');
-	}
-
-	return Promise.resolve(glob_ls)
-		.then(ls =>
-		{
-			return ls.reduce(function (a, b)
-			{
-				let dir = path.dirname(b);
-				let ext = path.extname(b);
-				let file = path.basename(b, ext);
-
-				//console.log(b);
-
-				let row = {
-					path: options.cwd && !path.isAbsolute(b) ? path.join(options.cwd, b) : b,
-					path_dir: options.cwd && !path.isAbsolute(dir) ? path.join(options.cwd, dir) : dir,
-
-					dir: dir,
-					file: file,
-					ext: ext,
-
-					volume_title: dir.trim(),
-					chapter_title: file.trim(),
-
-					val_file: file.trim(),
-					val_dir: dir.trim(),
-				};
-
-				let r: RegExp;
-
-				if (/^\d+[\s_](.+)(_\(\d+\))$/.exec(row.volume_title))
-				{
-					row.volume_title = RegExp.$1;
-				}
-				else if (/^\d+[\s_](.+)(_\(\d+\))?$/.exec(row.volume_title))
-				{
-					row.volume_title = RegExp.$1;
-				}
-
-				if (/^\d+_(.+)\.\d+$/.exec(row.chapter_title))
-				{
-					row.chapter_title = RegExp.$1;
-				}
-				else if (/^\d{4,5}_(.+)$/.exec(row.chapter_title))
-				{
-					row.chapter_title = RegExp.$1;
-				}
-				else if (/^(?:序|プロローグ)/.test(row.chapter_title))
-				{
-					row.chapter_title = '0_' + row.chapter_title;
-				}
-
-				r = /^第?(\d+)[話话]/;
-				let s2 = StrUtil.zh2num(row.val_file) as string;
-
-				if (r.test(s2))
-				{
-					row.val_file = s2.replace(r, '$1')
-						.replace(/\d+/g, function ($0)
-						{
-							return $0.padStart(4, '0');
-						})
-					;
-				}
-				else if (/^[^\d]*\d+/.test(s2))
-				{
-					row.val_file = s2.replace(/\d+/g, function ($0)
-					{
-						return $0.padStart(4, '0');
-					});
-				}
-
-				row.val_dir = StrUtil.toHalfNumber(StrUtil.zh2num(row.val_dir).toString());
-
-				row.val_dir = row.val_dir.replace(/\d+/g, function ($0)
-				{
-					return $0.padStart(4, '0');
-				});
-
-				r = /^(web)版(\d+)/;
-				if (r.test(row.val_file))
-				{
-					row.val_file = row.val_file.replace(r, '$1$2');
-				}
-
-				row.val_file = row.val_file
-					.replace(/\-/g, '_')
-				;
-				row.val_dir = row.val_dir
-					.replace(/\-/g, '_')
-				;
-
-				row.volume_title = row.volume_title.trim();
-				row.chapter_title = row.chapter_title.trim();
-				row.val_dir = row.val_dir.trim();
-				row.val_file = row.val_file.trim();
-
-				row.val_dir = StrUtil.zh2jp(StrUtil.toHalfWidth(row.val_dir), {
-					safe: false,
-				});
-				row.val_file = StrUtil.zh2jp(StrUtil.toHalfWidth(row.val_file), {
-					safe: false,
-				});
-
-				a[row.val_dir] = a[row.val_dir] || {};
-				a[row.val_dir][row.val_file] = row;
-
-				return a;
-			}, {});
-		})
-		;
-}
-
-function p_sort_list(ls: {
-	[key: string]: {
-		[key: string]: any,
-	}
-})
-{
-	return Promise.resolve(ls)
-		.then(ls =>
-		{
-			//console.log(ls);
-
-			let ks = Object.keys(ls)
-				.reduce(function (a, b)
-				{
-					a[StrUtil.zh2num(b)] = b;
-
-					return a;
-				}, {})
-			;
-
-			let ks2 = Object.keys(ks);
-			ks2.sort();
-
-			let ks3 = ks2.reduce(function (a, b)
-			{
-				let key = ks[b];
-
-				a[key] = ls[key];
-
-				return a;
-			}, {});
-
-			return ks3;
-		})
-		.then(ls =>
-		{
-			//console.log(ls);
-
-			for (let dir in ls)
-			{
-				let a = Object.keys(ls[dir]);
-				a.sort();
-
-				ls[dir] = Object.values(a.reduce(function (a, b)
-				{
-					a[b] = ls[dir][b];
-
-					return a;
-				}, {}));
-			}
-
-			return ls;
-		})
 		;
 }
