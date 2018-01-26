@@ -24,11 +24,14 @@ section
 
 body, html
 {
-	text-align: justify;
 	/*
+	text-align: justify;
 	background-color: rgb(255, 255, 245);
 	*/
 	-webkit-column-break-before: avoid;
+
+	word-break: break-all;
+	word-wrap: break-word;
 }
 
 html
@@ -59,7 +62,7 @@ a
 .list_none ol, #toc ol ol
 {
 	margin-left: auto;
-	padding-left: 2em;
+	padding-left: 1em;
 }
 
 .list_none, .list_none *, .list_none li, .list_none ol, #toc *
@@ -87,7 +90,7 @@ body[lang*=zh], html[lang*=zh], section[lang*=zh]
 
 body
 {
-	padding: 0.5em 1em;
+	padding: 0;
 }
 
 [epub-type*="cover"], .ImageContainer
@@ -105,6 +108,11 @@ body[epub-type*='bodymatter']
 	padding: 0.5em 1em;
 }
 
+body[epub-type*='frontmatter']
+{
+	padding: 0;
+}
+
 section
 {
 	padding: 0.5em 1.5em 0.5em 1em;
@@ -115,8 +123,19 @@ section[epub-type*="chapter"]
 	padding: 0.5em 1.5em 0.5em 1em;
 }
 
+body[epub-type*='frontmatter'] section
+{
+	padding: 10px;
+}
+
 section[lang*=zh] p
 { min-height: 1.6em; }
+
+nav, .toc
+{
+	margin: auto;
+	padding: 0;
+}
 
 div, p
 {
