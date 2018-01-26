@@ -17,7 +17,9 @@ import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
  */
 let novelID: string;
 
-novelID = '黒の魔王';
+//novelID = '黒の魔王';
+novelID = '黑之魔王';
+
 //novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
@@ -26,7 +28,32 @@ novelID = '黒の魔王';
 //novelID = '野生のラスボスが現れた！';
 //novelID = '野生的最终boss出现了_(2014)';
 
-novelID = '由于世界魔物满载';
+//novelID = '火輪を抱いた少女';
+
+//novelID = 'ウォルテニア戦記';
+
+//novelID = '公会的开挂接待小姐_(20)';
+
+//novelID = '雪色エトランゼ';
+
+//novelID = '自称贤者弟子的贤者';
+
+//novelID = '抗いし者たちの系譜 逆襲の魔王';
+//
+//novelID = '異世界迷宮の最深部を目指そう';
+
+//novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
+
+//novelID = '转生奇谭_(1782)';
+//novelID = '女神异闻录2 罚_(755)';
+//novelID = '尘骸魔京_(323)';
+//novelID = '加速世界_(381)';
+
+//novelID	 = '自卫队三部曲_(350)';
+
+//novelID	 = '呼び出された殺戮者';
+
+//novelID = '病娇女神の箱庭';
 
 /**
  * 小說 txt 的主資料夾路徑
@@ -36,12 +63,30 @@ let TXT_PATH = path.join(__dirname, 'res', novelID);
 TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8_out', novelID);
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\webqxs_out', novelID);
+
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8', novelID);
+
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user', novelID);
 
 (async () =>
 {
-	let meta: IMdconfMeta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
-		.then(mdconf_meta)
-	;
+	let meta: IMdconfMeta;
+
+	if (fs.existsSync(path.join(TXT_PATH, 'meta.md')))
+	{
+		meta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
+			.then(mdconf_meta)
+	}
+	else if (fs.existsSync(path.join(TXT_PATH, 'README.md')))
+	{
+		meta = await fs.readFile(path.join(TXT_PATH, 'README.md'))
+			.then(mdconf_meta)
+	}
+	else
+	{
+		throw new Error();
+	}
 
 	//console.log(meta, meta.novel.preface);
 
@@ -54,7 +99,7 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		]))
 		.withTitle(meta.novel.title)
 		.addAuthor(meta.novel.author)
-		.withPublisher('syosetu')
+		//.withPublisher('syosetu')
 		//.withCover('./res/cover.jpg')
 		//.withCover(meta.novel.cover)
 		.withCollection({
@@ -62,7 +107,23 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		})
 		.withInfoPreface(meta.novel.preface)
 		.addTag(meta.novel.tags)
+		.addAuthor(meta.contribute)
 	;
+
+	if (meta.novel.publisher)
+	{
+		epub.withPublisher(meta.novel.publisher);
+	}
+
+	if (meta.novel.date)
+	{
+		epub.withModificationDate(meta.novel.date);
+	}
+
+	if (meta.novel.status)
+	{
+		epub.addTag(meta.novel.status);
+	}
 
 	if (meta.novel.cover)
 	{
@@ -216,8 +277,6 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 						//let name = path.basename(filename, path.extname(filename));
 						let name = row.chapter_title;
 
-
-
 						console.log(row);
 
 						let chapter = new EpubMaker.Section('chapter', `chapter${idx++}`, {
@@ -324,7 +383,7 @@ function splitTxt(txt)
 				return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
 			})
 
-			.replace(/^[－＝\-\=]{3,}$/mg, '<hr/>')
+			.replace(/^[－＝\-—\=─]{3,}$/mg, '<hr/>')
 
 			.replace(/\n/g, '</p><p>')
 		+ '</p>')
@@ -338,6 +397,11 @@ function splitTxt(txt)
 
 function glob_to_list(glob_ls: string[], options = {})
 {
+	if (!glob_ls.length)
+	{
+		throw new Error('glob_to_list');
+	}
+
 	return Promise.resolve(glob_ls)
 		.then(ls =>
 		{
@@ -366,11 +430,11 @@ function glob_to_list(glob_ls: string[], options = {})
 
 				let r: RegExp;
 
-				if (/^\d+\s*(.+)(_\(\d+\))$/.exec(row.volume_title))
+				if (/^\d+[\s_](.+)(_\(\d+\))$/.exec(row.volume_title))
 				{
 					row.volume_title = RegExp.$1;
 				}
-				else if (/^\d+\s*(.+)(_\(\d+\))?$/.exec(row.volume_title))
+				else if (/^\d+[\s_](.+)(_\(\d+\))?$/.exec(row.volume_title))
 				{
 					row.volume_title = RegExp.$1;
 				}
@@ -379,13 +443,26 @@ function glob_to_list(glob_ls: string[], options = {})
 				{
 					row.chapter_title = RegExp.$1;
 				}
+				else if (/^\d{4,5}_(.+)$/.exec(row.chapter_title))
+				{
+					row.chapter_title = RegExp.$1;
+				}
+				else if (/^(?:序|プロローグ)/.test(row.chapter_title))
+				{
+					row.chapter_title = '0_' + row.chapter_title;
+				}
 
-				r = /^第?(\d+)話/;
+				r = /^第?(\d+)[話话]/;
 				let s2 = StrUtil.zh2num(row.val_file) as string;
 
 				if (r.test(s2))
 				{
-					row.val_file = s2.replace(r, '$1');
+					row.val_file = s2.replace(r, '$1')
+						.replace(/\d+/g, function ($0)
+						{
+							return $0.padStart(4, '0');
+						})
+					;
 				}
 				else if (/^[^\d]*\d+/.test(s2))
 				{
@@ -395,16 +472,37 @@ function glob_to_list(glob_ls: string[], options = {})
 					});
 				}
 
+				row.val_dir = StrUtil.toHalfNumber(StrUtil.zh2num(row.val_dir).toString());
+
+				row.val_dir = row.val_dir.replace(/\d+/g, function ($0)
+				{
+					return $0.padStart(4, '0');
+				});
+
 				r = /^(web)版(\d+)/;
 				if (r.test(row.val_file))
 				{
 					row.val_file = row.val_file.replace(r, '$1$2');
 				}
 
+				row.val_file = row.val_file
+					.replace(/\-/g, '_')
+				;
+				row.val_dir = row.val_dir
+					.replace(/\-/g, '_')
+				;
+
 				row.volume_title = row.volume_title.trim();
 				row.chapter_title = row.chapter_title.trim();
 				row.val_dir = row.val_dir.trim();
 				row.val_file = row.val_file.trim();
+
+				row.val_dir = StrUtil.zh2jp(StrUtil.toHalfWidth(row.val_dir), {
+					safe: false,
+				});
+				row.val_file = StrUtil.zh2jp(StrUtil.toHalfWidth(row.val_file), {
+					safe: false,
+				});
 
 				a[row.val_dir] = a[row.val_dir] || {};
 				a[row.val_dir][row.val_file] = row;
@@ -412,7 +510,7 @@ function glob_to_list(glob_ls: string[], options = {})
 				return a;
 			}, {});
 		})
-	;
+		;
 }
 
 function p_sort_list(ls: {
