@@ -1,0 +1,19 @@
+{
+  "name": "tmp-npx-txt-merge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crlf-normalize": "^1.0.0",
+    "fs-iconv": "^1.1.3",
+    "moment": "^2.20.1",
+    "node-novel-globby": "^1.3.1",
+    "node-novel-info": "^1.0.1"
+  }
+}
