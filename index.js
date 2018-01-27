@@ -89,6 +89,9 @@ let globby_options = {
             let filename2 = fs_iconv_1.trimFilename(filename)
                 .replace(/\./, '_')
                 .replace(/^[_+\-]+|[_+\-]+$/, '');
+            
+            filename2 = fs_iconv_1.trimFilename(filename2.split('').slice(0, 10).join(''));
+            
             if (!filename2) {
                 console.log(`Bad Filename: ${filename} => ${filename2}`);
                 filename2 = 'temp';
