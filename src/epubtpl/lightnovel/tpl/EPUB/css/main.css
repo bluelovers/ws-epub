@@ -31,7 +31,14 @@ body, html
 	-webkit-column-break-before: avoid;
 
 	word-break: break-all;
+	-epub-word-break: break-all;
 	word-wrap: break-word;
+
+	overflow-wrap: break-word;
+
+	line-break: loose;
+	-epub-line-break: loose;
+	-webkit-line-break: loose;
 }
 
 html
@@ -39,7 +46,7 @@ html
 	margin: 0px;
 	padding: 0px;
 
-	-webkit-text-stroke: 0.6px;
+	/*-webkit-text-stroke: 0.6px;*/
 }
 
 body
