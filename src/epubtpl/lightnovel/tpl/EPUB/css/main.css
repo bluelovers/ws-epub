@@ -30,15 +30,17 @@ body, html
 	*/
 	-webkit-column-break-before: avoid;
 
-	word-break: break-all;
+
 	-epub-word-break: break-all;
+	word-break: break-all;
+
 	word-wrap: break-word;
 
 	overflow-wrap: break-word;
 
-	line-break: loose;
-	-epub-line-break: loose;
 	-webkit-line-break: loose;
+	-epub-line-break: loose;
+	line-break: loose;
 }
 
 html
