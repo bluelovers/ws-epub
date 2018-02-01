@@ -42,7 +42,7 @@
       {{/if}}
       <meta property="collection-type" refines="#col-series">{{collection.type}}</meta>
       {{/if}}
-      {{#if infoPreface}}<dc:description>{{infoPreface}}</dc:description>{{/if}}
+      {{#if infoPreface}}<dc:description><![CDATA[{{infoPreface}}]]></dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
       {{#if authors}}
         {{#if authorsJSON}}
