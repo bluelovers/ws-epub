@@ -1,7 +1,25 @@
 {
   "name": "epub2",
-  "description": "Parse ePub electronic book files with Node.JS",
   "version": "0.2.0",
+  "description": "Parse ePub electronic book files with Node.JS",
+  "keywords": [
+    "book",
+    "books",
+    "chapter",
+    "comic",
+    "epub",
+    "file",
+    "image",
+    "mobile",
+    "novel",
+    "parse",
+    "raw"
+  ],
+  "homepage": "https://github.com/bluelovers/epub#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/epub/issues"
+  },
+  "license": "ISC",
   "author": "Andris Reinman",
   "contributors": [
     "andris <andris@node.ee>",
@@ -9,15 +27,22 @@
   ],
   "main": "./epub",
   "typings": "./epub.d.ts",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/julien-c/epub/blob/master/LICENSE"
-    }
-  ],
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/epub.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "adm-zip": "^0.4.4",
     "xml2js": "^0.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "^9.4.0"
   },
   "peerDependencies": {
     "zipfile": "^0.5.0"
@@ -25,35 +50,10 @@
   "engine": [
     "node >=0.3.0"
   ],
-  "keywords": [
-    "epub",
-    "book",
-    "mobile",
-    "parse",
-    "chapter",
-    "raw",
-    "image",
-    "file",
-    "comic",
-    "novel",
-    "books"
-  ],
-  "devDependencies": {
-    "@types/node": "^9.4.0"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bluelovers/epub.git"
-  },
-  "bugs": {
-    "url": "https://github.com/bluelovers/epub/issues"
-  },
-  "homepage": "https://github.com/bluelovers/epub#readme"
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/julien-c/epub/blob/master/LICENSE"
+    }
+  ]
 }
