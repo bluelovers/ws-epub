@@ -1,19 +1,30 @@
 {
   "name": "epub2",
-  "version": "0.2.0",
+  "version": "1.2.0",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
+    "archive",
+    "async",
     "book",
     "books",
     "chapter",
     "comic",
     "epub",
+    "epub-maker",
+    "epub-maker2",
+    "extract",
     "file",
     "image",
+    "manifest",
+    "metadata",
     "mobile",
+    "node-novel",
     "novel",
     "parse",
-    "raw"
+    "promise",
+    "raw",
+    "volume",
+    "zip"
   ],
   "homepage": "https://github.com/bluelovers/epub#readme",
   "bugs": {
@@ -39,6 +50,7 @@
   },
   "dependencies": {
     "adm-zip": "^0.4.4",
+    "file-type": "^7.5.0",
     "xml2js": "^0.4.4"
   },
   "devDependencies": {

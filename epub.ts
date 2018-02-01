@@ -71,6 +71,45 @@ class EPub extends EventEmitter
 		}
 	}
 
+	static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv)
+	{
+		let epub = new this(epubfile, imagewebroot, chapterwebroot, ...argv);
+
+		return epub;
+	}
+
+	static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv): Promise<EPub>
+	{
+		const self = this;
+		const p = self.libPromise;
+
+		return new p(function (resolve, reject)
+		{
+			const epub = self.create(epubfile, imagewebroot, chapterwebroot, ...argv);
+
+			const cb_err = function (err)
+			{
+				err.epub = epub;
+				return reject(err);
+			};
+
+			epub.on('error', cb_err);
+			epub.on('end', function (err)
+			{
+				if (err)
+				{
+					cb_err(err);
+				}
+				else
+				{
+					resolve(this);
+				}
+			});
+
+			epub.parse();
+		});
+	}
+
 	/**
 	 *  EPub#parse() -> undefined
 	 *
@@ -78,17 +117,19 @@ class EPub extends EventEmitter
 	 **/
 	parse()
 	{
-		this.containerFile = false;
-		this.mimeFile = false;
-		this.rootFile = false;
+		this.containerFile = null;
+		this.mimeFile = null;
+		this.rootFile = null;
 
 		this.metadata = {};
 		this.manifest = {};
-		this.spine = { toc: false, contents: [] };
+		this.spine = { toc: null, contents: [] };
 		this.flow = [];
 		this.toc = [];
 
 		this.open();
+
+		return this;
 	}
 
 	/**
@@ -148,9 +189,8 @@ class EPub extends EventEmitter
 				this.emit("error", new Error("Reading archive failed"));
 				return;
 			}
-			var txt = data.toString("utf-8").toLowerCase().trim();
 
-			if (txt != "application/epub+zip")
+			if (!EPub.isEpub(data, true))
 			{
 				this.emit("error", new Error("Unsupported mime type"));
 				return;
@@ -964,6 +1004,12 @@ class EPub extends EventEmitter
 
 module EPub
 {
+	/**
+	 * allow change Promise class
+	 * @type {PromiseConstructor}
+	 */
+	export let libPromise = Promise;
+
 	export const SYMBOL_RAW_DATA = Symbol.for('rawData');
 
 	export interface TocElement
@@ -973,6 +1019,10 @@ module EPub
 		title: string;
 		id: string;
 		href?: string;
+
+		'media-type'?: string,
+		'epub-type'?: string,
+		lang: string,
 	}
 
 	export interface ISpine
@@ -1012,11 +1062,28 @@ module EPub
 
 		[key: string]: any,
 	}
+
+	export function isEpub(data: string, buf?: boolean): string
+	export function isEpub(data: Buffer, buf?: boolean): Buffer
+	export function isEpub(data, buf?: boolean)
+	export function isEpub(data, buf?: boolean)
+	{
+		let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();
+
+		if (txt === 'application/epub+zip')
+		{
+			return data;
+		}
+
+		return null;
+	}
+
 }
 
 // Expose to the world
 export = EPub;
 
+/*
 // @ts-ignore
 declare module "epub"
 {
@@ -1055,3 +1122,4 @@ declare module "epub"
 
 	export = EPub;
 }
+*/

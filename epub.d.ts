@@ -41,12 +41,14 @@ declare class EPub extends EventEmitter {
     zip: IZipFile;
     version: string;
     constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
+    static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): EPub;
+    static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): Promise<EPub>;
     /**
      *  EPub#parse() -> undefined
      *
      *  Starts the parser, needs to be called by the script
      **/
-    parse(): void;
+    parse(): this;
     /**
      *  EPub#open() -> undefined
      *
@@ -156,6 +158,11 @@ declare class EPub extends EventEmitter {
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
+    /**
+     * allow change Promise class
+     * @type {PromiseConstructor}
+     */
+    let libPromise: PromiseConstructor;
     const SYMBOL_RAW_DATA: symbol;
     interface TocElement {
         level: number;
@@ -163,6 +170,9 @@ declare module EPub {
         title: string;
         id: string;
         href?: string;
+        'media-type'?: string;
+        'epub-type'?: string;
+        lang: string;
     }
     interface ISpine {
         contents: ISpineContents;
@@ -190,28 +200,8 @@ declare module EPub {
         'collection-type'?: string;
         [key: string]: any;
     }
+    function isEpub(data: string, buf?: boolean): string;
+    function isEpub(data: Buffer, buf?: boolean): Buffer;
+    function isEpub(data: any, buf?: boolean): any;
 }
 export = EPub;
-declare module "epub" {
-    interface TocElement {
-        level: number;
-        order: number;
-        title: string;
-        id: string;
-        href?: string;
-    }
-    class EPub extends EventEmitter {
-        constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
-        metadata: Object;
-        manifest: Object;
-        spine: Object;
-        flow: Array<Object>;
-        toc: Array<TocElement>;
-        parse(): void;
-        getChapter(chapterId: string, callback: (error: Error, text: string) => void): void;
-        getChapterRaw(chapterId: string, callback: (error: Error, text: string) => void): void;
-        getImage(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
-        getFile(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
-    }
-    export = EPub;
-}

@@ -4,7 +4,7 @@
 
 **NB!** Only ebooks in UTF-8 are currently supported!.
 
-***this module fork from `epub`***
+***this module fork from*** `epub`
 
 ## Installation
 
@@ -15,6 +15,9 @@ Or, if you want a pure-JS version (useful if used in a Node-Webkit app for examp
     npm install epub2
 
 ## Usage
+
+* [example](test/example/example.ts)
+* [example Promise](test/example/example2.ts)
 
 ```ts
 var EPub = require("epub2");
@@ -28,6 +31,28 @@ Where
   * **chapterwebroot** is the prefix for chapter URL's. If it's */chapter/* then the actual URL (inside chapter HTML `<a>` links) is going to be */chapters/CHAPTER_ID/CHAPTER_FILENAME*, `CHAPTER_ID` can be used to fetch the image form the ebook with `getChapter`. Default: `/links/`
 
 Before the contents of the ebook can be read, it must be opened (`EPub` is an `EventEmitter`).
+
+### async
+
+```ts
+let epub = await EPub.createAsync(epubfile, imagewebroot, chapterwebroot);
+```
+
+```ts
+EPub.createAsync(epubfile, imagewebroot, chapterwebroot)
+	.then(function (epub)
+	{
+		...
+	})
+	.catch(function (err)
+	{
+		console.log("ERROR\n-----");
+		throw err;
+	})
+;
+```
+
+### old way
 
 ```ts
     epub.on("end", function(){
@@ -47,6 +72,11 @@ Property of the *epub* object that holds several metadata fields about the book.
     epub = new EPub(...);
     ...
     epub.metadata;
+```
+
+```ts
+    // raw metadata
+    epub.metadata[EPub.SYMBOL_RAW_DATA];
 ```
 
 Available fields:
@@ -109,4 +139,12 @@ Load any file (as a Buffer value) from the ebook.
     var epub = new EPub(...);
     ...
     epub.getFile("css1", function(error, data, mimeType){});
+```
+
+## EPub.libPromise
+
+change Promise class
+
+```ts
+EPub.libPromise = Promise;
 ```

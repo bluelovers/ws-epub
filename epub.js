@@ -43,21 +43,47 @@ class EPub extends events_1.EventEmitter {
             this.linkroot += "/";
         }
     }
+    static create(epubfile, imagewebroot, chapterwebroot, ...argv) {
+        let epub = new this(epubfile, imagewebroot, chapterwebroot, ...argv);
+        return epub;
+    }
+    static createAsync(epubfile, imagewebroot, chapterwebroot, ...argv) {
+        const self = this;
+        const p = self.libPromise;
+        return new p(function (resolve, reject) {
+            const epub = self.create(epubfile, imagewebroot, chapterwebroot, ...argv);
+            const cb_err = function (err) {
+                err.epub = epub;
+                return reject(err);
+            };
+            epub.on('error', cb_err);
+            epub.on('end', function (err) {
+                if (err) {
+                    cb_err(err);
+                }
+                else {
+                    resolve(this);
+                }
+            });
+            epub.parse();
+        });
+    }
     /**
      *  EPub#parse() -> undefined
      *
      *  Starts the parser, needs to be called by the script
      **/
     parse() {
-        this.containerFile = false;
-        this.mimeFile = false;
-        this.rootFile = false;
+        this.containerFile = null;
+        this.mimeFile = null;
+        this.rootFile = null;
         this.metadata = {};
         this.manifest = {};
-        this.spine = { toc: false, contents: [] };
+        this.spine = { toc: null, contents: [] };
         this.flow = [];
         this.toc = [];
         this.open();
+        return this;
     }
     /**
      *  EPub#open() -> undefined
@@ -103,8 +129,7 @@ class EPub extends events_1.EventEmitter {
                 this.emit("error", new Error("Reading archive failed"));
                 return;
             }
-            var txt = data.toString("utf-8").toLowerCase().trim();
-            if (txt != "application/epub+zip") {
+            if (!EPub.isEpub(data, true)) {
                 this.emit("error", new Error("Unsupported mime type"));
                 return;
             }
@@ -679,6 +704,59 @@ class EPub extends events_1.EventEmitter {
     }
 }
 (function (EPub) {
+    /**
+     * allow change Promise class
+     * @type {PromiseConstructor}
+     */
+    EPub.libPromise = Promise;
     EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
+    function isEpub(data, buf) {
+        let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();
+        if (txt === 'application/epub+zip') {
+            return data;
+        }
+        return null;
+    }
+    EPub.isEpub = isEpub;
 })(EPub || (EPub = {}));
 module.exports = EPub;
+/*
+// @ts-ignore
+declare module "epub"
+{
+
+    import { EventEmitter } from "events";
+
+    interface TocElement
+    {
+        level: number;
+        order: number;
+        title: string;
+        id: string;
+        href?: string;
+    }
+
+    class EPub extends EventEmitter
+    {
+        constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
+
+        metadata: Object;
+        manifest: Object;
+        spine: Object;
+        flow: Array<Object>;
+        toc: Array<TocElement>;
+
+        parse(): void;
+
+        getChapter(chapterId: string, callback: (error: Error, text: string) => void): void;
+
+        getChapterRaw(chapterId: string, callback: (error: Error, text: string) => void): void;
+
+        getImage(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
+
+        getFile(id: string, callback: (error: Error, data: Buffer, mimeType: string) => void): void;
+    }
+
+    export = EPub;
+}
+*/
