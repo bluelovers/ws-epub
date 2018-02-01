@@ -5,6 +5,7 @@
 import * as libEPub from './epub';
 import * as Promise from 'bluebird';
 import * as path from 'path';
+import * as xml2js from 'xml2js';
 
 export class EPub extends libEPub
 {
@@ -108,6 +109,10 @@ export class EPub extends libEPub
 
 export module EPub
 {
+	export const xml2jsOptions = Object.assign({}, libEPub.xml2jsOptions, {
+		normalize: null,
+	}) as xml2js.Options;
+
 	/**
 	 * allow change Promise class
 	 * @type {PromiseConstructor}

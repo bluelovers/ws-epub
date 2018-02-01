@@ -3,7 +3,6 @@ const xml2js = require("xml2js");
 const util = require("util");
 const events_1 = require("events");
 const zipfile_1 = require("./zipfile");
-const xml2jsOptions = xml2js.defaults['0.1'];
 //TODO: Cache parsed data
 /**
  *  new EPub(fname[, imageroot][, linkroot])
@@ -148,6 +147,7 @@ class EPub extends events_1.EventEmitter {
             this.emit("error", new Error("No container file in archive"));
             return;
         }
+        const xml2jsOptions = this._getStatic().xml2jsOptions;
         this.zip.readFile(this.containerFile, (function (err, data) {
             if (err) {
                 this.emit("error", new Error("Reading archive failed"));
@@ -207,6 +207,7 @@ class EPub extends events_1.EventEmitter {
      *  Parses the rootfile XML and calls rootfile parser
      **/
     handleRootFile() {
+        const xml2jsOptions = this._getStatic().xml2jsOptions;
         this.zip.readFile(this.rootFile, (function (err, data) {
             if (err) {
                 this.emit("error", new Error("Reading archive failed"));
@@ -312,6 +313,7 @@ class EPub extends events_1.EventEmitter {
                     });
                     break;
                 case "description":
+                    console.log(currentData);
                     if (Array.isArray(currentData)) {
                         this.metadata.description = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
                             .trim();
@@ -450,6 +452,7 @@ class EPub extends events_1.EventEmitter {
         for (i = 0, len = keys.length; i < len; i++) {
             id_list[this.manifest[keys[i]].href] = keys[i];
         }
+        const xml2jsOptions = this._getStatic().xml2jsOptions;
         this.zip.readFile(this.spine.toc.href, (function (err, data) {
             if (err) {
                 this.emit("error", new Error("Reading archive failed"));
@@ -699,6 +702,7 @@ class EPub extends events_1.EventEmitter {
     }
 }
 (function (EPub) {
+    EPub.xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']);
     EPub.IMAGE_ROOT = '/images/';
     EPub.LINK_ROOT = '/links/';
     EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');

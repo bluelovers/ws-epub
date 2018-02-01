@@ -3,8 +3,6 @@ import * as util from 'util';
 import { EventEmitter } from 'events';
 import { ZipFile, IZipFile } from './zipfile';
 
-const xml2jsOptions = xml2js.defaults['0.1'];
-
 //TODO: Cache parsed data
 
 /**
@@ -215,6 +213,8 @@ class EPub extends EventEmitter
 			return;
 		}
 
+		const xml2jsOptions = this._getStatic().xml2jsOptions;
+
 		this.zip.readFile(this.containerFile, (function (err, data)
 		{
 			if (err)
@@ -306,6 +306,7 @@ class EPub extends EventEmitter
 	 **/
 	handleRootFile()
 	{
+		const xml2jsOptions = this._getStatic().xml2jsOptions;
 
 		this.zip.readFile(this.rootFile, (function (err, data)
 		{
@@ -450,6 +451,9 @@ class EPub extends EventEmitter
 
 					break;
 				case "description":
+
+					console.log(currentData);
+
 					if (Array.isArray(currentData))
 					{
 						this.metadata.description = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
@@ -636,6 +640,8 @@ class EPub extends EventEmitter
 		{
 			id_list[this.manifest[keys[i]].href] = keys[i];
 		}
+
+		const xml2jsOptions = this._getStatic().xml2jsOptions;
 
 		this.zip.readFile(this.spine.toc.href, (function (err, data)
 		{
@@ -997,6 +1003,8 @@ class EPub extends EventEmitter
 
 module EPub
 {
+	export const xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']) as xml2js.Options;
+
 	export const IMAGE_ROOT = '/images/';
 	export const LINK_ROOT = '/links/';
 

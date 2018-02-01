@@ -75,6 +75,9 @@ class EPub extends libEPub {
 }
 exports.EPub = EPub;
 (function (EPub) {
+    EPub.xml2jsOptions = Object.assign({}, libEPub.xml2jsOptions, {
+        normalize: null,
+    });
     /**
      * allow change Promise class
      * @type {PromiseConstructor}

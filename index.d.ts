@@ -5,6 +5,7 @@
  */
 import * as libEPub from './epub';
 import * as Promise from 'bluebird';
+import * as xml2js from 'xml2js';
 export declare class EPub extends libEPub {
     static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): Promise<EPub>;
     protected _p_method_cb<T>(method: any, options?: Promise.FromNodeOptions, ...argv: any[]): Promise<T>;
@@ -15,6 +16,7 @@ export declare class EPub extends libEPub {
     listImage(): libEPub.TocElement[];
 }
 export declare module EPub {
+    const xml2jsOptions: xml2js.Options;
     /**
      * allow change Promise class
      * @type {PromiseConstructor}

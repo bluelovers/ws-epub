@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import * as xml2js from 'xml2js';
 import { EventEmitter } from 'events';
 import { IZipFile } from './zipfile';
 /**
@@ -159,6 +160,7 @@ declare class EPub extends EventEmitter {
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
+    const xml2jsOptions: xml2js.Options;
     const IMAGE_ROOT = "/images/";
     const LINK_ROOT = "/links/";
     const SYMBOL_RAW_DATA: symbol;
