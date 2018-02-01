@@ -31,15 +31,15 @@ const xml2jsOptions = xml2js.defaults['0.1'];
  *      /images/logo_img/OPT/logo.jpg
  **/
 class EPub extends events_1.EventEmitter {
-    _getStatic(self) {
+    _getStatic() {
         // @ts-ignore
-        return self.__proto__.constructor;
+        return this.__proto__.constructor;
     }
     constructor(epubfile, imagewebroot, chapterwebroot) {
         super();
         this.filename = epubfile;
-        this.imageroot = (imagewebroot || this._getStatic(this).IMAGE_ROOT).trim();
-        this.linkroot = (chapterwebroot || this._getStatic(this).LINK_ROOT).trim();
+        this.imageroot = (imagewebroot || this._getStatic().IMAGE_ROOT).trim();
+        this.linkroot = (chapterwebroot || this._getStatic().LINK_ROOT).trim();
         if (this.imageroot.substr(-1) != "/") {
             this.imageroot += "/";
         }
@@ -80,11 +80,11 @@ class EPub extends events_1.EventEmitter {
             this.zip = new zipfile_1.ZipFile(this.filename);
         }
         catch (E) {
-            this.emit("error", new Error("Invalid/missing file"));
+            this.emit("error", new Error(`Invalid/missing file ${this.filename}`));
             return;
         }
         if (!this.zip.names || !this.zip.names.length) {
-            this.emit("error", new Error("No files in archive"));
+            this.emit("error", new Error(`No files in archive ${this.filename}`));
             return;
         }
         this.checkMimeType();
@@ -118,6 +118,16 @@ class EPub extends events_1.EventEmitter {
             }
             this.getRootFiles();
         }).bind(this));
+    }
+    _Elem(element) {
+        const SYMBOL_RAW_DATA = this._getStatic().SYMBOL_RAW_DATA;
+        if (!element[SYMBOL_RAW_DATA]) {
+            element[SYMBOL_RAW_DATA] = Object.assign({}, element);
+        }
+        if (element['media-type']) {
+            element['mediaType'] = element['media-type'];
+        }
+        return element;
     }
     /**
      *  EPub#getRootFiles() -> undefined
@@ -394,6 +404,7 @@ class EPub extends events_1.EventEmitter {
             for (i = 0, len = manifest.item.length; i < len; i++) {
                 if (manifest.item[i]['@']) {
                     element = manifest.item[i]['@'];
+                    element = this._Elem(element);
                     if (element.href && element.href.substr(0, path_str.length) != path_str) {
                         element.href = path.concat([element.href]).join("/");
                     }
@@ -654,16 +665,17 @@ class EPub extends events_1.EventEmitter {
      **/
     getFile(id, callback) {
         if (this.manifest[id]) {
+            let self = this;
             this.zip.readFile(this.manifest[id].href, (function (err, data) {
                 if (err) {
-                    callback(new Error("Reading archive failed"));
+                    callback(new Error(`Reading archive failed ${self.manifest[id].href}`));
                     return;
                 }
                 callback(null, data, this.manifest[id]['media-type']);
             }).bind(this));
         }
         else {
-            callback(new Error("File not found"));
+            callback(new RangeError(`File not found "${id}"`));
         }
     }
     readFile(filename, options, callback_) {
@@ -675,7 +687,7 @@ class EPub extends events_1.EventEmitter {
             // options is an encoding
             this.zip.readFile(filename, function (err, data) {
                 if (err) {
-                    callback(new Error('Reading archive failed'));
+                    callback(new Error(`Reading archive failed ${filename}`));
                     return;
                 }
                 callback(null, data.toString(options));
@@ -690,6 +702,8 @@ class EPub extends events_1.EventEmitter {
     EPub.IMAGE_ROOT = '/images/';
     EPub.LINK_ROOT = '/links/';
     EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
+    EPub.ELEM_MEDIA_TYPE = 'media-type';
+    EPub.ELEM_MEDIA_TYPE2 = 'mediaType';
     function isEpub(data, buf) {
         let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();
         if (txt === 'application/epub+zip') {

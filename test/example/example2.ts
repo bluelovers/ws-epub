@@ -23,7 +23,10 @@ EPub.createAsync("2d921902.epub", null, '')
 			})
 		;
 
+		console.log("\nmanifest:\n");
+		console.log(epub.manifest);
 
+		console.log("\nlistImage:\n");
 		let imgs = epub.listImage();
 		console.log(imgs);
 

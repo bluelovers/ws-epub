@@ -40,7 +40,7 @@ declare class EPub extends EventEmitter {
     rootFile: string;
     zip: IZipFile;
     version: string;
-    protected _getStatic(self: EPub): any;
+    protected _getStatic(): any;
     constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
     static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): EPub;
     /**
@@ -63,6 +63,7 @@ declare class EPub extends EventEmitter {
      *  are "application/epub+zip". On success runs root file check.
      **/
     checkMimeType(): void;
+    protected _Elem(element: EPub.TocElement): EPub.TocElement;
     /**
      *  EPub#getRootFiles() -> undefined
      *
@@ -161,6 +162,8 @@ declare module EPub {
     const IMAGE_ROOT = "/images/";
     const LINK_ROOT = "/links/";
     const SYMBOL_RAW_DATA: symbol;
+    const ELEM_MEDIA_TYPE = "media-type";
+    const ELEM_MEDIA_TYPE2 = "mediaType";
     interface TocElement {
         level?: number;
         order?: number;
@@ -168,6 +171,7 @@ declare module EPub {
         id?: string;
         href?: string;
         'media-type'?: string;
+        mediaType?: string;
         'epub-type'?: string;
         lang?: string;
     }

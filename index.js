@@ -30,7 +30,7 @@ class EPub extends libEPub {
     }
     _p_method_cb(method, options = {}, ...argv) {
         const self = this;
-        const p = this._getStatic(this).libPromise;
+        const p = this._getStatic().libPromise;
         return Promise.fromCallback(method.bind(self, argv), options);
     }
     getChapterAsync(chapterId) {
@@ -65,7 +65,7 @@ class EPub extends libEPub {
         return Object.keys(epub.manifest)
             .reduce(function (a, id) {
             let elem = epub.manifest[id];
-            let mime = elem['media-type'];
+            let mime = elem['media-type'] || elem.mediaType;
             if (mimes.includes(mime) || mime.indexOf('image') == 0 || exts.includes(path.extname(elem.href))) {
                 a.push(elem);
             }

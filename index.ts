@@ -43,7 +43,7 @@ export class EPub extends libEPub
 	protected _p_method_cb<T>(method, options: Promise.FromNodeOptions = {}, ...argv): Promise<T>
 	{
 		const self = this;
-		const p = this._getStatic(this).libPromise;
+		const p = this._getStatic().libPromise;
 
 		return Promise.fromCallback(method.bind(self, argv), options);
 	}
@@ -93,7 +93,7 @@ export class EPub extends libEPub
 			.reduce(function (a, id)
 			{
 				let elem = epub.manifest[id];
-				let mime = elem['media-type'];
+				let mime = elem['media-type'] || elem.mediaType;
 
 				if (mimes.includes(mime) || mime.indexOf('image') == 0 || exts.includes(path.extname(elem.href)))
 				{
