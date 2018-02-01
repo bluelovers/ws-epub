@@ -34,10 +34,10 @@ const xml2jsOptions = xml2js.defaults['0.1'];
  **/
 class EPub extends EventEmitter
 {
-	metadata: Object;
+	metadata: EPub.IMetadata;
 	manifest: Object;
-	spine: Object;
-	flow: Array<Object>;
+	spine: EPub.ISpine;
+	flow: EPub.ISpineContents;
 	toc: Array<EPub.TocElement>;
 
 	filename: string;
@@ -348,9 +348,10 @@ class EPub extends EventEmitter
 	 *
 	 *  Parses "metadata" block (book metadata, title, author etc.)
 	 **/
-	parseMetadata(metadata)
+	parseMetadata(metadata: EPub.IMetadata)
 	{
 		var i, j, len, keys, keyparts, key;
+		const _self = this;
 
 		keys = Object.keys(metadata);
 		for (i = 0, len = keys.length; i < len; i++)
@@ -396,15 +397,20 @@ class EPub extends EventEmitter
 					}
 					break;
 				case "subject":
-					if (Array.isArray(metadata[keys[i]]))
-					{
-						this.metadata.subject = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
-							.trim();
-					}
-					else
-					{
-						this.metadata.subject = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
-					}
+
+					this.metadata.subject = this.metadata.subject || [];
+
+					(Array.isArray(metadata[keys[i]]) ? metadata[keys[i]] : [metadata[keys[i]]])
+						.forEach(function (value)
+						{
+							let tag = (_meta_val(value, '#') || '').trim();
+							if (tag !== '')
+							{
+								_self.metadata.subject.push(tag);
+							}
+						})
+					;
+
 					break;
 				case "description":
 					if (Array.isArray(metadata[keys[i]]))
@@ -479,7 +485,7 @@ class EPub extends EventEmitter
 			}
 		}
 
-		var metas = metadata['meta'] || {};
+		let metas = metadata['meta'] || {};
 		Object.keys(metas).forEach(function (key)
 		{
 			var meta = metas[key];
@@ -498,6 +504,16 @@ class EPub extends EventEmitter
 				this.metadata[meta.name] = meta.content;
 			}
 		}, this);
+
+		function _meta_val(row, key = null)
+		{
+			if (key !== null)
+			{
+				return row[key] || row;
+			}
+
+			return row;
+		}
 	}
 
 	/**
@@ -708,9 +724,9 @@ class EPub extends EventEmitter
 	 *  Finds a chapter text for an id. Replaces image and link URL's, removes
 	 *  <head> etc. elements. Return only chapters with mime type application/xhtml+xml
 	 **/
-	getChapter(id, callback)
+	getChapter(chapterId: string, callback: (error: Error, text?: string) => void)
 	{
-		this.getChapterRaw(id, (function (err, str)
+		this.getChapterRaw(chapterId, (function (err, str)
 		{
 			if (err)
 			{
@@ -822,17 +838,17 @@ class EPub extends EventEmitter
 	 *
 	 *  Returns the raw chapter text for an id.
 	 **/
-	getChapterRaw(id, callback)
+	getChapterRaw(chapterId: string, callback: (error: Error, text?: string) => void)
 	{
-		if (this.manifest[id])
+		if (this.manifest[chapterId])
 		{
 
-			if (!(this.manifest[id]['media-type'] == "application/xhtml+xml" || this.manifest[id]['media-type'] == "image/svg+xml"))
+			if (!(this.manifest[chapterId]['media-type'] == "application/xhtml+xml" || this.manifest[chapterId]['media-type'] == "image/svg+xml"))
 			{
 				return callback(new Error("Invalid mime type for chapter"));
 			}
 
-			this.zip.readFile(this.manifest[id].href, (function (err, data)
+			this.zip.readFile(this.manifest[chapterId].href, (function (err, data)
 			{
 				if (err)
 				{
@@ -861,7 +877,7 @@ class EPub extends EventEmitter
 	 *  an error object, image buffer and image content-type.
 	 *  Return only images with mime type image
 	 **/
-	getImage(id, callback)
+	getImage(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void)
 	{
 		if (this.manifest[id])
 		{
@@ -887,7 +903,7 @@ class EPub extends EventEmitter
 	 *  Finds a file for an id. Returns the file as Buffer. Callback gets
 	 *  an error object, file contents buffer and file content-type.
 	 **/
-	getFile(id, callback)
+	getFile(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void)
 	{
 		if (this.manifest[id])
 		{
@@ -947,6 +963,44 @@ module EPub
 		title: string;
 		id: string;
 		href?: string;
+	}
+
+	export interface ISpine
+	{
+		contents: ISpineContents,
+		toc?: TocElement,
+
+		itemref?: Object[],
+	}
+
+	export interface ISpineContents
+	{
+		[index: number]: Object,
+	}
+
+	export interface IMetadata
+	{
+		publisher?: string,
+		language?: string,
+		title?: string,
+		subject?: string[],
+		description?: string,
+
+		creator?: string,
+		creatorFileAs?: string,
+
+		date?: string,
+		ISBN?: string,
+		UUID?: string,
+		cover?
+
+		'file-as'?: string,
+
+		'belongs-to-collection'?: string,
+		'calibre:series'?: string,
+		'collection-type'?: string,
+
+		[key: string]: any,
 	}
 }
 

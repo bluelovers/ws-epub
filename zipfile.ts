@@ -9,7 +9,7 @@ export interface IZipFile
 	names: string[];
 	count: number;
 	constructor(filename: string);
-	readFile(name: string, cb: (error, buffer: Buffer) => Buffer): void;
+	readFile(name: string, cb: (error, buffer: Buffer) => void): void;
 }
 
 try
@@ -37,7 +37,7 @@ catch (err)
 			});
 		}
 
-		public readFile(name: string, cb: (error, buffer) => Buffer)
+		public readFile(name: string, cb: (error, buffer) => void)
 		{
 			this.admZip.readFileAsync(this.admZip.getEntry(name), function (buffer, error)
 			{

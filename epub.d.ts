@@ -27,10 +27,10 @@ import { IZipFile } from './zipfile';
  *      /images/logo_img/OPT/logo.jpg
  **/
 declare class EPub extends EventEmitter {
-    metadata: Object;
+    metadata: EPub.IMetadata;
     manifest: Object;
-    spine: Object;
-    flow: Array<Object>;
+    spine: EPub.ISpine;
+    flow: EPub.ISpineContents;
     toc: Array<EPub.TocElement>;
     filename: string;
     imageroot: string;
@@ -87,7 +87,7 @@ declare class EPub extends EventEmitter {
      *
      *  Parses "metadata" block (book metadata, title, author etc.)
      **/
-    parseMetadata(metadata: any): void;
+    parseMetadata(metadata: EPub.IMetadata): void;
     /**
      *  EPub#parseManifest() -> undefined
      *
@@ -125,7 +125,7 @@ declare class EPub extends EventEmitter {
      *  Finds a chapter text for an id. Replaces image and link URL's, removes
      *  <head> etc. elements. Return only chapters with mime type application/xhtml+xml
      **/
-    getChapter(id: any, callback: any): void;
+    getChapter(chapterId: string, callback: (error: Error, text?: string) => void): void;
     /**
      *  EPub#getChapterRaw(id, callback) -> undefined
      *  - id (String): Manifest id value for a chapter
@@ -133,7 +133,7 @@ declare class EPub extends EventEmitter {
      *
      *  Returns the raw chapter text for an id.
      **/
-    getChapterRaw(id: any, callback: any): any;
+    getChapterRaw(chapterId: string, callback: (error: Error, text?: string) => void): void;
     /**
      *  EPub#getImage(id, callback) -> undefined
      *  - id (String): Manifest id value for an image
@@ -143,7 +143,7 @@ declare class EPub extends EventEmitter {
      *  an error object, image buffer and image content-type.
      *  Return only images with mime type image
      **/
-    getImage(id: any, callback: any): any;
+    getImage(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void): void;
     /**
      *  EPub#getFile(id, callback) -> undefined
      *  - id (String): Manifest id value for a file
@@ -152,7 +152,7 @@ declare class EPub extends EventEmitter {
      *  Finds a file for an id. Returns the file as Buffer. Callback gets
      *  an error object, file contents buffer and file content-type.
      **/
-    getFile(id: any, callback: any): void;
+    getFile(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void): void;
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
@@ -162,6 +162,32 @@ declare module EPub {
         title: string;
         id: string;
         href?: string;
+    }
+    interface ISpine {
+        contents: ISpineContents;
+        toc?: TocElement;
+        itemref?: Object[];
+    }
+    interface ISpineContents {
+        [index: number]: Object;
+    }
+    interface IMetadata {
+        publisher?: string;
+        language?: string;
+        title?: string;
+        subject?: string[];
+        description?: string;
+        creator?: string;
+        creatorFileAs?: string;
+        date?: string;
+        ISBN?: string;
+        UUID?: string;
+        cover?: any;
+        'file-as'?: string;
+        'belongs-to-collection'?: string;
+        'calibre:series'?: string;
+        'collection-type'?: string;
+        [key: string]: any;
     }
 }
 export = EPub;

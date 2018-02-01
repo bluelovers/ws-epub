@@ -7,6 +7,6 @@ export interface IZipFile {
     names: string[];
     count: number;
     constructor(filename: string): any;
-    readFile(name: string, cb: (error, buffer: Buffer) => Buffer): void;
+    readFile(name: string, cb: (error, buffer: Buffer) => void): void;
 }
 export default ZipFile;

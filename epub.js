@@ -245,6 +245,7 @@ class EPub extends events_1.EventEmitter {
      **/
     parseMetadata(metadata) {
         var i, j, len, keys, keyparts, key;
+        const _self = this;
         keys = Object.keys(metadata);
         for (i = 0, len = keys.length; i < len; i++) {
             keyparts = keys[i].split(":");
@@ -281,13 +282,14 @@ class EPub extends events_1.EventEmitter {
                     }
                     break;
                 case "subject":
-                    if (Array.isArray(metadata[keys[i]])) {
-                        this.metadata.subject = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
-                            .trim();
-                    }
-                    else {
-                        this.metadata.subject = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
-                    }
+                    this.metadata.subject = this.metadata.subject || [];
+                    (Array.isArray(metadata[keys[i]]) ? metadata[keys[i]] : [metadata[keys[i]]])
+                        .forEach(function (value) {
+                        let tag = (_meta_val(value, '#') || '').trim();
+                        if (tag !== '') {
+                            _self.metadata.subject.push(tag);
+                        }
+                    });
                     break;
                 case "description":
                     if (Array.isArray(metadata[keys[i]])) {
@@ -348,7 +350,7 @@ class EPub extends events_1.EventEmitter {
                     break;
             }
         }
-        var metas = metadata['meta'] || {};
+        let metas = metadata['meta'] || {};
         Object.keys(metas).forEach(function (key) {
             var meta = metas[key];
             if (meta['@'] && meta['@'].name) {
@@ -362,6 +364,12 @@ class EPub extends events_1.EventEmitter {
                 this.metadata[meta.name] = meta.content;
             }
         }, this);
+        function _meta_val(row, key = null) {
+            if (key !== null) {
+                return row[key] || row;
+            }
+            return row;
+        }
     }
     /**
      *  EPub#parseManifest() -> undefined
@@ -513,8 +521,8 @@ class EPub extends events_1.EventEmitter {
      *  Finds a chapter text for an id. Replaces image and link URL's, removes
      *  <head> etc. elements. Return only chapters with mime type application/xhtml+xml
      **/
-    getChapter(id, callback) {
-        this.getChapterRaw(id, (function (err, str) {
+    getChapter(chapterId, callback) {
+        this.getChapterRaw(chapterId, (function (err, str) {
             if (err) {
                 callback(err);
                 return;
@@ -588,12 +596,12 @@ class EPub extends events_1.EventEmitter {
      *
      *  Returns the raw chapter text for an id.
      **/
-    getChapterRaw(id, callback) {
-        if (this.manifest[id]) {
-            if (!(this.manifest[id]['media-type'] == "application/xhtml+xml" || this.manifest[id]['media-type'] == "image/svg+xml")) {
+    getChapterRaw(chapterId, callback) {
+        if (this.manifest[chapterId]) {
+            if (!(this.manifest[chapterId]['media-type'] == "application/xhtml+xml" || this.manifest[chapterId]['media-type'] == "image/svg+xml")) {
                 return callback(new Error("Invalid mime type for chapter"));
             }
-            this.zip.readFile(this.manifest[id].href, (function (err, data) {
+            this.zip.readFile(this.manifest[chapterId].href, (function (err, data) {
                 if (err) {
                     callback(new Error("Reading archive failed"));
                     return;
