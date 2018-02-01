@@ -16,8 +16,10 @@ Or, if you want a pure-JS version (useful if used in a Node-Webkit app for examp
 
 ## Usage
 
-    var EPub = require("epub2");
-    var epub = new EPub(epubfile, imagewebroot, chapterwebroot);
+```ts
+var EPub = require("epub2");
+var epub = new EPub(epubfile, imagewebroot, chapterwebroot);
+```
 
 Where
 
@@ -27,6 +29,7 @@ Where
 
 Before the contents of the ebook can be read, it must be opened (`EPub` is an `EventEmitter`).
 
+```ts
     epub.on("end", function(){
     	// epub is now usable
     	console.log(epub.metadata.title);
@@ -34,15 +37,17 @@ Before the contents of the ebook can be read, it must be opened (`EPub` is an `E
     	epub.getChapter("chapter_id", function(err, text){});
     });
     epub.parse();
-
+```
 
 ## metadata
 
 Property of the *epub* object that holds several metadata fields about the book.
 
+```ts
     epub = new EPub(...);
     ...
     epub.metadata;
+```
 
 Available fields:
 
@@ -58,11 +63,13 @@ Available fields:
 
 *flow* is a property of the *epub* object and holds the actual list of chapters (TOC is just an indication and can link to a # url inside a chapter file)
 
+```ts
     epub = new EPub(...);
     ...
     epub.flow.forEach(function(chapter){
     	console.log(chapter.id);
     });
+```
 
 Chapter `id` is needed to load the chapters `getChapter`
 
@@ -74,9 +81,11 @@ Chapter `id` is needed to load the chapters `getChapter`
 
 Load chapter text from the ebook.
 
+```ts
     var epub = new EPub(...);
     ...
     epub.getChapter("chapter1", function(error, text){});
+```
 
 ## getChapterRaw(chapter_id, callback)
 
@@ -86,15 +95,18 @@ Load raw chapter text from the ebook.
 
 Load image (as a Buffer value) from the ebook.
 
+```ts
     var epub = new EPub(...);
     ...
     epub.getImage("image1", function(error, img, mimeType){});
+```
 
 ## getFile(file_id, callback)
 
 Load any file (as a Buffer value) from the ebook.
 
+```ts
     var epub = new EPub(...);
     ...
     epub.getFile("css1", function(error, data, mimeType){});
-
+```
