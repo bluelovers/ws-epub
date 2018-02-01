@@ -52,14 +52,20 @@ class EPub extends EventEmitter
 
 	version: string;
 
+	protected _getStatic(self: EPub)
+	{
+		// @ts-ignore
+		return self.__proto__.constructor;
+	}
+
 	constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string)
 	{
 		super();
 
 		this.filename = epubfile;
 
-		this.imageroot = (imagewebroot || "/images/").trim();
-		this.linkroot = (chapterwebroot || "/links/").trim();
+		this.imageroot = (imagewebroot || this._getStatic(this).IMAGE_ROOT).trim();
+		this.linkroot = (chapterwebroot || this._getStatic(this).LINK_ROOT).trim();
 
 		if (this.imageroot.substr(-1) != "/")
 		{
@@ -573,7 +579,7 @@ class EPub extends EventEmitter
 
 		if (spine['@'] && spine['@'].toc)
 		{
-			this.spine.toc = this.manifest[spine['@'].toc] || false;
+			this.spine.toc = this.manifest[spine['@'].toc] || null;
 		}
 
 		if (spine.itemref)
@@ -653,7 +659,7 @@ class EPub extends EventEmitter
 	 *  Walks the NavMap object through all levels and finds elements
 	 *  for TOC
 	 **/
-	walkNavMap(branch, path, id_list, level)
+	walkNavMap(branch, path, id_list, level: number)
 	{
 		level = level || 0;
 
@@ -693,7 +699,7 @@ class EPub extends EventEmitter
 					href = branch[i].content["@"].src.trim();
 				}
 
-				var element = {
+				var element: EPub.TocElement = {
 					level: level,
 					order: order,
 					title: title
@@ -970,19 +976,22 @@ class EPub extends EventEmitter
 
 module EPub
 {
+	export const IMAGE_ROOT = '/images/';
+	export const LINK_ROOT = '/links/';
+
 	export const SYMBOL_RAW_DATA = Symbol.for('rawData');
 
 	export interface TocElement
 	{
-		level: number;
-		order: number;
-		title: string;
-		id: string;
+		level?: number;
+		order?: number;
+		title?: string;
+		id?: string;
 		href?: string;
 
 		'media-type'?: string,
 		'epub-type'?: string,
-		lang: string,
+		lang?: string,
 	}
 
 	export interface ISpine
@@ -998,7 +1007,7 @@ module EPub
 		[key: string]: EPub.TocElement,
 	}
 
-	export interface ISpineContents
+	export interface ISpineContents extends Array<EPub.TocElement>
 	{
 		[index: number]: EPub.TocElement,
 	}

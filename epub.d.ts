@@ -40,6 +40,7 @@ declare class EPub extends EventEmitter {
     rootFile: string;
     zip: IZipFile;
     version: string;
+    protected _getStatic(self: EPub): any;
     constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
     static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): EPub;
     /**
@@ -117,7 +118,7 @@ declare class EPub extends EventEmitter {
      *  Walks the NavMap object through all levels and finds elements
      *  for TOC
      **/
-    walkNavMap(branch: any, path: any, id_list: any, level: any): any[];
+    walkNavMap(branch: any, path: any, id_list: any, level: number): any[];
     /**
      *  EPub#getChapter(id, callback) -> undefined
      *  - id (String): Manifest id value for a chapter
@@ -157,16 +158,18 @@ declare class EPub extends EventEmitter {
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
+    const IMAGE_ROOT = "/images/";
+    const LINK_ROOT = "/links/";
     const SYMBOL_RAW_DATA: symbol;
     interface TocElement {
-        level: number;
-        order: number;
-        title: string;
-        id: string;
+        level?: number;
+        order?: number;
+        title?: string;
+        id?: string;
         href?: string;
         'media-type'?: string;
         'epub-type'?: string;
-        lang: string;
+        lang?: string;
     }
     interface ISpine {
         contents: ISpineContents;
@@ -176,7 +179,7 @@ declare module EPub {
     interface IMetadataList {
         [key: string]: EPub.TocElement;
     }
-    interface ISpineContents {
+    interface ISpineContents extends Array<EPub.TocElement> {
         [index: number]: EPub.TocElement;
     }
     interface IMetadata {

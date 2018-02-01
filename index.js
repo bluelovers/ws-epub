@@ -30,7 +30,7 @@ class EPub extends libEPub {
     }
     _p_method_cb(method, options = {}, ...argv) {
         const self = this;
-        const p = EPub.libPromise;
+        const p = this._getStatic(this).libPromise;
         return Promise.fromCallback(method.bind(self, argv), options);
     }
     getChapterAsync(chapterId) {

@@ -31,11 +31,15 @@ const xml2jsOptions = xml2js.defaults['0.1'];
  *      /images/logo_img/OPT/logo.jpg
  **/
 class EPub extends events_1.EventEmitter {
+    _getStatic(self) {
+        // @ts-ignore
+        return self.__proto__.constructor;
+    }
     constructor(epubfile, imagewebroot, chapterwebroot) {
         super();
         this.filename = epubfile;
-        this.imageroot = (imagewebroot || "/images/").trim();
-        this.linkroot = (chapterwebroot || "/links/").trim();
+        this.imageroot = (imagewebroot || this._getStatic(this).IMAGE_ROOT).trim();
+        this.linkroot = (chapterwebroot || this._getStatic(this).LINK_ROOT).trim();
         if (this.imageroot.substr(-1) != "/") {
             this.imageroot += "/";
         }
@@ -407,7 +411,7 @@ class EPub extends events_1.EventEmitter {
         var i, len, path = this.rootFile.split("/"), element;
         path.pop();
         if (spine['@'] && spine['@'].toc) {
-            this.spine.toc = this.manifest[spine['@'].toc] || false;
+            this.spine.toc = this.manifest[spine['@'].toc] || null;
         }
         if (spine.itemref) {
             if (!Array.isArray(spine.itemref)) {
@@ -683,6 +687,8 @@ class EPub extends events_1.EventEmitter {
     }
 }
 (function (EPub) {
+    EPub.IMAGE_ROOT = '/images/';
+    EPub.LINK_ROOT = '/links/';
     EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
     function isEpub(data, buf) {
         let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();

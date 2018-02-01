@@ -43,7 +43,7 @@ export class EPub extends libEPub
 	protected _p_method_cb<T>(method, options: Promise.FromNodeOptions = {}, ...argv): Promise<T>
 	{
 		const self = this;
-		const p = EPub.libPromise;
+		const p = this._getStatic(this).libPromise;
 
 		return Promise.fromCallback(method.bind(self, argv), options);
 	}
