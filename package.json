@@ -1,24 +1,12 @@
 {
-  "name": "epub",
+  "name": "epub2",
   "description": "Parse ePub electronic book files with Node.JS",
   "version": "0.2.0",
   "author": "Andris Reinman",
   "contributors": [
-    {
-      "name": "andris",
-      "email": "andris@node.ee"
-    },
-    {
-      "name": "Julien Chaumond",
-      "email": "chaumond@gmail.com",
-      "url": "https://github.com/julien-c"
-    }
+    "andris <andris@node.ee>",
+    "Julien Chaumond <chaumond@gmail.com> (https://github.com/julien-c)"
   ],
-  "homepage": "http://github.com/julien-c/epub",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/julien-c/epub.git"
-  },
   "main": "./epub",
   "typings": "./epub.d.ts",
   "licenses": [
@@ -39,6 +27,33 @@
   ],
   "keywords": [
     "epub",
+    "book",
+    "mobile",
+    "parse",
+    "chapter",
+    "raw",
+    "image",
+    "file",
+    "comic",
+    "novel",
     "books"
-  ]
+  ],
+  "devDependencies": {
+    "@types/node": "^9.4.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/epub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bluelovers/epub/issues"
+  },
+  "homepage": "https://github.com/bluelovers/epub#readme"
 }

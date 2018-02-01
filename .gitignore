@@ -1,3 +1,9 @@
 node_modules
 npm-debug.log
 .DS_Store
+/test/**/*.d.ts
+/test/**/*.js
+/test/*.d.ts
+/test/*.js
+/.idea/
+/package-lock.json
