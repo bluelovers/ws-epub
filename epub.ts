@@ -350,57 +350,65 @@ class EPub extends EventEmitter
 	 **/
 	parseMetadata(metadata: EPub.IMetadata)
 	{
-		var i, j, len, keys, keyparts, key;
+		let i, j, len, keys, keyparts, key;
 		const _self = this;
+
+		this.metadata[EPub.SYMBOL_RAW_DATA] = metadata;
 
 		keys = Object.keys(metadata);
 		for (i = 0, len = keys.length; i < len; i++)
 		{
 			keyparts = keys[i].split(":");
 			key = (keyparts.pop() || "").toLowerCase().trim();
+
+			const currentData = metadata[keys[i]];
+
 			switch (key)
 			{
 				case "publisher":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.publisher = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.publisher = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.trim();
 					}
 					else
 					{
-						this.metadata.publisher = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
+						this.metadata.publisher = String(currentData["#"] || currentData || "").trim();
 					}
 					break;
 				case "language":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.language = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.language = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.toLowerCase()
 							.trim();
 					}
 					else
 					{
-						this.metadata.language = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "")
+
+
+
+						this.metadata.language = String(currentData["#"] || currentData || "")
 							.toLowerCase()
 							.trim();
 					}
 					break;
 				case "title":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.title = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.title = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.trim();
 					}
 					else
 					{
-						this.metadata.title = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
+						this.metadata.title = String(currentData["#"] || currentData || "").trim();
 					}
 					break;
 				case "subject":
 
 					this.metadata.subject = this.metadata.subject || [];
 
-					(Array.isArray(metadata[keys[i]]) ? metadata[keys[i]] : [metadata[keys[i]]])
+					(Array.isArray(currentData) ? currentData : [currentData])
 						.forEach(function (value)
 						{
 							let tag = (_meta_val(value, '#') || '').trim();
@@ -413,67 +421,67 @@ class EPub extends EventEmitter
 
 					break;
 				case "description":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.description = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.description = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.trim();
 					}
 					else
 					{
-						this.metadata.description = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
+						this.metadata.description = String(currentData["#"] || currentData || "").trim();
 					}
 					break;
 				case "creator":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.creator = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.creator = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.trim();
-						this.metadata.creatorFileAs = String(metadata[keys[i]][0] && metadata[keys[i]][0]['@'] && metadata[keys[i]][0]['@']["opf:file-as"] || this.metadata.creator)
+						this.metadata.creatorFileAs = String(currentData[0] && currentData[0]['@'] && currentData[0]['@']["opf:file-as"] || this.metadata.creator)
 							.trim();
 					}
 					else
 					{
-						this.metadata.creator = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
-						this.metadata.creatorFileAs = String(metadata[keys[i]]['@'] && metadata[keys[i]]['@']["opf:file-as"] || this.metadata.creator)
+						this.metadata.creator = String(currentData["#"] || currentData || "").trim();
+						this.metadata.creatorFileAs = String(currentData['@'] && currentData['@']["opf:file-as"] || this.metadata.creator)
 							.trim();
 					}
 					break;
 				case "date":
-					if (Array.isArray(metadata[keys[i]]))
+					if (Array.isArray(currentData))
 					{
-						this.metadata.date = String(metadata[keys[i]][0] && metadata[keys[i]][0]["#"] || metadata[keys[i]][0] || "")
+						this.metadata.date = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
 							.trim();
 					}
 					else
 					{
-						this.metadata.date = String(metadata[keys[i]]["#"] || metadata[keys[i]] || "").trim();
+						this.metadata.date = String(currentData["#"] || currentData || "").trim();
 					}
 					break;
 				case "identifier":
-					if (metadata[keys[i]]["@"] && metadata[keys[i]]["@"]["opf:scheme"] == "ISBN")
+					if (currentData["@"] && currentData["@"]["opf:scheme"] == "ISBN")
 					{
-						this.metadata.ISBN = String(metadata[keys[i]]["#"] || "").trim();
+						this.metadata.ISBN = String(currentData["#"] || "").trim();
 					}
-					else if (metadata[keys[i]]["@"] && metadata[keys[i]]["@"].id && metadata[keys[i]]["@"].id.match(/uuid/i))
+					else if (currentData["@"] && currentData["@"].id && currentData["@"].id.match(/uuid/i))
 					{
-						this.metadata.UUID = String(metadata[keys[i]]["#"] || "")
+						this.metadata.UUID = String(currentData["#"] || "")
 							.replace('urn:uuid:', '')
 							.toUpperCase()
 							.trim();
 					}
-					else if (Array.isArray(metadata[keys[i]]))
+					else if (Array.isArray(currentData))
 					{
-						for (j = 0; j < metadata[keys[i]].length; j++)
+						for (j = 0; j < currentData.length; j++)
 						{
-							if (metadata[keys[i]][j]["@"])
+							if (currentData[j]["@"])
 							{
-								if (metadata[keys[i]][j]["@"]["opf:scheme"] == "ISBN")
+								if (currentData[j]["@"]["opf:scheme"] == "ISBN")
 								{
-									this.metadata.ISBN = String(metadata[keys[i]][j]["#"] || "").trim();
+									this.metadata.ISBN = String(currentData[j]["#"] || "").trim();
 								}
-								else if (metadata[keys[i]][j]["@"].id && metadata[keys[i]][j]["@"].id.match(/uuid/i))
+								else if (currentData[j]["@"].id && currentData[j]["@"].id.match(/uuid/i))
 								{
-									this.metadata.UUID = String(metadata[keys[i]][j]["#"] || "")
+									this.metadata.UUID = String(currentData[j]["#"] || "")
 										.replace('urn:uuid:', '')
 										.toUpperCase()
 										.trim();
@@ -956,6 +964,8 @@ class EPub extends EventEmitter
 
 module EPub
 {
+	export const SYMBOL_RAW_DATA = Symbol.for('rawData');
+
 	export interface TocElement
 	{
 		level: number;

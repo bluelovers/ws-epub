@@ -156,6 +156,7 @@ declare class EPub extends EventEmitter {
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
+    const SYMBOL_RAW_DATA: symbol;
     interface TocElement {
         level: number;
         order: number;
