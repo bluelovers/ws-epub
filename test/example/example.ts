@@ -1,4 +1,4 @@
-var EPub = require("../../epub");
+import * as EPub from '../../epub';
 
 var epub = new EPub("alice.epub", "/imagewebroot/", "/articlewebroot/");
 epub.on("error", function (err)

@@ -12,8 +12,6 @@ export interface IZipFile
 	readFile(name: string, cb: (error, buffer: Buffer) => Buffer): void;
 }
 
-export default ZipFile;
-
 try
 {
 	// zipfile is an optional dependency:
@@ -56,3 +54,4 @@ catch (err)
 	});
 }
 
+export default ZipFile;

@@ -3,7 +3,6 @@
  * Created by user on 2018/2/1/001.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.ZipFile;
 try {
     // zipfile is an optional dependency:
     exports.ZipFile = require("zipfile").ZipFile;
@@ -31,3 +30,4 @@ catch (err) {
         }
     });
 }
+exports.default = exports.ZipFile;
