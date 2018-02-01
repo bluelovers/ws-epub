@@ -1,4 +1,4 @@
-import * as EPub from '../../epub';
+import * as EPub from '../../node';
 
 var epub = new EPub("alice.epub", "/imagewebroot/", "/articlewebroot/");
 epub.on("error", function (err)
@@ -29,6 +29,8 @@ epub.on("end", function (err)
 		console.log("\nFIRST CHAPTER:\n");
 		console.log(data.substr(0, 512) + "..."); // first 512 bytes
 	});
+
+	console.log(epub.manifest['cover']);
 
 	/*
 	epub.getImage(image_id, function(err, data, mimeType){

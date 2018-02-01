@@ -47,27 +47,6 @@ class EPub extends events_1.EventEmitter {
         let epub = new this(epubfile, imagewebroot, chapterwebroot, ...argv);
         return epub;
     }
-    static createAsync(epubfile, imagewebroot, chapterwebroot, ...argv) {
-        const self = this;
-        const p = self.libPromise;
-        return new p(function (resolve, reject) {
-            const epub = self.create(epubfile, imagewebroot, chapterwebroot, ...argv);
-            const cb_err = function (err) {
-                err.epub = epub;
-                return reject(err);
-            };
-            epub.on('error', cb_err);
-            epub.on('end', function (err) {
-                if (err) {
-                    cb_err(err);
-                }
-                else {
-                    resolve(this);
-                }
-            });
-            epub.parse();
-        });
-    }
     /**
      *  EPub#parse() -> undefined
      *
@@ -704,11 +683,6 @@ class EPub extends events_1.EventEmitter {
     }
 }
 (function (EPub) {
-    /**
-     * allow change Promise class
-     * @type {PromiseConstructor}
-     */
-    EPub.libPromise = Promise;
     EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
     function isEpub(data, buf) {
         let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();

@@ -35,18 +35,18 @@ const xml2jsOptions = xml2js.defaults['0.1'];
 class EPub extends EventEmitter
 {
 	metadata: EPub.IMetadata;
-	manifest: Object;
+	manifest: EPub.IMetadataList;
 	spine: EPub.ISpine;
 	flow: EPub.ISpineContents;
-	toc: Array<EPub.TocElement>;
+	toc: EPub.ISpineContents;
 
 	filename: string;
 	imageroot: string;
 	linkroot: string;
 
-	containerFile;
-	mimeFile;
-	rootFile;
+	containerFile: string;
+	mimeFile: string;
+	rootFile: string;
 
 	zip: IZipFile;
 
@@ -78,44 +78,12 @@ class EPub extends EventEmitter
 		return epub;
 	}
 
-	static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv): Promise<EPub>
-	{
-		const self = this;
-		const p = self.libPromise;
-
-		return new p(function (resolve, reject)
-		{
-			const epub = self.create(epubfile, imagewebroot, chapterwebroot, ...argv);
-
-			const cb_err = function (err)
-			{
-				err.epub = epub;
-				return reject(err);
-			};
-
-			epub.on('error', cb_err);
-			epub.on('end', function (err)
-			{
-				if (err)
-				{
-					cb_err(err);
-				}
-				else
-				{
-					resolve(this);
-				}
-			});
-
-			epub.parse();
-		});
-	}
-
 	/**
 	 *  EPub#parse() -> undefined
 	 *
 	 *  Starts the parser, needs to be called by the script
 	 **/
-	parse()
+	public parse()
 	{
 		this.containerFile = null;
 		this.mimeFile = null;
@@ -425,8 +393,6 @@ class EPub extends EventEmitter
 					}
 					else
 					{
-
-
 
 						this.metadata.language = String(currentData["#"] || currentData || "")
 							.toLowerCase()
@@ -1004,12 +970,6 @@ class EPub extends EventEmitter
 
 module EPub
 {
-	/**
-	 * allow change Promise class
-	 * @type {PromiseConstructor}
-	 */
-	export let libPromise = Promise;
-
 	export const SYMBOL_RAW_DATA = Symbol.for('rawData');
 
 	export interface TocElement
@@ -1033,9 +993,14 @@ module EPub
 		itemref?: Object[],
 	}
 
+	export interface IMetadataList
+	{
+		[key: string]: EPub.TocElement,
+	}
+
 	export interface ISpineContents
 	{
-		[index: number]: Object,
+		[index: number]: EPub.TocElement,
 	}
 
 	export interface IMetadata

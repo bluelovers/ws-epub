@@ -28,21 +28,20 @@ import { IZipFile } from './zipfile';
  **/
 declare class EPub extends EventEmitter {
     metadata: EPub.IMetadata;
-    manifest: Object;
+    manifest: EPub.IMetadataList;
     spine: EPub.ISpine;
     flow: EPub.ISpineContents;
-    toc: Array<EPub.TocElement>;
+    toc: EPub.ISpineContents;
     filename: string;
     imageroot: string;
     linkroot: string;
-    containerFile: any;
-    mimeFile: any;
-    rootFile: any;
+    containerFile: string;
+    mimeFile: string;
+    rootFile: string;
     zip: IZipFile;
     version: string;
     constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
     static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): EPub;
-    static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): Promise<EPub>;
     /**
      *  EPub#parse() -> undefined
      *
@@ -158,11 +157,6 @@ declare class EPub extends EventEmitter {
     readFile(filename: any, options: any, callback_: any): void;
 }
 declare module EPub {
-    /**
-     * allow change Promise class
-     * @type {PromiseConstructor}
-     */
-    let libPromise: PromiseConstructor;
     const SYMBOL_RAW_DATA: symbol;
     interface TocElement {
         level: number;
@@ -179,8 +173,11 @@ declare module EPub {
         toc?: TocElement;
         itemref?: Object[];
     }
+    interface IMetadataList {
+        [key: string]: EPub.TocElement;
+    }
     interface ISpineContents {
-        [index: number]: Object;
+        [index: number]: EPub.TocElement;
     }
     interface IMetadata {
         publisher?: string;

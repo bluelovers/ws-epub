@@ -1,7 +1,7 @@
-import * as EPub from '../../epub';
+import EPub from '../../index';
 
-EPub.createAsync("2d921902.epub", "/imagewebroot/", "/articlewebroot/")
-	.then(function (epub)
+EPub.createAsync("2d921902.epub", null, '')
+	.then(async function (epub)
 	{
 		console.log(epub.filename);
 
@@ -15,23 +15,23 @@ EPub.createAsync("2d921902.epub", "/imagewebroot/", "/articlewebroot/")
 		console.log(epub.toc);
 
 		// get first chapter
-		epub.getChapter(epub.spine.contents[0].id, function (err, data)
-		{
-			if (err)
+		await epub.getChapterAsync(epub.spine.contents[0].id)
+			.then(function (data)
 			{
-				console.log(err);
-				return;
-			}
-			console.log("\nFIRST CHAPTER:\n");
-			console.log(data.substr(0, 512) + "..."); // first 512 bytes
-		});
+				console.log("\nFIRST CHAPTER:\n");
+				console.log(data.substr(0, 512) + "..."); // first 512 bytes
+			})
+		;
 
-		/*
-		epub.getImage(image_id, function(err, data, mimeType){
-			console.log(err || data);
+		//console.log(epub.manifest);
+
+		await epub.getImageAsync('cover').then( function([data, mimeType]){
+
+			console.log(`\ngetImage: cover\n`);
+
+			console.log(data);
 			console.log(mimeType)
 		});
-		*/
 
 	})
 	.catch(function (err)

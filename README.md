@@ -20,7 +20,15 @@ Or, if you want a pure-JS version (useful if used in a Node-Webkit app for examp
 * [example Promise](test/example/example2.ts)
 
 ```ts
-var EPub = require("epub2");
+const EPub = require("epub2/node");
+import * as EPub from 'epub2/node';
+
+const EPub = require("epub2").EPub;
+import EPub from 'epub2';
+import { EPub } from 'epub2';
+```
+
+```ts
 var epub = new EPub(epubfile, imagewebroot, chapterwebroot);
 ```
 

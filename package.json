@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",
@@ -36,8 +36,8 @@
     "andris <andris@node.ee>",
     "Julien Chaumond <chaumond@gmail.com> (https://github.com/julien-c)"
   ],
-  "main": "./epub",
-  "typings": "./epub.d.ts",
+  "main": "./index",
+  "typings": "./index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -50,10 +50,11 @@
   },
   "dependencies": {
     "adm-zip": "^0.4.4",
-    "file-type": "^7.5.0",
+    "bluebird": "^3.5.1",
     "xml2js": "^0.4.4"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.20",
     "@types/node": "^9.4.0"
   },
   "peerDependencies": {
