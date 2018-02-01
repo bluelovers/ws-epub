@@ -2,42 +2,43 @@
   "name": "epub-maker2",
   "version": "2.0.1",
   "description": "Easily create epub files with javascript",
+  "keywords": [
+    "archive",
+    "book",
+    "chapter",
+    "comic",
+    "creator",
+    "epub",
+    "epub-maker",
+    "epub-maker2",
+    "generator",
+    "maker",
+    "manifest",
+    "metadata",
+    "mobile",
+    "node-novel",
+    "novel",
+    "volume",
+    "zip"
+  ],
+  "homepage": "https://github.com/bluelovers/js-epub-maker",
+  "bugs": {
+    "url": "https://github.com/bluelovers/js-epub-maker/issues"
+  },
+  "license": "MIT",
+  "author": "Benny Bottema (http://blog.projectnibble.org)",
   "main": "index",
-  "scripts": {
-    "test": "npx mocha"
+  "directories": {
+    "doc": "docs",
+    "test": "test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bluelovers/js-epub-maker.git"
   },
-  "keywords": [
-    "epub",
-    "generator",
-    "creator",
-    "maker",
-    "book",
-    "mobile",
-    "comic",
-    "novel"
-  ],
-  "author": "Benny Bottema (http://blog.projectnibble.org)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bluelovers/js-epub-maker/issues"
+  "scripts": {
+    "test": "npx mocha"
   },
-  "homepage": "https://github.com/bluelovers/js-epub-maker",
-  "browserslist": [
-    "Firefox",
-    "epub",
-    "Chrome"
-  ],
-  "devDependencies": {
-    "@types/jszip": "^3.1.2",
-    "@types/node": "^8.0.58",
-    "mdconf": "0.0.2",
-    "str-util": "^2.3.1"
-  },
-  "peerDependencies": {},
   "dependencies": {
     "autoprefixer": "^7.2.2",
     "bluebird": "^3.5.1",
@@ -58,14 +59,22 @@
     "shortid": "^2.2.8",
     "slugify": "^1.2.6"
   },
-  "directories": {
-    "doc": "docs",
-    "test": "test"
+  "devDependencies": {
+    "@types/jszip": "^3.1.2",
+    "@types/node": "^8.0.58",
+    "mdconf": "0.0.2",
+    "str-util": "^2.3.1"
   },
+  "peerDependencies": {},
   "optionalDependencies": {
     "file-saver": "^1.3.3",
     "globby": "*",
     "node-novel-globby": "^1.2.1",
     "node-novel-info": "^1.0.0"
-  }
+  },
+  "browserslist": [
+    "Firefox",
+    "epub",
+    "Chrome"
+  ]
 }

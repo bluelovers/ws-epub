@@ -10,8 +10,8 @@ import * as globby from 'globby';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import * as deepmerge from 'deepmerge';
-import { mdconf_meta, IMdconfMeta } from '../src/plugin/mdconf';
 import * as novelGlobby from 'node-novel-globby';
+import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 
 /**
  * 小說資料夾名稱
@@ -21,7 +21,7 @@ let novelID: string;
 //novelID = '黒の魔王';
 novelID = '黑之魔王';
 
-novelID = '四度目は嫌な死属性魔術師';
+//novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
 //novelID = '讨厌第四次的死属性魔术师_(2206)';
@@ -43,7 +43,7 @@ novelID = '四度目は嫌な死属性魔術師';
 //
 //novelID = '異世界迷宮の最深部を目指そう';
 
-//novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
+novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
 
 //novelID = '转生奇谭_(1782)';
 //novelID = '女神异闻录2 罚_(755)';
@@ -77,19 +77,20 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 	if (fs.existsSync(path.join(TXT_PATH, 'meta.md')))
 	{
 		meta = await fs.readFile(path.join(TXT_PATH, 'meta.md'))
-			.then(mdconf_meta)
+			.then(mdconf_parse)
 	}
 	else if (fs.existsSync(path.join(TXT_PATH, 'README.md')))
 	{
 		meta = await fs.readFile(path.join(TXT_PATH, 'README.md'))
-			.then(mdconf_meta)
+			.then(mdconf_parse)
 	}
 	else
 	{
 		throw new Error();
 	}
 
-	//console.log(meta, meta.novel.preface);
+	console.log(meta.novel.title);
+	console.log(meta.novel.preface);
 
 	let epub = new EpubMaker()
 		.withTemplate('lightnovel')

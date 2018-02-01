@@ -35,10 +35,10 @@
 			<ol class="list_none toc">
 				{{#each sections}}
 				{{#if needPage}}
-				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
+				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
 				{{/if}}
 				{{#each subSections}}
-				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}">{{content.title}}</a></li>
+				<li><a href="{{name}}.html" id="{{name}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
 				{{/each}}
 				{{/each}}
 			</ol>
