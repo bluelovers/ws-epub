@@ -5,6 +5,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const libEPub = require("./epub");
 const Promise = require("bluebird");
+const path = require("path");
 class EPub extends libEPub {
     static createAsync(epubfile, imagewebroot, chapterwebroot, ...argv) {
         const self = this;
@@ -47,6 +48,29 @@ class EPub extends libEPub {
         return this._p_method_cb(this.getImage, {
             multiArgs: true,
         }, id);
+    }
+    listImage() {
+        const epub = this;
+        const mimes = [
+            'image/jpeg',
+        ];
+        const exts = [
+            'jpg',
+            'png',
+            'gif',
+            'webp',
+            'tif',
+            'bmp',
+        ];
+        return Object.keys(epub.manifest)
+            .reduce(function (a, id) {
+            let elem = epub.manifest[id];
+            let mime = elem['media-type'];
+            if (mimes.includes(mime) || mime.indexOf('image') == 0 || exts.includes(path.extname(elem.href))) {
+                a.push(elem);
+            }
+            return a;
+        }, []);
     }
 }
 exports.EPub = EPub;

@@ -12,6 +12,7 @@ export declare class EPub extends libEPub {
     getChapterRawAsync(chapterId: string): Promise<string>;
     getFileAsync(id: string): Promise<[Buffer, string]>;
     getImageAsync(id: string): Promise<[Buffer, string]>;
+    listImage(): libEPub.TocElement[];
 }
 export declare module EPub {
     /**

@@ -4,6 +4,7 @@
 
 import * as libEPub from './epub';
 import * as Promise from 'bluebird';
+import * as path from 'path';
 
 export class EPub extends libEPub
 {
@@ -69,6 +70,39 @@ export class EPub extends libEPub
 		return this._p_method_cb<[Buffer, string]>(this.getImage, {
 			multiArgs: true,
 		}, id);
+	}
+
+	listImage(): libEPub.TocElement[]
+	{
+		const epub = this;
+		const mimes = [
+			'image/jpeg',
+		];
+		const exts = [
+			'jpg',
+			'png',
+			'gif',
+			'webp',
+			'tif',
+			'bmp',
+			//'jxr',
+			//'psd'
+		];
+
+		return Object.keys(epub.manifest)
+			.reduce(function (a, id)
+			{
+				let elem = epub.manifest[id];
+				let mime = elem['media-type'];
+
+				if (mimes.includes(mime) || mime.indexOf('image') == 0 || exts.includes(path.extname(elem.href)))
+				{
+					a.push(elem)
+				}
+
+				return a;
+			}, [])
+		;
 	}
 }
 
