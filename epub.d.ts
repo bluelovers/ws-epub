@@ -176,6 +176,11 @@ declare module EPub {
         mediaType?: string;
         'epub-type'?: string;
         lang?: string;
+        series?: string;
+        contribute?: string[];
+        author_link_map?: {
+            [key: string]: string;
+        };
     }
     interface ISpine {
         contents: ISpineContents;

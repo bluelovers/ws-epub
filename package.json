@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",
@@ -59,7 +59,6 @@
     "@types/xml2js": "^0.4.2"
   },
   "peerDependencies": {
-    "zipfile": "^0.5.0"
   },
   "engine": [
     "node >=0.3.0"

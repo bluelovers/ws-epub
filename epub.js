@@ -313,7 +313,6 @@ class EPub extends events_1.EventEmitter {
                     });
                     break;
                 case "description":
-                    console.log(currentData);
                     if (Array.isArray(currentData)) {
                         this.metadata.description = String(currentData[0] && currentData[0]["#"] || currentData[0] || "")
                             .trim();
@@ -370,6 +369,22 @@ class EPub extends events_1.EventEmitter {
                         }
                     }
                     break;
+                case 'meta':
+                    if (currentData['#'] && currentData['@'].property == 'calibre:author_link_map') {
+                        this.metadata['contribute'] = this.metadata['contribute'] || [];
+                        this.metadata['author_link_map'] = this.metadata['author_link_map'] || {};
+                        let t = JSON.parse(currentData['#']);
+                        for (let n in t) {
+                            n = n.toString().trim();
+                            this.metadata['contribute'].push(n);
+                            this.metadata['author_link_map'][n] = (t[n] || '').toString().trim();
+                        }
+                        this.metadata['contribute'] = array_unique(this.metadata['contribute']);
+                    }
+                    break;
+                default:
+                    //console.log(key, currentData);
+                    break;
             }
         }
         let metas = metadata['meta'] || {};
@@ -378,6 +393,9 @@ class EPub extends events_1.EventEmitter {
             if (meta['@'] && meta['@'].name) {
                 var name = meta['@'].name;
                 this.metadata[name] = meta['@'].content;
+                if (name == 'calibre:series') {
+                    this.metadata['series'] = this.metadata['series'] || meta['@'].content;
+                }
             }
             if (meta['#'] && meta['@'].property) {
                 this.metadata[meta['@'].property] = meta['#'];
@@ -717,7 +735,6 @@ class EPub extends events_1.EventEmitter {
     }
     EPub.isEpub = isEpub;
 })(EPub || (EPub = {}));
-module.exports = EPub;
 /*
 // @ts-ignore
 declare module "epub"
@@ -758,3 +775,9 @@ declare module "epub"
     export = EPub;
 }
 */
+function array_unique(array) {
+    return array.filter(function (el, index, arr) {
+        return index == arr.indexOf(el);
+    });
+}
+module.exports = EPub;
