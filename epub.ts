@@ -747,9 +747,13 @@ class EPub extends EventEmitter
 				var title = '';
 				if (branch[i].navLabel && typeof branch[i].navLabel.text == 'string')
 				{
+					/*
 					title = branch[i].navLabel && branch[i].navLabel.text || branch[i].navLabel === branch[i].navLabel
 						? ''
 						: (branch[i].navLabel && branch[i].navLabel.text || branch[i].navLabel || "").trim();
+					*/
+
+					title = (branch[i].navLabel && branch[i].navLabel.text || branch[i].navLabel || "").trim();
 				}
 				var order = Number(branch[i]["@"] && branch[i]["@"].playOrder || 0);
 				if (isNaN(order))
