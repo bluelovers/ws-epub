@@ -559,6 +559,7 @@ class EPub extends events_1.EventEmitter {
                             id: element.id,
                             ncx_index: idx,
                             ncx_index2: ncx_idx.index++,
+                            level,
                             sub: [],
                         };
                     }
@@ -568,6 +569,7 @@ class EPub extends events_1.EventEmitter {
                             id: element.id,
                             ncx_index: idx,
                             ncx_index2: ncx_idx.index++,
+                            level,
                             sub: [],
                         };
                     }
@@ -667,11 +669,11 @@ class EPub extends events_1.EventEmitter {
     getChapterRaw(chapterId, callback) {
         if (this.manifest[chapterId]) {
             if (!(this.manifest[chapterId]['media-type'] == "application/xhtml+xml" || this.manifest[chapterId]['media-type'] == "image/svg+xml")) {
-                return callback(new Error("Invalid mime type for chapter"));
+                return callback(new Error(`Invalid mime type for chapter "${chapterId}" ${this.manifest[chapterId]['media-type']}`));
             }
             this.zip.readFile(this.manifest[chapterId].href, (function (err, data) {
                 if (err) {
-                    callback(new Error("Reading archive failed"));
+                    callback(new Error(`Reading archive failed "${chapterId}"`));
                     return;
                 }
                 var str = data.toString("utf-8");
@@ -679,7 +681,7 @@ class EPub extends events_1.EventEmitter {
             }).bind(this));
         }
         else {
-            callback(new Error("File not found"));
+            callback(new Error(`File not found "${chapterId}"`));
         }
     }
     /**

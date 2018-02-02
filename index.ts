@@ -7,6 +7,9 @@ import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as xml2js from 'xml2js';
 
+// @ts-ignore
+export * from './epub';
+
 export class EPub extends libEPub
 {
 	static createAsync(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv): Promise<EPub>

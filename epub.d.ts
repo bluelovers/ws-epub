@@ -220,6 +220,7 @@ declare module EPub {
         id: string;
         ncx_index: number;
         ncx_index2?: number;
+        level?: number;
         sub: INcxTree[];
     }
     function isEpub(data: string, buf?: boolean): string;

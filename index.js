@@ -2,10 +2,15 @@
 /**
  * Created by user on 2018/2/1/001.
  */
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 const libEPub = require("./epub");
 const Promise = require("bluebird");
 const path = require("path");
+// @ts-ignore
+__export(require("./epub"));
 class EPub extends libEPub {
     static createAsync(epubfile, imagewebroot, chapterwebroot, ...argv) {
         const self = this;
