@@ -1,4 +1,4 @@
-<navPoint id="{{name}}" epub-type="{{epubType}}" lang="{{lang}}">
+<navPoint id="{{name}}" epub-type="{{epubType}}" lang="{{lang}}" playOrder="{{playOrder}}">
     <navLabel>
         <text>{{content.title}}</text>
     </navLabel>

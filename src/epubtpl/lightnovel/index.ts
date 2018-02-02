@@ -180,6 +180,8 @@ export namespace Builder
 			section.needPage = true;
 		}
 
+		section.playOrder = playOrder++;
+
 		for (let i = 0; i < section.subSections.length; i++)
 		{
 			section.subSections[i].rank = i.toString().padStart(3, '0');
