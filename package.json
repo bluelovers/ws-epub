@@ -1,0 +1,59 @@
+{
+  "name": "epub-extract",
+  "version": "1.0.0",
+  "description": "epub-extract for node-novel",
+  "keywords": [
+    "archive",
+    "async",
+    "book",
+    "books",
+    "chapter",
+    "comic",
+    "creator",
+    "epub",
+    "epub-maker",
+    "epub-maker2",
+    "extract",
+    "file",
+    "generator",
+    "image",
+    "maker",
+    "manifest",
+    "metadata",
+    "mobile",
+    "node-novel",
+    "novel",
+    "parse",
+    "promise",
+    "raw",
+    "volume",
+    "zip"
+  ],
+  "homepage": "https://github.com/bluelovers/epub-extract#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/epub-extract/issues"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/epub-extract.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "epub2": "^1.2.6",
+    "fs-iconv": "^1.3.2",
+    "node-novel-globby": "^1.3.4",
+    "node-novel-info": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.20"
+  }
+}
