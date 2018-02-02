@@ -500,8 +500,12 @@ class EPub extends events_1.EventEmitter {
      *  Walks the NavMap object through all levels and finds elements
      *  for TOC
      **/
-    walkNavMap(branch, path, id_list, level) {
+    walkNavMap(branch, path, id_list, level, pe, parentNcx, ncx_idx) {
+        ncx_idx = ncx_idx || {
+            index: 0,
+        };
         level = level || 0;
+        this.ncx_depth = Math.max(level + 1, this.ncx_depth || 0);
         // don't go too far
         if (level > 7) {
             return [];
@@ -510,7 +514,10 @@ class EPub extends events_1.EventEmitter {
         if (!Array.isArray(branch)) {
             branch = [branch];
         }
+        this.ncx = this.ncx || [];
         for (var i = 0; i < branch.length; i++) {
+            let element;
+            let currentNcx;
             if (branch[i].navLabel) {
                 var title = '';
                 if (branch[i].navLabel && typeof branch[i].navLabel.text == 'string') {
@@ -526,7 +533,7 @@ class EPub extends events_1.EventEmitter {
                 if (branch[i].content && branch[i].content["@"] && typeof branch[i].content["@"].src == 'string') {
                     href = branch[i].content["@"].src.trim();
                 }
-                var element = {
+                element = {
                     level: level,
                     order: order,
                     title: title
@@ -546,11 +553,30 @@ class EPub extends events_1.EventEmitter {
                         element.href = href;
                         element.id = (branch[i]["@"] && branch[i]["@"].id || "").trim();
                     }
+                    if (level == 0) {
+                        let idx = this.ncx.length;
+                        currentNcx = this.ncx[idx] = {
+                            id: element.id,
+                            ncx_index: idx,
+                            ncx_index2: ncx_idx.index++,
+                            sub: [],
+                        };
+                    }
+                    else if (parentNcx) {
+                        let idx = parentNcx.sub.length;
+                        currentNcx = parentNcx.sub[parentNcx.sub.length] = {
+                            id: element.id,
+                            ncx_index: idx,
+                            ncx_index2: ncx_idx.index++,
+                            sub: [],
+                        };
+                    }
                     output.push(element);
                 }
             }
+            //console.log(ncx_idx);
             if (branch[i].navPoint) {
-                output = output.concat(this.walkNavMap(branch[i].navPoint, path, id_list, level + 1));
+                output = output.concat(this.walkNavMap(branch[i].navPoint, path, id_list, level + 1, element, currentNcx, ncx_idx));
             }
         }
         return output;

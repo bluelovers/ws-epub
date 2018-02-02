@@ -33,6 +33,8 @@ declare class EPub extends EventEmitter {
     spine: EPub.ISpine;
     flow: EPub.ISpineContents;
     toc: EPub.ISpineContents;
+    ncx: EPub.INcx;
+    ncx_depth: number;
     filename: string;
     imageroot: string;
     linkroot: string;
@@ -120,7 +122,7 @@ declare class EPub extends EventEmitter {
      *  Walks the NavMap object through all levels and finds elements
      *  for TOC
      **/
-    walkNavMap(branch: any, path: any, id_list: any, level: number): any[];
+    walkNavMap(branch: any, path: any, id_list: any, level: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?: any): any[];
     /**
      *  EPub#getChapter(id, callback) -> undefined
      *  - id (String): Manifest id value for a chapter
@@ -210,6 +212,15 @@ declare module EPub {
         'calibre:series'?: string;
         'collection-type'?: string;
         [key: string]: any;
+    }
+    interface INcx extends Array<INcxTree> {
+        [index: number]: INcxTree;
+    }
+    interface INcxTree {
+        id: string;
+        ncx_index: number;
+        ncx_index2?: number;
+        sub: INcxTree[];
     }
     function isEpub(data: string, buf?: boolean): string;
     function isEpub(data: Buffer, buf?: boolean): Buffer;

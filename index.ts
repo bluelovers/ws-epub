@@ -103,7 +103,7 @@ export class EPub extends libEPub
 
 				return a;
 			}, [])
-		;
+			;
 	}
 }
 
