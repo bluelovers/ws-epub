@@ -3,7 +3,7 @@
 import { globby } from 'node-novel-globby';
 import * as yargs from 'yargs';
 import * as path from 'path';
-import epubExtract from '..';
+import epubExtract from '../index';
 import * as Promise from 'bluebird';
 
 let cli = yargs
@@ -32,6 +32,8 @@ let outputDir = cli.argv.output;
 (async () =>
 {
 	let cwd = process.cwd();
+
+	console.log(cwd);
 
 	{
 		let chk = path.relative(cwd, __dirname);

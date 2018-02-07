@@ -9,3 +9,4 @@ npm-debug.log
 /package-lock.json
 /test/epub/
 /test/temp/
+/bin/epub-extract.d.ts

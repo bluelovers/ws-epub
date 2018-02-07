@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_novel_globby_1 = require("node-novel-globby");
 const yargs = require("yargs");
 const path = require("path");
-const __1 = require("..");
+const index_1 = require("../index");
 const Promise = require("bluebird");
 let cli = yargs
     .usage("$0 [-o dir] [-i file]")
@@ -22,6 +22,7 @@ let srcFile = cli.argv.input || cli.argv._[0];
 let outputDir = cli.argv.output;
 (async () => {
     let cwd = process.cwd();
+    console.log(cwd);
     {
         let chk = path.relative(cwd, __dirname);
         if (['', '.', '..'].includes(chk)) {
@@ -47,7 +48,7 @@ let outputDir = cli.argv.output;
             }
             return Promise
                 .map(ls, function (srcFile) {
-                return __1.default(srcFile, options);
+                return index_1.default(srcFile, options);
             })
                 .then(function (ls) {
                 return ls.join("\n");
@@ -62,7 +63,7 @@ let outputDir = cli.argv.output;
         console.log(['current epub list:'].concat(ls || []).join("\n- "));
     }
     else {
-        return await __1.default(srcFile, options);
+        return await index_1.default(srcFile, options);
     }
 })()
     .catch(function (e) {

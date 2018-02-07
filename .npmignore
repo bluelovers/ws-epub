@@ -3,3 +3,4 @@
 /.idea/
 *.old
 /package-lock.json
+/bin/epub-extract.d.ts
