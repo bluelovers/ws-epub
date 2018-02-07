@@ -17,7 +17,7 @@ EPub.createAsync(epubFile, null, '')
 //		console.log(epub.flow);
 //
 //		console.log("\nTOC:\n");
-//		console.log(epub.toc);
+		console.log(epub.toc);
 
 		console.log("\nNCX:\n");
 		console.log(epub.ncx);
