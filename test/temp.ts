@@ -7,9 +7,9 @@ import * as cheerio from 'cheerio';
 import * as path from 'path';
 import * as fs from 'fs-iconv';
 import { trimFilename } from 'fs-iconv';
-import { json2md } from '../metamd';
 
 import * as Promise from 'bluebird';
+import * as novelInfo from 'node-novel-info';
 
 let srcFile: string;
 
@@ -184,44 +184,36 @@ EPub.createAsync(srcFile)
 			})
 		});
 
-		let md = await json2md(novel, {
-			tags: [
-				IDKEY,
-			],
-		});
-
-
-
-		//console.log(epub.metadata);
-
-		//console.log(epub.metadata[EPub.SYMBOL_RAW_DATA]['opf:meta']);
-
-		if (md)
 		{
-
 			let epubMaker2 = false;
 			let nodeNovel = false;
 
 			epubMaker2 = (epub.metadata.subject || []).includes('epub-maker2');
 			nodeNovel = (epub.metadata.subject || []).includes('node-novel');
 
+			let options = {};
+			options[IDKEY] = {
+				'epub-maker2': epubMaker2,
+				'node-novel': nodeNovel,
+			};
 
-			md += `
-# options
+			let md = novelInfo.stringify({
+				options,
+			}, novel, {
+				tags: [
+					IDKEY,
+					"epub-extract",
+					"node-novel",
+				],
 
-## ${IDKEY}
-
-- epub-maker2: ${epubMaker2}
-- node-novel: ${nodeNovel}
-
-## textlayout
-
-- allow_lf2: true
-
-`;
+				options: {
+					textlayout: {
+						allow_lf2: true,
+					},
+				},
+			});
 
 			let file = path.join(path_novel, `README.md`);
-
 			await fs.outputFile(file, md);
 		}
 	})
