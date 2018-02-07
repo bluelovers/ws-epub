@@ -1,7 +1,7 @@
 {
   "name": "epub-extract",
-  "version": "1.0.1",
-  "description": "epub-extract for node-novel",
+  "version": "1.0.2",
+  "description": "epub-extract for node-novel style",
   "keywords": [
     "archive",
     "async",
