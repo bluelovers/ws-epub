@@ -20,7 +20,7 @@ export interface IOptions
 	log?: boolean,
 }
 
-export async function epubExtract(srcFile: string, options: IOptions = {})
+export function epubExtract(srcFile: string, options: IOptions = {}): Promise<string>
 {
 	let cwd = options.cwd || process.cwd();
 
@@ -30,7 +30,7 @@ export async function epubExtract(srcFile: string, options: IOptions = {})
 	}
 
 	{
-		let exists = await fs.pathExists(srcFile);
+		let exists = fs.pathExistsSync(srcFile);
 
 		if (!exists)
 		{
@@ -193,12 +193,15 @@ export async function epubExtract(srcFile: string, options: IOptions = {})
 				return await Promise.mapSeries(volume.chapter_list, async function (chapter)
 				{
 					let ext = '.txt';
+					// @ts-ignore
 					let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
 
 					let file = path.join(dirname,
+						// @ts-ignore
 						`${cid}_${trimFilename(chapter.chapter_title)}${ext}`
 					);
 
+					// @ts-ignore
 					let text = chapter.chapter_article;
 
 					await fs.outputFile(file, text);

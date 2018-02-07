@@ -1,3 +1,5 @@
+/// <reference types="bluebird" />
+import * as Promise from 'bluebird';
 export declare const IDKEY = "epub";
 export interface IOptions {
     outputDir?: string;

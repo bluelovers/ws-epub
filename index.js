@@ -8,13 +8,13 @@ const fs_iconv_1 = require("fs-iconv");
 const Promise = require("bluebird");
 const novelInfo = require("node-novel-info");
 exports.IDKEY = 'epub';
-async function epubExtract(srcFile, options = {}) {
+function epubExtract(srcFile, options = {}) {
     let cwd = options.cwd || process.cwd();
     if (!path.isAbsolute(srcFile)) {
         srcFile = path.join(cwd, srcFile);
     }
     {
-        let exists = await fs.pathExists(srcFile);
+        let exists = fs.pathExistsSync(srcFile);
         if (!exists) {
             throw new Error(`file not exists. "${srcFile}"`);
         }
