@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { templateManagers } from './template';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
+import { trimFilename } from 'fs-iconv';
 import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
@@ -35,11 +36,16 @@ export class EpubMaker
 		return this;
 	}
 
-	withTitle(title: string)
+	withTitle(title: string, title_short?: string)
 	{
 		this.epubConfig.title = title;
 		// @ts-ignore
 		this.epubConfig.slug = slugify(title) || hashSum(title);
+
+		if (title_short)
+		{
+			this.epubConfig.title_short = title_short;
+		}
 
 		return this;
 	}
@@ -107,6 +113,18 @@ export class EpubMaker
 		//console.log(this.epubConfig.collection);
 
 		return this;
+	}
+
+	withSeries(name: string, position = 1)
+	{
+		if (name)
+		{
+			this.withCollection({
+				name,
+				position,
+				type: 'series',
+			})
+		}
 	}
 
 	withModificationDate(modificationDate, ...argv)
@@ -254,12 +272,16 @@ export class EpubMaker
 		{
 			filename = this.epubConfig.title;
 		}
+		else if (useTitle && this.epubConfig.title)
+		{
+			filename = this.epubConfig.title_short;
+		}
 		else
 		{
 			filename = this.epubConfig.slug;
 		}
 
-		return filename + ext;
+		return trimFilename(filename) + ext;
 	}
 
 	vaild()

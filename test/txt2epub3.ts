@@ -2,14 +2,13 @@
  * Created by user on 2017/12/16/016.
  */
 
-import * as fs from 'fs-extra';
+import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as globby from 'globby';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
-import * as deepmerge from 'deepmerge';
 import * as novelGlobby from 'node-novel-globby';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 
@@ -37,7 +36,7 @@ novelID = '黑之魔王';
 
 //novelID = '雪色エトランゼ';
 
-//novelID = '自称贤者弟子的贤者';
+novelID = '自称贤者弟子的贤者';
 
 //novelID = '抗いし者たちの系譜 逆襲の魔王';
 //
@@ -55,6 +54,8 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 //novelID	 = '呼び出された殺戮者';
 
 //novelID = '病娇女神の箱庭';
+
+novelID = '回復術士のやり直し～即死魔法とスキルコピーの超越ヒール～';
 
 /**
  * 小說 txt 的主資料夾路徑
@@ -99,7 +100,7 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 			meta.novel.title,
 			meta.novel.author,
 		]))
-		.withTitle(meta.novel.title)
+		.withTitle(meta.novel.title, meta.novel.title_short)
 		.addAuthor(meta.novel.author)
 		//.withPublisher('syosetu')
 		//.withCover('./res/cover.jpg')
@@ -111,6 +112,11 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		.addTag(meta.novel.tags)
 		.addAuthor(meta.contribute)
 	;
+
+	if (meta.novel.series)
+	{
+		epub.withSeries(meta.novel.series.name, meta.novel.series.position);
+	}
 
 	if (meta.novel.publisher)
 	{

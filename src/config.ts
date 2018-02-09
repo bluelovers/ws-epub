@@ -1,11 +1,12 @@
 import * as moment from 'moment';
 import * as slugify from 'slugify';
 import { EpubMaker } from './index';
-import * as deepmerge from 'deepmerge';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import { array_unique } from './lib/array';
 import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
+
+import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
 
 export interface ICover extends IFiles
 {
@@ -53,6 +54,8 @@ export interface IEpubConfig
 	filename?: string;
 
 	title?: string;
+	title_short?: string,
+
 	slug?: string;
 
 	lang?: string;
@@ -112,6 +115,8 @@ export class EpubConfig implements IEpubConfig
 	filename?: string;
 
 	title?: string;
+	title_short?: string;
+
 	slug?: string;
 
 	lang?: string;
@@ -174,7 +179,7 @@ export class EpubConfig implements IEpubConfig
 
 		Object.assign(this, EpubConfig.defaultEpubConfig, deepmerge(epubConfig, {
 			options
-		}));
+		}, deepmergeOptions));
 	}
 
 	get langMain()
@@ -378,8 +383,10 @@ export class EpubConfig implements IEpubConfig
 		self.publicationDate = self.publication.format(EpubConfig.dateFormat);
 		self.publicationDateYMD = self.publication.format('YYYY-MM-DD');
 
-		if (self.collection)
+		if (self.collection || 1)
 		{
+			self.collection.name = self.collection.name || self.title;
+			self.collection.position = self.collection.position || 1;
 			self.collection.type = self.collection.type || 'series';
 		}
 
