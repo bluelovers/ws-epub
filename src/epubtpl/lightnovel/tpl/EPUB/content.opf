@@ -50,6 +50,7 @@
           <opf:meta property="calibre:author_link_map">{{ authorsJSON }}</opf:meta>
         {{/if}}
       {{/if}}
+      {{#each links}}<link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} />{{/each}}
     </metadata>
     <manifest>
         {{#if cover}}

@@ -57,6 +57,9 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 
 novelID = '回復術士のやり直し～即死魔法とスキルコピーの超越ヒール～';
 
+//novelID = '你与我最后的战场，亦或是世界起始的圣战_(2290)';
+
+
 /**
  * 小說 txt 的主資料夾路徑
  * @type {string}
@@ -70,6 +73,8 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8', novelID);
 
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user', novelID);
+
+//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\epub_out', novelID);
 
 (async () =>
 {
@@ -112,6 +117,11 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		.addTag(meta.novel.tags)
 		.addAuthor(meta.contribute)
 	;
+
+	if (meta.novel.source)
+	{
+		epub.addLinks(meta.novel.source);
+	}
 
 	if (meta.novel.series)
 	{

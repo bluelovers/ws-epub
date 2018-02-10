@@ -228,6 +228,23 @@ export class EpubMaker
 		return this;
 	}
 
+	addLinks(links, rel?: string)
+	{
+		const self = this;
+
+		links = Array.isArray(links) ? links.slice() : [links];
+
+		links.forEach(function (url)
+		{
+			if (url)
+			{
+				self.epubConfig.addLink(url, rel);
+			}
+		});
+
+		return this;
+	}
+
 	addTag(tag)
 	{
 		tag = (Array.isArray(tag) ? tag : [tag]).reduce(function (a, b)

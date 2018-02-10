@@ -105,6 +105,17 @@ export interface IEpubConfig
 
 	infoPreface?: string;
 	infoPrefaceHTML?: string;
+
+	links?: EpubMetaLink[],
+}
+
+export interface EpubMetaLink
+{
+	href: string,
+	rel: string,
+	id?: string,
+	refines: string,
+	'media-type': string,
 }
 
 export class EpubConfig implements IEpubConfig
@@ -166,6 +177,8 @@ export class EpubConfig implements IEpubConfig
 
 	infoPreface?: string;
 	infoPrefaceHTML?: string;
+
+	links?: EpubMetaLink[];
 
 	constructor(epubConfig: IEpubConfig = {}, options: any = {})
 	{
@@ -247,6 +260,35 @@ export class EpubConfig implements IEpubConfig
 		self.authors = self.authors || {};
 
 		self.authors[name] = url;
+
+		return this;
+	}
+
+	addLink(data: EpubMetaLink | string, rel?: string)
+	{
+		rel = (rel || (<EpubMetaLink>data).rel) as string;
+
+		if (typeof data == 'string')
+		{
+			data = {
+				href: data.toString(),
+				rel,
+			} as EpubMetaLink;
+		}
+
+		let link = Object.assign({
+			href: '',
+			rel: '',
+			id: '',
+			refines: '',
+			'media-type': '',
+		} as EpubMetaLink, data);
+
+		link.href = (link.href || data.href || '').toString();
+		link.rel = link.rel || rel || data.rel || 'link-' + shortid();
+
+		this.links = this.links || [];
+		this.links.push(link);
 
 		return this;
 	}
