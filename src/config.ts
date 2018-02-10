@@ -343,6 +343,10 @@ export class EpubConfig implements IEpubConfig
 		{
 			self.tags.push(self.publisher);
 		}
+		else
+		{
+			self.publisher = 'epub-maker2';
+		}
 
 		{
 			self.tags.push('epub-maker2');

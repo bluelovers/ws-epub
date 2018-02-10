@@ -92,8 +92,8 @@ body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	font-family: Consolas, Noto Sans CJK JP, Noto Sans CJK SC, Noto Sans CJK TC, Noto Sans JP, Noto Sans SC, Noto Sans TC, Noto Sans CJK, Microsoft Yahei UI, sans-serif;
 	line-height: 1.45em;
 	line-height: 1.6em;
-	//-webkit-text-stroke: 0.6px;
-	//-webkit-text-stroke: 0.4px;
+	/*-webkit-text-stroke: 0.6px;*/
+	/*-webkit-text-stroke: 0.4px;*/
 	text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.75);
 }
 

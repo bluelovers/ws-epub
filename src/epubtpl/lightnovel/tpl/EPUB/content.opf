@@ -16,6 +16,7 @@
         <dc:language>{{lang}}</dc:language>
         <dc:date>{{publicationDate}}</dc:date>
         <meta property="dcterms:modified">{{modificationDate}}</meta>
+        <dc:publisher>{{ publisher }}</dc:publisher>
         {{#if rights}}
           {{#if rights.description}}<dc:rights>{{rights.description}}</dc:rights>{{/if}}
           {{#if rights.license}}<link rel="cc:license" href="{{rights.license}}" />{{/if}}
