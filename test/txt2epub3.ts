@@ -55,10 +55,13 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 
 //novelID = '病娇女神の箱庭';
 
-novelID = '回復術士のやり直し～即死魔法とスキルコピーの超越ヒール～';
+//novelID = '回復術士のやり直し～即死魔法とスキルコピーの超越ヒール～';
 
 //novelID = '你与我最后的战场，亦或是世界起始的圣战_(2290)';
 
+//novelID = 'シャチになりましたオルカナティブ';
+
+novelID = '自分が異世界に転移するなら';
 
 /**
  * 小說 txt 的主資料夾路徑
@@ -241,6 +244,11 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 						if (row.ext == '.txt')
 						{
 							data = splitTxt(data.toString());
+						}
+
+						if (Buffer.isBuffer(data))
+						{
+							data = data.toString();
 						}
 
 //						if (row.file == '0000_插画.71349')
