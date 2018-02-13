@@ -22,6 +22,7 @@ export async function compileCss(css)
 			}),
 		])
 			.process(css, {
+				from: undefined,
 				// @ts-ignore
 				processors: [
 					postcssStripInlineComments,
