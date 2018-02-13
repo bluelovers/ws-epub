@@ -1,14 +1,15 @@
-#!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const novelGlobby = require("node-novel-globby");
 const path = require("path");
 const Promise = require("bluebird");
+const moment = require("moment");
 const node_novel_info_1 = require("node-novel-info");
 const crlf_normalize_1 = require("crlf-normalize");
 const fs_iconv_1 = require("fs-iconv");
 let TXT_PATH;
 TXT_PATH = path.join(process.cwd());
+const outputDirPathPrefix = 'out';
 let globby_patterns;
 let globby_options = {
     cwd: TXT_PATH,
@@ -37,12 +38,12 @@ let globby_options = {
         .tap(function (ls) {
     })
         .catch(function () {
-        console.warn('[SKIP] README.md not exists!');
+        console.warn('[WARN] README.md not exists!');
     });
     let hr_len = 15;
     let hr1 = '＝'.repeat(hr_len);
     let hr2 = '－'.repeat(hr_len);
-    await novelGlobby.globbyASync(globby_options)
+    await novelGlobby.globbyASync(globby_patterns, globby_options)
         .tap(function (ls) {
     })
         .then(function (_ls) {
@@ -89,15 +90,14 @@ let globby_options = {
             let filename2 = fs_iconv_1.trimFilename(filename)
                 .replace(/\./, '_')
                 .replace(/^[_+\-]+|[_+\-]+$/, '');
-            
             filename2 = fs_iconv_1.trimFilename(filename2.split('').slice(0, 10).join(''));
-            
             if (!filename2) {
-                console.log(`Bad Filename: ${filename} => ${filename2}`);
+                console.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
                 filename2 = 'temp';
             }
+            filename += '_' + moment().local().format('YYYYMMDDHHmm');
             filename2 = `${filename2}.out.txt`;
-            await fs_iconv_1.default.outputFile(path.join(PATH_CWD, `out/${filename2}`), txt);
+            await fs_iconv_1.default.outputFile(path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`), txt);
             ;
             return filename2;
         })
