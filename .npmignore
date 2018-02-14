@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-### git template
+### npm template
 .idea
 
 ~ci.list.txt
@@ -10,13 +10,15 @@
 *.bak
 *.old
 
+tsconfig.json
 package-lock.json
 
-test/**/*.js
-test/**/*.d.ts
-test/*.js
-test/*.d.ts
-texst/temp
+test
+
+.github
+.gitkeep
+
+/.*
+
 /out/
-/test/temp/
 /test/

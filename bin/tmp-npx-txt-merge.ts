@@ -1,26 +1,89 @@
-/**
- * Created by user on 2018/2/14/014.
- */
+#!/usr/bin/env node
 
 import * as yargs from 'yargs';
 import * as path from 'path';
 import * as Promise from 'bluebird';
-import novelTxtMerge from '../index';
+import txtMerge from '../index';
+
+const CWD = process.cwd();
 
 let cli = yargs
-	.usage("$0 [-o dir] [-i file]")
-	.example('$0 -o epub name.epub', 'extract name.epub to epub dir')
+	.default({
+		//input: process.cwd(),
+	})
+	.option('input', {
+		alias: ['i'],
+		//demandOption: true,
+		requiresArg: true,
+		normalize: true,
+		type: 'string',
+		desc: 'source novel txt folder path',
+		/*
+		default: function ()
+		{
+			//return process.cwd();
+		},
+		*/
+	})
+	.option('output', {
+		alias: ['o'],
+		//demandOption: true,
+		requiresArg: true,
+		normalize: true,
+		type: 'string',
+		desc: ' output path',
+		default: function ()
+		{
+			return CWD;
+		},
+	})
+	.option('zh', {
+		//default: true,
+		boolean: true,
+	})
+	.command('$0', '', function (yargs)
+	{
+		if (yargs.argv.zh)
+		{
+			yargs.locale('zh_CN');
+		}
 
-	.command('all', 'extract all epub')
-	.alias('a', 'all')
+		let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;
+		let outputPath = yargs.argv.output;
 
-	.command('v', 'show log')
+		if (!path.isAbsolute(inputPath))
+		{
+			inputPath = path.join(CWD, inputPath);
+		}
 
-	.alias('o', 'output')
-	.nargs('o', 1)
-	.describe('o', 'output dir path')
+		if (!path.isAbsolute(outputPath))
+		{
+			outputPath = path.join(CWD, outputPath);
+		}
 
-	.alias('i', 'input')
-	.nargs('i', 1)
-	.describe('i', 'input file path')
+		console.log(`currentPath:\n\t`, inputPath);
+		console.log(`inputPath:\n\t`, inputPath);
+		console.log(`outputPath:\n\t`, outputPath);
+
+		if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0)
+		{
+			console.error(`[FAIL] path not allow`);
+
+			yargs.showHelp();
+
+			process.exit(1);
+
+			return;
+		}
+
+		console.log(`\n`);
+
+		//console.log(666, yargs.argv);
+
+		return txtMerge(inputPath, outputPath);
+
+		//yargs.showHelp('log');
+	})
+	//.help()
+	.argv
 ;

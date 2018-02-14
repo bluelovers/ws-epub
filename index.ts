@@ -10,32 +10,34 @@ import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 
-let TXT_PATH: string;
-
-TXT_PATH = path.join(process.cwd());
-
-const outputDirPathPrefix = 'out';
-
-let globby_patterns: string[];
-let globby_options: novelGlobby.IOptions = {
-	cwd: TXT_PATH,
-	useDefaultPatternsExclude: true,
-};
-
+export async function txtMerge(inputPath: string, outputPath: string)
 {
-	let ret = novelGlobby.getOptions(globby_options);
-	[globby_patterns, globby_options] = [ret.patterns, ret.options];
-}
+	const TXT_PATH: string = inputPath;
+	const PATH_CWD: string = outputPath;
+	const outputDirPathPrefix = 'out';
 
-(async () =>
-{
+	if (!inputPath || !outputPath || typeof inputPath != 'string' || typeof outputPath != 'string')
+	{
+		throw new ReferenceError('must set inputPath, outputPath');
+	}
+
+	let globby_patterns: string[];
+	let globby_options: novelGlobby.IOptions = {
+		cwd: TXT_PATH,
+		useDefaultPatternsExclude: true,
+	};
+
+	{
+		[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
+
+		globby_patterns.push('!*/*/**/*');
+	}
 
 	let meta: IMdconfMeta;
 
-	const PATH_CWD = globby_options.cwd || process.cwd();
+	//console.info(`PATH_CWD: ${PATH_CWD}\n`);
 
-	console.info(`PATH_CWD: ${PATH_CWD}\n`);
-
+	//console.log(globby_patterns);
 	//console.log(globby_options);
 
 	meta = await novelGlobby.globbyASync([
@@ -75,6 +77,8 @@ let globby_options: novelGlobby.IOptions = {
 		.tap(function (ls)
 		{
 			//console.log(ls);
+
+			//throw new Error('test');
 		})
 		.then(function (_ls)
 		{
@@ -191,4 +195,6 @@ let globby_options: novelGlobby.IOptions = {
 		})
 	;
 
-})();
+}
+
+export default txtMerge;

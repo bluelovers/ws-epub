@@ -1,42 +1,46 @@
 {
-  "name": "tmp-npx-txt-merge",
+  "name": "novel-txt-merge",
   "version": "1.0.0",
   "description": "合併小說個別 txt 章節/目錄 => 單一 txt 合併",
+  "keywords": [
+    "cli",
+    "file",
+    "merge",
+    "node-novel",
+    "node-text",
+    "novel",
+    "npx-bin",
+    "npx-cli",
+    "text",
+    "txt"
+  ],
+  "homepage": "https://github.com/bluelovers/node-novel-txt-merge#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/node-novel-txt-merge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/node-novel-txt-merge.git"
+  },
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
+  "bin": {
+    "tmp-npx-txt-merge": "./bin/tmp-npx-txt-merge.js"
+  },
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin": {
-    "tmp-npx-txt-merge": "./index.js"
-  },
-  "keywords": [
-    "node-novel",
-    "text",
-    "txt",
-    "novel",
-    "merge",
-    "cli",
-    "npx-cli",
-    "npx-bin",
-    "node-text"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "crlf-normalize": "latest",
     "fs-iconv": "latest",
     "moment": "latest",
     "node-novel-globby": "latest",
     "node-novel-info": "latest",
-    "yargs": "^11.0.0"
+    "yargs": "latest"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://gist.github.com/f00347e33208428d0ab23150952c6935.git"
-  },
-  "bugs": {
-    "url": "https://gist.github.com/f00347e33208428d0ab23150952c6935"
-  },
-  "homepage": "https://gist.github.com/f00347e33208428d0ab23150952c6935"
+  "devDependencies": {}
 }

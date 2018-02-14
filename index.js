@@ -7,22 +7,23 @@ const moment = require("moment");
 const node_novel_info_1 = require("node-novel-info");
 const crlf_normalize_1 = require("crlf-normalize");
 const fs_iconv_1 = require("fs-iconv");
-let TXT_PATH;
-TXT_PATH = path.join(process.cwd());
-const outputDirPathPrefix = 'out';
-let globby_patterns;
-let globby_options = {
-    cwd: TXT_PATH,
-    useDefaultPatternsExclude: true,
-};
-{
-    let ret = novelGlobby.getOptions(globby_options);
-    [globby_patterns, globby_options] = [ret.patterns, ret.options];
-}
-(async () => {
+async function txtMerge(inputPath, outputPath) {
+    const TXT_PATH = inputPath;
+    const PATH_CWD = outputPath;
+    const outputDirPathPrefix = 'out';
+    if (!inputPath || !outputPath || typeof inputPath != 'string' || typeof outputPath != 'string') {
+        throw new ReferenceError('must set inputPath, outputPath');
+    }
+    let globby_patterns;
+    let globby_options = {
+        cwd: TXT_PATH,
+        useDefaultPatternsExclude: true,
+    };
+    {
+        [globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
+        globby_patterns.push('!*/*/**/*');
+    }
     let meta;
-    const PATH_CWD = globby_options.cwd || process.cwd();
-    console.info(`PATH_CWD: ${PATH_CWD}\n`);
     meta = await novelGlobby.globbyASync([
         'README.md',
     ], globby_options)
@@ -115,4 +116,6 @@ let globby_options = {
         console.error(`[ERROR] can't found any file in '${PATH_CWD}'`);
         console.trace(e);
     });
-})();
+}
+exports.txtMerge = txtMerge;
+exports.default = txtMerge;
