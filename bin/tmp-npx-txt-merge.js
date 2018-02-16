@@ -39,9 +39,9 @@ let cli = yargs
     if (!path.isAbsolute(outputPath)) {
         outputPath = path.join(CWD, outputPath);
     }
-    console.log(`currentPath:\n\t`, inputPath);
-    console.log(`inputPath:\n\t`, inputPath);
-    console.log(`outputPath:\n\t`, outputPath);
+    console.log(`currentPath:\n  `, inputPath);
+    console.log(`inputPath:\n  `, inputPath);
+    console.log(`outputPath:\n  `, outputPath);
     if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0) {
         console.error(`[FAIL] path not allow`);
         yargs.showHelp();
@@ -51,4 +51,5 @@ let cli = yargs
     console.log(`\n`);
     return index_1.default(inputPath, outputPath);
 })
+    .version()
     .argv;

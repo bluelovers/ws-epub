@@ -61,9 +61,9 @@ let cli = yargs
 			outputPath = path.join(CWD, outputPath);
 		}
 
-		console.log(`currentPath:\n\t`, inputPath);
-		console.log(`inputPath:\n\t`, inputPath);
-		console.log(`outputPath:\n\t`, outputPath);
+		console.log(`currentPath:\n  `, inputPath);
+		console.log(`inputPath:\n  `, inputPath);
+		console.log(`outputPath:\n  `, outputPath);
 
 		if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0)
 		{
@@ -84,6 +84,7 @@ let cli = yargs
 
 		//yargs.showHelp('log');
 	})
+	.version()
 	//.help()
 	.argv
 ;
