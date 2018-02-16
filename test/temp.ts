@@ -15,6 +15,7 @@ let srcFile: string;
 
 srcFile = './res/Long Feng Zhi Zu - Si Yuan rururu.epub';
 //srcFile = './res/An Hei Qi Shi Wu Yu - Wei Zhi.epub'; // bad epub will fail
+srcFile = './res/異世界で魅力チートを使.epub';
 
 export const IDKEY = 'epub';
 export const PATH_NOVEL_MAIN = path.join(process.cwd(), IDKEY);

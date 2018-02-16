@@ -2,5 +2,5 @@
 /test/
 /.idea/
 *.old
-/package-lock.json
+#/package-lock.json
 /bin/epub-extract.d.ts
