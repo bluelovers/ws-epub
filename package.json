@@ -1,0 +1,12 @@
+{
+  "name": "node-novel-epub",
+  "version": "1.0.0",
+  "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
