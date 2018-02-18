@@ -41,17 +41,30 @@ let cli = yargs
 			return CWD;
 		},
 	})
-	.option('zh', {
-		//default: true,
+	.option('tpl', {
+		alias: ['t'],
+		requiresArg: true,
+		type: 'string',
+		desc: 'epub tpl',
+	})
+	.option('filename', {
+		alias: ['f'],
+		requiresArg: true,
+		type: 'string',
+		desc: 'filename',
+	})
+	.option('date', {
 		boolean: true,
+		alias: ['d'],
+		desc: 'add current date end of filename',
+	})
+	.option('lang', {
+		alias: ['l'],
+		type: 'string',
+		desc: 'epub lang',
 	})
 	.command('$0', '', function (yargs)
 	{
-		if (yargs.argv.zh)
-		{
-			yargs.locale('zh_CN');
-		}
-
 		let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;
 		let outputPath = yargs.argv.output;
 
@@ -87,6 +100,10 @@ let cli = yargs
 		return novelEpub({
 			inputPath,
 			outputPath,
+			filename: yargs.argv.filename || null,
+			epubLanguage: yargs.argv.lang,
+			epubTemplate: yargs.argv.tpl,
+			padEndDate: yargs.argv.date,
 		});
 
 		//yargs.showHelp('log');

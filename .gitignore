@@ -19,4 +19,4 @@ test/*.d.ts
 texst/temp
 /out/
 /test/temp/
-/test/
+/bin/*.d.ts
