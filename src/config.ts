@@ -421,7 +421,7 @@ export class EpubConfig implements IEpubConfig
 		{
 			self.infoPreface = crlf(self.infoPreface).replace(/[ \t\uFEFF\xA0　]+$/gm, '');
 
-			self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br>')
+			self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br/>')
 		}
 
 		//console.log(self.infoPreface, self.infoPrefaceHTML);

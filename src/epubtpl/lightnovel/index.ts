@@ -6,6 +6,7 @@ import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 import { EpubMaker } from '../../index';
 import * as Promise from 'bluebird';
+import * as shortid from 'shortid';
 
 import epubTplLib, {} from '../../epubtpl-lib';
 
@@ -173,7 +174,7 @@ export namespace Builder
 		else
 		{
 			titlePrefix = section.content.fullTitle = section.content.title;
-			namePrefix = section.name = '' + section.rank;
+			namePrefix = section.name = section.rank;
 		}
 		if (section.content.content || section.content.renderTitle || section.epubType == 'auto-toc')
 		{
@@ -181,6 +182,11 @@ export namespace Builder
 		}
 
 		section.playOrder = playOrder++;
+
+		if (!section.id)
+		{
+			section.id = (section.epubType || '').toString().replace('/\W/g', '') + shortid();
+		}
 
 		for (let i = 0; i < section.subSections.length; i++)
 		{
