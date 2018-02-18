@@ -71,11 +71,15 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 				if ((epub.metadata.subject || []).includes('epub-maker2'))
 				{
-					if (/^\d+$/.test(elem.id) && !elem.level)
+					if (/^\d+$|^volume\d+/.test(elem.id) && !elem.level)
 					{
 						isVolume = true;
 					}
-					else if (/^\d+/.test(elem.id))
+					else if (/^\d+|^chapter\d+/.test(elem.id))
+					{
+						isVolume = false;
+					}
+					else if (/^image\d+/.test(elem.id))
 					{
 						isVolume = false;
 					}
