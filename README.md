@@ -1,4 +1,4 @@
-# node-novel-epub
+# novel-epub
 
 > create epub from node-novel style ( this module from epub-maker2 submodule )
 > 合併小說 => epub
@@ -9,12 +9,12 @@
 
 小說資料夾所在位置輸入以下指令
 
-`npx node-novel-epub`
+`npx novel-epub`
 
 ### 方案 2
 
-1. `npm install -g node-novel-epub` 將此命令安裝為 Global 命令
-2. `node-novel-epub -i PathOfTxt -o PathOfOutput` 然後就可以執行以下指令
+1. `npm install -g novel-epub` 將此命令安裝為 Global 命令
+2. `novel-epub -i PathOfTxt -o PathOfOutput` 然後就可以執行以下指令
 
 ## cli
 
@@ -55,3 +55,8 @@ novelEpub({
 	outputPath: './temp',
 });
 ```
+
+## link
+
+* [epub-maker2](https://www.npmjs.com/package/epub-maker2)
+* [node-novel](https://www.npmjs.com/search?q=node-novel)
