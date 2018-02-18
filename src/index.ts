@@ -1,4 +1,4 @@
-import * as slugify from 'slugify';
+import * as _slugify from 'slugify';
 import * as moment from 'moment';
 import { templateManagers } from './template';
 import * as shortid from 'shortid';
@@ -8,13 +8,30 @@ import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
 
-export { slugify, shortid, hashSum }
+export { shortid, hashSum }
+
+export function slugify(input: string, ...argv): string
+{
+	let fn = EpubMaker.libSlugify ||
+		// @ts-ignore
+		_slugify as ISlugify
+	;
+
+	return fn(input || '', ...argv).trim();
+}
+
+export function slugifyWithFallback(input: string, ...argv): string
+{
+	let ret = slugify(input, ...argv);
+
+	return ret || hashSum(input);
+}
 
 export class EpubMaker
 {
 	public epubConfig: EpubConfig;
 
-	constructor(options?, config?: IEpubConfig)
+	constructor(options = {}, config?: IEpubConfig)
 	{
 		this.epubConfig = new EpubConfig(config, options);
 	}
@@ -36,11 +53,25 @@ export class EpubMaker
 		return this;
 	}
 
+	slugify(input: string, ...argv): string
+	{
+		let fn = this.epubConfig.options.libSlugify || slugify;
+
+		return fn(input || '', ...argv).trim();
+	}
+
+	slugifyWithFallback(input: string, ...argv): string
+	{
+		let ret = this.slugify(input, ...argv);
+
+		return ret || hashSum(input);
+	}
+
 	withTitle(title: string, title_short?: string)
 	{
 		this.epubConfig.title = title;
 		// @ts-ignore
-		this.epubConfig.slug = slugify(title) || hashSum(title);
+		this.epubConfig.slug = this.slugifyWithFallback(title || title_short);
 
 		if (title_short)
 		{
@@ -395,6 +426,11 @@ export interface ISectionContent
 	cover?
 }
 
+export interface ISlugify
+{
+	(input: string, ...argv): string
+}
+
 export namespace EpubMaker
 {
 	export let defaultExt = '.epub';
@@ -403,6 +439,9 @@ export namespace EpubMaker
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore
 	export const epubtypes = require('./epub-types.js');
+
+	// @ts-ignore
+	export let libSlugify = _slugify as ISlugify;
 
 	/**
 	 * @epubType Optional. Allows you to add specific epub type content such as [epub:type="titlepage"]

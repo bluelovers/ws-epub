@@ -9,8 +9,8 @@ debug/
 reports/
 /.idea
 *.bak
-*.js
-*.d.ts
+test/*.js
+test/*.d.ts
 /dist/
 /test/temp/
 /test/res/

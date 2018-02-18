@@ -1,6 +1,5 @@
 import * as moment from 'moment';
-import * as slugify from 'slugify';
-import { EpubMaker } from './index';
+import { EpubMaker, ISlugify, slugify } from './index';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import { array_unique } from './lib/array';
@@ -153,7 +152,11 @@ export class EpubConfig implements IEpubConfig
 	sections?: EpubMaker.Section[];
 	toc?: EpubMaker.Section[];
 	landmarks?: EpubMaker.Section[];
-	options?;
+	options?: {
+		libSlugify?: ISlugify,
+		ext?: string,
+		generateOptions?,
+	};
 	additionalFiles?: IFiles[];
 
 	modification?: moment.Moment;
