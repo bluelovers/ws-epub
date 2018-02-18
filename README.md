@@ -16,6 +16,20 @@
 1. `npm install -g novel-epub` 將此命令安裝為 Global 命令
 2. `novel-epub -i PathOfTxt -o PathOfOutput` 然後就可以執行以下指令
 
+### 注意事項
+
+* 此模組要求資料夾底下必須要有 README.md 或者 meta.md 的存在 格式為 [node-novel-info](https://www.npmjs.com/package/node-novel-info)
+
+最低條件至少要有以下內容
+```
+# novel
+
+- title: 自卫队三部曲
+```
+
+* 每一個子資料夾代表一個章/卷
+* 會自動對名稱排序 即使是 全形/半形 + 中文數字 混用的情況依然可以排序
+
 ## cli
 
 ```
@@ -60,3 +74,4 @@ novelEpub({
 
 * [epub-maker2](https://www.npmjs.com/package/epub-maker2)
 * [node-novel](https://www.npmjs.com/search?q=node-novel)
+* [node-novel-globby](https://www.npmjs.com/package/node-novel-globby)
