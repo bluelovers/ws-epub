@@ -1,3 +1,4 @@
+import EpubMaker from 'epub-maker2';
 import * as Promise from 'bluebird';
 import { IMdconfMeta } from 'node-novel-info';
 export interface IOptions {
@@ -19,5 +20,9 @@ export interface IOptions {
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;
-export declare function create(options: IOptions, cache?: {}): any;
+export declare function create(options: IOptions, cache?: {}): Promise<{
+    file: string;
+    filename: string;
+    epub: EpubMaker;
+}>;
 export default create;

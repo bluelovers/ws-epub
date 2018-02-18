@@ -86,7 +86,11 @@ export async function getNovelConf(options: IOptions, cache = {}): Promise<IMdco
 	return meta;
 }
 
-export function create(options: IOptions, cache = {})
+export function create(options: IOptions, cache = {}): Promise<{
+	file: string,
+	filename: string,
+	epub: EpubMaker,
+}>
 {
 	return Promise.resolve().then(async function ()
 	{
