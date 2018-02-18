@@ -1,0 +1,22 @@
+# Created by .ignore support plugin (hsz.mobi)
+### git template
+.idea
+
+~ci.list.txt
+~ci.log.txt
+~ci.errors.txt
+
+*.stackdump
+*.bak
+*.old
+
+package-lock.json
+
+test/**/*.js
+test/**/*.d.ts
+test/*.js
+test/*.d.ts
+texst/temp
+/out/
+/test/temp/
+/test/

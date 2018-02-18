@@ -6,7 +6,35 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "archive",
+    "book",
+    "chapter",
+    "comic",
+    "creator",
+    "epub",
+    "epub-maker",
+    "epub-maker2",
+    "generator",
+    "maker",
+    "manifest",
+    "metadata",
+    "mobile",
+    "node-novel",
+    "novel",
+    "volume",
+    "cli",
+    "zip"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "fs-iconv": "^1.3.4",
+    "moment": "^2.20.1",
+    "node-novel-globby": "^1.6.4",
+    "node-novel-info": "^2.3.4",
+    "str-util": "^2.3.12",
+    "yargs": "^11.0.0"
+  }
 }
