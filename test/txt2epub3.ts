@@ -6,7 +6,6 @@ import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from '..';
 import * as Promise from 'bluebird';
 import * as path from 'path';
-import * as globby from 'globby';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
@@ -36,7 +35,7 @@ novelID = '黑之魔王';
 
 //novelID = '雪色エトランゼ';
 
-novelID = '自称贤者弟子的贤者';
+//novelID = '自称贤者弟子的贤者';
 
 //novelID = '抗いし者たちの系譜 逆襲の魔王';
 //
@@ -61,7 +60,9 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 
 //novelID = 'シャチになりましたオルカナティブ';
 
-novelID = '自分が異世界に転移するなら';
+//novelID = '自分が異世界に転移するなら';
+
+novelID = '百魔の主';
 
 /**
  * 小說 txt 的主資料夾路徑
@@ -151,7 +152,7 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 		epub.withCover(meta.novel.cover);
 	}
 
-	await globby([
+	await novelGlobby.globby([
 		'cover.*',
 	], {
 		cwd: TXT_PATH,
@@ -204,7 +205,7 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 						title: volume_title,
 					}, false, true);
 
-					await globby([
+					await novelGlobby.globby([
 						'cover.*',
 					], {
 						cwd: dirname,
@@ -243,11 +244,13 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 
 						if (row.ext == '.txt')
 						{
+							// @ts-ignore
 							data = splitTxt(data.toString());
 						}
 
 						if (Buffer.isBuffer(data))
 						{
+							// @ts-ignore
 							data = data.toString();
 						}
 
@@ -271,7 +274,7 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 						volume.withSubSection(chapter);
 					});
 
-					await globby([
+					await novelGlobby.globby([
 						'*.{jpg,gif,png,jpeg,svg}',
 						'!cover.*',
 						'!*.txt',

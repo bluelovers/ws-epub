@@ -5,7 +5,7 @@
 // @ts-ignore
 import * as path from 'path';
 import * as Promise from 'bluebird';
-import { IEpubConfig, IRightsConfig, IBuilder } from './var';
+import { IEpubConfig, IBuilder } from './var';
 import { EpubMaker } from './index';
 
 // @ts-ignore

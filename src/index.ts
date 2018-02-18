@@ -276,7 +276,7 @@ export class EpubMaker
 		return this;
 	}
 
-	getFilename(useTitle?: boolean): string
+	getFilename(useTitle?: boolean, noExt?: boolean): string
 	{
 		let ext = this.epubConfig.options.ext || EpubMaker.defaultExt;
 		let filename;
@@ -298,7 +298,7 @@ export class EpubMaker
 			filename = this.epubConfig.slug;
 		}
 
-		return trimFilename(filename) + ext;
+		return trimFilename(filename) + (noExt ? '' : ext);
 	}
 
 	vaild()
