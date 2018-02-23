@@ -18,6 +18,7 @@ async function txtMerge(inputPath, outputPath) {
     let globby_options = {
         cwd: TXT_PATH,
         useDefaultPatternsExclude: true,
+        absolute: true,
     };
     {
         [globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
@@ -39,7 +40,7 @@ async function txtMerge(inputPath, outputPath) {
         .tap(function (ls) {
     })
         .catch(function () {
-        console.warn('[WARN] README.md not exists!');
+        console.warn(`[WARN] README.md not exists! (${path.join(globby_options.cwd, 'README.md')})`);
     });
     let hr_len = 15;
     let hr1 = '＝'.repeat(hr_len);

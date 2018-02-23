@@ -1,6 +1,6 @@
 {
   "name": "novel-txt-merge",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "合併小說個別 txt 章節/目錄 => 單一 txt 合併",
   "keywords": [
     "cli",
@@ -38,7 +38,7 @@
     "crlf-normalize": "^1.0.0",
     "fs-iconv": "^1.3.4",
     "moment": "^2.20.1",
-    "node-novel-globby": "^1.6.4",
+    "node-novel-globby": "^1.7.3",
     "node-novel-info": "^2.3.4",
     "yargs": "^11.0.0"
   },

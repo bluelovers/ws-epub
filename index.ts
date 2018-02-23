@@ -25,6 +25,7 @@ export async function txtMerge(inputPath: string, outputPath: string)
 	let globby_options: novelGlobby.IOptions = {
 		cwd: TXT_PATH,
 		useDefaultPatternsExclude: true,
+		absolute: true,
 	};
 
 	{
@@ -62,7 +63,7 @@ export async function txtMerge(inputPath: string, outputPath: string)
 		})
 		.catch(function ()
 		{
-			console.warn('[WARN] README.md not exists!');
+			console.warn(`[WARN] README.md not exists! (${path.join(globby_options.cwd, 'README.md')})`);
 		})
 	;
 
