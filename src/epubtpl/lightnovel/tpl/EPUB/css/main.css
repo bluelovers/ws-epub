@@ -309,6 +309,11 @@ hr, .linehr
 	text-align: center;
 }
 
+.linehr-double
+{
+	border-bottom: 0.3em double currentcolor;
+}
+
 p.linegroup, .calibre1, .softbreak
 { display: block; }
 
@@ -414,5 +419,10 @@ header h2
 	hr, .linehr
 	{
 		border-bottom-width: 0.1em;
+	}
+
+	.linehr-double
+	{
+		border-bottom-width: 0.3em;
 	}
 }
