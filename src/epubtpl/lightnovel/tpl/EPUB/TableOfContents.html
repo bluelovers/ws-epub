@@ -22,7 +22,7 @@
 		{{#if modificationDateYMD}}
 		<div>{{modificationDateYMD}}</div>
 		{{/if}}
-		<div class="state-indicator"></div>
+		<div class="state-indicator" id="state-indicator"></div>
 
 		{{#if infoPrefaceHTML}}
 		<article><div class="left" style="display: inline-block">{{{infoPrefaceHTML}}}</div></article>
@@ -44,4 +44,7 @@
 	</section>
 
 </body>
+<script type="javascript">
+document.getElementById("state-indicator").textContent = 'js';
+</script>
 </html>
