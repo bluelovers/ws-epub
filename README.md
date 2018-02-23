@@ -42,6 +42,23 @@ export interface ISlugify
 }
 ```
 
+## downloadEpub
+
+this is old `epub-maker` api, but we split this to optional
+
+u need install by self `npm i epub-maker2 file-saver`
+
+```ts
+import EpubMaker from 'epub-maker2';
+import 'epub-maker2/src/plugin/file-saver';
+
+let epub = new EpubMaker();
+
+// ...
+
+eoub.downloadEpub(callback, options);
+```
+
 ## cli
 
 * see [novel-epub](https://www.npmjs.com/package/novel-epub)
