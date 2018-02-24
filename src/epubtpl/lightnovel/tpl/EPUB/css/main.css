@@ -370,6 +370,12 @@ header h2
 
 .state-indicator:before { content: 'desktop'; }
 
+.overflow-line
+{
+	overflow: hidden;
+	max-width: 90%;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio:0)
 {
 	.state-indicator:after { content: 'webkit'; }
