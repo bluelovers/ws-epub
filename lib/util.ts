@@ -13,7 +13,7 @@ export function splitTxt(txt)
 			.replace(/\u003C/g, '&lt;')
 			.replace(/\u003E/g, '&gt;')
 
-			.replace(/&lt;(img.+)\/?&gt;/gm, function (...m)
+			.replace(/&lt;(img.+?)\/?&gt;/gm, function (...m)
 			{
 				//console.log(m);
 
@@ -22,10 +22,14 @@ export function splitTxt(txt)
 
 			.replace(/^[－＝\-—\=─]{3,}$/mg, '<hr/>')
 
+			//.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
+
 			.replace(/\n/g, '</p><p>')
 		+ '</p>')
 
 		.replace(/<p><hr\/><\/p>/g, '<hr class="linehr"/>')
+
+		.replace(/<p>([－＝\-—\=─═─＝=══－\-─—◆◇]+)<\/p>/g, '<p class="linegroup calibre1 overflow-line">$1</p>')
 
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
 		.replace(/<p>/g, '<p class="linegroup calibre1">')
@@ -33,5 +37,6 @@ export function splitTxt(txt)
 }
 
 import * as self from './util';
+
 export default self;
 //export default exports;

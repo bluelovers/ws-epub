@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",
@@ -44,13 +44,15 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
-    "epub-maker2": "^2.2.1",
+    "epub-maker2": "^2.2.8",
     "fs-iconv": "^1.3.4",
     "moment": "^2.20.1",
-    "node-novel-globby": "^1.6.6",
+    "node-novel-globby": "^1.7.3",
     "node-novel-info": "^2.3.4",
-    "str-util": "^2.3.12",
+    "str-util": "^2.3.13",
     "yargs": "^11.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "novel-txt-merge": "^1.0.5"
+  }
 }

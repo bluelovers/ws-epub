@@ -13,7 +13,7 @@ let novelID: string;
 //novelID = '黒の魔王';
 novelID = '黑之魔王';
 
-//novelID = '四度目は嫌な死属性魔術師';
+novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
 //novelID = '讨厌第四次的死属性魔术师_(2206)';
@@ -35,7 +35,7 @@ novelID = '黑之魔王';
 //
 //novelID = '異世界迷宮の最深部を目指そう';
 
-novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
+//novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
 
 //novelID = '转生奇谭_(1782)';
 //novelID = '女神异闻录2 罚_(755)';
@@ -58,6 +58,10 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 
 //novelID = '百魔の主';
 
+//novelID = '奪う者　奪われる者';
+
+novelID = '人喰い転移者の異世界復讐譚　～無能はスキル『捕食』で成り上がる～';
+
 /**
  * 小說 txt 的主資料夾路徑
  * @type {string}
@@ -74,7 +78,36 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\epub_out', novelID);
 
-novelEpub({
-	inputPath: TXT_PATH,
-	outputPath: './temp',
-});
+let OUTPUT_PATH = path.join(__dirname, './temp');
+
+(async () =>
+{
+	await novelEpub({
+		inputPath: TXT_PATH,
+		outputPath: OUTPUT_PATH,
+		filename: novelID,
+		padEndDate: true,
+	});
+
+	console.log('--------');
+
+	if (1)
+	{
+		// @ts-ignore
+		const txtMerge = await import('novel-txt-merge').then(function (mod)
+		{
+			return mod.default;
+		})
+			.catch(function (e)
+			{
+				console.warn(e.toString());
+				return null;
+			})
+		;
+
+		if (txtMerge)
+		{
+			await txtMerge(TXT_PATH, OUTPUT_PATH);
+		}
+	}
+})();

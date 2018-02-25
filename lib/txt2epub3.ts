@@ -64,13 +64,17 @@ export async function getNovelConf(options: IOptions, cache = {}): Promise<IMdco
 
 		if (fs.existsSync(path.join(confPath, 'meta.md')))
 		{
-			meta = await fs.readFile(path.join(confPath, 'meta.md'))
+			let file = path.join(confPath, 'meta.md');
+
+			meta = await fs.readFile(file)
 				.then(mdconf_parse)
 			;
 		}
 		else if (fs.existsSync(path.join(confPath, 'README.md')))
 		{
-			meta = await fs.readFile(path.join(confPath, 'README.md'))
+			let file = path.join(confPath, 'README.md');
+
+			meta = await fs.readFile(file)
 				.then(mdconf_parse)
 			;
 		}
@@ -100,6 +104,16 @@ export function create(options: IOptions, cache = {}): Promise<{
 		let TXT_PATH = options.inputPath;
 
 		let meta = await getNovelConf(options, cache);
+
+		let globby_patterns: string[];
+		let globby_options: novelGlobby.IOptions = {
+			cwd: TXT_PATH,
+			useDefaultPatternsExclude: true,
+		};
+
+		{
+			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
+		}
 
 		console.log(meta.novel.title);
 		//console.log(meta.novel.preface);
@@ -159,29 +173,22 @@ export function create(options: IOptions, cache = {}): Promise<{
 		{
 			await novelGlobby.globby([
 					'cover.*',
-				], {
-					cwd: TXT_PATH,
+				], Object.assign({}, globby_options, {
 					absolute: true,
-				})
+				}))
 				.then(ls =>
 				{
 					if (ls.length)
 					{
 						epub.withCover(ls[0]);
 					}
+
+					console.log(ls);
 				})
 			;
 		}
 
-		let globby_patterns: string[];
-		let globby_options: novelGlobby.IOptions = {
-			cwd: TXT_PATH,
-			useDefaultPatternsExclude: true,
-		};
-
-		{
-			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
-		}
+		//process.exit();
 
 		await novelGlobby
 			.globbyASync(globby_patterns, globby_options)
