@@ -373,15 +373,13 @@ header h2
 .overflow-line
 {
 	overflow: hidden;
-	max-width: 90%;
-	margin: auto;
+	max-width: 99%;
 	white-space: nowrap;
-	display: inline-block;
 	-webkit-margin-before: 0px;
 	-webkit-margin-after: 0px;
 	-webkit-margin-start: 0px;
 	-webkit-margin-end: 0px;
-	padding: 0px;
+	box-sizing: border-box;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0)
