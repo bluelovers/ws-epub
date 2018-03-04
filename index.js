@@ -20,7 +20,7 @@ function epubExtract(srcFile, options = {}) {
         }
     }
     if (!options.outputDir) {
-        options.outputDir = path.join(process.cwd(), exports.IDKEY);
+        options.outputDir = path.join(cwd, exports.IDKEY);
     }
     else if (!path.isAbsolute(options.outputDir)) {
         options.outputDir = path.join(cwd, options.outputDir);
@@ -120,8 +120,12 @@ function epubExtract(srcFile, options = {}) {
             let dirname = path.join(path_novel, `${vid} ${fs_iconv_1.trimFilename(volume.volume_title)}`);
             return await Promise.mapSeries(volume.chapter_list, async function (chapter) {
                 let ext = '.txt';
-                let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
-                let file = path.join(dirname, `${cid}_${fs_iconv_1.trimFilename(chapter.chapter_title)}${ext}`);
+                let name = fs_iconv_1.trimFilename(chapter.chapter_title);
+                if (!options.noFirePrefix) {
+                    let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
+                    name = `${cid}_${name}`;
+                }
+                let file = path.join(dirname, `${name}${ext}`);
                 let text = chapter.chapter_article;
                 await fs.outputFile(file, text);
                 if (options.log) {

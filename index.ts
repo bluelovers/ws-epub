@@ -18,11 +18,18 @@ export interface IOptions
 	outputDir?: string,
 	cwd?: string,
 	log?: boolean,
+
+	noFirePrefix?: boolean,
 }
 
 export function epubExtract(srcFile: string, options: IOptions = {}): Promise<string>
 {
 	let cwd = options.cwd || process.cwd();
+
+	//srcFile = srcFile.replace(/\u202A/g, '');
+
+	//console.log(srcFile.charCodeAt(0));
+	//console.log(path.isAbsolute(srcFile));
 
 	if (!path.isAbsolute(srcFile))
 	{
@@ -40,7 +47,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 	if (!options.outputDir)
 	{
-		options.outputDir = path.join(process.cwd(), IDKEY)
+		options.outputDir = path.join(cwd, IDKEY)
 	}
 	else if (!path.isAbsolute(options.outputDir))
 	{
@@ -197,12 +204,21 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 				return await Promise.mapSeries(volume.chapter_list, async function (chapter)
 				{
 					let ext = '.txt';
+
 					// @ts-ignore
-					let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
+					let name = trimFilename(chapter.chapter_title);
+
+					if (!options.noFirePrefix)
+					{
+						// @ts-ignore
+						let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
+
+						name = `${cid}_${name}`;
+					}
 
 					let file = path.join(dirname,
-						// @ts-ignore
-						`${cid}_${trimFilename(chapter.chapter_title)}${ext}`
+
+						`${name}${ext}`
 					);
 
 					// @ts-ignore
