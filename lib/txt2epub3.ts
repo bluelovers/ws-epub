@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
 import { mdconf_parse, IMdconfMeta, chkInfo } from 'node-novel-info';
 import { splitTxt } from './util';
+import * as deepmerge from 'deepmerge-plus';
 
 export interface IOptions
 {
@@ -34,12 +35,19 @@ export interface IOptions
 	epubLanguage?: string,
 
 	padEndDate?: boolean,
+
+	globbyOptions?: novelGlobby.IOptions,
 }
 
 export const defaultOptions: Partial<IOptions> = {
 	epubTemplate: 'lightnovel',
 	epubLanguage: 'zh',
 	//padEndDate: true,
+
+	globbyOptions: {
+		checkRoman: true,
+		useDefaultPatternsExclude: true,
+	},
 };
 
 export async function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta>
@@ -98,7 +106,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 {
 	return Promise.resolve().then(async function ()
 	{
-		options = Object.assign({}, defaultOptions, options);
+		options = deepmerge.all([{}, defaultOptions, options]);
 
 		let novelID = options.novelID;
 		let TXT_PATH = options.inputPath;
@@ -106,14 +114,17 @@ export function create(options: IOptions, cache = {}): Promise<{
 		let meta = await getNovelConf(options, cache);
 
 		let globby_patterns: string[];
-		let globby_options: novelGlobby.IOptions = {
+		let globby_options: novelGlobby.IOptions = Object.assign({}, options.globbyOptions, {
 			cwd: TXT_PATH,
-			useDefaultPatternsExclude: true,
-		};
+			//useDefaultPatternsExclude: true,
+			//checkRoman: true,
+		});
 
 		{
 			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
 		}
+
+		//console.log(options, globby_options);
 
 		console.log(meta.novel.title);
 		//console.log(meta.novel.preface);

@@ -1,5 +1,6 @@
 import EpubMaker from 'epub-maker2';
 import * as Promise from 'bluebird';
+import * as novelGlobby from 'node-novel-globby';
 import { IMdconfMeta } from 'node-novel-info';
 export interface IOptions {
     /**
@@ -17,6 +18,7 @@ export interface IOptions {
     epubTemplate?: any;
     epubLanguage?: string;
     padEndDate?: boolean;
+    globbyOptions?: novelGlobby.IOptions;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;
