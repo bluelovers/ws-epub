@@ -29,7 +29,7 @@ export function splitTxt(txt)
 
 		.replace(/<p><hr\/><\/p>/g, '<hr class="linehr"/>')
 
-		.replace(/<p>([－＝\-—\=─═─＝=══－\-─—◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃]+)<\/p>/g, '<p class="linegroup calibre1 overflow-line">$1</p>')
+		.replace(/<p>([－＝\-—\=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃]+)<\/p>/g, '<p class="linegroup calibre1 overflow-line">$1</p>')
 
 		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
 		.replace(/<p>/g, '<p class="linegroup calibre1">')
