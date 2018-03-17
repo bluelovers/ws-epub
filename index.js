@@ -7,6 +7,7 @@ const fs = require("fs-iconv");
 const fs_iconv_1 = require("fs-iconv");
 const Promise = require("bluebird");
 const novelInfo = require("node-novel-info");
+const html_1 = require("./lib/html");
 exports.IDKEY = 'epub';
 function epubExtract(srcFile, options = {}) {
     let cwd = options.cwd || process.cwd();
@@ -71,7 +72,7 @@ function epubExtract(srcFile, options = {}) {
                 }
                 else {
                     doc = await epub.getChapterAsync(elem.id);
-                    $ = cheerio.load(doc);
+                    $ = cheerio.load(html_1.default(doc));
                     let chapter_title;
                     let a = $('section header h2').eq(0);
                     if (!a.length) {

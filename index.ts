@@ -10,6 +10,7 @@ import { trimFilename } from 'fs-iconv';
 
 import * as Promise from 'bluebird';
 import * as novelInfo from 'node-novel-info';
+import fixHtml from './lib/html';
 
 export const IDKEY = 'epub';
 
@@ -126,7 +127,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					else
 					{
 						doc = await epub.getChapterAsync(elem.id);
-						$ = cheerio.load(doc);
+						$ = cheerio.load(fixHtml(doc));
 
 						let chapter_title: string;
 

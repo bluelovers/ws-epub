@@ -7,6 +7,7 @@ npm-debug.log
 /test/*.js
 /.idea/
 /package-lock.json
-/test/epub/
-/test/temp/
+test/epub
+test/temp
 /bin/epub-extract.d.ts
+test/res/epub
