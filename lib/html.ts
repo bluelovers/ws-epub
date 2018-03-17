@@ -10,6 +10,7 @@ export function fixHtml(html): string
 		collapseWhitespace: true,
 		preserveLineBreaks: true,
 		conservativeCollapse: true,
+		caseSensitive: true,
 	});
 }
 
