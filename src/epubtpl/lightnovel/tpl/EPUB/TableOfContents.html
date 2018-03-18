@@ -27,6 +27,12 @@
 		{{#if infoPrefaceHTML}}
 		<article><div class="left" style="display: inline-block">{{{infoPrefaceHTML}}}</div></article>
 		{{/if}}
+
+		{{#if authors}}
+		<div>
+			<br/>contribute: {{#each authors}}{{this}}{{/each}}
+		</div>
+		{{/if}}
 	</section>
 
 	<section>
