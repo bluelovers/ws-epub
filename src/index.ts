@@ -316,13 +316,13 @@ export class EpubMaker
 		{
 			filename = this.epubConfig.filename;
 		}
-		else if (useTitle && this.epubConfig.title)
+		else if (useTitle && this.epubConfig.title_short)
 		{
-			filename = this.epubConfig.title;
+			filename = this.epubConfig.title_short;
 		}
 		else if (useTitle && this.epubConfig.title)
 		{
-			filename = this.epubConfig.title_short;
+			filename = this.epubConfig.title;
 		}
 		else
 		{
