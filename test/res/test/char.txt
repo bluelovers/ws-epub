@@ -6,7 +6,7 @@ https://en.wikipedia.org/wiki/Dash
 
 1. -- HYPHEN-MINUS ( 鍵盤上的 -
 2. －－ FULLWIDTH HYPHEN-MINUS
-3. ── BOX DRAWINGS LIGHT HORIZONTAL
-4. —— 無間斷的
+3. ── 無間斷的 BOX DRAWINGS LIGHT HORIZONTAL
+4. —— EM DASH
 5. −− 減號
 6. ‐‐ 連字號
