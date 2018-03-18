@@ -19,6 +19,7 @@ export interface IOptions {
     epubLanguage?: string;
     padEndDate?: boolean;
     globbyOptions?: novelGlobby.IOptions;
+    useTitle?: boolean;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;

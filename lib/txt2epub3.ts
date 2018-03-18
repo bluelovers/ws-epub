@@ -37,6 +37,8 @@ export interface IOptions
 	padEndDate?: boolean,
 
 	globbyOptions?: novelGlobby.IOptions,
+
+	useTitle?: boolean,
 }
 
 export const defaultOptions: Partial<IOptions> = {
@@ -357,7 +359,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 		let data = await epub.makeEpub();
 
-		let filename = epub.getFilename(null, true);
+		let filename = epub.getFilename(options.useTitle, true);
 		let ext = EpubMaker.defaultExt;
 
 		let now = moment();

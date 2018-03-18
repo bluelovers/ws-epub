@@ -88,13 +88,13 @@ novelID = '豚公爵に転生したから、今度は君に好きと言いたい
 
 //novelID = '黒の創造召喚師';
 
-//novelID = '俺の死亡フラグが留まるところを知らない';
+novelID = '俺の死亡フラグが留まるところを知らない';
 
 //novelID = '乙女ゲームの悪（中略）ヒロインが鬼畜女装野郎だったので、助けて下さい';
 
 //novelID = '蘇りの魔王';
 
-novelID = 'カルマの塔';
+//novelID = 'カルマの塔';
 
 /**
  * 小說 txt 的主資料夾路徑
@@ -121,6 +121,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 		outputPath: OUTPUT_PATH,
 		filename: novelID,
 		padEndDate: true,
+		useTitle: true,
 	});
 
 	console.log('--------');
