@@ -23,6 +23,8 @@ srcFile = 'D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\Ji W
 srcFile = 'D:\\Users\\Downloads\\业之塔.epub';
 */
 
+srcFile = 'D:\\Users\\Downloads\\web：俺の異世界姉妹が自重しない！20171115.epub';
+
 /*
 [
 	srcFile,
@@ -41,7 +43,7 @@ if (1)
 {
 	epubExtract(srcFile, {
 		cwd: __dirname,
-		noFirePrefix: true,
+		//noFirePrefix: true,
 	})
 		.then(function (ret)
 		{

@@ -2,7 +2,8 @@
  * Created by user on 2018/2/7/007.
  */
 
-import { EPub } from 'epub2';
+import { EPub, SYMBOL_RAW_DATA } from 'epub2';
+import { fixToc } from 'epub2/lib/toc';
 import * as cheerio from 'cheerio';
 import * as path from 'path';
 import * as fs from 'fs-iconv';
@@ -62,12 +63,22 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 	return EPub.createAsync(srcFile)
 		.then(async function (epub)
 		{
+			// 強制修正無對應的 toc
+			await fixToc(epub);
+
+			if (!epub.metadata.title)
+			{
+				epub.metadata.title = path.basename(srcFile, path.extname(srcFile))
+			}
+
 			let path_novel = path.join(PATH_NOVEL_MAIN,
 				trimFilename(epub.metadata.title)
 			);
 
 			let currentVolume;
 			let volume_list = [];
+
+			let lastLevel = 0;
 
 			await Promise.mapSeries(epub.toc, async function (elem)
 			{
@@ -106,6 +117,34 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 				if (!skip)
 				{
+					if (!isVolume && lastLevel != elem.level)
+					{
+						// 強制產生目錄
+
+						doc = await epub.getChapterAsync(elem.id);
+						$ = cheerio.load(doc);
+
+						let volume_title: string;
+
+						let a = $('section header h2').eq(0);
+
+						if (!a.length)
+						{
+							a = $('h2, h3, h1').eq(0);
+						}
+
+						volume_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
+
+						currentVolume = volume_list[volume_list.length] = {
+							level: elem.level,
+							volume_index: volume_list.length,
+							volume_title: volume_title || 'null',
+							chapter_list: [],
+						};
+
+						lastLevel = elem.level;
+					}
+
 					if (isVolume)
 					{
 						doc = await epub.getChapterAsync(elem.id);
@@ -119,8 +158,9 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						}
 
 						currentVolume = volume_list[volume_list.length] = {
+							level: elem.level,
 							volume_index: volume_list.length,
-							volume_title: a.text().replace(/^\s+|\s+$/g, ''),
+							volume_title: (a.text() || elem.title).replace(/^\s+|\s+$/g, ''),
 							chapter_list: [],
 						}
 					}
@@ -138,7 +178,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							a = $('h2, h3, h1').eq(0);
 						}
 
-						chapter_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '')
+						chapter_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
 
 						a = $('section article').eq(0);
 
@@ -152,6 +192,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						if (!currentVolume)
 						{
 							currentVolume = volume_list[volume_list.length] = {
+								level: Math.max(0, elem.level - 1),
 								volume_index: volume_list.length,
 								volume_title: 'null',
 								chapter_list: [],
@@ -169,6 +210,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						currentVolume
 							.chapter_list
 							.push({
+								level: elem.level,
 								chapter_index: currentVolume.chapter_list.length,
 								chapter_title,
 								chapter_article,
