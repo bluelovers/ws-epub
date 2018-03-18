@@ -1069,6 +1069,7 @@ class EPub extends EventEmitter
 		}
 	}
 
+	static SYMBOL_RAW_DATA = Symbol.for('rawData');
 }
 
 module EPub
@@ -1078,7 +1079,7 @@ module EPub
 	export const IMAGE_ROOT = '/images/';
 	export const LINK_ROOT = '/links/';
 
-	export const SYMBOL_RAW_DATA = Symbol.for('rawData');
+	//export const SYMBOL_RAW_DATA = Symbol.for('rawData');
 
 	export const ELEM_MEDIA_TYPE = 'media-type';
 	export const ELEM_MEDIA_TYPE2 = 'mediaType';

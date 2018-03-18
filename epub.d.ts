@@ -160,12 +160,12 @@ declare class EPub extends EventEmitter {
      **/
     getFile(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void): void;
     readFile(filename: any, options: any, callback_: any): void;
+    static SYMBOL_RAW_DATA: symbol;
 }
 declare module EPub {
     const xml2jsOptions: xml2js.Options;
     const IMAGE_ROOT = "/images/";
     const LINK_ROOT = "/links/";
-    const SYMBOL_RAW_DATA: symbol;
     const ELEM_MEDIA_TYPE = "media-type";
     const ELEM_MEDIA_TYPE2 = "mediaType";
     interface TocElement {

@@ -30,10 +30,6 @@ const zipfile_1 = require("./zipfile");
  *      /images/logo_img/OPT/logo.jpg
  **/
 class EPub extends events_1.EventEmitter {
-    _getStatic() {
-        // @ts-ignore
-        return this.__proto__.constructor;
-    }
     constructor(epubfile, imagewebroot, chapterwebroot) {
         super();
         this.filename = epubfile;
@@ -45,6 +41,10 @@ class EPub extends events_1.EventEmitter {
         if (this.linkroot.substr(-1) != "/") {
             this.linkroot += "/";
         }
+    }
+    _getStatic() {
+        // @ts-ignore
+        return this.__proto__.constructor;
     }
     static create(epubfile, imagewebroot, chapterwebroot, ...argv) {
         let epub = new this(epubfile, imagewebroot, chapterwebroot, ...argv);
@@ -750,11 +750,12 @@ class EPub extends events_1.EventEmitter {
         }
     }
 }
+EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
 (function (EPub) {
     EPub.xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']);
     EPub.IMAGE_ROOT = '/images/';
     EPub.LINK_ROOT = '/links/';
-    EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
+    //export const SYMBOL_RAW_DATA = Symbol.for('rawData');
     EPub.ELEM_MEDIA_TYPE = 'media-type';
     EPub.ELEM_MEDIA_TYPE2 = 'mediaType';
     function isEpub(data, buf) {
