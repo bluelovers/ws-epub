@@ -28,5 +28,8 @@ export declare function create(options: IOptions, cache?: {}): Promise<{
     file: string;
     filename: string;
     epub: EpubMaker;
+    outputPath: string;
+    basename: string;
+    ext: string;
 }>;
 export default create;

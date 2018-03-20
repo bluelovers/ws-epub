@@ -105,6 +105,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 	file: string,
 	filename: string,
 	epub: EpubMaker,
+
+	outputPath: string,
+	basename: string,
+	ext: string,
 }>
 {
 	return Promise.resolve().then(async function ()
@@ -385,6 +389,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 				{
 					filename = meta.novel.title_zh;
 				}
+				else if (meta.novel.title_short)
+				{
+					filename = meta.novel.title_short;
+				}
 				else if (typeof options.filenameLocal == 'string')
 				{
 					filename = options.filenameLocal;
@@ -401,6 +409,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 			filename += '_' + now.format('YYYYMMDD_HHmmss');
 		}
 
+		const basename = filename;
+
 		filename += ext;
 
 		let file = path.join(options.outputPath, filename);
@@ -413,6 +423,11 @@ export function create(options: IOptions, cache = {}): Promise<{
 			file,
 			filename,
 			epub,
+
+			outputPath: options.outputPath,
+
+			basename,
+			ext,
 		};
 	});
 }

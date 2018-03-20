@@ -118,7 +118,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 (async () =>
 {
-	await novelEpub({
+	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
 		//filename: novelID,
@@ -146,7 +146,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 		if (txtMerge)
 		{
-			await txtMerge(TXT_PATH, OUTPUT_PATH);
+			await txtMerge(TXT_PATH, OUTPUT_PATH, ret.basename);
 		}
 	}
 })();
