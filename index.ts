@@ -10,7 +10,7 @@ import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 
-export async function txtMerge(inputPath: string, outputPath: string)
+export async function txtMerge(inputPath: string, outputPath: string, outputFilename?: string)
 {
 	const TXT_PATH: string = inputPath;
 	const PATH_CWD: string = outputPath;
@@ -146,11 +146,30 @@ export async function txtMerge(inputPath: string, outputPath: string)
 
 					txt = crlf(txt, CRLF);
 
-					let filename = 'temp';
-					if (meta && meta.novel && meta.novel.title)
+					let filename: string;
+
+					if (typeof outputFilename == 'string' && outputFilename)
 					{
-						filename = meta.novel.title;
+						filename = outputFilename;
 					}
+
+					if (!filename && meta && meta.novel)
+					{
+						if (meta.novel.title_short)
+						{
+							filename = meta.novel.title_short;
+						}
+						else if (meta.novel.title)
+						{
+							filename = meta.novel.title;
+						}
+						else if (meta.novel.title_zh)
+						{
+							filename = meta.novel.title_zh;
+						}
+					}
+
+					filename = filename || 'temp';
 
 					let filename2 = trimFilename(filename)
 						.replace(/\./, '_')
@@ -166,11 +185,11 @@ export async function txtMerge(inputPath: string, outputPath: string)
 						filename2 = 'temp';
 					}
 
-					filename += '_' + moment().local().format('YYYYMMDDHHmm')
+					filename += '_' + moment().local().format('YYYYMMDDHHmm');
 
 					filename2 = `${filename2}.out.txt`;
 
-					await fs.outputFile(path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`), txt);;
+					await fs.outputFile(path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`), txt);
 
 					return filename2;
 				})

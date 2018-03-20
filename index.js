@@ -7,7 +7,7 @@ const moment = require("moment");
 const node_novel_info_1 = require("node-novel-info");
 const crlf_normalize_1 = require("crlf-normalize");
 const fs_iconv_1 = require("fs-iconv");
-async function txtMerge(inputPath, outputPath) {
+async function txtMerge(inputPath, outputPath, outputFilename) {
     const TXT_PATH = inputPath;
     const PATH_CWD = outputPath;
     const outputDirPathPrefix = 'out';
@@ -85,10 +85,22 @@ async function txtMerge(inputPath, outputPath) {
             }
             let txt = a.join(eol);
             txt = crlf_normalize_1.crlf(txt, crlf_normalize_1.CRLF);
-            let filename = 'temp';
-            if (meta && meta.novel && meta.novel.title) {
-                filename = meta.novel.title;
+            let filename;
+            if (typeof outputFilename == 'string' && outputFilename) {
+                filename = outputFilename;
             }
+            if (!filename && meta && meta.novel) {
+                if (meta.novel.title_short) {
+                    filename = meta.novel.title_short;
+                }
+                else if (meta.novel.title) {
+                    filename = meta.novel.title;
+                }
+                else if (meta.novel.title_zh) {
+                    filename = meta.novel.title_zh;
+                }
+            }
+            filename = filename || 'temp';
             let filename2 = fs_iconv_1.trimFilename(filename)
                 .replace(/\./, '_')
                 .replace(/^[_+\-]+|[_+\-]+$/, '');
@@ -100,7 +112,6 @@ async function txtMerge(inputPath, outputPath) {
             filename += '_' + moment().local().format('YYYYMMDDHHmm');
             filename2 = `${filename2}.out.txt`;
             await fs_iconv_1.default.outputFile(path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`), txt);
-            ;
             return filename2;
         })
             .tap(function (filename) {
