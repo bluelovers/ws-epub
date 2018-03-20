@@ -400,6 +400,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 			}
 		}
 
+		const basename = filename;
+
 		let ext = EpubMaker.defaultExt;
 
 		let now = moment();
@@ -408,8 +410,6 @@ export function create(options: IOptions, cache = {}): Promise<{
 		{
 			filename += '_' + now.format('YYYYMMDD_HHmmss');
 		}
-
-		const basename = filename;
 
 		filename += ext;
 

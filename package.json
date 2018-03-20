@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",
@@ -54,6 +54,6 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "novel-txt-merge": "^1.0.7"
+    "novel-txt-merge": "^1.0.8"
   }
 }
