@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
+import UString from 'uni-string';
 
 export async function txtMerge(inputPath: string, outputPath: string, outputFilename?: string)
 {
@@ -176,7 +177,8 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 						.replace(/^[_+\-]+|[_+\-]+$/, '')
 					;
 
-					filename2 = trimFilename(filename2.split('').slice(0, 10).join(''));
+					filename2 = UString.create(filename2).split('').slice(0, 20).join('');
+					filename2 = trimFilename(filename2);
 
 					if (!filename2)
 					{

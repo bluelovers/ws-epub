@@ -7,6 +7,7 @@ const moment = require("moment");
 const node_novel_info_1 = require("node-novel-info");
 const crlf_normalize_1 = require("crlf-normalize");
 const fs_iconv_1 = require("fs-iconv");
+const uni_string_1 = require("uni-string");
 async function txtMerge(inputPath, outputPath, outputFilename) {
     const TXT_PATH = inputPath;
     const PATH_CWD = outputPath;
@@ -104,7 +105,8 @@ async function txtMerge(inputPath, outputPath, outputFilename) {
             let filename2 = fs_iconv_1.trimFilename(filename)
                 .replace(/\./, '_')
                 .replace(/^[_+\-]+|[_+\-]+$/, '');
-            filename2 = fs_iconv_1.trimFilename(filename2.split('').slice(0, 10).join(''));
+            filename2 = uni_string_1.default.create(filename2).split('').slice(0, 20).join('');
+            filename2 = fs_iconv_1.trimFilename(filename2);
             if (!filename2) {
                 console.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
                 filename2 = 'temp';
