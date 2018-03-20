@@ -39,6 +39,7 @@ export interface IOptions
 	globbyOptions?: novelGlobby.IOptions,
 
 	useTitle?: boolean,
+	filenameLocal?: boolean | string[] | string,
 }
 
 export const defaultOptions: Partial<IOptions> = {
@@ -161,6 +162,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 		if (meta.novel.series)
 		{
 			epub.withSeries(meta.novel.series.name, meta.novel.series.position);
+		}
+		else
+		{
+			epub.withSeries(meta.novel.title);
 		}
 
 		if (meta.novel.publisher)
@@ -360,6 +365,33 @@ export function create(options: IOptions, cache = {}): Promise<{
 		let data = await epub.makeEpub();
 
 		let filename = epub.getFilename(options.useTitle, true);
+
+		if (!options.filename)
+		{
+			if (options.filenameLocal)
+			{
+				if (Array.isArray(options.filenameLocal))
+				{
+					for (let v of options.filenameLocal)
+					{
+						if (meta.novel[v])
+						{
+							filename = meta.novel[v];
+							break;
+						}
+					}
+				}
+				else if (meta.novel.title_zh)
+				{
+					filename = meta.novel.title_zh;
+				}
+				else if (typeof options.filenameLocal == 'string')
+				{
+					filename = options.filenameLocal;
+				}
+			}
+		}
+
 		let ext = EpubMaker.defaultExt;
 
 		let now = moment();

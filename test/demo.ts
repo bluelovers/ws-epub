@@ -96,6 +96,8 @@ novelID = '俺の死亡フラグが留まるところを知らない';
 
 //novelID = 'カルマの塔';
 
+//novelID = '俺の異世界姉妹が自重しない！';
+
 /**
  * 小說 txt 的主資料夾路徑
  * @type {string}
@@ -119,9 +121,11 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 	await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
-		filename: novelID,
+		//filename: novelID,
 		padEndDate: true,
 		useTitle: true,
+
+		filenameLocal: novelID,
 	});
 
 	console.log('--------');
