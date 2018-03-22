@@ -21,6 +21,7 @@ export interface IOptions {
     globbyOptions?: novelGlobby.IOptions;
     useTitle?: boolean;
     filenameLocal?: boolean | string[] | string;
+    noLog?: boolean;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;

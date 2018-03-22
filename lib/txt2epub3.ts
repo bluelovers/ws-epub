@@ -40,6 +40,8 @@ export interface IOptions
 
 	useTitle?: boolean,
 	filenameLocal?: boolean | string[] | string,
+
+	noLog?: boolean,
 }
 
 export const defaultOptions: Partial<IOptions> = {
@@ -288,7 +290,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 							let name = row.chapter_title;
 
-							console.log(row);
+							if (!options.noLog)
+							{
+								console.log(row);
+							}
 
 							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString().padStart(4, '0')}`, {
 								title: name,

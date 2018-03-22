@@ -4,6 +4,7 @@
 
 import novelEpub from '../index';
 import * as path from 'path';
+import * as Promise from 'bluebird';
 
 /**
  * 小說資料夾名稱
@@ -13,7 +14,7 @@ let novelID: string;
 //novelID = '黒の魔王';
 novelID = '黑之魔王';
 
-//novelID = '四度目は嫌な死属性魔術師';
+novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '那个人，后来_(2272)';
 //novelID = '讨厌第四次的死属性魔术师_(2206)';
@@ -35,7 +36,7 @@ novelID = '黑之魔王';
 //
 //novelID = '異世界迷宮の最深部を目指そう';
 
-//novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
+novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
 
 //novelID = '转生奇谭_(1782)';
 //novelID = '女神异闻录2 罚_(755)';
@@ -44,7 +45,7 @@ novelID = '黑之魔王';
 
 //novelID	 = '自卫队三部曲_(350)';
 
-novelID	 = '呼び出された殺戮者';
+//novelID	 = '呼び出された殺戮者';
 
 //novelID = '病娇女神の箱庭';
 
@@ -64,7 +65,7 @@ novelID	 = '呼び出された殺戮者';
 
 //novelID = '帰ってきてもファンタジー！？';
 
-novelID = '魔王様、リトライ！';
+//novelID = '魔王様、リトライ！';
 
 novelID = '豚公爵に転生したから、今度は君に好きと言いたい';
 
@@ -88,7 +89,7 @@ novelID = '豚公爵に転生したから、今度は君に好きと言いたい
 
 //novelID = '黒の創造召喚師';
 
-novelID = '俺の死亡フラグが留まるところを知らない';
+//novelID = '俺の死亡フラグが留まるところを知らない';
 
 //novelID = '乙女ゲームの悪（中略）ヒロインが鬼畜女装野郎だったので、助けて下さい';
 
@@ -98,12 +99,23 @@ novelID = '俺の死亡フラグが留まるところを知らない';
 
 //novelID = '俺の異世界姉妹が自重しない！';
 
-/**
- * 小說 txt 的主資料夾路徑
- * @type {string}
- */
-let TXT_PATH = path.join(__dirname, 'res', novelID);
-TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
+//novelID = 'その者。のちに・・・';
+
+Promise.mapSeries([
+
+	//'呼び出された殺戮者',
+	//'魔王様、リトライ！',
+
+] as string[], makeEpub);
+
+async function makeEpub(novelID: string)
+{
+	/**
+	 * 小說 txt 的主資料夾路徑
+	 * @type {string}
+	 */
+	let TXT_PATH = path.join(__dirname, 'res', novelID);
+	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\webqxs_out', novelID);
@@ -114,10 +126,8 @@ TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel
 
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\epub_out', novelID);
 
-let OUTPUT_PATH = path.join(__dirname, './temp');
+	let OUTPUT_PATH = path.join(__dirname, './temp');
 
-(async () =>
-{
 	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
@@ -126,6 +136,8 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 		useTitle: true,
 
 		filenameLocal: novelID,
+
+		noLog: true,
 	});
 
 	console.log('--------');
@@ -149,4 +161,4 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 			await txtMerge(TXT_PATH, OUTPUT_PATH, ret.basename);
 		}
 	}
-})();
+}
