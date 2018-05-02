@@ -146,6 +146,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 				meta.novel.author,
 			]))
 			.withTitle(meta.novel.title, meta.novel.title_short || meta.novel.title_zh)
+			.withAuthor(meta.novel.author)
 			.addAuthor(meta.novel.author)
 			.withCollection({
 				name: meta.novel.title,
@@ -305,6 +306,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 						await novelGlobby.globby([
 								'*.{jpg,gif,png,jpeg,svg}',
+								'image/*.{jpg,gif,png,jpeg,svg}',
 								'!cover.*',
 								'!*.txt',
 							], {
