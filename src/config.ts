@@ -193,9 +193,9 @@ export class EpubConfig implements IEpubConfig
 			delete epubConfig.uuid;
 		}
 
-		Object.assign(this, EpubConfig.defaultEpubConfig, deepmerge(epubConfig, {
+		Object.assign(this, EpubConfig.getDefaultEpubConfig(), deepmerge.all([{}, epubConfig, {
 			options
-		}, deepmergeOptions));
+		}], deepmergeOptions));
 	}
 
 	get langMain()
@@ -484,14 +484,19 @@ export namespace EpubConfig
 {
 	export let dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
 
-	export let defaultEpubConfig = {
-		toc: [],
-		landmarks: [],
-		sections: [],
-		stylesheet: {},
-		additionalFiles: [],
-		options: {},
-	} as IEpubConfig;
+	export function getDefaultEpubConfig()
+	{
+		return {
+			toc: [],
+			landmarks: [],
+			sections: [],
+			stylesheet: {},
+			additionalFiles: [],
+			options: {},
+		};
+	}
+
+	export let defaultEpubConfig = getDefaultEpubConfig();
 }
 
 //let a = new EpubConfig({lang: 'zh'});

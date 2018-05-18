@@ -71,6 +71,7 @@ async function addCover(zip, epub, options) {
         let filename = file.name = file.folder ? path.join(file.folder, file.name) : file.name;
         zip
             .folder('EPUB')
+            //.folder('images')
             .file(filename, file.data);
         return filename;
     }

@@ -236,7 +236,6 @@ class EpubMaker {
         if (chk) {
             throw chk;
         }
-        //this.epubConfig.langMain = this.epubConfig.langMain || this.epubConfig.lang;
         []
             .concat(this.epubConfig.sections, this.epubConfig.toc, this.epubConfig.landmarks)
             .forEach(function (section, index) {
@@ -279,7 +278,7 @@ exports.EpubMaker = EpubMaker;
      * @content Optional. Should not be empty if there will be no subsections added to this section. Format: { title, content, renderTitle }
      */
     class Section {
-        constructor(epubType, id, content, includeInToc, includeInLandmarks) {
+        constructor(epubType, id, content, includeInToc, includeInLandmarks, ...argv) {
             this.subSections = [];
             this.sectionConfig = {};
             this.epubType = epubType;

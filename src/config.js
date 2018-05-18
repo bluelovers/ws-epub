@@ -14,9 +14,9 @@ class EpubConfig {
             delete epubConfig.slug;
             delete epubConfig.uuid;
         }
-        Object.assign(this, EpubConfig.defaultEpubConfig, lib_1.deepmerge(epubConfig, {
-            options
-        }, lib_1.deepmergeOptions));
+        Object.assign(this, EpubConfig.getDefaultEpubConfig(), lib_1.deepmerge.all([{}, epubConfig, {
+                options
+            }], lib_1.deepmergeOptions));
     }
     get langMain() {
         return this.lang;
@@ -203,14 +203,18 @@ class EpubConfig {
 exports.EpubConfig = EpubConfig;
 (function (EpubConfig) {
     EpubConfig.dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
-    EpubConfig.defaultEpubConfig = {
-        toc: [],
-        landmarks: [],
-        sections: [],
-        stylesheet: {},
-        additionalFiles: [],
-        options: {},
-    };
+    function getDefaultEpubConfig() {
+        return {
+            toc: [],
+            landmarks: [],
+            sections: [],
+            stylesheet: {},
+            additionalFiles: [],
+            options: {},
+        };
+    }
+    EpubConfig.getDefaultEpubConfig = getDefaultEpubConfig;
+    EpubConfig.defaultEpubConfig = getDefaultEpubConfig();
 })(EpubConfig = exports.EpubConfig || (exports.EpubConfig = {}));
 //let a = new EpubConfig({lang: 'zh'});
 //

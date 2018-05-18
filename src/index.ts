@@ -1,6 +1,6 @@
 import * as _slugify from 'slugify';
 import * as moment from 'moment';
-import { templateManagers } from './template';
+import { TemplateManagers, templateManagers } from './template';
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import { trimFilename } from 'fs-iconv';
@@ -372,8 +372,6 @@ export class EpubMaker
 			throw chk;
 		}
 
-		//this.epubConfig.langMain = this.epubConfig.langMain || this.epubConfig.lang;
-
 		[]
 			.concat(this.epubConfig.sections, this.epubConfig.toc, this.epubConfig.landmarks)
 			.forEach(function (section: EpubMaker.Section, index)
@@ -464,7 +462,7 @@ export namespace EpubMaker
 		public parentSection: Section;
 		public parentEpubMaker: EpubMaker;
 
-		constructor(epubType, id, content, includeInToc?: boolean, includeInLandmarks?: boolean)
+		constructor(epubType, id, content, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv)
 		{
 			this.epubType = epubType;
 			this.id = id;

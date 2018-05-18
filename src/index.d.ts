@@ -82,7 +82,7 @@ export declare namespace EpubMaker {
         sectionConfig: ISectionConfig;
         parentSection: Section;
         parentEpubMaker: EpubMaker;
-        constructor(epubType: any, id: any, content: any, includeInToc?: boolean, includeInLandmarks?: boolean);
+        constructor(epubType: any, id: any, content: any, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv: any[]);
         /**
          *
          * @param {ISectionContent|string} content

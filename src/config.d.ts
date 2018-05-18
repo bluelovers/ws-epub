@@ -154,7 +154,22 @@ export declare class EpubConfig implements IEpubConfig {
 }
 export declare namespace EpubConfig {
     let dateFormat: string;
-    let defaultEpubConfig: IEpubConfig;
+    function getDefaultEpubConfig(): {
+        toc: any[];
+        landmarks: any[];
+        sections: any[];
+        stylesheet: {};
+        additionalFiles: any[];
+        options: {};
+    };
+    let defaultEpubConfig: {
+        toc: any[];
+        landmarks: any[];
+        sections: any[];
+        stylesheet: {};
+        additionalFiles: any[];
+        options: {};
+    };
 }
 declare const _default: EpubConfig;
 export default _default;
