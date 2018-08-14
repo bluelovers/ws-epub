@@ -44,7 +44,7 @@ export interface IOptions
 	noLog?: boolean,
 }
 
-export const defaultOptions: Partial<IOptions> = {
+export const defaultOptions: Partial<IOptions> = Object.freeze({
 	epubTemplate: 'lightnovel',
 	epubLanguage: 'zh',
 	//padEndDate: true,
@@ -53,7 +53,7 @@ export const defaultOptions: Partial<IOptions> = {
 		checkRoman: true,
 		useDefaultPatternsExclude: true,
 	},
-};
+});
 
 export async function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta>
 {
@@ -115,7 +115,21 @@ export function create(options: IOptions, cache = {}): Promise<{
 {
 	return Promise.resolve().then(async function ()
 	{
+		//console.log(options, defaultOptions);
+
+		options = Object.keys(options)
+			.filter(v => typeof options[v] != 'undefined')
+			.reduce(function (a, b)
+			{
+				a[b] = options[b];
+
+				return a
+			}, {} as IOptions)
+		;
+
 		options = deepmerge.all([{}, defaultOptions, options]);
+
+		//console.dir(options, {colors: true});
 
 		let novelID = options.novelID;
 		let TXT_PATH = options.inputPath;
@@ -381,7 +395,11 @@ export function create(options: IOptions, cache = {}): Promise<{
 		{
 			if (options.filenameLocal)
 			{
-				if (Array.isArray(options.filenameLocal))
+				if (meta.novel.title_output)
+				{
+					filename = meta.novel.title_output;
+				}
+				else if (Array.isArray(options.filenameLocal))
 				{
 					for (let v of options.filenameLocal)
 					{

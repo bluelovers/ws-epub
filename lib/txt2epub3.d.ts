@@ -1,3 +1,6 @@
+/**
+ * Created by user on 2017/12/16/016.
+ */
 import EpubMaker from 'epub-maker2';
 import * as Promise from 'bluebird';
 import * as novelGlobby from 'node-novel-globby';

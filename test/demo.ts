@@ -67,7 +67,7 @@ novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚され
 
 //novelID = '魔王様、リトライ！';
 
-novelID = '豚公爵に転生したから、今度は君に好きと言いたい';
+//novelID = '豚公爵に転生したから、今度は君に好きと言いたい';
 
 //novelID = '転生したら剣でした';
 
@@ -101,10 +101,53 @@ novelID = '豚公爵に転生したから、今度は君に好きと言いたい
 
 //novelID = 'その者。のちに・・・';
 
+/**
+ * @BUG 請勿同時更新多本書
+ */
 Promise.mapSeries([
 
 	//'呼び出された殺戮者',
 	//'魔王様、リトライ！',
+
+	//'破壊の御子',
+
+	//'百魔の主',
+
+//	'黑之魔王',
+//	'回復術士のやり直し～即死魔法とスキルコピーの超越ヒール～',
+
+	//'かみがみ〜最も弱き反逆者〜',
+
+	//'異世界迷宮の最深部を目指そう',
+
+//	'天才魔法使與原娼婦新娘',
+
+//	'没落予定なので、鍛治職人を目指す',
+
+	//'異世界支配のスキルテイカー　～　ゼロから始める奴隷ハーレム　～',
+
+	//'人喰い転移者の異世界復讐譚　～無能はスキル『捕食』で成り上がる～',
+
+	//'病娇魅魔女儿是勇者妈妈的天敌',
+
+	//'神明大人的魔法使',
+	//'魔王神官和勇者美少女',
+
+//	'四度目は嫌な死属性魔術師',
+
+//	'蘇りの魔王',
+
+//	'強欲の花',
+
+//	'炎之魔女的守序信仰',
+
+//	'豚公爵に転生したから、今度は君に好きと言いたい',
+
+//	'瀆神之主',
+
+//	'姫騎士がクラスメート！　〜異世界チートで奴隷化ハーレム〜',
+
+	'大劍師傳奇_(djs)',
 
 ] as string[], makeEpub);
 
@@ -125,6 +168,17 @@ async function makeEpub(novelID: string)
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user', novelID);
 
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\epub_out', novelID);
+
+	//TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\sfacg_out', novelID);
+
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\iqing_out', novelID);
+
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\uukanshu_out', novelID);
+
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\cm', novelID);
+
+	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
+
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 

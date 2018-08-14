@@ -63,6 +63,7 @@ let cli = yargs
 		type: 'string',
 		desc: 'epub lang',
 	})
+	// @ts-ignore
 	.command('$0', '', function (yargs)
 	{
 		let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;

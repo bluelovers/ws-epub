@@ -6,7 +6,9 @@ const path = require("path");
 const index_1 = require("../index");
 const CWD = process.cwd();
 let cli = yargs
-    .default({})
+    .default({
+//input: process.cwd(),
+})
     .option('input', {
     alias: ['i'],
     //demandOption: true,
@@ -48,6 +50,7 @@ let cli = yargs
     type: 'string',
     desc: 'epub lang',
 })
+    // @ts-ignore
     .command('$0', '', function (yargs) {
     let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;
     let outputPath = yargs.argv.output;
@@ -79,4 +82,5 @@ let cli = yargs
     //yargs.showHelp('log');
 })
     .version()
+    //.help()
     .argv;
