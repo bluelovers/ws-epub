@@ -74,3 +74,32 @@ __tests__### temp template
 /*.lock
 
 *.tmp
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+gen### npm2 template
+
+
+
+#package-lock.json
+
+
+
+
+
+
+
+
+__tests__### test template
+*.test.js.map### temp template
+
+
+
+*.tmp### git2 template
+
+
+
+
+
+tests/temp*
