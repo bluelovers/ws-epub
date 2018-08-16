@@ -55,52 +55,55 @@ export const defaultOptions: Partial<IOptions> = Object.freeze({
 	},
 });
 
-export async function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta>
+export function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta>
 {
-	let meta: IMdconfMeta;
-	let confPath: string;
+	return Promise.resolve().then(async function ()
+	{
+		let meta: IMdconfMeta;
+		let confPath: string;
 
-	if (options.novelConf && typeof options.novelConf == 'object')
-	{
-		meta = options.novelConf;
-	}
-	else
-	{
-		if (typeof options.novelConf == 'string')
+		if (options.novelConf && typeof options.novelConf == 'object')
 		{
-			confPath = options.novelConf;
+			meta = options.novelConf;
 		}
 		else
 		{
-			confPath = options.inputPath;
-		}
+			if (typeof options.novelConf == 'string')
+			{
+				confPath = options.novelConf;
+			}
+			else
+			{
+				confPath = options.inputPath;
+			}
 
-		if (fs.existsSync(path.join(confPath, 'meta.md')))
-		{
-			let file = path.join(confPath, 'meta.md');
+			if (fs.existsSync(path.join(confPath, 'meta.md')))
+			{
+				let file = path.join(confPath, 'meta.md');
 
-			meta = await fs.readFile(file)
+				meta = await fs.readFile(file)
 				.then(mdconf_parse)
 			;
-		}
-		else if (fs.existsSync(path.join(confPath, 'README.md')))
-		{
-			let file = path.join(confPath, 'README.md');
+			}
+			else if (fs.existsSync(path.join(confPath, 'README.md')))
+			{
+				let file = path.join(confPath, 'README.md');
 
-			meta = await fs.readFile(file)
+				meta = await fs.readFile(file)
 				.then(mdconf_parse)
 			;
+			}
 		}
-	}
 
-	meta = chkInfo(meta);
+		meta = chkInfo(meta);
 
-	if (!meta || !meta.novel || !meta.novel.title)
-	{
-		throw new Error(`not a valid novelInfo data`);
-	}
+		if (!meta || !meta.novel || !meta.novel.title)
+		{
+			throw new Error(`not a valid novelInfo data`);
+		}
 
-	return meta;
+		return meta;
+	})
 }
 
 export function create(options: IOptions, cache = {}): Promise<{
@@ -395,8 +398,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 		{
 			if (options.filenameLocal)
 			{
+				// @ts-ignore
 				if (meta.novel.title_output)
 				{
+					// @ts-ignore
 					filename = meta.novel.title_output;
 				}
 				else if (Array.isArray(options.filenameLocal))
