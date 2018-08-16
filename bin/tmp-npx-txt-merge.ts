@@ -41,6 +41,7 @@ let cli = yargs
 		//default: true,
 		boolean: true,
 	})
+	// @ts-ignore
 	.command('$0', '', function (yargs)
 	{
 		if (yargs.argv.zh)

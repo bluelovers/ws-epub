@@ -4,14 +4,31 @@
 
 import * as novelGlobby from 'node-novel-globby';
 import * as path from 'path';
-import * as Promise from 'bluebird';
+import * as BluebirdPromise from 'bluebird';
 import * as moment from 'moment';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 import UString from 'uni-string';
 
-export async function txtMerge(inputPath: string, outputPath: string, outputFilename?: string)
+const hr_len = 15;
+const eol = '\n';
+
+const hr1 = '＝'.repeat(hr_len);
+const hr2 = '－'.repeat(hr_len);
+
+/**
+ *
+ * @param inputPath 輸入路徑
+ * @param outputPath 輸出路徑
+ * @param outputFilename 參考用檔案名稱
+ * @param noSave 不儲存檔案僅回傳 txt 內容
+ */
+export async function txtMerge(inputPath: string, outputPath: string, outputFilename?: string, noSave?: boolean): Promise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
 {
 	const TXT_PATH: string = inputPath;
 	const PATH_CWD: string = outputPath;
@@ -42,6 +59,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 	//console.log(globby_patterns);
 	//console.log(globby_options);
 
+	// @ts-ignore
 	meta = await novelGlobby.globbyASync([
 			'README.md',
 		], globby_options)
@@ -68,14 +86,9 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 		})
 	;
 
-	let hr_len = 15;
-
-	let hr1 = '＝'.repeat(hr_len);
-	let hr2 = '－'.repeat(hr_len);
-
 	//console.log(globby_patterns);
 
-	await novelGlobby.globbyASync(globby_patterns, globby_options)
+	return await novelGlobby.globbyASync(globby_patterns, globby_options)
 		.tap(function (ls)
 		{
 			//console.log(ls);
@@ -84,17 +97,16 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 		})
 		.then(function (_ls)
 		{
-			const eol = '\n';
-
 			if (!_ls || !Object.keys(_ls).length)
 			{
-				return Promise.reject();
+				// @ts-ignore
+				return BluebirdPromise.reject(`沒有可合併的檔案存在`);
 			}
 
 			let count_f = 0;
 			let count_d = 0;
 
-			return Promise
+			return BluebirdPromise
 				.mapSeries(Object.keys(_ls), async function (val_dir, index, len)
 				{
 					let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
@@ -103,7 +115,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 
 					let txt = `${hr1}CHECK\n${volume_title}\n${hr1}\n`;
 
-					let a = await Promise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
+					let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
 					{
 						let data = await fs.readFile(row.path);
 
@@ -122,78 +134,23 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 				})
 				.then(async function (a)
 				{
-					if (meta && meta.novel)
-					{
-						let txt = `${meta.novel.title}\n${meta.novel.author}\n${meta.novel.source || ''}\n\n${meta.novel.preface}\n\n`;
-
-						let a2 = [];
-
-						if (Array.isArray(meta.contribute) && meta.contribute.length)
-						{
-							a2.push(meta.contribute.join('、') + "\n\n");
-						}
-
-						if (a2.length)
-						{
-							a2.unshift(hr2);
-
-							txt += a2.join(CRLF);
-						}
-
-						a.unshift(txt);
-					}
+					let filename2 = makeFilename(meta, outputFilename, a);
 
 					let txt = a.join(eol);
-
 					txt = crlf(txt, CRLF);
 
-					let filename: string;
+					let fullpath = path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`);
 
-					if (typeof outputFilename == 'string' && outputFilename)
+					if (!noSave)
 					{
-						filename = outputFilename;
+						await fs.outputFile(fullpath, txt);
 					}
 
-					if (!filename && meta && meta.novel)
-					{
-						if (meta.novel.title_short)
-						{
-							filename = meta.novel.title_short;
-						}
-						else if (meta.novel.title)
-						{
-							filename = meta.novel.title;
-						}
-						else if (meta.novel.title_zh)
-						{
-							filename = meta.novel.title_zh;
-						}
-					}
-
-					filename = filename || 'temp';
-
-					let filename2 = trimFilename(filename)
-						.replace(/\./, '_')
-						.replace(/^[_+\-]+|[_+\-]+$/, '')
-					;
-
-					filename2 = UString.create(filename2).split('').slice(0, 20).join('');
-					filename2 = trimFilename(filename2);
-
-					if (!filename2)
-					{
-						console.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
-
-						filename2 = 'temp';
-					}
-
-					filename += '_' + moment().local().format('YYYYMMDDHHmm');
-
-					filename2 = `${filename2}.out.txt`;
-
-					await fs.outputFile(path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`), txt);
-
-					return filename2;
+					return {
+						filename: filename2,
+						fullpath,
+						data: txt,
+					};
 				})
 				.tap(function (filename)
 				{
@@ -201,6 +158,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 
 					console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${filename}`);
 				})
+				// @ts-ignore
 				.catchThrow(function (e)
 				{
 					console.error(`[ERROR] something wrong!!`);
@@ -216,7 +174,83 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 			console.trace(e);
 		})
 	;
+}
 
+/**
+ * 回傳處理後的檔案名稱
+ *
+ * @param meta
+ * @param outputFilename
+ * @param a
+ */
+export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = []): string
+{
+	if (meta && meta.novel)
+	{
+		let txt = `${meta.novel.title}\n${meta.novel.author}\n${meta.novel.source || ''}\n\n${meta.novel.preface}\n\n`;
+
+		let a2 = [];
+
+		if (Array.isArray(meta.contribute) && meta.contribute.length)
+		{
+			a2.push(meta.contribute.join('、') + "\n\n");
+		}
+
+		if (a2.length)
+		{
+			a2.unshift(hr2);
+
+			txt += a2.join(CRLF);
+		}
+
+		a.unshift(txt);
+	}
+
+	let filename: string;
+
+	if (typeof outputFilename == 'string' && outputFilename)
+	{
+		filename = outputFilename;
+	}
+
+	if (!filename && meta && meta.novel)
+	{
+		if (meta.novel.title_short)
+		{
+			filename = meta.novel.title_short;
+		}
+		else if (meta.novel.title)
+		{
+			filename = meta.novel.title;
+		}
+		else if (meta.novel.title_zh)
+		{
+			filename = meta.novel.title_zh;
+		}
+	}
+
+	filename = filename || 'temp';
+
+	let filename2 = trimFilename(filename)
+		.replace(/\./, '_')
+		.replace(/^[_+\-]+|[_+\-]+$/, '')
+	;
+
+	filename2 = UString.create(filename2).split('').slice(0, 20).join('');
+	filename2 = trimFilename(filename2);
+
+	if (!filename2)
+	{
+		console.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
+
+		filename2 = 'temp';
+	}
+
+	filename += '_' + moment().local().format('YYYYMMDDHHmm');
+
+	filename2 = `${filename2}.out.txt`;
+
+	return filename2;
 }
 
 export default txtMerge;
