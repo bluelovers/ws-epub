@@ -3,6 +3,7 @@
  */
 import EpubMaker from 'epub-maker2';
 import * as Promise from 'bluebird';
+import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
 import { IMdconfMeta } from 'node-novel-info';
 export interface IOptions {
@@ -28,6 +29,7 @@ export interface IOptions {
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;
+export declare function makeOptions(options: IOptions): any;
 export declare function create(options: IOptions, cache?: {}): Promise<{
     file: string;
     filename: string;
@@ -36,4 +38,14 @@ export declare function create(options: IOptions, cache?: {}): Promise<{
     basename: string;
     ext: string;
 }>;
+export declare function makeFilename(options: IOptions, epub: EpubMaker, meta: IMdconfMeta): {
+    file: string;
+    ext: string;
+    filename: string;
+    options: IOptions;
+    now: moment.Moment;
+    basename: string;
+    epub: EpubMaker;
+    meta: IMdconfMeta;
+};
 export default create;

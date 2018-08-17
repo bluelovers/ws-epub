@@ -106,6 +106,21 @@ export function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta
 	})
 }
 
+export function makeOptions(options: IOptions)
+{
+	options = Object.keys(options)
+		.filter(v => typeof options[v] != 'undefined')
+		.reduce(function (a, b)
+		{
+			a[b] = options[b];
+
+			return a
+		}, {} as IOptions)
+	;
+
+	return options = deepmerge.all([{}, defaultOptions, options]);
+}
+
 export function create(options: IOptions, cache = {}): Promise<{
 	file: string,
 	filename: string,
@@ -120,17 +135,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 	{
 		//console.log(options, defaultOptions);
 
-		options = Object.keys(options)
-			.filter(v => typeof options[v] != 'undefined')
-			.reduce(function (a, b)
-			{
-				a[b] = options[b];
-
-				return a
-			}, {} as IOptions)
-		;
-
-		options = deepmerge.all([{}, defaultOptions, options]);
+		options = makeOptions(options);
 
 		//console.dir(options, {colors: true});
 
@@ -392,58 +397,9 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 		let data = await epub.makeEpub();
 
-		let filename = epub.getFilename(options.useTitle, true);
+		let _file_data = makeFilename(options, epub, meta);
 
-		if (!options.filename)
-		{
-			if (options.filenameLocal)
-			{
-				// @ts-ignore
-				if (meta.novel.title_output)
-				{
-					// @ts-ignore
-					filename = meta.novel.title_output;
-				}
-				else if (Array.isArray(options.filenameLocal))
-				{
-					for (let v of options.filenameLocal)
-					{
-						if (meta.novel[v])
-						{
-							filename = meta.novel[v];
-							break;
-						}
-					}
-				}
-				else if (meta.novel.title_zh)
-				{
-					filename = meta.novel.title_zh;
-				}
-				else if (meta.novel.title_short)
-				{
-					filename = meta.novel.title_short;
-				}
-				else if (typeof options.filenameLocal == 'string')
-				{
-					filename = options.filenameLocal;
-				}
-			}
-		}
-
-		const basename = filename;
-
-		let ext = EpubMaker.defaultExt;
-
-		let now = moment();
-
-		if (options.padEndDate)
-		{
-			filename += '_' + now.format('YYYYMMDD_HHmmss');
-		}
-
-		filename += ext;
-
-		let file = path.join(options.outputPath, filename);
+		let { file, filename, now, basename, ext } = _file_data;
 
 		await fs.outputFile(file, data);
 
@@ -460,6 +416,75 @@ export function create(options: IOptions, cache = {}): Promise<{
 			ext,
 		};
 	});
+}
+
+export function makeFilename(options: IOptions, epub: EpubMaker, meta: IMdconfMeta)
+{
+	options = makeOptions(options);
+
+	let filename = epub.getFilename(options.useTitle, true);
+
+	if (!options.filename)
+	{
+		if (options.filenameLocal)
+		{
+			// @ts-ignore
+			if (meta.novel.title_output)
+			{
+				// @ts-ignore
+				filename = meta.novel.title_output;
+			}
+			else if (Array.isArray(options.filenameLocal))
+			{
+				for (let v of options.filenameLocal)
+				{
+					if (meta.novel[v])
+					{
+						filename = meta.novel[v];
+						break;
+					}
+				}
+			}
+			else if (meta.novel.title_zh)
+			{
+				filename = meta.novel.title_zh;
+			}
+			else if (meta.novel.title_short)
+			{
+				filename = meta.novel.title_short;
+			}
+			else if (typeof options.filenameLocal == 'string')
+			{
+				filename = options.filenameLocal;
+			}
+		}
+	}
+
+	const basename = filename;
+
+	let ext = EpubMaker.defaultExt;
+
+	let now = moment();
+
+	if (options.padEndDate)
+	{
+		filename += '_' + now.format('YYYYMMDD_HHmmss');
+	}
+
+	filename += ext;
+
+	let file = path.join(options.outputPath, filename);
+
+	return {
+		file,
+		ext,
+		filename,
+		options,
+		now,
+		basename,
+		epub,
+		meta,
+	}
 }
 
 export default create;

@@ -2,7 +2,7 @@
  * Created by user on 2018/2/18/018.
  */
 import * as Promise from 'bluebird';
-import { IOptions } from './lib/txt2epub3';
+import { IOptions, getNovelConf, makeFilename, makeOptions, defaultOptions } from './lib/txt2epub3';
 export declare function novelEpub(options: IOptions): Promise<{
     file: string;
     filename: string;
@@ -11,4 +11,5 @@ export declare function novelEpub(options: IOptions): Promise<{
     basename: string;
     ext: string;
 }>;
+export { IOptions, getNovelConf, makeFilename, makeOptions, defaultOptions };
 export default novelEpub;
