@@ -106,7 +106,7 @@ export declare class EpubConfig implements IEpubConfig {
     options?: {
         libSlugify?: ISlugify;
         ext?: string;
-        generateOptions?;
+        generateOptions?: any;
     };
     additionalFiles?: IFiles[];
     modification?: moment.Moment;

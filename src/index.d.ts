@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection } from './config';
@@ -39,15 +38,7 @@ export declare class EpubMaker {
     addTag(tag: any): this;
     setPublicationDate(new_data?: any): this;
     getFilename(useTitle?: boolean, noExt?: boolean): string;
-    vaild(): any[];
-    build(options?: any): Promise<any>;
-    /**
-     * for node.js
-     *
-     * @param options
-     * @returns {Promise<T>}
-     */
-    makeEpub<T = Buffer | Blob>(options?: any): Promise<T | any | Buffer | Blob>;
+    else: any;
 }
 export interface ISectionConfig {
     lang?: string;

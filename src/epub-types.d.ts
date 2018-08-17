@@ -3,11 +3,11 @@ export interface IEpubtypes {
     'group': string;
     'description': string;
 }
-export declare const epubtypes: self.IEpubtypes[];
+export declare const epubtypes: IEpubtypes[];
 export declare let groups: {
-    [index: string]: self.IEpubtypes[];
+    [index: string]: IEpubtypes[];
 };
 export declare function getGroup(epubtype: string): string;
-export declare const types: self.IEpubtypes[];
+export declare const types: IEpubtypes[];
 import * as self from './epub-types';
 export default self;

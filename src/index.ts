@@ -324,8 +324,17 @@ export class EpubMaker
 		{
 			filename = this.epubConfig.title;
 		}
+		else if (!this.epubConfig.slug)
+		{
+			// @ts-ignore
+			this.epubConfig.slug = shortid();
+
+			filename = this.epubConfig.slug;
+		}
 		else
 		{
+
+
 			filename = this.epubConfig.slug;
 		}
 
