@@ -1,4 +1,3 @@
-/// <reference types="bluebird" />
 import * as Promise from 'bluebird';
 export declare const IDKEY = "epub";
 export interface IOptions {
@@ -6,6 +5,7 @@ export interface IOptions {
     cwd?: string;
     log?: boolean;
     noFirePrefix?: boolean;
+    noVolume?: boolean;
 }
 export declare function epubExtract(srcFile: string, options?: IOptions): Promise<string>;
 export default epubExtract;

@@ -2,6 +2,7 @@
  * Created by user on 2018/2/7/007.
  */
 
+// @ts-ignore
 import { EPub, SYMBOL_RAW_DATA } from 'epub2';
 import { fixToc } from 'epub2/lib/toc';
 import * as cheerio from 'cheerio';
@@ -22,6 +23,11 @@ export interface IOptions
 	log?: boolean,
 
 	noFirePrefix?: boolean,
+
+	/**
+	 * 用來強制解決某些目錄錯亂 或者 無法處理多層目錄的問題
+	 */
+	noVolume?: boolean,
 }
 
 export function epubExtract(srcFile: string, options: IOptions = {}): Promise<string>
@@ -60,6 +66,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 	const PATH_NOVEL_MAIN = options.outputDir;
 
+	// @ts-ignore
 	return EPub.createAsync(srcFile)
 		.then(async function (epub)
 		{
@@ -80,7 +87,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 			let lastLevel = 0;
 
-			await Promise.mapSeries(epub.toc, async function (elem)
+			await Promise.mapSeries(epub.toc, async function (elem, index)
 			{
 				let doc;
 				let $;
@@ -115,9 +122,16 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					}
 				}
 
+				let volume_index = index;
+				let chapter_index = index;
+
 				if (!skip)
 				{
-					if (!isVolume && lastLevel != elem.level)
+					if (options.noVolume)
+					{
+						isVolume = false;
+					}
+					else if (!isVolume && lastLevel != elem.level)
 					{
 						// 強制產生目錄
 
@@ -137,7 +151,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 						currentVolume = volume_list[volume_list.length] = {
 							level: elem.level,
-							volume_index: volume_list.length,
+							volume_index: volume_index,
 							volume_title: volume_title || 'null',
 							chapter_list: [],
 						};
@@ -159,7 +173,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 						currentVolume = volume_list[volume_list.length] = {
 							level: elem.level,
-							volume_index: volume_list.length,
+							volume_index: volume_index,
 							volume_title: (a.text() || elem.title).replace(/^\s+|\s+$/g, ''),
 							chapter_list: [],
 						}
@@ -193,7 +207,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						{
 							currentVolume = volume_list[volume_list.length] = {
 								level: Math.max(0, elem.level - 1),
-								volume_index: volume_list.length,
+								volume_index: volume_index,
 								volume_title: 'null',
 								chapter_list: [],
 							};
@@ -211,7 +225,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							.chapter_list
 							.push({
 								level: elem.level,
-								chapter_index: currentVolume.chapter_list.length,
+								chapter_index: chapter_index,
 								chapter_title,
 								chapter_article,
 							})
@@ -237,7 +251,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 			await Promise.mapSeries(volume_list,async function (volume)
 			{
-				let vid = volume.volume_index.toString().padStart(3, '0') + '00';
+				let vid = volume.volume_index.toString().padStart(4, '0') + '0';
 
 				let dirname = path.join(path_novel,
 					`${vid} ${trimFilename(volume.volume_title)}`
@@ -254,7 +268,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					if (!options.noFirePrefix)
 					{
 						// @ts-ignore
-						let cid = chapter.chapter_index.toString().padStart(3, '0') + '00';
+						let cid = chapter.chapter_index.toString().padStart(4, '0') + '0';
 
 						name = `${cid}_${name}`;
 					}
