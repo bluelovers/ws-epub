@@ -2,6 +2,7 @@
 import * as xml2js from 'xml2js';
 import { EventEmitter } from 'events';
 import { IZipFile } from './zipfile';
+declare const SYMBOL_RAW_DATA: unique symbol;
 /**
  *  new EPub(fname[, imageroot][, linkroot])
  *  - fname (String): filename for the ebook
@@ -44,7 +45,7 @@ declare class EPub extends EventEmitter {
     zip: IZipFile;
     version: string;
     protected _getStatic(): any;
-    constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string);
+    constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]);
     static create(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv: any[]): EPub;
     /**
      *  EPub#parse() -> undefined
@@ -212,6 +213,7 @@ declare module EPub {
         'calibre:series'?: string;
         'collection-type'?: string;
         [key: string]: any;
+        [SYMBOL_RAW_DATA]?: IMetadata;
     }
     interface INcx extends Array<INcxTree> {
         [index: number]: INcxTree;

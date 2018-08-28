@@ -6,9 +6,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-const libEPub = require("./epub");
 const Promise = require("bluebird");
 const path = require("path");
+const libEPub = require("./epub");
+var SYMBOL_RAW_DATA_ = libEPub.SYMBOL_RAW_DATA;
+exports.SYMBOL_RAW_DATA = SYMBOL_RAW_DATA_;
 // @ts-ignore
 __export(require("./epub"));
 class EPub extends libEPub {

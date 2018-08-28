@@ -2,3 +2,33 @@
 /test/
 /.idea/
 *.old
+### npm2 template
+.idea
+
+~ci.list.txt
+~ci.log.txt
+~ci.errors.txt
+*.stackdump
+*.bak
+tsconfig.json
+#package-lock.json
+test
+.github
+.gitkeep
+/.*
+tests
+/~*
+__test__
+__tests__
+/node_modules/
+**/node_modules/### temp template
+/*.log
+/*.lock
+*.tmp### test template
+*.spec.ts
+*.spec.js
+*.spec.js.map
+*.test.ts
+*.test.js
+*.test.js.map
+

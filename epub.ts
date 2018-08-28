@@ -2,8 +2,11 @@ import * as xml2js from 'xml2js';
 import * as util from 'util';
 import { EventEmitter } from 'events';
 import { ZipFile, IZipFile } from './zipfile';
+import { array_unique } from 'array-hyper-unique';
 
 //TODO: Cache parsed data
+
+const SYMBOL_RAW_DATA = Symbol('rawData');
 
 /**
  *  new EPub(fname[, imageroot][, linkroot])
@@ -59,7 +62,7 @@ class EPub extends EventEmitter
 		return this.__proto__.constructor;
 	}
 
-	constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string)
+	constructor(epubfile: string, imagewebroot?: string, chapterwebroot?: string, ...argv)
 	{
 		super();
 
@@ -388,7 +391,7 @@ class EPub extends EventEmitter
 		let i, j, len, keys, keyparts, key;
 		const _self = this;
 
-		this.metadata[EPub.SYMBOL_RAW_DATA] = metadata;
+		this.metadata[SYMBOL_RAW_DATA] = metadata;
 
 		keys = Object.keys(metadata);
 		for (i = 0, len = keys.length; i < len; i++)
@@ -1069,7 +1072,7 @@ class EPub extends EventEmitter
 		}
 	}
 
-	static SYMBOL_RAW_DATA = Symbol.for('rawData');
+	static SYMBOL_RAW_DATA = SYMBOL_RAW_DATA;
 }
 
 module EPub
@@ -1146,6 +1149,8 @@ module EPub
 		'collection-type'?: string,
 
 		[key: string]: any,
+
+		[SYMBOL_RAW_DATA]?: IMetadata,
 	}
 
 	export interface INcx extends Array<INcxTree>
@@ -1222,11 +1227,3 @@ declare module "epub"
 	export = EPub;
 }
 */
-
-function array_unique(array: any[])
-{
-	return array.filter(function (el, index, arr)
-	{
-		return index == arr.indexOf(el);
-	});
-}

@@ -3,7 +3,9 @@ const xml2js = require("xml2js");
 const util = require("util");
 const events_1 = require("events");
 const zipfile_1 = require("./zipfile");
+const array_hyper_unique_1 = require("array-hyper-unique");
 //TODO: Cache parsed data
+const SYMBOL_RAW_DATA = Symbol('rawData');
 /**
  *  new EPub(fname[, imageroot][, linkroot])
  *  - fname (String): filename for the ebook
@@ -30,7 +32,7 @@ const zipfile_1 = require("./zipfile");
  *      /images/logo_img/OPT/logo.jpg
  **/
 class EPub extends events_1.EventEmitter {
-    constructor(epubfile, imagewebroot, chapterwebroot) {
+    constructor(epubfile, imagewebroot, chapterwebroot, ...argv) {
         super();
         this.filename = epubfile;
         this.imageroot = (imagewebroot || this._getStatic().IMAGE_ROOT).trim();
@@ -265,7 +267,7 @@ class EPub extends events_1.EventEmitter {
     parseMetadata(metadata) {
         let i, j, len, keys, keyparts, key;
         const _self = this;
-        this.metadata[EPub.SYMBOL_RAW_DATA] = metadata;
+        this.metadata[SYMBOL_RAW_DATA] = metadata;
         keys = Object.keys(metadata);
         for (i = 0, len = keys.length; i < len; i++) {
             keyparts = keys[i].split(":");
@@ -379,7 +381,7 @@ class EPub extends events_1.EventEmitter {
                             this.metadata['contribute'].push(n);
                             this.metadata['author_link_map'][n] = (t[n] || '').toString().trim();
                         }
-                        this.metadata['contribute'] = array_unique(this.metadata['contribute']);
+                        this.metadata['contribute'] = array_hyper_unique_1.array_unique(this.metadata['contribute']);
                     }
                     break;
                 default:
@@ -750,7 +752,7 @@ class EPub extends events_1.EventEmitter {
         }
     }
 }
-EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
+EPub.SYMBOL_RAW_DATA = SYMBOL_RAW_DATA;
 (function (EPub) {
     EPub.xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']);
     EPub.IMAGE_ROOT = '/images/';
@@ -767,6 +769,7 @@ EPub.SYMBOL_RAW_DATA = Symbol.for('rawData');
     }
     EPub.isEpub = isEpub;
 })(EPub || (EPub = {}));
+module.exports = EPub;
 /*
 // @ts-ignore
 declare module "epub"
@@ -807,9 +810,3 @@ declare module "epub"
     export = EPub;
 }
 */
-function array_unique(array) {
-    return array.filter(function (el, index, arr) {
-        return index == arr.indexOf(el);
-    });
-}
-module.exports = EPub;

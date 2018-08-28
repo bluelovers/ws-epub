@@ -2,10 +2,13 @@
  * Created by user on 2018/2/1/001.
  */
 
-import * as libEPub from './epub';
 import * as Promise from 'bluebird';
 import * as path from 'path';
 import * as xml2js from 'xml2js';
+import libEPub = require('./epub');
+
+import SYMBOL_RAW_DATA = libEPub.SYMBOL_RAW_DATA;
+export const SYMBOL_RAW_DATA: unique symbol = SYMBOL_RAW_DATA;
 
 // @ts-ignore
 export * from './epub';
