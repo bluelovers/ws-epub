@@ -147,7 +147,11 @@ Promise.mapSeries([
 
 //	'姫騎士がクラスメート！　〜異世界チートで奴隷化ハーレム〜',
 
-	'大劍師傳奇_(djs)',
+	//'大劍師傳奇_(djs)',
+
+	'呼び出された殺戮者',
+
+//	'虫虫酱むいむいたん',
 
 ] as string[], makeEpub);
 
@@ -177,7 +181,7 @@ async function makeEpub(novelID: string)
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\cm', novelID);
 
-	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
 
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');

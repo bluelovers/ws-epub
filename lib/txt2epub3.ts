@@ -14,6 +14,7 @@ import { splitTxt } from './util';
 import * as deepmerge from 'deepmerge-plus';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
+
 export const console = new Console(null, {
 	enabled: true,
 	inspectOptions: {
@@ -95,16 +96,16 @@ export function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta
 				let file = path.join(confPath, 'meta.md');
 
 				meta = await fs.readFile(file)
-				.then(mdconf_parse)
-			;
+					.then(mdconf_parse)
+				;
 			}
 			else if (fs.existsSync(path.join(confPath, 'README.md')))
 			{
 				let file = path.join(confPath, 'README.md');
 
 				meta = await fs.readFile(file)
-				.then(mdconf_parse)
-			;
+					.then(mdconf_parse)
+				;
 			}
 		}
 
@@ -264,18 +265,77 @@ export function create(options: IOptions, cache = {}): Promise<{
 			{
 				let idx = 1;
 
+				let cacheTreeSection = {} as {
+					[k: string]: EpubMaker.Section,
+				};
+
 				return Promise
 					.mapSeries(Object.keys(_ls), async function (val_dir)
 					{
-						let vid = `volume${(idx++).toString().padStart(4, '0')}`;
-
 						let ls = _ls[val_dir];
 						let dirname = ls[0].path_dir;
 						let volume_title = ls[0].volume_title;
 
-						let volume = new EpubMaker.Section('auto-toc', vid, {
-							title: volume_title,
-						}, false, true);
+						let volume = cacheTreeSection[val_dir];
+
+						let _new_top_level: EpubMaker.Section;
+
+						if (!cacheTreeSection[val_dir])
+						{
+							let _ts2 = volume_title.split('/');
+							let _ts = val_dir.split('/');
+
+							let _last: EpubMaker.Section;
+
+							for (let i = 0; i < _ts.length; i++)
+							{
+								let _navs = _ts.slice(0, i + 1);
+								let _nav = _navs.join('/');
+
+//								console.dir({
+//									_navs,
+//									_nav,
+//								});
+
+								if (!cacheTreeSection[_nav])
+								{
+									let vid = `volume${(idx++).toString().padStart(6, '0')}`;
+
+									let title = normalize_strip(_ts2[i], true);
+
+									cacheTreeSection[_nav] = new EpubMaker.Section('auto-toc', vid, {
+										title: title,
+									}, false, true);
+
+									if (i == 0)
+									{
+										//epub.withSection(cacheTreeSection[_nav]);
+
+										_new_top_level = cacheTreeSection[_nav];
+									}
+								}
+
+								if (_last)
+								{
+									_last.withSubSection(cacheTreeSection[_nav])
+								}
+
+								_last = cacheTreeSection[_nav];
+							}
+
+							volume = cacheTreeSection[val_dir];
+
+//							console.dir({
+//								cacheTreeSection,
+//								volume,
+//							}, {
+//								depth: 5,
+//								colors: true,
+//							});
+//							process.exit()
+						}
+
+						let vid: string = volume.id;
 
 						await novelGlobby.globby([
 								'cover.*',
@@ -294,8 +354,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 									volume.setContent({
 										cover: {
-											name: name
-										}
+											name: name,
+										},
 									});
 								}
 							})
@@ -331,7 +391,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 								console.log(row);
 							}
 
-							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString().padStart(4, '0')}`, {
+							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString()
+								.padStart(4, '0')}`, {
 								title: name,
 								content: data.toString().replace(/\r\n|\r(?!\n)|\n/g, "\n"),
 							}, true, false);
@@ -383,7 +444,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 										arr.unshift(volume.content.cover.name);
 									}
 
-									let chapter = new EpubMaker.Section('non-specific backmatter', `image${(idx++).toString().padStart(4, '0')}`, {
+									let chapter = new EpubMaker.Section('non-specific backmatter', `image${(idx++).toString()
+										.padStart(4, '0')}`, {
 										title: '插圖',
 										content: arr.reduce(function (a, b)
 										{
@@ -400,13 +462,21 @@ export function create(options: IOptions, cache = {}): Promise<{
 							})
 						;
 
-						epub.withSection(volume);
+						//epub.withSection(volume);
+
+						if (_new_top_level)
+						{
+							epub.withSection(_new_top_level);
+						}
 
 						return volume;
 					})
 					;
 			})
 		;
+
+//		console.log(epub.epubConfig.sections);
+//		process.exit();
 
 		let data = await epub.makeEpub();
 
