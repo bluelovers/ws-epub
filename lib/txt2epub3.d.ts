@@ -2,10 +2,12 @@
  * Created by user on 2017/12/16/016.
  */
 import EpubMaker from 'epub-maker2';
-import * as Promise from 'bluebird';
+import Promise = require('bluebird');
 import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
 import { IMdconfMeta } from 'node-novel-info';
+import { Console } from 'debug-color2';
+export declare const console: Console;
 export interface IOptions {
     /**
      * 小說 txt 的主資料夾路徑

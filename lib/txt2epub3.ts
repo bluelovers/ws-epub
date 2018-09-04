@@ -4,7 +4,7 @@
 
 import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
-import * as Promise from 'bluebird';
+import Promise = require('bluebird');
 import * as path from 'path';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
@@ -12,6 +12,19 @@ import * as novelGlobby from 'node-novel-globby';
 import { mdconf_parse, IMdconfMeta, chkInfo } from 'node-novel-info';
 import { splitTxt } from './util';
 import * as deepmerge from 'deepmerge-plus';
+import { normalize_strip } from '@node-novel/normalize';
+import { Console } from 'debug-color2';
+export const console = new Console(null, {
+	enabled: true,
+	inspectOptions: {
+		colors: true,
+	},
+	chalkOptions: {
+		enabled: true,
+	},
+});
+
+console.enabledColor = true;
 
 export interface IOptions
 {
