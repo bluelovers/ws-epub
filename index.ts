@@ -8,13 +8,14 @@ import * as path from 'path';
 import * as BluebirdPromise from 'bluebird';
 import * as moment from 'moment';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
-import { crlf, CRLF } from 'crlf-normalize';
+import { crlf, CRLF, LF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 import UString from 'uni-string';
 import { sortTree } from 'node-novel-globby/lib/glob-sort';
 import { array_unique } from 'array-hyper-unique';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
+
 const console = new Console(null, {
 	enabled: true,
 	inspectOptions: {
@@ -40,7 +41,11 @@ const hr2 = '－'.repeat(hr_len);
  * @param outputFilename 參考用檔案名稱
  * @param noSave 不儲存檔案僅回傳 txt 內容
  */
-export async function txtMerge(inputPath: string, outputPath: string, outputFilename?: string, noSave?: boolean): Promise<{
+export async function txtMerge(inputPath: string,
+	outputPath: string,
+	outputFilename?: string,
+	noSave?: boolean,
+): Promise<{
 	filename: string,
 	fullpath: string,
 	data: string,
@@ -131,13 +136,24 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 
 					let volume_title = ls[0].volume_title;
 
+					volume_title = volume_title
+						.split('/')
+						.map(function (v)
+						{
+							return normalize_strip(v, true)
+						})
+						.join(LF)
+					;
+
 					let txt = `${hr1}CHECK\n${volume_title}\n${hr1}\n`;
 
 					let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
 					{
 						let data = await fs.readFile(row.path);
 
-						let txt = `${hr2}BEGIN\n${row.chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
+						let chapter_title = row.chapter_title;
+
+						let txt = `${hr2}BEGIN\n${chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
 
 						count_f++;
 
@@ -191,7 +207,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 			console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
 			console.trace(e);
 		})
-	;
+		;
 }
 
 export function getMetaTitles(meta: IMdconfMeta): string[]

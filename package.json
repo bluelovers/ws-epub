@@ -1,6 +1,6 @@
 {
   "name": "novel-txt-merge",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "合併小說個別 txt 章節/目錄 => 單一 txt 合併",
   "keywords": [
     "cli",

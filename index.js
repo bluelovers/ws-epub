@@ -75,10 +75,17 @@ async function txtMerge(inputPath, outputPath, outputFilename, noSave) {
             .mapSeries(Object.keys(_ls), async function (val_dir, index, len) {
             let ls = _ls[val_dir];
             let volume_title = ls[0].volume_title;
+            volume_title = volume_title
+                .split('/')
+                .map(function (v) {
+                return normalize_1.normalize_strip(v, true);
+            })
+                .join(crlf_normalize_1.LF);
             let txt = `${hr1}CHECK\n${volume_title}\n${hr1}\n`;
             let a = await BluebirdPromise.mapSeries(ls, async function (row) {
                 let data = await fs_iconv_1.default.readFile(row.path);
-                let txt = `${hr2}BEGIN\n${row.chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
+                let chapter_title = row.chapter_title;
+                let txt = `${hr2}BEGIN\n${chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
                 count_f++;
                 return txt;
             });
