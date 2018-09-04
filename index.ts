@@ -49,7 +49,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 	{
 		[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
 
-		globby_patterns.push('!*/*/**/*');
+		globby_patterns.push('!*/*/*/**/*');
 	}
 
 	let meta: IMdconfMeta;
@@ -170,7 +170,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 		})
 		.catch(function (e)
 		{
-			console.error(`[ERROR] can't found any file in '${PATH_CWD}'`);
+			console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
 			console.trace(e);
 		})
 	;

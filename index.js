@@ -27,7 +27,7 @@ async function txtMerge(inputPath, outputPath, outputFilename, noSave) {
     };
     {
         [globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
-        globby_patterns.push('!*/*/**/*');
+        globby_patterns.push('!*/*/*/**/*');
     }
     let meta;
     meta = await novelGlobby.globbyASync([
@@ -96,7 +96,7 @@ async function txtMerge(inputPath, outputPath, outputFilename, noSave) {
         });
     })
         .catch(function (e) {
-        console.error(`[ERROR] can't found any file in '${PATH_CWD}'`);
+        console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
         console.trace(e);
     });
 }
