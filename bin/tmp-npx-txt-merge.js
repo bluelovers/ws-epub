@@ -4,6 +4,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const yargs = require("yargs");
 const path = require("path");
 const index_1 = require("../index");
+const debug_color2_1 = require("debug-color2");
+const console = new debug_color2_1.Console(null, {
+    enabled: true,
+    inspectOptions: {
+        colors: true,
+    },
+    chalkOptions: {
+        enabled: true,
+    },
+});
+console.enabledColor = true;
 const CWD = process.cwd();
 let cli = yargs
     .default({})

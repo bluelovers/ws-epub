@@ -2,6 +2,7 @@
  * Created by user on 2018/1/28/028.
  */
 
+import { IReturnList } from 'node-novel-globby';
 import * as novelGlobby from 'node-novel-globby';
 import * as path from 'path';
 import * as BluebirdPromise from 'bluebird';
@@ -10,6 +11,21 @@ import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 import UString from 'uni-string';
+import { sortTree } from 'node-novel-globby/lib/glob-sort';
+import { array_unique } from 'array-hyper-unique';
+import { normalize_strip } from '@node-novel/normalize';
+import { Console } from 'debug-color2';
+const console = new Console(null, {
+	enabled: true,
+	inspectOptions: {
+		colors: true,
+	},
+	chalkOptions: {
+		enabled: true,
+	},
+});
+
+console.enabledColor = true;
 
 const hr_len = 15;
 const eol = '\n';
@@ -64,6 +80,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 			'README.md',
 		], globby_options)
 		.then(novelGlobby.returnGlobList)
+		.then(sortTree)
 		.tap(function (ls)
 		{
 			//console.log(ls);
@@ -92,8 +109,9 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 		.tap(function (ls)
 		{
 			//console.log(ls);
-
 			//throw new Error('test');
+
+			//process.exit();
 		})
 		.then(function (_ls)
 		{
@@ -134,7 +152,7 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 				})
 				.then(async function (a)
 				{
-					let filename2 = makeFilename(meta, outputFilename, a);
+					let filename2 = makeFilename(meta, outputFilename, a, _ls);
 
 					let txt = a.join(eol);
 					txt = crlf(txt, CRLF);
@@ -152,11 +170,11 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 						data: txt,
 					};
 				})
-				.tap(function (filename)
+				.tap(function (data)
 				{
-					console.log('[DONE] done.');
+					console.success('[DONE] done.');
 
-					console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${filename}`);
+					console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${data.filename}`);
 				})
 				// @ts-ignore
 				.catchThrow(function (e)
@@ -176,6 +194,24 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
 	;
 }
 
+export function getMetaTitles(meta: IMdconfMeta): string[]
+{
+	let list = Object.keys(meta.novel)
+		.reduce(function (a, key)
+		{
+			if (key.indexOf('title') === 0 && typeof meta.novel[key] === 'string')
+			{
+				a.push(meta.novel[key]);
+			}
+
+			return a;
+		}, [])
+		.filter(v => v)
+	;
+
+	return array_unique(list);
+}
+
 /**
  * 回傳處理後的檔案名稱
  *
@@ -183,25 +219,114 @@ export async function txtMerge(inputPath: string, outputPath: string, outputFile
  * @param outputFilename
  * @param a
  */
-export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = []): string
+export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IReturnList): string
 {
+	if (_ls)
+	{
+		let current_level = 0;
+		let _lest = {
+			_ts: [],
+		} as {
+			val_dir: string,
+			volume_title: string,
+			_ts: string[],
+			level: number,
+		};
+
+		let c = '- ';
+
+		let ret = Object.keys(_ls)
+			.reduce(function (a1, val_dir)
+			{
+				let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
+
+				let volume_title = ls[0].volume_title;
+
+				let _ts = volume_title.split('/');
+
+				if (_lest.val_dir != val_dir)
+				{
+					for (let i = 0; i < _ts.length; i++)
+					{
+						if (_lest._ts[i] != _ts[i])
+						{
+							a1.push(c.repeat(i + 1) + normalize_strip(_ts[i], true))
+						}
+					}
+				}
+
+				//console.log(ls[0]);
+
+				ls.forEach(function (row)
+				{
+					a1.push(c.repeat(_ts.length + 1) + row.chapter_title);
+				});
+
+				_lest = {
+					_ts,
+					val_dir,
+					volume_title,
+					level: _ts.length,
+				};
+
+				return a1;
+			}, [])
+		;
+
+		if (ret.length)
+		{
+			ret.unshift(`目錄索引：`);
+			ret.push(hr2 + CRLF);
+
+			a.unshift(ret.join(CRLF));
+		}
+
+//		console.dir({
+//			//_ls,
+//			ret,
+//		}, {
+//			depth: null,
+//		});
+//		process.exit();
+	}
+
 	if (meta && meta.novel)
 	{
 		let txt = `${meta.novel.title}\n${meta.novel.author}\n${meta.novel.source || ''}\n\n${meta.novel.preface}\n\n`;
 
 		let a2 = [];
 
+		let titles = getMetaTitles(meta)
+			.filter(v => v != meta.novel.title)
+		;
+
+		if (titles.length)
+		{
+			a2.push(`其他名稱：\n` + titles.join(CRLF) + "\n");
+			a2.push(hr2);
+		}
+
 		if (Array.isArray(meta.contribute) && meta.contribute.length)
 		{
-			a2.push(meta.contribute.join('、') + "\n\n");
+			a2.push(`貢獻者：` + meta.contribute.join('、') + "\n");
+		}
+
+		if (Array.isArray(meta.novel.tags) && meta.novel.tags.length)
+		{
+			a2.push(`標籤：` + meta.novel.tags.join('、') + "\n");
 		}
 
 		if (a2.length)
 		{
 			a2.unshift(hr2);
 
+			a2.push(hr2);
+
 			txt += a2.join(CRLF);
 		}
+
+//		console.log(txt);
+//		process.exit();
 
 		a.unshift(txt);
 	}
