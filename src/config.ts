@@ -6,6 +6,7 @@ import { array_unique } from './lib/array';
 import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
 import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
+import { createUUID } from './lib/uuid';
 
 export interface ICover extends IFiles
 {
@@ -402,16 +403,21 @@ export class EpubConfig implements IEpubConfig
 			}
 		}
 
-		self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : shortid();
+		self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : createUUID(self);
 		self.slug = self.slug
 			// @ts-ignore
 			|| slugify(self.title)
 			|| hashSum(self.title)
 		;
 
+		if (!self.modification)
+		{
+			self.modification = self.publication.clone();
+		}
+
 		if (self.modification)
 		{
-			self.modificationDate = self.modification.format(EpubConfig.dateFormat);
+			self.modificationDate = self.modification.format('YYYY-MM-DDThh:mm:ssZ');
 			self.modificationDateYMD = self.modification.format('YYYY-MM-DD');
 		}
 

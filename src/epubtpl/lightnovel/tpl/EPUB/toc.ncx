@@ -22,7 +22,7 @@
       <navLabel>
         <text>CoverPage</text>
       </navLabel>
-      <content src="CoverPage.html" />
+      <content src="CoverPage.xhtml" />
     </navPoint>
     {{/if}}
     {{/if}}
@@ -30,7 +30,7 @@
       <navLabel>
         <text>Table of Contents</text>
       </navLabel>
-      <content src="TableOfContents.html" />
+      <content src="TableOfContents.xhtml" />
     </navPoint>
     <!-- 2.01 NCX: playOrder is optional -->
     {{#each sections}}{{> sectionsNCXTemplate}}{{/each}}

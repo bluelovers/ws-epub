@@ -1,4 +1,4 @@
 {{#if needPage}}
-<item id="{{id}}" href="{{name}}.html" media-type="application/xhtml+xml" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}" />
+<item id="{{id}}" href="{{name}}.xhtml" media-type="application/xhtml+xml" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}" />
 {{/if}}
 {{#each subSections}}{{> sectionsOPFManifestTemplate}}{{/each}}

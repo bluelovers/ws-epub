@@ -35,19 +35,19 @@ export namespace Builder
 		//container: 'META-INF/container.xml',
 		opf: 'EPUB/content.opf',
 		ncx: 'EPUB/toc.ncx',
-		nav: 'EPUB/nav.html',
+		nav: 'EPUB/nav.xhtml',
 		css: 'EPUB/css/main.css',
-		content: 'EPUB/content.html',
-		autoToc: 'EPUB/auto-toc.html',
+		content: 'EPUB/content.xhtml',
+		autoToc: 'EPUB/auto-toc.xhtml',
 		sectionsNavTemplate: 'EPUB/sections-nav-template.html',
 		sectionsNCXTemplate: 'EPUB/sections-ncx-template.xml',
 		sectionsOPFManifestTemplate: 'EPUB/sections-opf-manifest-template.xml',
 		sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml',
 
-		coverPage: 'EPUB/CoverPage.html',
-		tableOfContents: 'EPUB/TableOfContents.html',
+		coverPage: 'EPUB/CoverPage.xhtml',
+		tableOfContents: 'EPUB/TableOfContents.xhtml',
 
-		contents: 'EPUB/contents.html',
+		contents: 'EPUB/contents.xhtml',
 	};
 
 	for (let i in templates)
@@ -67,7 +67,7 @@ export namespace Builder
 		staticFiles[i] = path.join(EPUB_TEMPLATES_TPL, staticFiles[i]);
 	}
 
-	export async function make(epub: EpubMaker, options?): Promise<JSZip>
+	export function make(epub: EpubMaker, options?): Promise<JSZip>
 	{
 		//let epubConfig = epub.epubConfig;
 
@@ -83,12 +83,14 @@ export namespace Builder
 
 		return Promise
 			.mapSeries([
+				addStaticFiles,
+
 				addAditionalInfo,
 
 				//zipLib.addMimetype,
 				//zipLib.addContainerInfo,
 				addCover,
-				addStaticFiles,
+
 				zipLib.addFiles,
 
 				addStylesheets,
@@ -114,7 +116,7 @@ export namespace Builder
 			;
 	}
 
-	export async function addStaticFiles(zip, epub: EpubMaker, options)
+	export function addStaticFiles(zip, epub: EpubMaker, options)
 	{
 		let ls = Object.keys(staticFiles).reduce(function (a, key)
 		{
@@ -136,12 +138,12 @@ export namespace Builder
 	{
 		zip
 			.folder('EPUB')
-			.file('TableOfContents.html', compileTpl(options.templates.tableOfContents, epub.epubConfig))
+			.file('TableOfContents.xhtml', compileTpl(options.templates.tableOfContents, epub.epubConfig))
 		;
 
 		zip
 			.folder('EPUB')
-			.file('contents.html', compileTpl(options.templates.contents, epub.epubConfig))
+			.file('contents.xhtml', compileTpl(options.templates.contents, epub.epubConfig))
 		;
 	}
 
@@ -153,7 +155,7 @@ export namespace Builder
 		{
 			zip
 				.folder('EPUB')
-				.file('CoverPage.html', compileTpl(options.templates.coverPage, epub.epubConfig))
+				.file('CoverPage.xhtml', compileTpl(options.templates.coverPage, epub.epubConfig))
 			;
 		}
 	}
@@ -198,6 +200,7 @@ export namespace Builder
 	export function addAditionalInfo(zip, epub: EpubMaker, options)
 	{
 		//Default options
+		// @ts-ignore
 		epub.epubConfig.options.tocName = epub.epubConfig.options.tocName || 'Menu';
 		//Generate name and full title for each section/subsection
 		for (let i = 0; i < epub.epubConfig.sections.length; i++)
@@ -224,7 +227,7 @@ export namespace Builder
 	export function addEpub3Nav(zip, epub: EpubMaker, options)
 	{
 		Handlebars.registerPartial('sectionsNavTemplate', options.templates.sectionsNavTemplate);
-		zip.folder('EPUB').file('nav.html', compileTpl(options.templates.nav, epub.epubConfig));
+		zip.folder('EPUB').file('nav.xhtml', compileTpl(options.templates.nav, epub.epubConfig));
 	}
 
 	export async function addStylesheets(zip, epub: EpubMaker, options)
@@ -262,7 +265,7 @@ export namespace Builder
 		{
 			if (section.needPage)
 			{
-				let name = section.name + '.html';
+				let name = section.name + '.xhtml';
 
 				if (section.epubType == 'auto-toc')
 				{
@@ -293,6 +296,7 @@ export namespace Builder
 	}
 }
 
+// @ts-ignore
 export const builder = Builder as IBuilder;
 export default builder as IBuilder;
 

@@ -6,7 +6,9 @@ import * as hashSum from 'hash-sum';
 import { trimFilename } from 'fs-iconv';
 import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
+import { createUUID } from './lib/uuid';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
+import JSZip = require('jszip');
 
 export { shortid, hashSum }
 
@@ -369,7 +371,7 @@ export class EpubMaker
 
 		if (!this.epubConfig.uuid)
 		{
-			this.withUuid(shortid());
+			this.withUuid(createUUID(this.epubConfig));
 		}
 
 		this.epubConfig.$auto();

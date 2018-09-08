@@ -1,6 +1,4 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:epub="http://www.idpf.org/2007/ops"
 	  xml:lang="{{langMain}}" lang="{{langMain}}">
@@ -35,19 +33,18 @@
 			<ol class="list_none toc">
 				{{#each sections}}
 				{{#if needPage}}
-				<li><a href="{{name}}.html" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
+				<li><a href="{{name}}.xhtml" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
 				{{/if}}
 				{{#each subSections}}
-				<li><a href="{{name}}.html" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
+				<li><a href="{{name}}.xhtml" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
 				{{/each}}
 				{{/each}}
 			</ol>
 		</nav>
 
 	</section>
-
+	<script type="text/javascript">
+	document.getElementById("state-indicator").textContent += 'js';
+	</script>
 </body>
-<script type="javascript">
-document.getElementById("state-indicator").textContent += 'js';
-</script>
 </html>

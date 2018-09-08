@@ -2,9 +2,9 @@
 @namespace "http://www.w3.org/1999/xhtml";
 @namespace epub "http://www.idpf.org/2007/ops";
 
-@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
-@import url(https://fonts.googleapis.com/earlyaccess/notosanssc.css);
-@import url(https://fonts.googleapis.com/earlyaccess/notosansjp.css);
+@import url("https://fonts.googleapis.com/earlyaccess/notosanstc.css");
+@import url("https://fonts.googleapis.com/earlyaccess/notosanssc.css");
+@import url("https://fonts.googleapis.com/earlyaccess/notosansjp.css");
 
 ol ul, ul ol, ul ul, ol ol {
 	-webkit-margin-before: 0px;

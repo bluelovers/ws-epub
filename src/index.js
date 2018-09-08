@@ -9,6 +9,7 @@ const hashSum = require("hash-sum");
 exports.hashSum = hashSum;
 const fs_iconv_1 = require("fs-iconv");
 const zip_1 = require("./epubtpl-lib/zip");
+const uuid_1 = require("./lib/uuid");
 const config_1 = require("./config");
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
@@ -234,7 +235,7 @@ class EpubMaker {
             this.setPublicationDate();
         }
         if (!this.epubConfig.uuid) {
-            this.withUuid(shortid());
+            this.withUuid(uuid_1.createUUID(this.epubConfig));
         }
         this.epubConfig.$auto();
         let chk = this.vaild();

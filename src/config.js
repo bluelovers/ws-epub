@@ -7,6 +7,7 @@ const hashSum = require("hash-sum");
 const array_1 = require("./lib/array");
 const crlf_normalize_1 = require("crlf-normalize");
 const lib_1 = require("node-novel-info/lib");
+const uuid_1 = require("./lib/uuid");
 class EpubConfig {
     constructor(epubConfig = {}, options = {}) {
         if (epubConfig instanceof EpubConfig) {
@@ -151,13 +152,16 @@ class EpubConfig {
                 self.tags = array_1.array_unique(self.tags);
             }
         }
-        self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : shortid();
+        self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : uuid_1.createUUID(self);
         self.slug = self.slug
             // @ts-ignore
             || index_1.slugify(self.title)
             || hashSum(self.title);
+        if (!self.modification) {
+            self.modification = self.publication.clone();
+        }
         if (self.modification) {
-            self.modificationDate = self.modification.format(EpubConfig.dateFormat);
+            self.modificationDate = self.modification.format('YYYY-MM-DDThh:mm:ssZ');
             self.modificationDateYMD = self.modification.format('YYYY-MM-DD');
         }
         if (!self.publication) {

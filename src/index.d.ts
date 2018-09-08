@@ -1,6 +1,8 @@
+/// <reference types="node" />
 import * as shortid from 'shortid';
 import * as hashSum from 'hash-sum';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection } from './config';
+import JSZip = require('jszip');
 export { shortid, hashSum };
 export declare function slugify(input: string, ...argv: any[]): string;
 export declare function slugifyWithFallback(input: string, ...argv: any[]): string;
@@ -38,7 +40,15 @@ export declare class EpubMaker {
     addTag(tag: any): this;
     setPublicationDate(new_data?: any): this;
     getFilename(useTitle?: boolean, noExt?: boolean): string;
-    else: any;
+    vaild(): any[];
+    build(options?: any): Promise<JSZip>;
+    /**
+     * for node.js
+     *
+     * @param options
+     * @returns {Promise<T>}
+     */
+    makeEpub<T = Buffer | Blob>(options?: any): Promise<T | any | Buffer | Blob>;
 }
 export interface ISectionConfig {
     lang?: string;

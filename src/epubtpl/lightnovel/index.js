@@ -17,17 +17,17 @@ var Builder;
         //container: 'META-INF/container.xml',
         opf: 'EPUB/content.opf',
         ncx: 'EPUB/toc.ncx',
-        nav: 'EPUB/nav.html',
+        nav: 'EPUB/nav.xhtml',
         css: 'EPUB/css/main.css',
-        content: 'EPUB/content.html',
-        autoToc: 'EPUB/auto-toc.html',
+        content: 'EPUB/content.xhtml',
+        autoToc: 'EPUB/auto-toc.xhtml',
         sectionsNavTemplate: 'EPUB/sections-nav-template.html',
         sectionsNCXTemplate: 'EPUB/sections-ncx-template.xml',
         sectionsOPFManifestTemplate: 'EPUB/sections-opf-manifest-template.xml',
         sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml',
-        coverPage: 'EPUB/CoverPage.html',
-        tableOfContents: 'EPUB/TableOfContents.html',
-        contents: 'EPUB/contents.html',
+        coverPage: 'EPUB/CoverPage.xhtml',
+        tableOfContents: 'EPUB/TableOfContents.xhtml',
+        contents: 'EPUB/contents.xhtml',
     };
     for (let i in Builder.templates) {
         Builder.templates[i] = `\{\{import \'${path.join(exports.EPUB_TEMPLATES_TPL, Builder.templates[i])}'\}\}`;
@@ -40,7 +40,7 @@ var Builder;
     for (let i in Builder.staticFiles) {
         Builder.staticFiles[i] = path.join(exports.EPUB_TEMPLATES_TPL, Builder.staticFiles[i]);
     }
-    async function make(epub, options) {
+    function make(epub, options) {
         //let epubConfig = epub.epubConfig;
         options = Object.assign({}, {
             templates: Builder.templates,
@@ -51,11 +51,11 @@ var Builder;
         //await addAditionalInfo(zip, epub, options);
         return Promise
             .mapSeries([
+            addStaticFiles,
             addAditionalInfo,
             //zipLib.addMimetype,
             //zipLib.addContainerInfo,
             addCover,
-            addStaticFiles,
             zip_1.default.addFiles,
             addStylesheets,
             addManifestOpf,
@@ -74,7 +74,7 @@ var Builder;
         });
     }
     Builder.make = make;
-    async function addStaticFiles(zip, epub, options) {
+    function addStaticFiles(zip, epub, options) {
         let ls = Object.keys(Builder.staticFiles).reduce(function (a, key) {
             let b = {
                 name: key,
@@ -90,10 +90,10 @@ var Builder;
     async function tableOfContents(zip, epub, options) {
         zip
             .folder('EPUB')
-            .file('TableOfContents.html', handlebar_helpers_1.compileTpl(options.templates.tableOfContents, epub.epubConfig));
+            .file('TableOfContents.xhtml', handlebar_helpers_1.compileTpl(options.templates.tableOfContents, epub.epubConfig));
         zip
             .folder('EPUB')
-            .file('contents.html', handlebar_helpers_1.compileTpl(options.templates.contents, epub.epubConfig));
+            .file('contents.xhtml', handlebar_helpers_1.compileTpl(options.templates.contents, epub.epubConfig));
     }
     Builder.tableOfContents = tableOfContents;
     async function addCover(zip, epub, options) {
@@ -101,7 +101,7 @@ var Builder;
         if (bool) {
             zip
                 .folder('EPUB')
-                .file('CoverPage.html', handlebar_helpers_1.compileTpl(options.templates.coverPage, epub.epubConfig));
+                .file('CoverPage.xhtml', handlebar_helpers_1.compileTpl(options.templates.coverPage, epub.epubConfig));
         }
     }
     Builder.addCover = addCover;
@@ -133,6 +133,7 @@ var Builder;
     Builder.addInfoSection = addInfoSection;
     function addAditionalInfo(zip, epub, options) {
         //Default options
+        // @ts-ignore
         epub.epubConfig.options.tocName = epub.epubConfig.options.tocName || 'Menu';
         //Generate name and full title for each section/subsection
         for (let i = 0; i < epub.epubConfig.sections.length; i++) {
@@ -154,7 +155,7 @@ var Builder;
     Builder.addEpub2Nav = addEpub2Nav;
     function addEpub3Nav(zip, epub, options) {
         handlebar_helpers_1.Handlebars.registerPartial('sectionsNavTemplate', options.templates.sectionsNavTemplate);
-        zip.folder('EPUB').file('nav.html', handlebar_helpers_1.compileTpl(options.templates.nav, epub.epubConfig));
+        zip.folder('EPUB').file('nav.xhtml', handlebar_helpers_1.compileTpl(options.templates.nav, epub.epubConfig));
     }
     Builder.addEpub3Nav = addEpub3Nav;
     async function addStylesheets(zip, epub, options) {
@@ -179,7 +180,7 @@ var Builder;
     function addSection(zip, section, epub, options) {
         return zip_1.default.addSubSections(zip, section, function (zip, section, epub, options) {
             if (section.needPage) {
-                let name = section.name + '.html';
+                let name = section.name + '.xhtml';
                 if (section.epubType == 'auto-toc') {
                     return zip
                         .folder('EPUB')
@@ -202,6 +203,7 @@ var Builder;
     }
     Builder.addContent = addContent;
 })(Builder = exports.Builder || (exports.Builder = {}));
+// @ts-ignore
 exports.builder = Builder;
 exports.default = exports.builder;
 /*

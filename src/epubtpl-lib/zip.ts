@@ -2,11 +2,11 @@
  * Created by user on 2017/12/12/012.
  */
 
-import * as JSZip from 'jszip';
+import JSZip = require('jszip');
 import { IFiles, ICover, EpubConfig, IEpubConfig } from '../config';
 import { compileTpl } from './handlebar-helpers';
 import * as path from 'path';
-import * as Promise from 'bluebird';
+import BPromise = require('bluebird');
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 
@@ -59,9 +59,9 @@ export function parseFileSetting(coverUrl, epubConfig: IEpubConfig): IFiles
 	return cover;
 }
 
-export async function addStaticFiles(zip, staticFiles: IFiles[])
+export function addStaticFiles(zip, staticFiles: IFiles[])
 {
-	return await Promise.map(staticFiles, async function (_file: IFiles)
+	return BPromise.mapSeries(staticFiles, async function (_file: IFiles)
 	{
 		let file = await fetchFile(_file);
 
@@ -111,16 +111,19 @@ export async function addCover(zip: JSZip, epub: EpubMaker, options)
 	return false;
 }
 
-export async function addSubSections(zip: JSZip, section: EpubMaker.Section, cb, epub: EpubMaker, options?)
+export function addSubSections(zip: JSZip, section: EpubMaker.Section, cb, epub: EpubMaker, options?)
 {
-	await cb(zip, section, epub.epubConfig, options);
-
-	return Promise.mapSeries(section.subSections, function (subSection: EpubMaker.Section)
-	{
-		return addSubSections(zip, subSection, cb, epub, options);
-	});
+	return BPromise
+		.resolve(cb(zip, section, epub.epubConfig, options))
+		.then(function ()
+		{
+			return BPromise.mapSeries(section.subSections, function (subSection: EpubMaker.Section)
+			{
+				return addSubSections(zip, subSection, cb, epub, options);
+			});
+		})
+	;
 }
 
 import * as self from './zip';
-
 export default self;

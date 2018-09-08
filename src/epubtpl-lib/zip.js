@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const JSZip = require("jszip");
 exports.JSZip = JSZip;
 const path = require("path");
-const Promise = require("bluebird");
+const BPromise = require("bluebird");
 const ajax_1 = require("./ajax");
 /*
 export async function addMimetype(zip: JSZip, epub: EpubMaker, options)
@@ -43,8 +43,8 @@ function parseFileSetting(coverUrl, epubConfig) {
     return cover;
 }
 exports.parseFileSetting = parseFileSetting;
-async function addStaticFiles(zip, staticFiles) {
-    return await Promise.map(staticFiles, async function (_file) {
+function addStaticFiles(zip, staticFiles) {
+    return BPromise.mapSeries(staticFiles, async function (_file) {
         let file = await ajax_1.fetchFile(_file);
         zip
             .folder(file.folder)
@@ -78,10 +78,13 @@ async function addCover(zip, epub, options) {
     return false;
 }
 exports.addCover = addCover;
-async function addSubSections(zip, section, cb, epub, options) {
-    await cb(zip, section, epub.epubConfig, options);
-    return Promise.mapSeries(section.subSections, function (subSection) {
-        return addSubSections(zip, subSection, cb, epub, options);
+function addSubSections(zip, section, cb, epub, options) {
+    return BPromise
+        .resolve(cb(zip, section, epub.epubConfig, options))
+        .then(function () {
+        return BPromise.mapSeries(section.subSections, function (subSection) {
+            return addSubSections(zip, subSection, cb, epub, options);
+        });
     });
 }
 exports.addSubSections = addSubSections;
