@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
 import { mdconf_parse, IMdconfMeta, chkInfo } from 'node-novel-info';
 import { splitTxt } from './util';
+import { createUUID } from 'epub-maker2/src/lib/uuid';
 import * as deepmerge from 'deepmerge-plus';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
@@ -177,10 +178,10 @@ export function create(options: IOptions, cache = {}): Promise<{
 		let epub = new EpubMaker()
 			.withTemplate(options.epubTemplate)
 			.withLanguage(options.epubLanguage)
-			.withUuid(hashSum([
+			.withUuid(createUUID(hashSum([
 				meta.novel.title,
 				meta.novel.author,
-			]))
+			])))
 			.withTitle(meta.novel.title, meta.novel.title_short || meta.novel.title_zh)
 			.withAuthor(meta.novel.author)
 			.addAuthor(meta.novel.author)

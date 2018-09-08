@@ -2,6 +2,16 @@
  * Created by user on 2018/2/18/018.
  */
 
+import getUuidByString = require('uuid-by-string');
+import { createUUID } from 'epub-maker2/src/lib/uuid';
+
+export { createUUID }
+
+//export function createUUID(input?: unknown)
+//{
+//	return getUuidByString(String(input)).toLowerCase();
+//}
+
 export function splitTxt(txt)
 {
 	return (
