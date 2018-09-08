@@ -12,10 +12,11 @@
               xmlns:dcterms="http://purl.org/dc/terms/"
               xmlns:opf="http://www.idpf.org/2007/opf"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <dc:identifier opf:scheme="uuid" id="uuid">urn:uuid:{{uuid}}</dc:identifier>
+        <dc:identifier id="uuid">urn:uuid:{{uuid}}</dc:identifier>
         <dc:title>{{title}}</dc:title>
-        <dc:creator opf:role="aut" opf:file-as="{{author}}">{{author}}</dc:creator>
-        <meta property="file-as">{{author}}</meta>
+        <dc:creator id="id-author">{{author}}</dc:creator>
+        <opf:meta property="role" refines="#id-author" scheme="marc:relators">aut</opf:meta>
+        <opf:meta property="file-as" refines="#id-author">{{author}}</opf:meta>
         <dc:language>{{lang}}</dc:language>
         <dc:date>{{publicationDate}}</dc:date>
         {{#if modification}}
@@ -52,7 +53,7 @@
       {{/if}}
       {{#if infoPreface}}<dc:description><![CDATA[{{infoPreface}}]]></dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
-      {{#each links}}<link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} />{{/each}}
+      {{#each links}}<!--link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} /-->{{/each}}
       {{#if authors}}
         {{#if authorsJSON}}
           <opf:meta property="calibre:author_link_map">{{{ authorsJSON }}}</opf:meta>

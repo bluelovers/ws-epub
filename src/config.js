@@ -161,7 +161,7 @@ class EpubConfig {
             self.modification = self.publication.clone();
         }
         if (self.modification) {
-            self.modificationDate = self.modification.format('YYYY-MM-DDThh:mm:ssZ');
+            self.modificationDate = self.modification.format('YYYY-MM-DDThh:mm:ss') + 'Z';
             self.modificationDateYMD = self.modification.format('YYYY-MM-DD');
         }
         if (!self.publication) {
