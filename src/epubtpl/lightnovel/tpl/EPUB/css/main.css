@@ -368,7 +368,7 @@ header h2
 	font-size: large;
 }
 
-.state-indicator:before { content: 'desktop'; }
+.state-indicator:before { content: ' desktop '; }
 
 .overflow-line
 {
@@ -384,7 +384,7 @@ header h2
 
 @media screen and (-webkit-min-device-pixel-ratio:0)
 {
-	.state-indicator:after { content: 'webkit'; }
+	.state-indicator:after { content: ' webkit '; }
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
@@ -395,17 +395,17 @@ header h2
 
 /* 小屏幕桌面 */
 @media screen and (max-width: 1200px) {
-	.state-indicator:before { content: 'small-desktop'; }
+	.state-indicator:before { content: ' small-desktop '; }
 }
 
 /* 平板 */
 @media screen and (max-width: 1024px) {
-	.state-indicator:before { content: 'tablet'; }
+	.state-indicator:before { content: ' tablet '; }
 }
 
 /* 手机 */
 @media screen and (max-width: 768px) {
-	.state-indicator:before { content: 'mobile'; }
+	.state-indicator:before { content: ' mobile '; }
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
@@ -419,7 +419,7 @@ header h2
 , screen and (device-aspect-ratio: 16/10) and (-webkit-min-device-pixel-ratio:0)
 , screen and (device-aspect-ratio: 4/3) and (-webkit-min-device-pixel-ratio:0)
 {
-	.state-indicator:after { content: 'webkit2'; }
+	.state-indicator:after { content: ' webkit2 '; }
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
@@ -437,4 +437,8 @@ header h2
 	{
 		border-bottom-width: 0.3em;
 	}
+}
+
+script {
+	display: none;
 }

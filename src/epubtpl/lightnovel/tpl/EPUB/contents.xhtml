@@ -7,7 +7,7 @@
 <title>Table of Contents</title>
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
-<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += 'js';">
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += ' js1 ';">
 
 	<section class="center">
 		<h1>{{title}}</h1>
@@ -43,8 +43,10 @@
 		</nav>
 
 	</section>
-	<script type="text/javascript">
-	document.getElementById("state-indicator").textContent += 'js';
+	<script type="text/javascript" style="display: none">
+	//<!--
+	document.getElementById("state-indicator").textContent += ' js2 ';
+	//-->
 	</script>
 </body>
 </html>
