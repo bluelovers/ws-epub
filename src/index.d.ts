@@ -57,7 +57,10 @@ export interface ISectionContent {
     title?: string;
     content?: string;
     renderTitle?: boolean;
-    cover?: any;
+    cover?: {
+        name?: string;
+        url?: string;
+    };
 }
 export interface ISlugify {
     (input: string, ...argv: any[]): string;

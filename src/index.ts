@@ -432,7 +432,10 @@ export interface ISectionContent
 
 	renderTitle?: boolean;
 
-	cover?
+	cover?: {
+		name?: string,
+		url?: string,
+	}
 }
 
 export interface ISlugify
