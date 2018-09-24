@@ -80,6 +80,9 @@
                  <item id="cover" href="{{cover.name}}" media-type="{{mimetype cover.ext}}" properties="cover-image" />
             {{/if}}
         {{/if}}
+      {{#each additionalFiles}}
+      <item id="{{id}}" href="{{href}}" media-type="{{mime}}"/>
+      {{/each}}
     </manifest>
     <spine toc="ncx">
         {{#if cover}}

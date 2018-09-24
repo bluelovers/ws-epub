@@ -100,8 +100,18 @@ export namespace Builder
 				addContent,
 
 				tableOfContents,
-			], function (fn, index)
+			], async function (fn, index)
 			{
+				if (fn === zipLib.addFiles)
+				{
+					return (fn as typeof zipLib.addFiles)(zip, epub, options)
+						.then(function (ls)
+						{
+							return ls;
+						})
+						;
+				}
+
 				return fn(zip, epub, options);
 			})
 			.tap(function ()

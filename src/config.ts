@@ -37,6 +37,9 @@ export interface IFiles
 	ext?: string,
 	mime?: string,
 	data?;
+
+	is?: string,
+	href?: string,
 }
 
 export interface ICollection

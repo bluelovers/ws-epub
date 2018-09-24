@@ -63,7 +63,13 @@ var Builder;
             addEpub3Nav,
             addContent,
             tableOfContents,
-        ], function (fn, index) {
+        ], async function (fn, index) {
+            if (fn === zip_1.default.addFiles) {
+                return fn(zip, epub, options)
+                    .then(function (ls) {
+                    return ls;
+                });
+            }
             return fn(zip, epub, options);
         })
             .tap(function () {

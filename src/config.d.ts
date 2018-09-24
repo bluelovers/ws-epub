@@ -20,6 +20,8 @@ export interface IFiles {
     ext?: string;
     mime?: string;
     data?: any;
+    is?: string;
+    href?: string;
 }
 export interface ICollection {
     name?: string;
