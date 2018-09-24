@@ -1,10 +1,10 @@
 
 import * as fs from 'fs-extra';
-import * as fetch from 'isomorphic-fetch';
+import fetch = require('isomorphic-fetch');
 import * as path from "path";
 import { IFiles } from '../config';
-import * as fileType from 'file-type';
-import * as hashSum from 'hash-sum';
+import fileType = require('file-type');
+import hashSum = require('hash-sum');
 
 export { fetch }
 
@@ -24,8 +24,25 @@ export async function fetchFile(file: IFiles, ...argv)
 			.then(function (ret)
 			{
 
+				//console.log(file.name, ret.type, ret.headers);
+
+				if (!file.mime)
+				{
+					let c = ret.headers.get('content-type');
+
+					if (Array.isArray(c))
+					{
+						file.mime = c[0];
+					}
+					else if (typeof c === 'string')
+					{
+						file.mime = c;
+					}
+				}
+
 				try
 				{
+					// @ts-ignore
 					if (!file.name && !file.basename && ret.headers.raw()['content-disposition'][0].match(/filename=(['"])?([^\'"]+)\1/))
 					{
 						let filename = RegExp.$2;
@@ -43,6 +60,7 @@ export async function fetchFile(file: IFiles, ...argv)
 				//console.log(ret.headers, ret.headers.raw()['content-disposition'][0]);
 				//.getResponseHeader('Content-Disposition')
 
+				// @ts-ignore
 				return ret.buffer()
 			})
 			.catch(function (e)
@@ -75,7 +93,7 @@ export async function fetchFile(file: IFiles, ...argv)
 		}
 	}
 
-	if (!file.ext || file.mime)
+	if (!file.ext || !file.mime)
 	{
 		let data = fileType(_file);
 

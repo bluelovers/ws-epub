@@ -9,6 +9,7 @@ import * as path from 'path';
 import BPromise = require('bluebird');
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
+import hashSum = require('hash-sum');
 
 export { JSZip }
 
@@ -85,7 +86,38 @@ export function addFiles(zip: JSZip, epub: EpubMaker, options)
 		return a;
 	}, []);
 
-	return addStaticFiles(zip, staticFiles);
+	return addStaticFiles(zip, staticFiles)
+		.then(function (staticFiles)
+		{
+
+			epub.epubConfig.additionalFiles.forEach((v, i) => {
+
+				let s = staticFiles[i];
+
+				v.mime = v.mime || s.mime;
+				v.name = s.name;
+
+				if (v.folder === null)
+				{
+					// @ts-ignore
+					v.href = v.name;
+				}
+				else
+				{
+					// @ts-ignore
+					v.href = [v.folder, v.name].join('/');
+				}
+
+				// @ts-ignore
+				v.id = v.id || 'additionalFiles-' + hashSum(v.name);
+
+			});
+
+			console.log(epub.epubConfig.additionalFiles, staticFiles);
+
+			return staticFiles;
+		})
+		;
 }
 
 export async function addCover(zip: JSZip, epub: EpubMaker, options)
@@ -122,8 +154,9 @@ export function addSubSections(zip: JSZip, section: EpubMaker.Section, cb, epub:
 				return addSubSections(zip, subSection, cb, epub, options);
 			});
 		})
-	;
+		;
 }
 
 import * as self from './zip';
+
 export default self;

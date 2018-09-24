@@ -7,10 +7,20 @@
 	<title>{{content.fullTitle}}</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
-<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
+<body>
 
-	<section lang="{{lang}}">
 
+  {{#if content.cover}}
+  {{#if content.cover.name}}
+  <section epub:type="cover" epub-type="cover">
+  <figure class="cover fullpage ImageContainer page-break-after" epub-type="cover">
+    <img id="CoverImage" class="CoverImage" src="{{content.cover.name}}" alt="Cover" />
+  </figure>
+  </section>
+  {{/if}}
+  {{/if}}
+
+	<section lang="{{lang}}" epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
 
 		{{#if content.renderTitle}}<header><h2>{{content.title}}</h2></header>{{/if}}
 
@@ -29,13 +39,5 @@
 	{{/if}}
 
 	</section>
-
-	{{#if content.cover}}
-	{{#if content.cover.name}}
-		<figure class="cover fullpage ImageContainer page-break-before" epub-type="cover">
-			<img id="CoverImage" class="CoverImage" src="{{content.cover.name}}" alt="Cover" />
-		</figure>
-	{{/if}}
-	{{/if}}
 </body>
 </html>

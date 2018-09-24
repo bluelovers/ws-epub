@@ -8,6 +8,7 @@ exports.JSZip = JSZip;
 const path = require("path");
 const BPromise = require("bluebird");
 const ajax_1 = require("./ajax");
+const hashSum = require("hash-sum");
 /*
 export async function addMimetype(zip: JSZip, epub: EpubMaker, options)
 {
@@ -60,7 +61,26 @@ function addFiles(zip, epub, options) {
         }));
         return a;
     }, []);
-    return addStaticFiles(zip, staticFiles);
+    return addStaticFiles(zip, staticFiles)
+        .then(function (staticFiles) {
+        epub.epubConfig.additionalFiles.forEach((v, i) => {
+            let s = staticFiles[i];
+            v.mime = v.mime || s.mime;
+            v.name = s.name;
+            if (v.folder === null) {
+                // @ts-ignore
+                v.href = v.name;
+            }
+            else {
+                // @ts-ignore
+                v.href = [v.folder, v.name].join('/');
+            }
+            // @ts-ignore
+            v.id = v.id || 'additionalFiles-' + hashSum(v.name);
+        });
+        console.log(epub.epubConfig.additionalFiles, staticFiles);
+        return staticFiles;
+    });
 }
 exports.addFiles = addFiles;
 async function addCover(zip, epub, options) {
