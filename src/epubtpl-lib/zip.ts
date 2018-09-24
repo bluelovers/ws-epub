@@ -62,9 +62,32 @@ export function parseFileSetting(coverUrl, epubConfig: IEpubConfig): IFiles
 
 export function addStaticFiles(zip, staticFiles: IFiles[])
 {
+	let cache = {} as {
+		[k: string]: IFiles,
+	};
+
 	return BPromise.mapSeries(staticFiles, async function (_file: IFiles)
 	{
-		let file = await fetchFile(_file);
+		let file: IFiles;
+
+		if (!_file.data
+			&& _file.url
+			&& cache[_file.url]
+			&& cache[_file.url].data
+		)
+		{
+			let cf = cache[_file.url];
+
+			_file.data = cf.data;
+			_file.mime = _file.mime || cf.mime;
+		}
+
+		file = await fetchFile(_file);
+
+		if (_file.url)
+		{
+			cache[_file.url] = _file;
+		}
 
 		zip
 			.folder(file.folder)
@@ -72,7 +95,12 @@ export function addStaticFiles(zip, staticFiles: IFiles[])
 		;
 
 		return file;
-	});
+	})
+		.tap(function ()
+		{
+			cache = null;
+		})
+		;
 }
 
 export function addFiles(zip: JSZip, epub: EpubMaker, options)

@@ -45,12 +45,28 @@ function parseFileSetting(coverUrl, epubConfig) {
 }
 exports.parseFileSetting = parseFileSetting;
 function addStaticFiles(zip, staticFiles) {
+    let cache = {};
     return BPromise.mapSeries(staticFiles, async function (_file) {
-        let file = await ajax_1.fetchFile(_file);
+        let file;
+        if (!_file.data
+            && _file.url
+            && cache[_file.url]
+            && cache[_file.url].data) {
+            let cf = cache[_file.url];
+            _file.data = cf.data;
+            _file.mime = _file.mime || cf.mime;
+        }
+        file = await ajax_1.fetchFile(_file);
+        if (_file.url) {
+            cache[_file.url] = _file;
+        }
         zip
             .folder(file.folder)
             .file(file.name, file.data);
         return file;
+    })
+        .tap(function () {
+        cache = null;
     });
 }
 exports.addStaticFiles = addStaticFiles;
