@@ -149,7 +149,7 @@ Promise.mapSeries([
 
 	//'大劍師傳奇_(djs)',
 
-//	'呼び出された殺戮者',
+	'呼び出された殺戮者',
 
 	'虫虫酱むいむいたん',
 
@@ -189,8 +189,9 @@ async function makeEpub(novelID: string)
 	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
-		//filename: novelID,
-		padEndDate: true,
+//		filename: '123',
+		//padEndDate: true,
+		padEndDate: false,
 		useTitle: true,
 
 		filenameLocal: novelID,

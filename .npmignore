@@ -103,3 +103,17 @@ __tests__### test template
 
 
 tests/temp*
+### jsonly template
+*.ts
+!*.d.ts
+### tsonly_test template
+
+
+__test__/*.js
+__test__/*.d.ts
+
+__tests__/*.js
+__tests__/*.d.ts
+### jsonly_bin template
+bin/*.ts
+bin/*.d.ts

@@ -344,7 +344,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 								cwd: dirname,
 								absolute: true,
 							})
-							.then(ls =>
+							.then(async (ls) =>
 							{
 								if (ls.length)
 								{
@@ -353,9 +353,39 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 									epub.withAdditionalFile(ls[0], null, name);
 
+									return name;
+								}
+								else if (fs.existsSync(path.join(dirname, 'README.md')))
+								{
+									let file = path.join(dirname, 'README.md');
+
+									let meta = await fs.readFile(file)
+										.then(mdconf_parse)
+										.then(chkInfo)
+										.catch(function ()
+										{
+											return null;
+										})
+									;
+
+									if (meta && meta.novel && meta.novel.cover)
+									{
+										let ext = '.png';
+										let name = `${vid}-cover${ext}`;
+
+										epub.withAdditionalFile(meta.novel.cover, null, name);
+
+										return name;
+									}
+								}
+							})
+							.then(function (name)
+							{
+								if (name)
+								{
 									volume.setContent({
 										cover: {
-											name: name,
+											name,
 										},
 									});
 								}
