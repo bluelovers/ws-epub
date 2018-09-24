@@ -113,7 +113,7 @@ export function addFiles(zip: JSZip, epub: EpubMaker, options)
 
 			});
 
-			console.log(epub.epubConfig.additionalFiles, staticFiles);
+			//console.log(epub.epubConfig.additionalFiles, staticFiles);
 
 			return staticFiles;
 		})

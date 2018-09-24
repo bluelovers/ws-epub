@@ -78,7 +78,7 @@ function addFiles(zip, epub, options) {
             // @ts-ignore
             v.id = v.id || 'additionalFiles-' + hashSum(v.name);
         });
-        console.log(epub.epubConfig.additionalFiles, staticFiles);
+        //console.log(epub.epubConfig.additionalFiles, staticFiles);
         return staticFiles;
     });
 }
