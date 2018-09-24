@@ -270,6 +270,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 					[k: string]: EpubMaker.Section,
 				};
 
+				const SymCache = Symbol('cache');
+
 				return Promise
 					.mapSeries(Object.keys(_ls), async function (val_dir)
 					{
@@ -308,6 +310,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 										title: title,
 									}, false, true);
 
+									cacheTreeSection[_nav][SymCache] = cacheTreeSection[_nav][SymCache] || {};
+
 									if (i == 0)
 									{
 										//epub.withSection(cacheTreeSection[_nav]);
@@ -338,59 +342,79 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 						let vid: string = volume.id;
 
-						await novelGlobby.globby([
-								'cover.*',
-							], {
-								cwd: dirname,
-								absolute: true,
-							})
-							.then(async (ls) =>
-							{
-								if (ls.length)
-								{
-									let ext = path.extname(ls[0]);
-									let name = `${vid}-cover${ext}`;
+						if (!volume[SymCache].cover)
+						{
+							volume[SymCache].cover = true;
 
-									epub.withAdditionalFile(ls[0], null, name);
-
-									return name;
-								}
-								else if (fs.existsSync(path.join(dirname, 'README.md')))
+							await novelGlobby.globby([
+									'cover.*',
+								], {
+									cwd: dirname,
+									absolute: true,
+								})
+								.then(async (ls) =>
 								{
 									let file = path.join(dirname, 'README.md');
 
-									let meta = await fs.readFile(file)
-										.then(mdconf_parse)
-										.then(chkInfo)
-										.catch(function ()
-										{
-											return null;
-										})
-									;
-
-									if (meta && meta.novel && meta.novel.cover)
+									if (ls.length)
 									{
-										let ext = '.png';
+										let ext = path.extname(ls[0]);
 										let name = `${vid}-cover${ext}`;
 
-										epub.withAdditionalFile(meta.novel.cover, null, name);
+										epub.withAdditionalFile(ls[0], null, name);
 
 										return name;
 									}
-								}
-							})
-							.then(function (name)
-							{
-								if (name)
+									else if (fs.existsSync(file))
+									{
+										let meta = await fs.readFile(file)
+											.then(function (data)
+											{
+												return mdconf_parse(data, {
+													// 當沒有包含必要的內容時不產生錯誤
+													throw: false,
+													// 允許不標準的 info 內容
+													lowCheckLevel: true,
+												});
+											})
+											.catch(function ()
+											{
+												return null;
+											})
+										;
+
+										if (meta && meta.novel && meta.novel.cover)
+										{
+											let ext = '.png';
+											let basename = `${vid}-cover`;
+											let name = `${basename}${ext}`;
+
+											let data = typeof meta.novel.cover === 'string' ? {
+												url: meta.novel.cover,
+											} : meta.novel.cover;
+
+											data.ext = null;
+											data.basename = basename;
+
+											epub.withAdditionalFile(data, null, name);
+
+											return name;
+										}
+									}
+								})
+								.then(function (name)
 								{
-									volume.setContent({
-										cover: {
-											name,
-										},
-									});
-								}
-							})
-						;
+									if (name)
+									{
+										volume.setContent({
+											cover: {
+												name,
+											},
+										});
+									}
+								})
+							;
+						}
 
 						//console.log(dirname);
 
@@ -431,67 +455,73 @@ export function create(options: IOptions, cache = {}): Promise<{
 							volume.withSubSection(chapter);
 						});
 
-						await novelGlobby.globby([
-								'*.{jpg,gif,png,jpeg,svg}',
-								'image/*.{jpg,gif,png,jpeg,svg}',
-								'!cover.*',
-								'!*.txt',
-							], {
-								cwd: dirname,
-								absolute: true,
-							})
-							.then(ls =>
-							{
-								let arr = [];
+						if (!volume[SymCache].image)
+						{
+							volume[SymCache].image = true;
 
-								for (let i in ls)
+							await novelGlobby.globby([
+									'*.{jpg,gif,png,jpeg,svg}',
+									'image/*.{jpg,gif,png,jpeg,svg}',
+									'!cover.*',
+									'!*.txt',
+								], {
+									cwd: dirname,
+									absolute: true,
+								})
+								.then(ls =>
 								{
-									let img = ls[i];
+									let arr = [];
 
-									let ext = path.extname(img);
-
-									let basename = path.basename(img, ext);
-
-									// @ts-ignore
-									let name = slugify(basename);
-
-									if (!name || arr.includes(name))
+									for (let i in ls)
 									{
-										name = hashSum([img, i, name]);
-									}
+										let img = ls[i];
 
-									//name = `${vid}/${i}-` + name + ext;
-									name = `${vid}/` + name + ext;
+										let ext = path.extname(img);
 
-									arr.push('image/' + name);
+										let basename = path.basename(img, ext);
 
-									epub.withAdditionalFile(img, 'image', name);
-								}
+										// @ts-ignore
+										let name = slugify(basename);
 
-								if (arr.length)
-								{
-									if (volume.content && volume.content.cover && volume.content.cover.name)
-									{
-										arr.unshift(volume.content.cover.name);
-									}
-
-									let chapter = new EpubMaker.Section('non-specific backmatter', `image${(idx++).toString()
-										.padStart(4, '0')}`, {
-										title: '插圖',
-										content: arr.reduce(function (a, b)
+										if (!name || arr.includes(name))
 										{
-											let html = `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${b}" alt="Cover" /></figure>`;
+											name = hashSum([img, i, name]);
+										}
 
-											a.push(html);
+										//name = `${vid}/${i}-` + name + ext;
+										name = `${vid}/` + name + ext;
 
-											return a;
-										}, []).join("\n"),
-									}, true, false);
+										arr.push('image/' + name);
 
-									volume.withSubSection(chapter);
-								}
-							})
-						;
+										epub.withAdditionalFile(img, 'image', name);
+									}
+
+									if (arr.length)
+									{
+										if (volume.content && volume.content.cover && volume.content.cover.name)
+										{
+											arr.unshift(volume.content.cover.name);
+										}
+
+										let chapter = new EpubMaker.Section('non-specific backmatter', `image${(idx++).toString()
+											.padStart(4, '0')}`, {
+											title: '插圖',
+											content: arr.reduce(function (a, b)
+											{
+												let html = `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${b}" alt="Cover" /></figure>`;
+
+												a.push(html);
+
+												return a;
+											}, []).join("\n"),
+										}, true, false);
+
+										volume.withSubSection(chapter);
+									}
+								})
+							;
+
+						}
 
 						//epub.withSection(volume);
 
