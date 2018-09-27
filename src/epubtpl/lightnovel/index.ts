@@ -47,6 +47,9 @@ export namespace Builder
 		coverPage: 'EPUB/CoverPage.xhtml',
 		tableOfContents: 'EPUB/TableOfContents.xhtml',
 
+		sectionsInfo: 'EPUB/sections-info.html',
+		sectionsScript: 'EPUB/sections-script.html',
+
 		contents: 'EPUB/contents.xhtml',
 	};
 
@@ -80,6 +83,9 @@ export namespace Builder
 		let zip = new JSZip();
 
 		//await addAditionalInfo(zip, epub, options);
+
+		Handlebars.registerPartial('sectionsInfo', options.templates.sectionsInfo);
+		Handlebars.registerPartial('sectionsScript', options.templates.sectionsScript);
 
 		return Promise
 			.mapSeries([

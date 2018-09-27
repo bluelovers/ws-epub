@@ -27,6 +27,8 @@ var Builder;
         sectionsOPFSpineTemplate: 'EPUB/sections-opf-spine-template.xml',
         coverPage: 'EPUB/CoverPage.xhtml',
         tableOfContents: 'EPUB/TableOfContents.xhtml',
+        sectionsInfo: 'EPUB/sections-info.html',
+        sectionsScript: 'EPUB/sections-script.html',
         contents: 'EPUB/contents.xhtml',
     };
     for (let i in Builder.templates) {
@@ -49,6 +51,8 @@ var Builder;
         //console.debug('[building epub]', options);
         let zip = new zip_1.JSZip();
         //await addAditionalInfo(zip, epub, options);
+        handlebar_helpers_1.Handlebars.registerPartial('sectionsInfo', options.templates.sectionsInfo);
+        handlebar_helpers_1.Handlebars.registerPartial('sectionsScript', options.templates.sectionsScript);
         return Promise
             .mapSeries([
             addStaticFiles,

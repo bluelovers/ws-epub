@@ -387,6 +387,21 @@ header h2
 	box-sizing: border-box;
 }
 
+.opacity-050
+{
+	opacity: 0.5
+}
+
+.font-size-070
+{
+	font-size: 0.7em;
+}
+
+.font-size-080
+{
+	font-size: 0.8em;
+}
+
 .text-light-shadow
 {
 	text-shadow: 0px 0px 10px rgb(52, 200, 236);

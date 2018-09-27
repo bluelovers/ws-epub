@@ -10,17 +10,7 @@
 <body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += ' js1 ';">
 
 	<section class="center">
-		<h1 class="center">{{title}}</h1>
-		{{#if author}}
-		<div class="center">{{author}}</div>
-		{{/if}}
-		{{#if publisher}}
-		<div class="center">{{publisher}}</div>
-		{{/if}}
-		{{#if modificationDateYMD}}
-		<div class="center">{{modificationDateYMD}}</div>
-		{{/if}}
-		<div class="state-indicator right" id="state-indicator"></div>
+		{{> sectionsInfo}}
 	</section>
 
 	<section>
@@ -43,8 +33,6 @@
 		</nav>
 
 	</section>
-	<div style="display: none">
-		<script type="text/javascript" style="display: none">		document.getElementById("state-indicator").textContent += ' js2 ';</script>
-	</div>
+	{{> sectionsScript}}
 </body>
 </html>
