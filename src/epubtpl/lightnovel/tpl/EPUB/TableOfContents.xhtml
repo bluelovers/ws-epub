@@ -10,20 +10,20 @@
 <body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += ' js1 ';">
 
 	<section class="center" lang="{{lang}}">
-		<h1>{{title}}</h1>
+		<h1 class="center">{{title}}</h1>
 		{{#if title_short}}
-		<div>{{title_short}}</div>
+		<div class="center">{{title_short}}</div>
 		{{/if}}
 		{{#if author}}
-		<div>{{author}}</div>
+		<div class="center">{{author}}</div>
 		{{/if}}
 		{{#if publisher}}
-		<div>{{publisher}}</div>
+		<div class="center">{{publisher}}</div>
 		{{/if}}
 		{{#if modificationDateYMD}}
-		<div>{{modificationDateYMD}}</div>
+		<div class="center">{{modificationDateYMD}}</div>
 		{{/if}}
-		<div class="state-indicator" id="state-indicator"></div>
+		<div class="state-indicator right" id="state-indicator"></div>
 
 		{{#if infoPrefaceHTML}}
 		<article><div class="left" style="display: inline-block">{{{infoPrefaceHTML}}}</div></article>
@@ -49,10 +49,8 @@
 		</nav>
 
 	</section>
-	<script type="text/javascript" style="display: none">
-	//<!--
-	document.getElementById("state-indicator").textContent += ' js2 ';
-	//-->
-	</script>
+	<div style="display: none">
+		<script type="text/javascript" style="display: none">		document.getElementById("state-indicator").textContent += ' js2 ';</script>
+	  </div>
 </body>
 </html>

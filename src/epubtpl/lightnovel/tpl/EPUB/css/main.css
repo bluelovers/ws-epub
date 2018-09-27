@@ -11,6 +11,11 @@ ol ul, ul ol, ul ul, ol ol {
 	-webkit-margin-after: 0px;
 }
 
+div
+{
+	display: block;
+}
+
 section
 {
 	margin: auto;
@@ -380,6 +385,11 @@ header h2
 	-webkit-margin-start: 0px;
 	-webkit-margin-end: 0px;
 	box-sizing: border-box;
+}
+
+.text-light-shadow
+{
+	text-shadow: 0px 0px 10px rgb(52, 200, 236);
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0)
