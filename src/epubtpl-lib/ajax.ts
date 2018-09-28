@@ -5,6 +5,10 @@ import * as path from "path";
 import { IFiles } from '../config';
 import fileType = require('file-type');
 import hashSum = require('hash-sum');
+import imagemin = require('imagemin');
+import imageminJpegtran = require('imagemin-jpegtran');
+import imageminPngquant = require('imagemin-pngquant');
+import imageminOptipng = require('imagemin-optipng');
 
 export { fetch }
 
@@ -67,12 +71,24 @@ export async function fetchFile(file: IFiles, ...argv)
 			{
 				err = e;
 			})
+
 		;
 	}
 
 	if (!_file && file.file)
 	{
 		_file = await fs.readFile(file.file);
+	}
+
+	if (_file)
+	{
+		_file = await imagemin.buffer(_file, {
+			plugins: [
+				imageminOptipng(),
+				imageminJpegtran(),
+				imageminPngquant({quality: '65-80'})
+			]
+		})
 	}
 
 	if (!_file)

@@ -6,6 +6,10 @@ exports.fetch = fetch;
 const path = require("path");
 const fileType = require("file-type");
 const hashSum = require("hash-sum");
+const imagemin = require("imagemin");
+const imageminJpegtran = require("imagemin-jpegtran");
+const imageminPngquant = require("imagemin-pngquant");
+const imageminOptipng = require("imagemin-optipng");
 async function fetchFile(file, ...argv) {
     let _file;
     let err;
@@ -46,6 +50,15 @@ async function fetchFile(file, ...argv) {
     }
     if (!_file && file.file) {
         _file = await fs.readFile(file.file);
+    }
+    if (_file) {
+        _file = await imagemin.buffer(_file, {
+            plugins: [
+                imageminOptipng(),
+                imageminJpegtran(),
+                imageminPngquant({ quality: '65-80' })
+            ]
+        });
     }
     if (!_file) {
         let e = err || new ReferenceError();

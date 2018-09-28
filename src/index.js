@@ -261,7 +261,10 @@ class EpubMaker {
             let generateOptions = Object.assign({
                 type: 'nodebuffer',
                 mimeType: 'application/epub+zip',
-                compression: 'DEFLATE'
+                compression: 'DEFLATE',
+                compressionOptions: {
+                    level: 9
+                },
             }, self.epubConfig.options.generateOptions, options);
             console.info('generating epub for: ' + self.epubConfig.title);
             let content = await epubZip.generateAsync(generateOptions);
