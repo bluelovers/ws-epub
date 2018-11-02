@@ -19,9 +19,13 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 (async () =>
 {
+	console.time();
+
 	await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
 		filename: novelID,
 	});
+
+	console.timeEnd();
 })();

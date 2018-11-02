@@ -65,6 +65,12 @@ let cli = yargs
 		type: 'string',
 		desc: 'filename',
 	})
+	.option('filenameLocal', {
+		alias: ['f'],
+		requiresArg: true,
+		desc: 'try auto choose filename',
+		default: true,
+	})
 	.option('date', {
 		boolean: true,
 		alias: ['d'],
@@ -114,6 +120,7 @@ let cli = yargs
 			inputPath,
 			outputPath,
 			filename: yargs.argv.filename || null,
+			filenameLocal: yargs.argv.filenameLocal,
 			epubLanguage: yargs.argv.lang,
 			epubTemplate: yargs.argv.tpl,
 			padEndDate: yargs.argv.date,

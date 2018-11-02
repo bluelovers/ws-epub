@@ -34,9 +34,9 @@ novelID = '四度目は嫌な死属性魔術師';
 
 //novelID = '抗いし者たちの系譜 逆襲の魔王';
 //
-//novelID = '異世界迷宮の最深部を目指そう';
+novelID = '異世界迷宮の最深部を目指そう';
 
-novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
+//novelID = '暗黒騎士物語　～勇者を倒すために魔王に召喚されました～';
 
 //novelID = '转生奇谭_(1782)';
 //novelID = '女神异闻录2 罚_(755)';
@@ -118,7 +118,7 @@ Promise.mapSeries([
 
 	//'かみがみ〜最も弱き反逆者〜',
 
-	//'異世界迷宮の最深部を目指そう',
+	'異世界迷宮の最深部を目指そう',
 
 //	'天才魔法使與原娼婦新娘',
 
@@ -149,9 +149,9 @@ Promise.mapSeries([
 
 	//'大劍師傳奇_(djs)',
 
-	'呼び出された殺戮者',
-
-	'虫虫酱むいむいたん',
+//	'呼び出された殺戮者',
+//
+//	'虫虫酱むいむいたん',
 
 ] as string[], makeEpub);
 
@@ -186,6 +186,8 @@ async function makeEpub(novelID: string)
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 
+	console.time();
+
 	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
@@ -199,10 +201,14 @@ async function makeEpub(novelID: string)
 		noLog: true,
 	});
 
+	console.timeEnd();
+
 	console.log('--------');
 
 	if (1)
 	{
+		console.time();
+
 		// @ts-ignore
 		const txtMerge = await import('novel-txt-merge').then(function (mod)
 		{
@@ -219,5 +225,7 @@ async function makeEpub(novelID: string)
 		{
 			await txtMerge(TXT_PATH, OUTPUT_PATH, ret.basename);
 		}
+
+		console.timeEnd();
 	}
 }
