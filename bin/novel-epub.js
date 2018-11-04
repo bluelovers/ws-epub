@@ -52,7 +52,6 @@ let cli = yargs
     desc: 'filename',
 })
     .option('filenameLocal', {
-    alias: ['f'],
     requiresArg: true,
     desc: 'try auto choose filename',
     default: true,
