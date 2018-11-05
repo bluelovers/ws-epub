@@ -129,6 +129,8 @@ export async function txtMerge(inputPath: string,
 			let count_f = 0;
 			let count_d = 0;
 
+			let count_idx = 0;
+
 			return BluebirdPromise
 				.mapSeries(Object.keys(_ls), async function (val_dir, index, len)
 				{
@@ -136,33 +138,52 @@ export async function txtMerge(inputPath: string,
 
 					let volume_title = ls[0].volume_title;
 
-					volume_title = volume_title
+					count_d++;
+
+					let vs = volume_title
 						.split('/')
 						.map(function (v)
 						{
 							return normalize_strip(v, true)
 						})
+					;
+
+					volume_title = vs
 						.join(LF)
 					;
 
-					let txt = `${hr1}CHECK\n${volume_title}\n${hr1}\n`;
+					let _vol_prefix = '';
+
+					if (1)
+					{
+						_vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}\n`;
+					}
+
+					let txt = `${hr1}CHECK\n${_vol_prefix}${volume_title}\n${hr1}\n`;
 
 					let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
 					{
 						let data = await fs.readFile(row.path);
 
+						count_f++;
+
 						let chapter_title = row.chapter_title;
 
-						let txt = `${hr2}BEGIN\n${chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
+						let _prefix = '';
 
-						count_f++;
+						if (1)
+						{
+							_prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}\n`
+
+							//_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.concat([chapter_title]).join('／')}\n`;
+						}
+
+						let txt = `${hr2}BEGIN\n${_prefix}${chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
 
 						return txt;
 					});
 
 					a.unshift(txt);
-
-					count_d++;
 
 					return a.join(eol);
 				})

@@ -22,6 +22,8 @@
     "locale": "zh-TW",
     "pretty": true,
 
+    "resolveJsonModule": true,
+
     "removeComments": true,
 
     "baseUrl": ".",

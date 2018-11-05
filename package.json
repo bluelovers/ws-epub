@@ -1,6 +1,6 @@
 {
   "name": "novel-txt-merge",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "合併小說個別 txt 章節/目錄 => 單一 txt 合併",
   "keywords": [
     "cli",
@@ -26,7 +26,7 @@
   "author": "",
   "main": "index.js",
   "bin": {
-    "tmp-npx-txt-merge": "./bin/tmp-npx-txt-merge.js"
+    "novel-txt-merge": "./bin/tmp-npx-txt-merge.js"
   },
   "directories": {
     "test": "test"
@@ -45,6 +45,7 @@
     "node-novel-globby": "^2.0.2",
     "node-novel-info": "^2.3.6",
     "uni-string": "^1.0.2",
+    "update-notifier": "^2.5.0",
     "yargs": "^12.0.1"
   },
   "devDependencies": {}

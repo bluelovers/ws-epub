@@ -4,6 +4,8 @@ import * as yargs from 'yargs';
 import * as path from 'path';
 import * as Promise from 'bluebird';
 import txtMerge from '../index';
+import PACKAGE_JSON = require('../package.json');
+import updateNotifier = require('update-notifier');
 import { Console } from 'debug-color2';
 const console = new Console(null, {
 	enabled: true,
@@ -18,6 +20,10 @@ const console = new Console(null, {
 console.enabledColor = true;
 
 const CWD = process.cwd();
+
+updateNotifier({
+	pkg: PACKAGE_JSON,
+}).notify()
 
 let cli = yargs
 	.default({
