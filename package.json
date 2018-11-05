@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",

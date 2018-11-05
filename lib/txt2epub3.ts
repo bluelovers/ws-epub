@@ -172,7 +172,9 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 		//console.log(options, globby_options);
 
-		console.log(meta.novel.title);
+		//console.dir(options);
+
+		console.info(meta.novel.title);
 		//console.log(meta.novel.preface);
 
 		let epub = new EpubMaker()
@@ -443,7 +445,21 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 							if (!options.noLog)
 							{
-								console.log(row);
+								let {
+									source_idx,
+									volume_title,
+									chapter_title,
+									dir,
+									file,
+								} = row;
+
+								console.dir({
+									source_idx,
+									volume_title,
+									chapter_title,
+									dir,
+									file,
+								});
 							}
 
 							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString()
@@ -547,7 +563,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 		await fs.outputFile(file, data);
 
-		console.log(filename, now);
+		console.success(filename, now.format());
 
 		return {
 			file,

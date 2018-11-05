@@ -51,6 +51,10 @@ let cli = yargs
     type: 'string',
     desc: 'filename',
 })
+    .option('useTitle', {
+    requiresArg: true,
+    default: true,
+})
     .option('filenameLocal', {
     requiresArg: true,
     desc: 'try auto choose filename',
@@ -76,9 +80,9 @@ let cli = yargs
     if (!path.isAbsolute(outputPath)) {
         outputPath = path.join(CWD, outputPath);
     }
-    console.log(`currentPath:\n  `, inputPath);
-    console.log(`inputPath:\n  `, inputPath);
-    console.log(`outputPath:\n  `, outputPath);
+    console.grey(`currentPath:\n  `, inputPath);
+    console.grey(`inputPath:\n  `, inputPath);
+    console.grey(`outputPath:\n  `, outputPath);
     if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0) {
         console.error(`[FAIL] path not allow`);
         yargs.showHelp();
@@ -91,6 +95,7 @@ let cli = yargs
         inputPath,
         outputPath,
         filename: yargs.argv.filename || null,
+        useTitle: yargs.argv.useTitle,
         filenameLocal: yargs.argv.filenameLocal,
         epubLanguage: yargs.argv.lang,
         epubTemplate: yargs.argv.tpl,
