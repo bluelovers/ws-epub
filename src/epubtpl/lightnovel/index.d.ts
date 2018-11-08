@@ -2,7 +2,7 @@
 import { JSZip } from '../../epubtpl-lib/zip';
 import { IBuilder } from '../../var';
 import { EpubMaker } from '../../index';
-import * as Promise from 'bluebird';
+import BPromise = require('bluebird');
 export declare const EPUB_TEMPLATES_PATH: string;
 export declare const EPUB_TEMPLATES_TPL: string;
 declare module '../../index' {
@@ -28,14 +28,16 @@ export declare namespace Builder {
         sectionsOPFSpineTemplate: string;
         coverPage: string;
         tableOfContents: string;
+        sectionsInfo: string;
+        sectionsScript: string;
         contents: string;
     };
     let staticFiles: {
         'mimetype': string;
         'META-INF/container.xml': string;
     };
-    function make(epub: EpubMaker, options?: any): Promise<JSZip>;
-    function addStaticFiles(zip: any, epub: EpubMaker, options: any): Promise<any>;
+    function make(epub: EpubMaker, options?: any): BPromise<JSZip>;
+    function addStaticFiles(zip: any, epub: EpubMaker, options: any): BPromise<import("../../config").IFiles[]>;
     function tableOfContents(zip: any, epub: EpubMaker, options: any): Promise<void>;
     function addCover(zip: any, epub: EpubMaker, options: any): Promise<void>;
     function addInfoSection(section: any, titlePrefix?: any, namePrefix?: any): void;
@@ -44,8 +46,8 @@ export declare namespace Builder {
     function addEpub2Nav(zip: any, epub: EpubMaker, options: any): void;
     function addEpub3Nav(zip: any, epub: EpubMaker, options: any): void;
     function addStylesheets(zip: any, epub: EpubMaker, options: any): Promise<any>;
-    function addSection(zip: JSZip, section: EpubMaker.Section, epub: EpubMaker, options: any): Promise<any>;
-    function addContent(zip: any, epub: EpubMaker, options: any): any;
+    function addSection(zip: JSZip, section: EpubMaker.Section, epub: EpubMaker, options: any): any;
+    function addContent(zip: any, epub: EpubMaker, options: any): BPromise<any[]>;
 }
 export declare const builder: IBuilder;
 declare const _default: IBuilder;

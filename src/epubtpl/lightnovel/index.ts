@@ -5,7 +5,7 @@ import { compileCss } from '../../epubtpl-lib/postcss';
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 import { EpubMaker } from '../../index';
-import * as Promise from 'bluebird';
+import BPromise = require('bluebird');
 import * as shortid from 'shortid';
 
 import epubTplLib, {} from '../../epubtpl-lib';
@@ -70,7 +70,7 @@ export namespace Builder
 		staticFiles[i] = path.join(EPUB_TEMPLATES_TPL, staticFiles[i]);
 	}
 
-	export function make(epub: EpubMaker, options?): Promise<JSZip>
+	export function make(epub: EpubMaker, options?): BPromise<JSZip>
 	{
 		//let epubConfig = epub.epubConfig;
 
@@ -87,7 +87,7 @@ export namespace Builder
 		Handlebars.registerPartial('sectionsInfo', options.templates.sectionsInfo);
 		Handlebars.registerPartial('sectionsScript', options.templates.sectionsScript);
 
-		return Promise
+		return BPromise
 			.mapSeries([
 				addStaticFiles,
 
@@ -277,7 +277,7 @@ export namespace Builder
 
 	export function addSection(zip: JSZip, section: EpubMaker.Section, epub: EpubMaker, options)
 	{
-		return zipLib.addSubSections(zip, section, function (zip, section, epub: EpubMaker, options)
+		return zipLib.addSubSections(zip, section, function (zip, section, epubConfig, options)
 		{
 			if (section.needPage)
 			{
@@ -305,7 +305,7 @@ export namespace Builder
 
 	export function addContent(zip, epub: EpubMaker, options)
 	{
-		return Promise.mapSeries(epub.epubConfig.sections, function (section)
+		return BPromise.mapSeries(epub.epubConfig.sections, function (section)
 		{
 			return addSection(zip, section, epub, options);
 		});

@@ -18,12 +18,13 @@
 *.iml
 out
 gen
-### jsonly_bin template
-bin/*.ts
-bin/*.d.ts
+
 ### jsonly template
 *.ts
 !*.d.ts
+### jsonly_bin template
+bin/*.ts
+bin/*.d.ts
 ### npm2 template
 
 ~ci.list.txt

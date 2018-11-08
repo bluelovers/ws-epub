@@ -5,7 +5,7 @@ const handlebar_helpers_1 = require("../../epubtpl-lib/handlebar-helpers");
 const ajax_1 = require("../../epubtpl-lib/ajax");
 const postcss_1 = require("../../epubtpl-lib/postcss");
 const path = require("path");
-const Promise = require("bluebird");
+const BPromise = require("bluebird");
 const shortid = require("shortid");
 // @ts-ignore
 exports.EPUB_TEMPLATES_PATH = path.join(__dirname);
@@ -53,7 +53,7 @@ var Builder;
         //await addAditionalInfo(zip, epub, options);
         handlebar_helpers_1.Handlebars.registerPartial('sectionsInfo', options.templates.sectionsInfo);
         handlebar_helpers_1.Handlebars.registerPartial('sectionsScript', options.templates.sectionsScript);
-        return Promise
+        return BPromise
             .mapSeries([
             addStaticFiles,
             addAditionalInfo,
@@ -188,7 +188,7 @@ var Builder;
     }
     Builder.addStylesheets = addStylesheets;
     function addSection(zip, section, epub, options) {
-        return zip_1.default.addSubSections(zip, section, function (zip, section, epub, options) {
+        return zip_1.default.addSubSections(zip, section, function (zip, section, epubConfig, options) {
             if (section.needPage) {
                 let name = section.name + '.xhtml';
                 if (section.epubType == 'auto-toc') {
@@ -207,7 +207,7 @@ var Builder;
     }
     Builder.addSection = addSection;
     function addContent(zip, epub, options) {
-        return Promise.mapSeries(epub.epubConfig.sections, function (section) {
+        return BPromise.mapSeries(epub.epubConfig.sections, function (section) {
             return addSection(zip, section, epub, options);
         });
     }
