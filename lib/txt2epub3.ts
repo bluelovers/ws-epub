@@ -2,6 +2,7 @@
  * Created by user on 2017/12/16/016.
  */
 
+import { ISectionContent } from 'epub-maker2/src/index';
 import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import Promise = require('bluebird');
@@ -15,6 +16,7 @@ import { createUUID } from 'epub-maker2/src/lib/uuid';
 import * as deepmerge from 'deepmerge-plus';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
+import { crlf } from 'crlf-normalize';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -348,6 +350,23 @@ export function create(options: IOptions, cache = {}): Promise<{
 						{
 							volume[SymCache].cover = true;
 
+							let file = path.join(dirname, 'README.md');
+							let meta = await fs.readFile(file)
+								.then(function (data)
+								{
+									return mdconf_parse(data, {
+										// 當沒有包含必要的內容時不產生錯誤
+										throw: false,
+										// 允許不標準的 info 內容
+										lowCheckLevel: true,
+									});
+								})
+								.catch(function ()
+								{
+									return null;
+								})
+							;
+
 							await novelGlobby.globby([
 									'cover.*',
 								], {
@@ -356,8 +375,6 @@ export function create(options: IOptions, cache = {}): Promise<{
 								})
 								.then(async (ls) =>
 								{
-									let file = path.join(dirname, 'README.md');
-
 									if (ls.length)
 									{
 										let ext = path.extname(ls[0]);
@@ -369,50 +386,62 @@ export function create(options: IOptions, cache = {}): Promise<{
 									}
 									else if (fs.existsSync(file))
 									{
-										let meta = await fs.readFile(file)
-											.then(function (data)
-											{
-												return mdconf_parse(data, {
-													// 當沒有包含必要的內容時不產生錯誤
-													throw: false,
-													// 允許不標準的 info 內容
-													lowCheckLevel: true,
-												});
-											})
-											.catch(function ()
-											{
-												return null;
-											})
-										;
-
-										if (meta && meta.novel && meta.novel.cover)
+										if (meta && meta.novel)
 										{
-											let ext = '.png';
-											let basename = `${vid}-cover`;
-											let name = `${basename}${ext}`;
+											if (meta.novel.cover)
+											{
+												let ext = '.png';
+												let basename = `${vid}-cover`;
+												let name = `${basename}${ext}`;
 
-											let data = typeof meta.novel.cover === 'string' ? {
-												url: meta.novel.cover,
-											} : meta.novel.cover;
+												let data = typeof meta.novel.cover === 'string' ? {
+													url: meta.novel.cover,
+												} : meta.novel.cover;
 
-											data.ext = null;
-											data.basename = basename;
+												data.ext = null;
+												data.basename = basename;
 
-											epub.withAdditionalFile(data, null, name);
+												epub.withAdditionalFile(data, null, name);
 
-											return name;
+												return name;
+											}
 										}
 									}
 								})
 								.then(function (name)
 								{
+									let _ok = false;
+									let data: ISectionContent = {};
+
 									if (name)
 									{
-										volume.setContent({
-											cover: {
-												name,
-											},
-										});
+										_ok = true;
+										data.cover = {
+											name,
+										};
+									}
+
+									if (meta && meta.novel)
+									{
+										if (meta.novel.preface)
+										{
+											_ok = true;
+											data.content = crlf(meta.novel.preface)
+										}
+									}
+
+									if (_ok)
+									{
+										return data
+									}
+
+									return null
+								})
+								.then(function (data)
+								{
+									if (data)
+									{
+										volume.setContent(data, true);
 									}
 								})
 							;
@@ -465,7 +494,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString()
 								.padStart(4, '0')}`, {
 								title: name,
-								content: data.toString().replace(/\r\n|\r(?!\n)|\n/g, "\n"),
+								content: crlf(data),
 							}, true, false);
 
 							volume.withSubSection(chapter);
