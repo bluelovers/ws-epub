@@ -52,12 +52,28 @@ async function fetchFile(file, ...argv) {
         _file = await fs.readFile(file.file);
     }
     if (_file) {
-        _file = await imagemin.buffer(_file, {
-            plugins: [
-                imageminOptipng(),
-                imageminJpegtran(),
-                imageminPngquant({ quality: '65-80' })
-            ]
+        /**
+         * 如果此部分發生錯誤則自動忽略
+         */
+        await Promise
+            .resolve()
+            .then(function () {
+            return imagemin.buffer(_file, {
+                plugins: [
+                    imageminOptipng(),
+                    imageminJpegtran(),
+                    imageminPngquant({ quality: '65-80' })
+                ]
+            });
+        })
+            .then(function (buf) {
+            if (Buffer.isBuffer(buf)) {
+                _file = buf;
+            }
+        })
+            .catch(function (e) {
+            console.error('[ERROR] imagemin 發生不明錯誤，本次將忽略此錯誤', e.toString().replace(/^\s+|\s+$/, ''));
+            //console.error(e);
         });
     }
     if (!_file) {
