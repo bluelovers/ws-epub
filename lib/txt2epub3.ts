@@ -6,7 +6,7 @@ import { ISectionContent } from 'epub-maker2/src/index';
 import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import Promise = require('bluebird');
-import * as path from 'path';
+import * as path from 'upath2';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
@@ -292,6 +292,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 							let _ts2 = volume_title.split('/');
 							let _ts = val_dir.split('/');
 
+							let _ds = (path.normalize(dirname) as string).split('/');
+
 							let _last: EpubMaker.Section;
 
 							for (let i = 0; i < _ts.length; i++)
@@ -299,10 +301,15 @@ export function create(options: IOptions, cache = {}): Promise<{
 								let _navs = _ts.slice(0, i + 1);
 								let _nav = _navs.join('/');
 
-//								console.dir({
-//									_navs,
-//									_nav,
-//								});
+								let _nav_dir = _ds.slice(0, _ds.length - _ts.length + i + 1).join('/');
+
+								/*
+								console.dir({
+									_navs,
+									_nav,
+									_nav_dir,
+								});
+								*/
 
 								if (!cacheTreeSection[_nav])
 								{
@@ -322,6 +329,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 										_new_top_level = cacheTreeSection[_nav];
 									}
+
+									await _handleVolume(cacheTreeSection[_nav], _nav_dir)
 								}
 
 								if (_last)
@@ -346,105 +355,118 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 						let vid: string = volume.id;
 
-						if (!volume[SymCache].cover)
+						await _handleVolume(volume, dirname)
+
+						async function _handleVolume(volume: EpubMaker.Section, dirname: string)
 						{
-							volume[SymCache].cover = true;
+							let vid: string = volume.id;
 
-							let file = path.join(dirname, 'README.md');
-							let meta = await fs.readFile(file)
-								.then(function (data)
-								{
-									return mdconf_parse(data, {
-										// 當沒有包含必要的內容時不產生錯誤
-										throw: false,
-										// 允許不標準的 info 內容
-										lowCheckLevel: true,
-									});
-								})
-								.catch(function ()
-								{
-									return null;
-								})
-							;
+							if (!volume[SymCache].cover)
+							{
+								volume[SymCache].cover = true;
 
-							await novelGlobby.globby([
-									'cover.*',
-								], {
-									cwd: dirname,
-									absolute: true,
-								})
-								.then(async (ls) =>
-								{
-									if (ls.length)
+								let file = path.join(dirname, 'README.md');
+								let meta = await fs.readFile(file)
+									.then(function (data)
 									{
-										let ext = path.extname(ls[0]);
-										let name = `${vid}-cover${ext}`;
-
-										epub.withAdditionalFile(ls[0], null, name);
-
-										return name;
-									}
-									else if (fs.existsSync(file))
+										return mdconf_parse(data, {
+											// 當沒有包含必要的內容時不產生錯誤
+											throw: false,
+											// 允許不標準的 info 內容
+											lowCheckLevel: true,
+										});
+									})
+									.catch(function ()
 									{
-										if (meta && meta.novel)
+										return null;
+									})
+								;
+
+								//console.log(file, meta);
+
+								await novelGlobby.globby([
+										'cover.*',
+									], {
+										cwd: dirname,
+										absolute: true,
+									})
+									.then(async (ls) =>
+									{
+										if (ls.length)
 										{
-											if (meta.novel.cover)
+											let ext = path.extname(ls[0]);
+											let name = `${vid}-cover${ext}`;
+
+											epub.withAdditionalFile(ls[0], null, name);
+
+											return name;
+										}
+										else if (fs.existsSync(file))
+										{
+											if (meta && meta.novel)
 											{
-												let ext = '.png';
-												let basename = `${vid}-cover`;
-												let name = `${basename}${ext}`;
+												if (meta.novel.cover)
+												{
+													let ext = '.png';
+													let basename = `${vid}-cover`;
+													let name = `${basename}${ext}`;
 
-												let data = typeof meta.novel.cover === 'string' ? {
-													url: meta.novel.cover,
-												} : meta.novel.cover;
+													let data = typeof meta.novel.cover === 'string' ? {
+														url: meta.novel.cover,
+													} : meta.novel.cover;
 
-												data.ext = null;
-												data.basename = basename;
+													data.ext = null;
+													data.basename = basename;
 
-												epub.withAdditionalFile(data, null, name);
+													epub.withAdditionalFile(data, null, name);
 
-												return name;
+													return name;
+												}
 											}
 										}
-									}
-								})
-								.then(function (name)
-								{
-									let _ok = false;
-									let data: ISectionContent = {};
-
-									if (name)
+									})
+									.then(function (name)
 									{
-										_ok = true;
-										data.cover = {
-											name,
-										};
-									}
+										let _ok = false;
+										let data: ISectionContent = {};
 
-									if (meta && meta.novel)
-									{
-										if (meta.novel.preface)
+										if (name)
 										{
 											_ok = true;
-											data.content = crlf(meta.novel.preface)
+											data.cover = {
+												name,
+											};
 										}
-									}
 
-									if (_ok)
-									{
-										return data
-									}
+										if (meta && meta.novel)
+										{
+											if (meta.novel.preface)
+											{
+												_ok = true;
+												data.content = crlf(meta.novel.preface);
+											}
+										}
 
-									return null
-								})
-								.then(function (data)
-								{
-									if (data)
+										//console.log(name, _ok);
+
+										if (_ok)
+										{
+											return data
+										}
+
+										return null
+									})
+									.then(function (data)
 									{
-										volume.setContent(data, true);
-									}
-								})
-							;
+										if (data)
+										{
+											//console.log(volume);
+
+											volume.setContent(data, true);
+										}
+									})
+								;
+							}
 						}
 
 						//console.log(dirname);
