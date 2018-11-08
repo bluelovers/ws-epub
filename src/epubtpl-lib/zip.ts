@@ -171,7 +171,12 @@ export async function addCover(zip: JSZip, epub: EpubMaker, options)
 	return false;
 }
 
-export function addSubSections(zip: JSZip, section: EpubMaker.Section, cb, epub: EpubMaker, options?)
+export interface IAddSubSectionsCallback
+{
+	(zip: JSZip, section: EpubMaker.Section, epubConfig: EpubConfig, options?)
+}
+
+export function addSubSections(zip: JSZip, section: EpubMaker.Section, cb: IAddSubSectionsCallback, epub: EpubMaker, options?)
 {
 	return BPromise
 		.resolve(cb(zip, section, epub.epubConfig, options))
