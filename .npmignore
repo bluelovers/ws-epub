@@ -78,12 +78,8 @@ __tests__### temp template
 ### Example user template
 
 # IntelliJ project files
-gen### npm2 template
-
-
-
-#package-lock.json
-
+gen
+### npm2 template
 
 
 

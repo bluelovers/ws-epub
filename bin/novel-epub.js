@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const yargs = require("yargs");
 const path = require("path");
 const index_1 = require("../index");
+const updateNotifier = require("update-notifier");
+const PACKAGE_JSON = require("../package.json");
 const debug_color2_1 = require("debug-color2");
 const console = new debug_color2_1.Console(null, {
     enabled: true,
@@ -16,6 +18,9 @@ const console = new debug_color2_1.Console(null, {
 });
 console.enabledColor = true;
 const CWD = process.cwd();
+updateNotifier({
+    pkg: PACKAGE_JSON,
+}).notify();
 let cli = yargs
     .default({
 //input: process.cwd(),
