@@ -149,7 +149,9 @@ Promise.mapSeries([
 
 	//'大劍師傳奇_(djs)',
 
-	'呼び出された殺戮者',
+//	'呼び出された殺戮者',
+
+	'暗黒騎士物語　～勇者を倒すために魔王に召喚されました～',
 //
 //	'虫虫酱むいむいたん',
 
@@ -183,7 +185,6 @@ async function makeEpub(novelID: string)
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
 
-
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 
 	console.time();
@@ -211,9 +212,9 @@ async function makeEpub(novelID: string)
 
 		// @ts-ignore
 		const txtMerge = await import('novel-txt-merge').then(function (mod)
-		{
-			return mod.default;
-		})
+			{
+				return mod.default;
+			})
 			.catch(function (e)
 			{
 				console.warn(e.toString());
