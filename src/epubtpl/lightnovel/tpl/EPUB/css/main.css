@@ -2,9 +2,11 @@
 @namespace "http://www.w3.org/1999/xhtml";
 @namespace epub "http://www.idpf.org/2007/ops";
 
+/*
 @import url("https://fonts.googleapis.com/earlyaccess/notosanstc.css");
 @import url("https://fonts.googleapis.com/earlyaccess/notosanssc.css");
 @import url("https://fonts.googleapis.com/earlyaccess/notosansjp.css");
+*/
 
 ol ul, ul ol, ul ul, ol ol {
 	-webkit-margin-before: 0px;
@@ -99,7 +101,9 @@ body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	line-height: 1.6em;
 	/*-webkit-text-stroke: 0.6px;*/
 	/*-webkit-text-stroke: 0.4px;*/
+	/*
 	text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.75);
+	*/
 }
 
 body
@@ -413,8 +417,10 @@ header h2
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
+		/*
 		-webkit-text-stroke: 0.6px;
 		-webkit-text-stroke: 0.4px;
+		*/
 	}
 }
 
@@ -434,8 +440,10 @@ header h2
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
+		/*
 		-webkit-text-stroke: initial;
 		text-shadow: initial;
+		*/
 	}
 
 }
@@ -448,9 +456,11 @@ header h2
 
 	body[lang*=zh], html[lang*=zh], section[lang*=zh]
 	{
+		/*
 		-webkit-text-stroke: 0.6px;
 		-webkit-text-stroke: 0.4px;
 		text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.75);
+		*/
 	}
 
 	hr, .linehr
