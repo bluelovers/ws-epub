@@ -6,6 +6,7 @@ import { array_unique } from './lib/array';
 import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
 import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
+import { htmlPreface } from './lib/util';
 import { createUUID } from './lib/uuid';
 
 export interface ICover extends IFiles
@@ -431,9 +432,12 @@ export class EpubConfig implements IEpubConfig
 
 		if (self.infoPreface)
 		{
+			/*
 			self.infoPreface = crlf(self.infoPreface).replace(/[ \t\uFEFF\xA0　]+$/gm, '');
 
 			self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br/>')
+			*/
+			htmlPreface(self);
 		}
 
 		//console.log(self.infoPreface, self.infoPrefaceHTML);

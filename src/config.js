@@ -5,8 +5,8 @@ const index_1 = require("./index");
 const shortid = require("shortid");
 const hashSum = require("hash-sum");
 const array_1 = require("./lib/array");
-const crlf_normalize_1 = require("crlf-normalize");
 const lib_1 = require("node-novel-info/lib");
+const util_1 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
 class EpubConfig {
     constructor(epubConfig = {}, options = {}) {
@@ -168,8 +168,12 @@ class EpubConfig {
             this.setPublication(true);
         }
         if (self.infoPreface) {
-            self.infoPreface = crlf_normalize_1.crlf(self.infoPreface).replace(/[ \t\uFEFF\xA0　]+$/gm, '');
-            self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br/>');
+            /*
+            self.infoPreface = crlf(self.infoPreface).replace(/[ \t\uFEFF\xA0　]+$/gm, '');
+
+            self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br/>')
+            */
+            util_1.htmlPreface(self);
         }
         //console.log(self.infoPreface, self.infoPrefaceHTML);
         self.publicationDate = self.publication.format(EpubConfig.dateFormat);
