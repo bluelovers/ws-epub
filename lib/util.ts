@@ -3,6 +3,7 @@
  */
 
 import getUuidByString = require('uuid-by-string');
+import { crlf } from 'crlf-normalize';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 
 export { createUUID }

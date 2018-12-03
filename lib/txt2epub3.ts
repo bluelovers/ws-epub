@@ -3,6 +3,7 @@
  */
 
 import { ISectionContent } from 'epub-maker2/src/index';
+import { htmlPreface } from 'epub-maker2/src/lib/util';
 import * as fs from 'fs-iconv';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import Promise = require('bluebird');
@@ -443,7 +444,11 @@ export function create(options: IOptions, cache = {}): Promise<{
 											if (meta.novel.preface)
 											{
 												_ok = true;
-												data.content = crlf(meta.novel.preface);
+												//data.content = crlf(meta.novel.preface);
+
+												data.content = htmlPreface({
+													infoPreface: meta.novel.preface,
+												}).infoPrefaceHTML;
 											}
 										}
 

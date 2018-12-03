@@ -6,7 +6,7 @@ import { IOptions, getNovelConf, makeFilename, makeOptions, defaultOptions } fro
 export declare function novelEpub(options: IOptions): Promise<{
     file: string;
     filename: string;
-    epub: import("epub-maker2/src").EpubMaker;
+    epub: import("epub-maker2").EpubMaker;
     outputPath: string;
     basename: string;
     ext: string;
