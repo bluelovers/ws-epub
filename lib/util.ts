@@ -16,7 +16,7 @@ export { createUUID }
 export function splitTxt(txt)
 {
 	return (
-		'<p>' +
+		'<div>' +
 		txt
 			.toString()
 			.replace(/\r\n|\r(?!\n)|\n/g, "\n")
@@ -35,15 +35,15 @@ export function splitTxt(txt)
 
 			//.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
 
-			.replace(/\n/g, '</p><p>')
-		+ '</p>')
+			.replace(/\n/g, '</div>\n<div>')
+		+ '</div>')
 
-		.replace(/<p><hr\/><\/p>/g, '<hr class="linehr"/>')
+		.replace(/<div><hr\/><\/div>/g, '<hr class="linehr"/>')
 
-		.replace(/<p>[ ]*([－＝\-—\=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃]+)[ ]*<\/p>/g, '<p class="linegroup calibre1 overflow-line">$1</p>')
+		.replace(/<div>[ ]*([－＝\-—\=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃]+)[ ]*<\/div>/g, '<div class="linegroup calibre1 overflow-line">$1</div>')
 
-		.replace(/<p><\/p>/g, '<p class="linegroup softbreak">　 </p>')
-		.replace(/<p>/g, '<p class="linegroup calibre1">')
+		.replace(/<div><\/div>/g, '<div class="linegroup softbreak">　 </div>')
+		.replace(/<div>/g, '<div class="linegroup calibre1">')
 		;
 }
 
