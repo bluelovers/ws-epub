@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -44,13 +44,14 @@
     "@types/bluebird-global": "^3",
     "@types/isomorphic-fetch": "^0",
     "array-hyper-unique": "^1.0.7",
-    "autoprefixer": "^9.3.1",
+    "autoprefixer": "^9.4.2",
     "bluebird": "^3.5.3",
     "debug-color2": "^1.0.6",
     "file-type": "^10.6.0",
     "fs-iconv": "^1",
     "handlebars": "^4.0.12",
     "hash-sum": "^1.0.2",
+    "html-minifier": "^3.5.21",
     "imagemin": "^6.0.0",
     "imagemin-jpegtran": "^6.0.0",
     "imagemin-optipng": "^6.0.0",
