@@ -1,6 +1,6 @@
 {
   "name": "epub-extract",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "epub-extract for node-novel style",
   "keywords": [
     "archive",

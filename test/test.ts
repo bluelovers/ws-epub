@@ -25,6 +25,10 @@ srcFile = 'D:\\Users\\Downloads\\业之塔.epub';
 
 srcFile = 'D:\\Users\\Downloads\\賢者之劍.epub';
 
+srcFile = `D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\Qiu Ye  You\\Shi Yu Yuan Wei De Bu Si Mao Xian Z (168)\\Shi Yu Yuan Wei De Bu Si Mao Xi - Qiu Ye  You.epub`;
+
+srcFile = 'D:\\Users\\Downloads\\無職的英雄　～本來也沒想要技能的說～.epub';
+
 /*
 [
 	srcFile,

@@ -112,6 +112,11 @@ function epubExtract(srcFile, options = {}) {
                     if (!a.length) {
                         a = $.root();
                     }
+                    a.html((function (old) {
+                        let html = html_1.default(old);
+                        html = html.replace(/(\/p>)(?=[^\n]*?<p)/ig, '$1\n');
+                        return html;
+                    })(a.html()));
                     let chapter_article = a.text().replace(/^[\r\n]+|[\r\n\s]+$/g, '');
                     if (!currentVolume) {
                         currentVolume = volume_list[volume_list.length] = {

@@ -201,6 +201,15 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							a = $.root();
 						}
 
+						a.html((function (old)
+						{
+							let html = fixHtml(old);
+
+							html = html.replace(/(\/p>)(?=[^\n]*?<p)/ig, '$1\n');
+
+							return html;
+						})(a.html()));
+
 						let chapter_article = a.text().replace(/^[\r\n]+|[\r\n\s]+$/g, '');
 
 						if (!currentVolume)
