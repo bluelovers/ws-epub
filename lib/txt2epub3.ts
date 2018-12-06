@@ -534,6 +534,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 							await novelGlobby.globby([
 									'*.{jpg,gif,png,jpeg,svg}',
 									'image/*.{jpg,gif,png,jpeg,svg}',
+									'images/*.{jpg,gif,png,jpeg,svg}',
 									'!cover.*',
 									'!*.txt',
 								], {
