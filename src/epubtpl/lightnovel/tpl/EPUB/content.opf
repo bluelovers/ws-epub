@@ -68,9 +68,6 @@
         {{/if}}
         <item id="toc" href="TableOfContents.xhtml" media-type="application/xhtml+xml" properties="scripted" />
         {{#each sections}}{{> sectionsOPFManifestTemplate}}{{/each}}
-        {{#each additionalFiles}}
-        <item id="{{filename}}" href="{{folder}}/{{filename}}" media-type="{{mimetype filename}}" />
-        {{/each}}
         <item id="nav" href="nav.xhtml" properties="nav" media-type="application/xhtml+xml" />
         <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
       <item href="contents.xhtml" id="contents" media-type="application/xhtml+xml" properties="scripted" />
