@@ -37,7 +37,6 @@
                                                refines="#cover"
                                                href="{{coverRights.attributionUrl}}" />{{/if}}
             {{/if}}
-      <!-- cover meta element included for 2.0 reading system compatibility: -->
       <meta name="cover" content="cover" />
         {{/if}}
       {{#if collection}}
@@ -53,7 +52,7 @@
       {{/if}}
       {{#if infoPreface}}<dc:description><![CDATA[{{infoPreface}}]]></dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
-      {{#each links}}<!--link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} /-->{{/each}}
+      {{#if 0}}{{#each links}}<!--link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} /-->{{/each}}{{/if}}
       {{#if authors}}
         {{#if authorsJSON}}
           <opf:meta property="calibre:author_link_map">{{{ authorsJSON }}}</opf:meta>
