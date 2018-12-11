@@ -76,6 +76,11 @@ function epubExtract(srcFile, options = {}) {
                     if (!a.length) {
                         a = $('h2, h3, h1').eq(0);
                     }
+                    if (!a.length && !elem.title) {
+                        let doc = await epub.getChapterRawAsync(elem.id);
+                        let $ = cheerio.load(html_1.default(doc));
+                        a = $('title').eq(0);
+                    }
                     volume_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
                     currentVolume = volume_list[volume_list.length] = {
                         level: elem.level,
@@ -92,6 +97,11 @@ function epubExtract(srcFile, options = {}) {
                     if (!a.length) {
                         a = $('h2, h3, h1').eq(0);
                     }
+                    if (!a.length && !elem.title) {
+                        let doc = await epub.getChapterRawAsync(elem.id);
+                        let $ = cheerio.load(html_1.default(doc));
+                        a = $('title').eq(0);
+                    }
                     currentVolume = volume_list[volume_list.length] = {
                         level: elem.level,
                         volume_index: volume_index,
@@ -106,6 +116,11 @@ function epubExtract(srcFile, options = {}) {
                     let a = $('section header h2').eq(0);
                     if (!a.length) {
                         a = $('h2, h3, h1').eq(0);
+                    }
+                    if (!a.length && !elem.title) {
+                        let doc = await epub.getChapterRawAsync(elem.id);
+                        let $ = cheerio.load(html_1.default(doc));
+                        a = $('title').eq(0);
                     }
                     chapter_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
                     a = $('section article').eq(0);

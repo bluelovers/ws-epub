@@ -48,7 +48,7 @@ if (1)
 	epubExtract(srcFile, {
 		cwd: __dirname,
 		//noFirePrefix: true,
-		noVolume: true,
+//		noVolume: true,
 	})
 		.then(function (ret)
 		{

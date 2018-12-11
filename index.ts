@@ -147,6 +147,14 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							a = $('h2, h3, h1').eq(0);
 						}
 
+						if (!a.length && !elem.title)
+						{
+							let doc = await epub.getChapterRawAsync(elem.id);
+							let $ = cheerio.load(fixHtml(doc));
+
+							a = $('title').eq(0);
+						}
+
 						volume_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
 
 						currentVolume = volume_list[volume_list.length] = {
@@ -171,6 +179,14 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							a = $('h2, h3, h1').eq(0);
 						}
 
+						if (!a.length && !elem.title)
+						{
+							let doc = await epub.getChapterRawAsync(elem.id);
+							let $ = cheerio.load(fixHtml(doc));
+
+							a = $('title').eq(0);
+						}
+
 						currentVolume = volume_list[volume_list.length] = {
 							level: elem.level,
 							volume_index: volume_index,
@@ -190,6 +206,14 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						if (!a.length)
 						{
 							a = $('h2, h3, h1').eq(0);
+						}
+
+						if (!a.length && !elem.title)
+						{
+							let doc = await epub.getChapterRawAsync(elem.id);
+							let $ = cheerio.load(fixHtml(doc));
+
+							a = $('title').eq(0);
 						}
 
 						chapter_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
