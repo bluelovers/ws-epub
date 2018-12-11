@@ -145,7 +145,9 @@ Promise.mapSeries([
 
 //	'瀆神之主',
 
-	'姫騎士がクラスメート！　〜異世界チートで奴隷化ハーレム〜',
+//	'姫騎士がクラスメート！　〜異世界チートで奴隷化ハーレム〜',
+
+	'豚公爵に転生したから、今度は君に好きと言いたい',
 
 	//'大劍師傳奇_(djs)',
 
@@ -164,7 +166,7 @@ async function makeEpub(novelID: string)
 	 * @type {string}
 	 */
 	let TXT_PATH = path.join(__dirname, 'res', novelID);
-//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
+	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\webqxs_out', novelID);
@@ -181,7 +183,7 @@ async function makeEpub(novelID: string)
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\uukanshu_out', novelID);
 
-	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\cm', novelID);
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\cm', novelID);
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
 
