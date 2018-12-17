@@ -10,6 +10,10 @@ export declare function novelEpub(options: IOptions): Promise<{
     outputPath: string;
     basename: string;
     ext: string;
+    stat: {
+        volume: number;
+        chapter: number;
+    };
 }>;
 export { IOptions, getNovelConf, makeFilename, makeOptions, defaultOptions };
 export default novelEpub;

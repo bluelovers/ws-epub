@@ -139,7 +139,8 @@ export function makeOptions(options: IOptions)
 	return options = deepmerge.all([{}, defaultOptions, options]);
 }
 
-export function create(options: IOptions, cache = {}): Promise<{
+export interface INovelEpubReturnInfo
+{
 	file: string,
 	filename: string,
 	epub: EpubMaker,
@@ -147,7 +148,15 @@ export function create(options: IOptions, cache = {}): Promise<{
 	outputPath: string,
 	basename: string,
 	ext: string,
-}>
+
+	stat: {
+		volume: number,
+		chapter: number,
+		image: number,
+	},
+}
+
+export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnInfo>
 {
 	return Promise.resolve().then(async function ()
 	{
@@ -180,7 +189,7 @@ export function create(options: IOptions, cache = {}): Promise<{
 		console.info(meta.novel.title);
 		//console.log(meta.novel.preface);
 
-		let epub = new EpubMaker()
+		let epub: EpubMaker = new EpubMaker()
 			.withTemplate(options.epubTemplate)
 			.withLanguage(options.epubLanguage)
 			.withUuid(createUUID(hashSum([
@@ -257,6 +266,12 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 		//process.exit();
 
+		let stat: INovelEpubReturnInfo["stat"] = {
+			volume: 0,
+			chapter: 0,
+			image: 0,
+		};
+
 		await novelGlobby
 			.globbyASync(globby_patterns, globby_options)
 			.then(function (ls)
@@ -330,6 +345,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 										_new_top_level = cacheTreeSection[_nav];
 									}
+
+									stat.volume++;
 
 									await _handleVolume(cacheTreeSection[_nav], _nav_dir)
 								}
@@ -437,6 +454,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 											data.cover = {
 												name,
 											};
+
+											stat.image += 1;
 										}
 
 										if (meta && meta.novel)
@@ -524,6 +543,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 								content: crlf(data),
 							}, true, false);
 
+							stat.chapter++;
+
 							volume.withSubSection(chapter);
 						});
 
@@ -589,6 +610,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 											}, []).join("\n"),
 										}, true, false);
 
+										stat.image += arr.length;
+
 										volume.withSubSection(chapter);
 									}
 								})
@@ -631,6 +654,8 @@ export function create(options: IOptions, cache = {}): Promise<{
 
 			basename,
 			ext,
+
+			stat,
 		};
 	});
 }

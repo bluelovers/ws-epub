@@ -32,14 +32,20 @@ export interface IOptions {
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;
 export declare function makeOptions(options: IOptions): any;
-export declare function create(options: IOptions, cache?: {}): Promise<{
+export interface INovelEpubReturnInfo {
     file: string;
     filename: string;
     epub: EpubMaker;
     outputPath: string;
     basename: string;
     ext: string;
-}>;
+    stat: {
+        volume: number;
+        chapter: number;
+        image: number;
+    };
+}
+export declare function create(options: IOptions, cache?: {}): Promise<INovelEpubReturnInfo>;
 export declare function makeFilename(options: IOptions, epub: EpubMaker, meta: IMdconfMeta): {
     file: string;
     ext: string;
