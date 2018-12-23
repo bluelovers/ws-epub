@@ -40,7 +40,7 @@ export function splitTxt(txt)
 
 		.replace(/<div><hr\/><\/div>/g, '<hr class="linehr"/>')
 
-		.replace(/<div>[ ]*([－＝\-—\=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
+		.replace(/<div>[ ]*([－＝—=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
 
 		.replace(/<div><\/div>/g, '<div class="linegroup softbreak">　 </div>')
 		.replace(/<div>/g, '<div class="linegroup calibre1">')
