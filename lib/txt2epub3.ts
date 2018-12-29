@@ -695,6 +695,10 @@ export function makeFilename(options: IOptions, epub: EpubMaker, meta: IMdconfMe
 			{
 				filename = meta.novel.title_short;
 			}
+			else if (meta.novel.title_tw)
+			{
+				filename = meta.novel.title_tw;
+			}
 			else if (typeof options.filenameLocal == 'string')
 			{
 				filename = options.filenameLocal;
