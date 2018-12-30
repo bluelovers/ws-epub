@@ -152,6 +152,10 @@ class EpubConfig {
                 self.tags = array_1.array_unique(self.tags);
             }
         }
+        if (self.titles) {
+            self.titles = self.titles.filter(v => v && v != self.title && v != self.title_short);
+            self.titles = array_1.array_unique(self.titles);
+        }
         self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : uuid_1.createUUID(self);
         self.slug = self.slug
             // @ts-ignore

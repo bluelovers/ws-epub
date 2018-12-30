@@ -15,6 +15,7 @@ export declare class EpubMaker {
     slugify(input: string, ...argv: any[]): string;
     slugifyWithFallback(input: string, ...argv: any[]): string;
     withTitle(title: string, title_short?: string): this;
+    addTitles(titles: string[]): this;
     withLanguage(lang: string): this;
     readonly lang: string;
     withAuthor(fullName: string, url?: string): this;

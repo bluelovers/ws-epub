@@ -55,6 +55,10 @@ class EpubMaker {
         }
         return this;
     }
+    addTitles(titles) {
+        this.epubConfig.titles = titles || [];
+        return this;
+    }
     withLanguage(lang) {
         this.epubConfig.lang = lang;
         return this;

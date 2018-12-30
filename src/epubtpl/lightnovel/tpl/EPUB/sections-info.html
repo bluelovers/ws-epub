@@ -2,6 +2,9 @@
 {{#if title_short}}
 <div class="center">{{title_short}}</div>
 {{/if}}
+{{#if titles}}
+{{#each titles}}<div class="center">{{this}}</div>{{/each}}
+{{/if}}
 {{#if author}}
 <div class="center"><label class="opacity-050 font-size-070">作者／</label>{{author}}</div>
 {{/if}}

@@ -59,6 +59,7 @@ export interface IEpubConfig
 
 	title?: string;
 	title_short?: string,
+	titles?: string[];
 
 	slug?: string;
 
@@ -131,6 +132,8 @@ export class EpubConfig implements IEpubConfig
 
 	title?: string;
 	title_short?: string;
+
+	titles?: string[];
 
 	slug?: string;
 
@@ -405,6 +408,13 @@ export class EpubConfig implements IEpubConfig
 			{
 				self.tags = array_unique(self.tags);
 			}
+		}
+
+		if (self.titles)
+		{
+			self.titles = self.titles.filter(v => v && v != self.title && v != self.title_short);
+
+			self.titles = array_unique(self.titles);
 		}
 
 		self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : createUUID(self);

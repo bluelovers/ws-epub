@@ -34,6 +34,7 @@ export interface IEpubConfig {
     filename?: string;
     title?: string;
     title_short?: string;
+    titles?: string[];
     slug?: string;
     lang?: string;
     author?: string;
@@ -87,6 +88,7 @@ export declare class EpubConfig implements IEpubConfig {
     filename?: string;
     title?: string;
     title_short?: string;
+    titles?: string[];
     slug?: string;
     lang?: string;
     author?: string;
