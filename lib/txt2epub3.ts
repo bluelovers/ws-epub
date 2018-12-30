@@ -11,7 +11,7 @@ import * as path from 'upath2';
 import * as StrUtil from 'str-util';
 import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
-import { mdconf_parse, IMdconfMeta, chkInfo } from 'node-novel-info';
+import { mdconf_parse, IMdconfMeta, chkInfo, getNovelTitleFromMeta } from 'node-novel-info';
 import { splitTxt } from './util';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 import * as deepmerge from 'deepmerge-plus';
@@ -206,6 +206,12 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 			.addTag(meta.novel.tags)
 			.addAuthor(meta.contribute)
 		;
+
+		let titles = getNovelTitleFromMeta(meta);
+		if (titles && titles.length)
+		{
+			epub.addTitles(titles);
+		}
 
 		if (options.filename)
 		{
