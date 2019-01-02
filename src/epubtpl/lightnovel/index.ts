@@ -174,6 +174,10 @@ export namespace Builder
 				.file('CoverPage.xhtml', compileTpl(options.templates.coverPage, epub.epubConfig))
 			;
 		}
+		else
+		{
+			epub.epubConfig.cover = null;
+		}
 	}
 
 	export function addInfoSection(section, titlePrefix?, namePrefix?)

@@ -6,9 +6,9 @@
     "moduleResolution": "node",
     "allowJs": false,
 
-    //"sourceMap": true,
-    //"inlineSourceMap": true,
-    //"inlineSources": true,
+    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
 
     "declaration": true,
     "experimentalDecorators": true,
@@ -22,7 +22,7 @@
     "locale": "zh-TW",
     "pretty": true,
 
-    //"removeComments": true,
+    "removeComments": false,
 
 //    "baseUrl": ".",
 //    "sourceRoot": ".",

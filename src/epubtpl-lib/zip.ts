@@ -67,35 +67,35 @@ export function addStaticFiles(zip, staticFiles: IFiles[])
 	};
 
 	return BPromise.mapSeries(staticFiles, async function (_file: IFiles)
-	{
-		let file: IFiles;
-
-		if (!_file.data
-			&& _file.url
-			&& cache[_file.url]
-			&& cache[_file.url].data
-		)
 		{
-			let cf = cache[_file.url];
+			let file: IFiles;
 
-			_file.data = cf.data;
-			_file.mime = _file.mime || cf.mime;
-		}
+			if (!_file.data
+				&& _file.url
+				&& cache[_file.url]
+				&& cache[_file.url].data
+			)
+			{
+				let cf = cache[_file.url];
 
-		file = await fetchFile(_file);
+				_file.data = cf.data;
+				_file.mime = _file.mime || cf.mime;
+			}
 
-		if (_file.url)
-		{
-			cache[_file.url] = _file;
-		}
+			file = await fetchFile(_file);
 
-		zip
-			.folder(file.folder)
-			.file(file.name, file.data)
-		;
+			if (_file.url)
+			{
+				cache[_file.url] = _file;
+			}
 
-		return file;
-	})
+			zip
+				.folder(file.folder)
+				.file(file.name, file.data)
+			;
+
+			return file;
+		})
 		.tap(function ()
 		{
 			cache = null;
@@ -118,7 +118,8 @@ export function addFiles(zip: JSZip, epub: EpubMaker, options)
 		.then(function (staticFiles)
 		{
 
-			epub.epubConfig.additionalFiles.forEach((v, i) => {
+			epub.epubConfig.additionalFiles.forEach((v, i) =>
+			{
 
 				let s = staticFiles[i];
 
@@ -153,7 +154,18 @@ export async function addCover(zip: JSZip, epub: EpubMaker, options)
 	if (epub.epubConfig.cover)
 	{
 		epub.epubConfig.cover.basename = 'CoverDesign';
-		let file = await fetchFile(epub.epubConfig.cover);
+		let file = await fetchFile(epub.epubConfig.cover)
+			.catch(e =>
+			{
+				console.error(e && e.meggage || `can't fetch cover`);
+				return null;
+			})
+		;
+
+		if (!file)
+		{
+			return false;
+		}
 
 		//file.name = `CoverDesign${file.ext}`;
 
@@ -176,7 +188,12 @@ export interface IAddSubSectionsCallback
 	(zip: JSZip, section: EpubMaker.Section, epubConfig: EpubConfig, options?)
 }
 
-export function addSubSections(zip: JSZip, section: EpubMaker.Section, cb: IAddSubSectionsCallback, epub: EpubMaker, options?)
+export function addSubSections(zip: JSZip,
+	section: EpubMaker.Section,
+	cb: IAddSubSectionsCallback,
+	epub: EpubMaker,
+	options?,
+)
 {
 	return BPromise
 		.resolve(cb(zip, section, epub.epubConfig, options))
