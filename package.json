@@ -42,7 +42,9 @@
   "dependencies": {
     "@types/bluebird": "^3",
     "@types/bluebird-global": "^3",
+    "@types/hash-sum": "^1.0.0",
     "@types/isomorphic-fetch": "^0",
+    "@types/jszip": "^3.1.4",
     "array-hyper-unique": "^1.0.7",
     "autoprefixer": "^9.4.3",
     "bluebird": "^3.5.3",
