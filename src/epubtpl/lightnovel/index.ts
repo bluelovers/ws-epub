@@ -5,12 +5,10 @@ import { compileCss } from '../../epubtpl-lib/postcss';
 import * as path from 'path';
 import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 import { EpubMaker } from '../../index';
-import BPromise = require('bluebird');
-import * as shortid from 'shortid';
+import { shortid, BPromise } from '../../lib/util';
 
 import epubTplLib, {} from '../../epubtpl-lib';
 
-// @ts-ignore
 export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
 export const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl') as string;
 

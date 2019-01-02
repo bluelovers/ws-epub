@@ -2,13 +2,12 @@
  * Created by user on 2017/12/12/012.
  */
 
-// @ts-ignore
 import * as path from 'path';
-import * as Promise from 'bluebird';
+import { BPromise } from './lib/util';
 import { IEpubConfig, IBuilder } from './var';
 import { EpubMaker } from './index';
+import JSZip = require('jszip');
 
-// @ts-ignore
 export const defaultPath = path.join(__dirname, './epubtpl') as string;
 
 export const defaultList = {
@@ -63,78 +62,91 @@ export class TemplateManagers
 		return (this.list[name]);
 	}
 
-	async _get(t): Promise<IBuilder>
+	_get(t): BPromise<IBuilder>
 	{
-		let fn = async function (b)
+		return BPromise.resolve().then(async function ()
 		{
-			if (!b)
+			let fn = async function (b)
+			{
+				if (!b)
+				{
+					//
+				}
+				else if (b.init)
+				{
+					return await b.init();
+				}
+				else if (b.builder)
+				{
+					return b.builder;
+				}
+				else if (b.Builder && typeof b.Builder.make == 'function')
+				{
+					return b.Builder;
+				}
+				else if (b.Builder)
+				{
+					return await new b.Builder();
+				}
+				else if (typeof b == 'function')
+				{
+					return await b();
+				}
+
+				throw new ReferenceError(`tpl "${name}" not exists`);
+			};
+
+			let r: IBuilder;
+
+			if (!t)
 			{
 				//
 			}
-			else if (b.init)
+			else if (typeof t == 'string')
 			{
-				return await b.init();
+				let b = await import(t);
+
+				r = await fn(b);
 			}
-			else if (b.builder)
+			else
 			{
-				return b.builder;
+				r = await fn(t);
 			}
-			else if (b.Builder && typeof b.Builder.make == 'function')
+
+			if (r)
 			{
-				return b.Builder;
-			}
-			else if (b.Builder)
-			{
-				return await new b.Builder();
-			}
-			else if (typeof b == 'function')
-			{
-				return await b();
+				return r;
 			}
 
 			throw new ReferenceError(`tpl "${name}" not exists`);
-		};
-
-		let r;
-
-		if (!t)
-		{
-			//
-		}
-		else if (typeof t == 'string')
-		{
-			let b = await import(t);
-
-			r = await fn(b);
-		}
-		else
-		{
-			r = await fn(t);
-		}
-
-		if (r)
-		{
-			return r;
-		}
-
-		throw new ReferenceError(`tpl "${name}" not exists`);
+		})
 	}
 
-	async get(name: string): Promise<IBuilder>
+	get(name: string)
 	{
-		if (this.has(name))
-		{
-			return await this._get(this.list[name]);
-		}
+		const self = this;
 
-		return await this._get(await this.search(name));
+		return BPromise.resolve().then(async function ()
+		{
+			if (self.has(name))
+			{
+				return self._get(self.list[name]);
+			}
+
+			return self._get(await self.search(name));
+		});
 	}
 
-	async exec(name: string, epub: EpubMaker, options?)
+	exec(name: string, epub: EpubMaker, options?)
 	{
-		let builder = await this.get(name);
+		const self = this;
 
-		return builder.make(epub, options);
+		return BPromise.resolve().then(async function ()
+		{
+			let builder = await self.get(name);
+
+			return builder.make(epub, options);
+		});
 	}
 
 	search(name: string): string
@@ -143,7 +155,7 @@ export class TemplateManagers
 
 		const fn = function (id)
 		{
-			return Promise.resolve(function ()
+			return BPromise.resolve(function ()
 			{
 				// @ts-ignore
 				return require.reverse(id);
@@ -166,16 +178,17 @@ export class TemplateManagers
 						ps.push(fn(path.join(v, name)));
 					}
 
-					return Promise.any(ps);
+					return BPromise.any(ps);
 				}
 
-				return Promise.reject(err);
+				return BPromise.reject(err);
 			})
+			// @ts-ignore
 			.then(function (ret)
 			{
 				if (!ret || typeof ret !== 'string')
 				{
-					return Promise.reject(`${ret} not a valid path`);
+					return BPromise.reject(`${ret} not a valid path`);
 				}
 
 				return ret;
@@ -190,6 +203,5 @@ export class TemplateManagers
 
 export const templateManagers = new TemplateManagers();
 
-import * as self from './template';
-// @ts-ignore
+import self = require('./template');
 export default self;

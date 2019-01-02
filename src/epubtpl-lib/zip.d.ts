@@ -1,10 +1,11 @@
 /**
  * Created by user on 2017/12/12/012.
  */
+/// <reference types="bluebird" />
 import JSZip = require('jszip');
 import { IFiles, EpubConfig, IEpubConfig } from '../config';
-import BPromise = require('bluebird');
 import { EpubMaker } from '../index';
+import { BPromise } from '../lib/util';
 export { JSZip };
 export declare function parseFileSetting(coverUrl: any, epubConfig: IEpubConfig): IFiles;
 export declare function addStaticFiles(zip: any, staticFiles: IFiles[]): BPromise<IFiles[]>;

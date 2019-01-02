@@ -1,14 +1,12 @@
 import * as _slugify from 'slugify';
-import * as moment from 'moment';
 import { TemplateManagers, templateManagers } from './template';
-import * as shortid from 'shortid';
-import * as hashSum from 'hash-sum';
 import { trimFilename } from 'fs-iconv';
 import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { createUUID } from './lib/uuid';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
 import JSZip = require('jszip');
+import { shortid, hashSum, moment, BPromise } from './lib/util';
 
 export { shortid, hashSum }
 
@@ -108,14 +106,14 @@ export class EpubMaker
 		return this;
 	}
 
-	addAuthor(fullName: string, url?: string)
-	addAuthor(fullName: string[])
-	addAuthor(fullName: { [key: string]: string; })
+	addAuthor(fullName: string, url?: string): this
+	addAuthor(fullName: string[]): this
+	addAuthor(fullName: { [key: string]: string; }): this
 	addAuthor(fullName: string
 		| string[]
 		| { [key: string]: string; }
 		, url?: string
-	)
+	): this
 	{
 		let self = this;
 
@@ -352,7 +350,7 @@ export class EpubMaker
 
 	vaild()
 	{
-		let ret = [];
+		let ret: string[] = [];
 
 		if (!this.epubConfig.title || !this.epubConfig.slug)
 		{
@@ -411,6 +409,7 @@ export class EpubMaker
 	{
 		let self = this;
 
+		// @ts-ignore
 		return this.build(options).then(async function (epubZip)
 		{
 			let generateOptions = Object.assign({

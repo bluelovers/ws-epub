@@ -5,6 +5,19 @@
 import { console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
 import { IEpubConfig } from '../config';
+import { array_unique } from 'array-hyper-unique';
+
+import shortid = require('shortid');
+import hashSum = require('hash-sum');
+import moment = require('moment');
+import BPromise = require('bluebird');
+
+export { hashSum, shortid }
+export { array_unique }
+export { moment }
+export { console }
+
+export { BPromise }
 
 export function htmlPreface<T extends Pick<IEpubConfig, 'infoPreface' | 'infoPrefaceHTML'>>(conf: T): T & Pick<IEpubConfig, 'infoPreface' | 'infoPrefaceHTML'>
 {
@@ -20,6 +33,3 @@ export function htmlPreface<T extends Pick<IEpubConfig, 'infoPreface' | 'infoPre
 
 	return conf;
 }
-
-export { console }
-export default console;

@@ -1,8 +1,9 @@
+/// <reference types="bluebird" />
 /// <reference types="jszip" />
 import { JSZip } from '../../epubtpl-lib/zip';
 import { IBuilder } from '../../var';
 import { EpubMaker } from '../../index';
-import BPromise = require('bluebird');
+import { BPromise } from '../../lib/util';
 export declare const EPUB_TEMPLATES_PATH: string;
 export declare const EPUB_TEMPLATES_TPL: string;
 declare module '../../index' {

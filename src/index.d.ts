@@ -1,8 +1,8 @@
+/// <reference types="bluebird" />
 /// <reference types="node" />
-import * as shortid from 'shortid';
-import hashSum from 'hash-sum';
 import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection } from './config';
 import JSZip = require('jszip');
+import { shortid, hashSum, BPromise } from './lib/util';
 export { shortid, hashSum };
 export declare function slugify(input: string, ...argv: any[]): string;
 export declare function slugifyWithFallback(input: string, ...argv: any[]): string;
@@ -19,11 +19,11 @@ export declare class EpubMaker {
     withLanguage(lang: string): this;
     readonly lang: string;
     withAuthor(fullName: string, url?: string): this;
-    addAuthor(fullName: string, url?: string): any;
-    addAuthor(fullName: string[]): any;
+    addAuthor(fullName: string, url?: string): this;
+    addAuthor(fullName: string[]): this;
     addAuthor(fullName: {
         [key: string]: string;
-    }): any;
+    }): this;
     withPublisher(publisher: string): this;
     withCollection(data: ICollection): this;
     withSeries(name: string, position?: number): void;
@@ -41,8 +41,8 @@ export declare class EpubMaker {
     addTag(tag: any): this;
     setPublicationDate(new_data?: any): this;
     getFilename(useTitle?: boolean, noExt?: boolean): string;
-    vaild(): any[];
-    build(options?: any): Promise<JSZip>;
+    vaild(): string[];
+    build(options?: any): BPromise<JSZip>;
     /**
      * for node.js
      *

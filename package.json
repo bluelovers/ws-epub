@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -73,11 +73,7 @@
     "uuid-by-string": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jszip": "^3",
-    "@types/node": "^10",
-    "node-novel-globby": "^2.0.4",
-    "require-extension-vue": "^1.3.2",
-    "str-util": "^2.3.16"
+    "@types/node": "^10"
   },
   "peerDependencies": {},
   "optionalDependencies": {},

@@ -6,10 +6,9 @@ import JSZip = require('jszip');
 import { IFiles, ICover, EpubConfig, IEpubConfig } from '../config';
 import { compileTpl } from './handlebar-helpers';
 import * as path from 'path';
-import BPromise = require('bluebird');
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
-import hashSum = require('hash-sum');
+import { hashSum, BPromise } from '../lib/util';
 
 export { JSZip }
 

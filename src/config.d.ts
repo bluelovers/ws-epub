@@ -1,5 +1,5 @@
-import * as moment from 'moment';
 import { EpubMaker, ISlugify } from './index';
+import { moment } from './lib/util';
 export interface ICover extends IFiles {
     rights?: IRightsConfig;
 }

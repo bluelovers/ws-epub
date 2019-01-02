@@ -4,7 +4,7 @@ import fetch = require('isomorphic-fetch');
 import * as path from "path";
 import { IFiles } from '../config';
 import fileType = require('file-type');
-import hashSum = require('hash-sum');
+import { hashSum } from '../lib/util';
 import imagemin = require('imagemin');
 import imageminJpegtran = require('imagemin-jpegtran');
 import imageminPngquant = require('imagemin-pngquant');

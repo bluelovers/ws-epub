@@ -1,8 +1,13 @@
-import * as Promise from 'bluebird';
+/**
+ * Created by user on 2017/12/12/012.
+ */
+/// <reference types="bluebird" />
+import { BPromise } from './lib/util';
 import { IBuilder } from './var';
 import { EpubMaker } from './index';
+import JSZip = require('jszip');
 export declare const defaultPath: string;
-export declare const defaultList: self.IList;
+export declare const defaultList: IList;
 export interface IOptions {
     list?: IList;
 }
@@ -13,10 +18,10 @@ export interface IList {
 }
 export declare class TemplateManagers {
     basePath: string;
-    list: self.IList;
+    list: IList;
     paths: string[];
     constructor(options?: IOptions);
-    value(): self.IList;
+    value(): IList;
     /**
      *
      * @param {string} key
@@ -25,11 +30,11 @@ export declare class TemplateManagers {
      */
     add<T = any | string | IBuilder>(key: string, value: T): this;
     has<T = any | string | IBuilder>(name: string): T;
-    _get(t: any): Promise<IBuilder>;
-    get(name: string): Promise<IBuilder>;
-    exec(name: string, epub: EpubMaker, options?: any): Promise<any>;
+    _get(t: any): BPromise<IBuilder>;
+    get(name: string): BPromise<IBuilder>;
+    exec(name: string, epub: EpubMaker, options?: any): BPromise<JSZip>;
     search(name: string): string;
 }
-export declare const templateManagers: self.TemplateManagers;
-import * as self from './template';
+export declare const templateManagers: TemplateManagers;
+import self = require('./template');
 export default self;

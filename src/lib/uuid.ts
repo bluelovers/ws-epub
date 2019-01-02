@@ -4,8 +4,7 @@
 
 import getUuidByString = require('uuid-by-string');
 import uuidv1 = require('uuid/v1');
-import hashSum = require('hash-sum');
-import shortid = require('shortid');
+import { hashSum, shortid } from './util';
 import { EpubConfig } from '../config';
 
 export function createUUID(input?: any): string

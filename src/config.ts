@@ -1,8 +1,5 @@
-import * as moment from 'moment';
 import { EpubMaker, ISlugify, slugify } from './index';
-import * as shortid from 'shortid';
-import * as hashSum from 'hash-sum';
-import { array_unique } from './lib/array';
+import { shortid, hashSum, moment, array_unique } from './lib/util';
 import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
 import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
