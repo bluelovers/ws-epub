@@ -256,9 +256,9 @@ export function getMetaTitles(meta: IMdconfMeta): string[]
 /**
  * 回傳處理後的檔案名稱
  */
-export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IReturnList, _argv?: {
+export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IReturnList, _argv: {
 	TXT_PATH?: string,
-}): string
+} = {}): string
 {
 	if (_ls)
 	{
@@ -340,7 +340,7 @@ export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: str
 
 		let a2 = [];
 
-		let novelID = _argv.TXT_PATH && path.basename(_argv.TXT_PATH) || '';
+		let novelID = _argv && _argv.TXT_PATH && path.basename(_argv.TXT_PATH) || '';
 
 		let titles = [novelID].concat(metaLib.titles())
 			.filter(v => v && v != meta.novel.title)

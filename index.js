@@ -149,7 +149,7 @@ function getMetaTitles(meta) {
     return array_hyper_unique_1.array_unique(list);
 }
 exports.getMetaTitles = getMetaTitles;
-function makeFilename(meta, outputFilename, a = [], _ls, _argv) {
+function makeFilename(meta, outputFilename, a = [], _ls, _argv = {}) {
     if (_ls) {
         let current_level = 0;
         let _lest = {
@@ -192,7 +192,7 @@ function makeFilename(meta, outputFilename, a = [], _ls, _argv) {
     if (meta && meta.novel) {
         let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${meta.novel.source || ''}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
         let a2 = [];
-        let novelID = _argv.TXT_PATH && path.basename(_argv.TXT_PATH) || '';
+        let novelID = _argv && _argv.TXT_PATH && path.basename(_argv.TXT_PATH) || '';
         let titles = [novelID].concat(metaLib.titles())
             .filter(v => v && v != meta.novel.title);
         if (titles.length) {
