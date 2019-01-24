@@ -12,6 +12,7 @@ const glob_sort_1 = require("node-novel-globby/lib/glob-sort");
 const array_hyper_unique_1 = require("array-hyper-unique");
 const normalize_1 = require("@node-novel/normalize");
 const debug_color2_1 = require("debug-color2");
+const class_1 = require("node-novel-info/class");
 const console = new debug_color2_1.Console(null, {
     enabled: true,
     inspectOptions: {
@@ -23,7 +24,8 @@ const console = new debug_color2_1.Console(null, {
 });
 console.enabledColor = true;
 const hr_len = 15;
-const eol = '\n';
+const eol = crlf_normalize_1.CRLF;
+const eol2 = eol.repeat(2);
 const hr1 = '＝'.repeat(hr_len);
 const hr2 = '－'.repeat(hr_len);
 async function txtMerge(inputPath, outputPath, outputFilename, noSave) {
@@ -86,27 +88,29 @@ async function txtMerge(inputPath, outputPath, outputFilename, noSave) {
                 .join(crlf_normalize_1.LF);
             let _vol_prefix = '';
             if (1) {
-                _vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}\n`;
+                _vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}${eol}`;
             }
-            let txt = `${hr1}CHECK\n${_vol_prefix}${volume_title}\n${hr1}\n`;
+            let txt = `${hr1}CHECK${eol}${_vol_prefix}${volume_title}${eol}${hr1}${eol}`;
             let a = await BluebirdPromise.mapSeries(ls, async function (row) {
                 let data = await fs_iconv_1.default.readFile(row.path);
                 count_f++;
                 let chapter_title = row.chapter_title;
                 let _prefix = '';
                 if (1) {
-                    _prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}\n`;
+                    _prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}${eol}`;
                 }
-                let txt = `${hr2}BEGIN\n${_prefix}${chapter_title}\n${hr2}BODY\n\n${data}\n\n${hr2}END\n\n`;
+                let txt = `${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${data}${eol2}${hr2}END${eol2}`;
                 return txt;
             });
             a.unshift(txt);
             return a.join(eol);
         })
             .then(async function (a) {
-            let filename2 = makeFilename(meta, outputFilename, a, _ls);
+            let filename2 = makeFilename(meta, outputFilename, a, _ls, {
+                TXT_PATH,
+            });
             let txt = a.join(eol);
-            txt = crlf_normalize_1.crlf(txt, crlf_normalize_1.CRLF);
+            txt = crlf_normalize_1.crlf(txt, eol);
             let fullpath = path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`);
             if (!noSave) {
                 await fs_iconv_1.default.outputFile(fullpath, txt);
@@ -145,7 +149,7 @@ function getMetaTitles(meta) {
     return array_hyper_unique_1.array_unique(list);
 }
 exports.getMetaTitles = getMetaTitles;
-function makeFilename(meta, outputFilename, a = [], _ls) {
+function makeFilename(meta, outputFilename, a = [], _ls, _argv) {
     if (_ls) {
         let current_level = 0;
         let _lest = {
@@ -177,29 +181,52 @@ function makeFilename(meta, outputFilename, a = [], _ls) {
         }, []);
         if (ret.length) {
             ret.unshift(`目錄索引：`);
-            ret.push(hr2 + crlf_normalize_1.CRLF);
-            a.unshift(ret.join(crlf_normalize_1.CRLF));
+            ret.push(hr2 + eol);
+            a.unshift(ret.join(eol));
         }
     }
+    const metaLib = new class_1.NodeNovelInfo(meta, {
+        throw: false,
+        lowCheckLevel: true,
+    });
     if (meta && meta.novel) {
-        let txt = `${meta.novel.title}\n${meta.novel.author}\n${meta.novel.source || ''}\n\n${meta.novel.preface}\n\n`;
+        let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${meta.novel.source || ''}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
         let a2 = [];
-        let titles = getMetaTitles(meta)
-            .filter(v => v != meta.novel.title);
+        let novelID = _argv.TXT_PATH && path.basename(_argv.TXT_PATH) || '';
+        let titles = [novelID].concat(metaLib.titles())
+            .filter(v => v && v != meta.novel.title);
         if (titles.length) {
-            a2.push(`其他名稱：\n` + titles.join(crlf_normalize_1.CRLF) + "\n");
+            a2.push(`其他名稱：${eol}` + titles.join(eol) + eol);
             a2.push(hr2);
         }
-        if (Array.isArray(meta.contribute) && meta.contribute.length) {
-            a2.push(`貢獻者：` + meta.contribute.join('、') + "\n");
+        let _arr;
+        let _label = '';
+        let _join = '、';
+        _arr = metaLib.authors()
+            .filter(v => v && v != meta.novel.author);
+        _label = '其他作者：';
+        if (_arr && _arr.length) {
+            a2.push(_label + _arr.join(_join) + eol);
         }
-        if (Array.isArray(meta.novel.tags) && meta.novel.tags.length) {
-            a2.push(`標籤：` + meta.novel.tags.join('、') + "\n");
+        _arr = metaLib.illusts();
+        _label = '繪師：';
+        if (_arr && _arr.length) {
+            a2.push(_label + _arr.join(_join) + eol);
+        }
+        _arr = metaLib.contributes();
+        _label = '貢獻者：';
+        if (_arr && _arr.length) {
+            a2.push(_label + _arr.join(_join) + eol);
+        }
+        _arr = metaLib.tags();
+        _label = '標籤：';
+        if (_arr && _arr.length) {
+            a2.push(_label + _arr.join(_join) + eol);
         }
         if (a2.length) {
             a2.unshift(hr2);
             a2.push(hr2);
-            txt += a2.join(crlf_normalize_1.CRLF);
+            txt += a2.join(eol);
         }
         a.unshift(txt);
     }

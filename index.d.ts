@@ -6,5 +6,7 @@ export declare function txtMerge(inputPath: string, outputPath: string, outputFi
     data: string;
 }>;
 export declare function getMetaTitles(meta: IMdconfMeta): string[];
-export declare function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a?: string[], _ls?: IReturnList): string;
+export declare function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a?: string[], _ls?: IReturnList, _argv?: {
+    TXT_PATH?: string;
+}): string;
 export default txtMerge;
