@@ -16,6 +16,7 @@ import { array_unique } from 'array-hyper-unique';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { NodeNovelInfo } from 'node-novel-info/class';
+import { getNovelTitleFromMeta } from 'node-novel-info';
 
 const console = new Console(null, {
 	enabled: true,
@@ -43,214 +44,202 @@ const hr2 = '－'.repeat(hr_len);
  * @param outputFilename 參考用檔案名稱
  * @param noSave 不儲存檔案僅回傳 txt 內容
  */
-export async function txtMerge(inputPath: string,
+export function txtMerge(inputPath: string,
 	outputPath: string,
 	outputFilename?: string,
 	noSave?: boolean,
-): Promise<{
+): BluebirdPromise<{
 	filename: string,
 	fullpath: string,
 	data: string,
 }>
 {
-	const TXT_PATH: string = inputPath;
-	const PATH_CWD: string = outputPath;
-	const outputDirPathPrefix = 'out';
-
-	if (!inputPath || !outputPath || typeof inputPath != 'string' || typeof outputPath != 'string')
+	return BluebirdPromise.resolve().then(async function ()
 	{
-		throw new ReferenceError('must set inputPath, outputPath');
-	}
+		const TXT_PATH: string = inputPath;
+		const PATH_CWD: string = outputPath;
+		const outputDirPathPrefix = 'out';
 
-	let globby_patterns: string[];
-	let globby_options: novelGlobby.IOptions = {
-		cwd: TXT_PATH,
-		useDefaultPatternsExclude: true,
-		absolute: true,
-	};
-
-	{
-		[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
-
-		globby_patterns.push('!*/*/*/**/*');
-	}
-
-	let meta: IMdconfMeta;
-
-	//console.info(`PATH_CWD: ${PATH_CWD}\n`);
-
-	//console.log(globby_patterns);
-	//console.log(globby_options);
-
-	// @ts-ignore
-	meta = await novelGlobby.globbyASync([
-			'README.md',
-		], globby_options)
-		.then(novelGlobby.returnGlobList)
-		.then(sortTree)
-		.tap(function (ls)
+		if (!inputPath || !outputPath || typeof inputPath != 'string' || typeof outputPath != 'string')
 		{
-			//console.log(ls);
-		})
-		.then(async function (ls)
-		{
-			let data = await fs.readFile(ls[0]);
+			throw new ReferenceError('must set inputPath, outputPath');
+		}
 
-			return mdconf_parse(data, {
-				throw: false,
-			});
-		})
-		.tap(function (ls)
-		{
-			//console.log(ls);
-		})
-		.catch(function ()
-		{
-			console.warn(`[WARN] README.md not exists! (${path.join(globby_options.cwd, 'README.md')})`);
-		})
-	;
+		let globby_patterns: string[];
+		let globby_options: novelGlobby.IOptions = {
+			cwd: TXT_PATH,
+			useDefaultPatternsExclude: true,
+			absolute: true,
+		};
 
-	//console.log(globby_patterns);
-
-	return await novelGlobby.globbyASync(globby_patterns, globby_options)
-		.tap(function (ls)
 		{
-			//console.log(ls);
-			//throw new Error('test');
+			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
 
-			//process.exit();
-		})
-		.then(function (_ls)
-		{
-			if (!_ls || !Object.keys(_ls).length)
+			//globby_patterns.push('!*/*/*/**/*');
+		}
+
+		let meta: IMdconfMeta;
+
+		//console.info(`PATH_CWD: ${PATH_CWD}\n`);
+
+		//console.log(globby_patterns);
+		//console.log(globby_options);
+
+		// @ts-ignore
+		meta = await novelGlobby.globbyASync([
+				'README.md',
+			], globby_options)
+			.then(novelGlobby.returnGlobList)
+			.then(sortTree)
+			.tap(function (ls)
 			{
-				// @ts-ignore
-				return BluebirdPromise.reject(`沒有可合併的檔案存在`);
-			}
+				//console.log(ls);
+			})
+			.then(async function (ls)
+			{
+				let data = await fs.readFile(ls[0]);
 
-			let count_f = 0;
-			let count_d = 0;
+				return mdconf_parse(data, {
+					throw: false,
+				});
+			})
+			.tap(function (ls)
+			{
+				//console.log(ls);
+			})
+			.catch(function ()
+			{
+				console.warn(`[WARN] README.md not exists! (${path.join(globby_options.cwd, 'README.md')})`);
+			})
+		;
 
-			let count_idx = 0;
+		//console.log(globby_patterns);
 
-			return BluebirdPromise
-				.mapSeries(Object.keys(_ls), async function (val_dir, index, len)
+		return novelGlobby.globbyASync(globby_patterns, globby_options)
+			.tap(function (ls)
+			{
+				//console.log(ls);
+				//throw new Error('test');
+
+				//process.exit();
+			})
+			.then(function (_ls)
+			{
+				if (!_ls || !Object.keys(_ls).length)
 				{
-					let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
+					// @ts-ignore
+					return BluebirdPromise.reject(`沒有可合併的檔案存在`);
+				}
 
-					let volume_title = ls[0].volume_title;
+				let count_f = 0;
+				let count_d = 0;
 
-					count_d++;
+				let count_idx = 0;
 
-					let vs = volume_title
-						.split('/')
-						.map(function (v)
-						{
-							return normalize_strip(v, true)
-						})
-					;
-
-					volume_title = vs
-						.join(LF)
-					;
-
-					let _vol_prefix = '';
-
-					if (1)
+				return BluebirdPromise
+					.mapSeries(Object.keys(_ls), async function (val_dir, index, len)
 					{
-						_vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}${eol}`;
-					}
+						let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
 
-					let txt = `${hr1}CHECK${eol}${_vol_prefix}${volume_title}${eol}${hr1}${eol}`;
+						let volume_title = ls[0].volume_title;
 
-					let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
-					{
-						let data = await fs.readFile(row.path);
+						count_d++;
 
-						count_f++;
+						let vs = volume_title
+							.split('/')
+							.map(function (v)
+							{
+								return normalize_strip(v, true)
+							})
+						;
 
-						let chapter_title = row.chapter_title;
+						volume_title = vs
+							.join(LF)
+						;
 
-						let _prefix = '';
+						let _vol_prefix = '';
 
 						if (1)
 						{
-							_prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}${eol}`
-
-							//_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.concat([chapter_title]).join('／')}\n`;
+							_vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}${eol}`;
 						}
 
-						let txt = `${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${data}${eol2}${hr2}END${eol2}`;
+						let txt = `${hr1}CHECK${eol}${_vol_prefix}${volume_title}${eol}${hr1}${eol}`;
 
-						return txt;
-					});
+						let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
+						{
+							let data = await fs.readFile(row.path);
 
-					a.unshift(txt);
+							count_f++;
 
-					return a.join(eol);
-				})
-				.then(async function (a)
-				{
-					let filename2 = makeFilename(meta, outputFilename, a, _ls, {
-						TXT_PATH,
-					});
+							let chapter_title = row.chapter_title;
 
-					let txt = a.join(eol);
-					txt = crlf(txt, eol);
+							let _prefix = '';
 
-					let fullpath = path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`);
+							if (1)
+							{
+								_prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}${eol}`
 
-					if (!noSave)
+								//_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.concat([chapter_title]).join('／')}\n`;
+							}
+
+							let txt = `${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${data}${eol2}${hr2}END${eol2}`;
+
+							return txt;
+						});
+
+						a.unshift(txt);
+
+						return a.join(eol);
+					})
+					.then(async function (a)
 					{
-						await fs.outputFile(fullpath, txt);
-					}
+						let filename2 = makeFilename(meta, outputFilename, a, _ls, {
+							TXT_PATH,
+						});
 
-					return {
-						filename: filename2,
-						fullpath,
-						data: txt,
-					};
-				})
-				.tap(function (data)
-				{
-					console.success('[DONE] done.');
+						let txt = a.join(eol);
+						txt = crlf(txt, eol);
 
-					console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${data.filename}`);
-				})
-				// @ts-ignore
-				.catchThrow(function (e)
-				{
-					console.error(`[ERROR] something wrong!!`);
-					console.trace(e);
+						let fullpath = path.join(PATH_CWD, outputDirPathPrefix, `${filename2}`);
 
-					return e;
-				})
-				;
-		})
-		.catch(function (e)
-		{
-			console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
-			console.trace(e);
-		})
-		;
+						if (!noSave)
+						{
+							await fs.outputFile(fullpath, txt);
+						}
+
+						return {
+							filename: filename2,
+							fullpath,
+							data: txt,
+						};
+					})
+					.tap(function (data)
+					{
+						console.success('[DONE] done.');
+
+						console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${data.filename}`);
+					})
+					// @ts-ignore
+					.tapCatch(function (e)
+					{
+						console.error(`[ERROR] something wrong!!`);
+						console.trace(e);
+					})
+					;
+			})
+			.tapCatch(function (e)
+			{
+				console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
+				console.trace(e);
+			})
+			;
+	})
 }
 
 export function getMetaTitles(meta: IMdconfMeta): string[]
 {
-	let list = Object.keys(meta.novel)
-		.reduce(function (a, key)
-		{
-			if (key.indexOf('title') === 0 && typeof meta.novel[key] === 'string')
-			{
-				a.push(meta.novel[key]);
-			}
-
-			return a;
-		}, [])
-		.filter(v => v)
-	;
-
-	return array_unique(list);
+	return getNovelTitleFromMeta(meta);
 }
 
 /**

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import * as yargs from 'yargs';
-import * as path from 'path';
-import * as Promise from 'bluebird';
+import yargs = require('yargs');
+import path = require('path');
+import Promise = require('bluebird');
 import txtMerge from '../index';
 import PACKAGE_JSON = require('../package.json');
 import updateNotifier = require('update-notifier');
@@ -23,7 +23,7 @@ const CWD = process.cwd();
 
 updateNotifier({
 	pkg: PACKAGE_JSON,
-}).notify()
+}).notify();
 
 let cli = yargs
 	.default({

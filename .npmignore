@@ -81,3 +81,5 @@ gen### temp template
 ### jsonly_bin template
 bin/*.ts
 bin/*.d.ts
+*.tgz
+

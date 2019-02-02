@@ -20,3 +20,5 @@ texst/temp
 /out/
 /test/temp/
 /test/
+*.tgz
+
