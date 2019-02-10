@@ -11,3 +11,6 @@ test/epub
 test/temp
 /bin/epub-extract.d.ts
 test/res/epub
+/node-epub-extract.iml
+/test/*.ts
+
