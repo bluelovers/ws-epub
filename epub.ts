@@ -1,5 +1,7 @@
-import * as xml2js from 'xml2js';
-import * as util from 'util';
+import xml2js = require('xml2js');
+import util = require('util');
+import NodePath = require('path');
+import NodeUrl = require('url');
 import { EventEmitter } from 'events';
 import { ZipFile, IZipFile } from './zipfile';
 import { array_unique } from 'array-hyper-unique';
@@ -845,6 +847,8 @@ class EPub extends EventEmitter
 	 **/
 	getChapter(chapterId: string, callback: (error: Error, text?: string) => void)
 	{
+		let self = this;
+
 		this.getChapterRaw(chapterId, (function (err, str)
 		{
 			if (err)
@@ -853,8 +857,13 @@ class EPub extends EventEmitter
 				return;
 			}
 
+			let meta = self.manifest[chapterId];
+
 			var i, len, path = this.rootFile.split("/"), keys = Object.keys(this.manifest);
 			path.pop();
+
+			let basePath = NodePath.dirname(meta.href);
+			let baseHref = meta.href;
 
 			// remove linebreaks (no multi line matches in JS regex!)
 			str = str.replace(/\r?\n/g, "\u0000");
@@ -884,6 +893,36 @@ class EPub extends EventEmitter
 			});
 
 			// replace images
+			str = str.replace(/(?<=\s|^)(src\s*=\s*)(["']?)([^"'\n]*?)(\2)/g, (o, a, d, b, c) => {
+
+				let img = NodePath.posix.join(basePath, b);
+				let element;
+
+				for (i = 0, len = keys.length; i < len; i++)
+				{
+					let _arr = [
+						self.manifest[keys[i]].href,
+						decodeURI(self.manifest[keys[i]].href),
+						encodeURI(self.manifest[keys[i]].href),
+					];
+
+					if (_arr.includes(img))
+					{
+						element = self.manifest[keys[i]];
+						break;
+					}
+				}
+
+				if (element)
+				{
+					let s = a + d + NodeUrl.resolve(this.imageroot, img) + c;
+
+					return s
+				}
+
+				return o;
+			});
+			/*
 			str = str.replace(/(\ssrc\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (function (o, a, b, c)
 			{
 				var img = path.concat([b]).join("/").trim(),
@@ -909,6 +948,7 @@ class EPub extends EventEmitter
 				}
 
 			}).bind(this));
+			*/
 
 			// replace links
 			str = str.replace(/(\shref\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (function (o, a, b, c)

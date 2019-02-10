@@ -3,11 +3,29 @@
  */
 
 import EPub from '../index';
-import * as libEPub from '../epub';
+import libEPub = require('../epub');
 
 export function fixToc(epub: EPub | libEPub)
 {
 	let manifest_keys = Object.keys(epub.manifest);
+
+	if (!epub.toc.length)
+	{
+		epub.toc = Object.values(epub.manifest).filter(node => {
+
+			if (
+				['text/css', 'application/x-dtbncx+xml'].includes(node.mediaType)
+				|| /^(image)/.test(node.mediaType)
+			)
+			{
+				return false;
+			}
+
+			return true;
+		});
+
+		return epub;
+	}
 
 	epub.toc.forEach(function (toc, idx)
 	{
@@ -28,6 +46,4 @@ export function fixToc(epub: EPub | libEPub)
 	return epub;
 }
 
-import * as self from './toc';
-export default self;
-
+export default exports as typeof import('./toc');

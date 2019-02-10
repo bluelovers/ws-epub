@@ -43,3 +43,5 @@ tests/*.js
 tests/*.d.ts
 tests/temp*
 !/.gitignore
+*.tgz
+

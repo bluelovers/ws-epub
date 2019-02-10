@@ -11,7 +11,7 @@
 *.stackdump
 *.bak
 tsconfig.json
-#package-lock.json
+package-lock.json
 test
 .github
 .gitkeep
@@ -32,3 +32,6 @@ __tests__
 *.test.js
 *.test.js.map
 
+*.ts
+!*.d.ts
+*.tgz

@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as xml2js from 'xml2js';
+import xml2js = require('xml2js');
 import { EventEmitter } from 'events';
 import { IZipFile } from './zipfile';
 declare const SYMBOL_RAW_DATA: unique symbol;
