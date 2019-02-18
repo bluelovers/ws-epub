@@ -8,7 +8,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Promise = require("bluebird");
 const path = require("path");
-//import libEPub = require('./epub');
+const libEPub = require('./epub');
 var SYMBOL_RAW_DATA = libEPub.SYMBOL_RAW_DATA;
 exports.SYMBOL_RAW_DATA = exports.SYMBOL_RAW_DATA;
 // @ts-ignore
