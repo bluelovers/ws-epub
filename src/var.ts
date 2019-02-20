@@ -23,3 +23,4 @@ import * as self from './var';
 
 // @ts-ignore
 export default self;
+
