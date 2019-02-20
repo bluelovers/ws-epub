@@ -31,7 +31,7 @@ export interface IOptions {
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;
-export declare function makeOptions(options: IOptions): any;
+export declare function makeOptions(options: IOptions): IOptions;
 export interface INovelEpubReturnInfo {
     file: string;
     filename: string;

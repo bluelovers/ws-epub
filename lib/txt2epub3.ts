@@ -14,7 +14,7 @@ import * as novelGlobby from 'node-novel-globby';
 import { mdconf_parse, IMdconfMeta, chkInfo, getNovelTitleFromMeta } from 'node-novel-info';
 import { splitTxt } from './util';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
-import * as deepmerge from 'deepmerge-plus';
+import deepmerge = require('deepmerge-plus');
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
@@ -298,6 +298,9 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 				const SymCache = Symbol('cache');
 
+				let _new_top_level: EpubMaker.Section;
+				let _old_top_level: EpubMaker.Section;
+
 				return Promise
 					.mapSeries(Object.keys(_ls), async function (val_dir)
 					{
@@ -306,8 +309,6 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 						let volume_title = ls[0].volume_title;
 
 						let volume = cacheTreeSection[val_dir];
-
-						let _new_top_level: EpubMaker.Section;
 
 						if (!cacheTreeSection[val_dir])
 						{
@@ -327,11 +328,18 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 								/*
 								console.dir({
+									i,
 									_navs,
 									_nav,
 									_nav_dir,
+									len: _ts.length,
 								});
 								*/
+
+								if (i < (_ts.length - 1))
+								{
+									_nav += '.dir';
+								}
 
 								if (!cacheTreeSection[_nav])
 								{
@@ -349,15 +357,18 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 									{
 										//epub.withSection(cacheTreeSection[_nav]);
 
+										_old_top_level = _new_top_level;
 										_new_top_level = cacheTreeSection[_nav];
 									}
 
 									stat.volume++;
 
+									//console.log(_nav, cacheTreeSection[_nav].content.title);
+
 									await _handleVolume(cacheTreeSection[_nav], _nav_dir)
 								}
 
-								if (_last)
+								if (_last && !_last.hasSubSection(cacheTreeSection[_nav]))
 								{
 									_last.withSubSection(cacheTreeSection[_nav])
 								}
@@ -379,7 +390,7 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 						let vid: string = volume.id;
 
-						await _handleVolume(volume, dirname)
+						await _handleVolume(volume, dirname);
 
 						async function _handleVolume(volume: EpubMaker.Section, dirname: string)
 						{
@@ -499,7 +510,7 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 							}
 						}
 
-						//console.log(dirname);
+						//console.log(dirname, volume.id);
 
 						//volume.withSubSection(new EpubMaker.Section('auto-toc', null, null, false, false));
 
@@ -627,19 +638,27 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 						//epub.withSection(volume);
 
-						if (_new_top_level)
+						if (_old_top_level && _old_top_level != _new_top_level && !epub.hasSection(_old_top_level))
 						{
-							epub.withSection(_new_top_level);
+							epub.withSection(_old_top_level);
 						}
 
 						return volume;
+					})
+					.tap(function ()
+					{
+						if (_new_top_level && !epub.hasSection(_new_top_level))
+						{
+							epub.withSection(_new_top_level);
+						}
 					})
 					;
 			})
 		;
 
-//		console.log(epub.epubConfig.sections);
-//		process.exit();
+		//console.dir(epub.epubConfig.sections[0]);
+		//console.dir(epub.epubConfig.landmarks.slice(0, 2));
+		//process.exit();
 
 		let data = await epub.makeEpub();
 

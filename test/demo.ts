@@ -147,7 +147,7 @@ Promise.mapSeries([
 
 //	'姫騎士がクラスメート！　〜異世界チートで奴隷化ハーレム〜',
 
-	'豚公爵に転生したから、今度は君に好きと言いたい',
+//	'豚公爵に転生したから、今度は君に好きと言いたい',
 
 	//'大劍師傳奇_(djs)',
 
@@ -156,6 +156,8 @@ Promise.mapSeries([
 //	'暗黒騎士物語　～勇者を倒すために魔王に召喚されました～',
 //
 //	'虫虫酱むいむいたん',
+
+	'你這種傢伙別想打贏魔王',
 
 ] as string[], makeEpub);
 
@@ -186,6 +188,8 @@ async function makeEpub(novelID: string)
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\cm', novelID);
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
+
+	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\girl_out', novelID);
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 
