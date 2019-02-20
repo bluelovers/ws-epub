@@ -220,6 +220,14 @@ export class EpubMaker
 		return this;
 	}
 
+	/**
+	 * 用來檢查 Section 是否已經加入
+	 */
+	hasSection(section: EpubMaker.Section): boolean
+	{
+		return this.epubConfig.sections.includes(section);
+	}
+
 	withSection(section: EpubMaker.Section)
 	{
 		section.parentEpubMaker = this;
@@ -569,6 +577,14 @@ export namespace EpubMaker
 			return new this(epubType, id, content, includeInToc, includeInLandmarks, ...argv);
 		}
 
+		/**
+		 * 用來檢查 Section 是否已經加入
+		 */
+		hasSubSection(subsection: Section): boolean
+		{
+			return this.subSections.includes(subsection);
+		}
+
 		withSubSection(subsection: Section)
 		{
 			subsection.parentSection = this;
@@ -580,12 +596,12 @@ export namespace EpubMaker
 		collectToc()
 		{
 			return this.collectSections(this, 'includeInToc');
-		};
+		}
 
 		collectLandmarks()
 		{
 			return this.collectSections(this, 'includeInLandmarks');
-		};
+		}
 
 		collectSections(section: Section, prop: string): Section[]
 		{

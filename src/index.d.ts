@@ -32,6 +32,10 @@ export declare class EpubMaker {
     withCover(coverUrl: string | ICover, rightsConfig?: IRightsConfig): this;
     withAttributionUrl(attributionUrl: any): this;
     withStylesheetUrl(stylesheetUrl: any, replaceOriginal?: boolean): this;
+    /**
+     * 用來檢查 Section 是否已經加入
+     */
+    hasSection(section: EpubMaker.Section): boolean;
     withSection(section: EpubMaker.Section): this;
     withAdditionalFile(fileUrl: any, folder: any, filename: any): this;
     withOption(key: string, value: any): this;
@@ -99,6 +103,10 @@ export declare namespace EpubMaker {
         readonly lang: string;
         readonly langMain: string;
         static create(epubType: any, id: any, content: any, includeInToc: boolean, includeInLandmarks: boolean, ...argv: any[]): Section;
+        /**
+         * 用來檢查 Section 是否已經加入
+         */
+        hasSubSection(subsection: Section): boolean;
         withSubSection(subsection: Section): this;
         collectToc(): Section[];
         collectLandmarks(): Section[];
