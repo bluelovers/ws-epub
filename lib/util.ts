@@ -47,7 +47,4 @@ export function splitTxt(txt)
 		;
 }
 
-import * as self from './util';
-
-export default self;
-//export default exports;
+export default exports as typeof import('./util');

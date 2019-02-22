@@ -4,9 +4,9 @@
  * Created by user on 2018/2/18/018.
  */
 
-import * as yargs from 'yargs';
-import * as path from 'path';
-import * as Promise from 'bluebird';
+import yargs = require('yargs');
+import path = require('path');
+import Promise = require('bluebird');
 import novelEpub from '../index';
 import updateNotifier = require('update-notifier');
 import PACKAGE_JSON = require('../package.json');

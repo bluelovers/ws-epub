@@ -50,7 +50,7 @@
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.0.6",
     "deepmerge-plus": "^2.1.3",
-    "epub-maker2": "^2.4.6",
+    "epub-maker2": "^2.4.7",
     "fs-iconv": "^1.3.6",
     "moment": "^2.24.0",
     "node-novel-globby": "^2.0.6",

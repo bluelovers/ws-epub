@@ -5,6 +5,7 @@
 import novelEpub from '../index';
 import * as path from 'path';
 import * as Promise from 'bluebird';
+import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 
 /**
  * 小說資料夾名稱
@@ -206,6 +207,8 @@ async function makeEpub(novelID: string)
 		filenameLocal: novelID,
 
 		noLog: true,
+
+		vertical: EnumEpubConfigVertical.VERTICAL_RL,
 	});
 
 	console.timeEnd();
