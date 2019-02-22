@@ -4,7 +4,16 @@ import { trimFilename } from 'fs-iconv';
 import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { createUUID } from './lib/uuid';
-import { EpubConfig, IEpubConfig, ICover, IRightsConfig, IFiles, IStylesheet, ICollection } from './config';
+import {
+	EpubConfig,
+	IEpubConfig,
+	ICover,
+	IRightsConfig,
+	IFiles,
+	IStylesheet,
+	ICollection,
+	EnumEpubConfigVertical,
+} from './config';
 import JSZip = require('jszip');
 import { shortid, hashSum, moment, BPromise } from './lib/util';
 
@@ -318,6 +327,13 @@ export class EpubMaker
 		this.epubConfig.publication = data;
 		this.epubConfig.publicationDate = data.format(EpubMaker.dateFormat);
 		this.epubConfig.publicationDateYMD = data.format('YYYY-MM-DD');
+
+		return this;
+	}
+
+	setVertical(vertical?: boolean | EnumEpubConfigVertical)
+	{
+		this.epubConfig.vertical = vertical;
 
 		return this;
 	}

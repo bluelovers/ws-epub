@@ -1,6 +1,6 @@
 /// <reference types="bluebird" />
 /// <reference types="node" />
-import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection } from './config';
+import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection, EnumEpubConfigVertical } from './config';
 import JSZip = require('jszip');
 import { shortid, hashSum, BPromise } from './lib/util';
 export { shortid, hashSum };
@@ -44,6 +44,7 @@ export declare class EpubMaker {
     addLinks(links: any, rel?: string): this;
     addTag(tag: any): this;
     setPublicationDate(new_data?: any): this;
+    setVertical(vertical?: boolean | EnumEpubConfigVertical): this;
     getFilename(useTitle?: boolean, noExt?: boolean): string;
     vaild(): string[];
     build(options?: any): BPromise<JSZip>;

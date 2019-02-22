@@ -205,6 +205,10 @@ class EpubMaker {
         this.epubConfig.publicationDateYMD = data.format('YYYY-MM-DD');
         return this;
     }
+    setVertical(vertical) {
+        this.epubConfig.vertical = vertical;
+        return this;
+    }
     getFilename(useTitle, noExt) {
         let ext = this.epubConfig.options.ext || EpubMaker.defaultExt;
         let filename;
