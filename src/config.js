@@ -5,6 +5,11 @@ const util_1 = require("./lib/util");
 const lib_1 = require("node-novel-info/lib");
 const util_2 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
+var EnumEpubConfigVertical;
+(function (EnumEpubConfigVertical) {
+    EnumEpubConfigVertical[EnumEpubConfigVertical["NONE"] = 0] = "NONE";
+    EnumEpubConfigVertical[EnumEpubConfigVertical["VERTICAL_RL"] = 1] = "VERTICAL_RL";
+})(EnumEpubConfigVertical = exports.EnumEpubConfigVertical || (exports.EnumEpubConfigVertical = {}));
 class EpubConfig {
     constructor(epubConfig = {}, options = {}) {
         if (epubConfig instanceof EpubConfig) {
@@ -103,6 +108,13 @@ class EpubConfig {
         this.identifiers.push(ids.join(':'));
         return this;
     }
+    setVertical(vertical) {
+        if (vertical === true) {
+            vertical = EnumEpubConfigVertical.VERTICAL_RL;
+        }
+        this.vertical = vertical || 0;
+        return this;
+    }
     $clone() {
         // @ts-ignore
         return new (this.__proto__.constructor)(this);
@@ -184,6 +196,7 @@ class EpubConfig {
             self.collection.position = self.collection.position || 1;
             self.collection.type = self.collection.type || 'series';
         }
+        this.setVertical(self.vertical);
         return this;
     }
     entries(auto = true) {

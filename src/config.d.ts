@@ -74,6 +74,11 @@ export interface IEpubConfig {
     infoPreface?: string;
     infoPrefaceHTML?: string;
     links?: EpubMetaLink[];
+    vertical?: boolean | EnumEpubConfigVertical;
+}
+export declare enum EnumEpubConfigVertical {
+    NONE = 0,
+    VERTICAL_RL = 1
 }
 export interface EpubMetaLink {
     href: string;
@@ -132,6 +137,10 @@ export declare class EpubConfig implements IEpubConfig {
     infoPreface?: string;
     infoPrefaceHTML?: string;
     links?: EpubMetaLink[];
+    /**
+     * 輸出成 直排
+     */
+    vertical?: boolean | EnumEpubConfigVertical;
     constructor(epubConfig?: IEpubConfig, options?: any);
     readonly langMain: string;
     subjects: string[];
@@ -149,6 +158,7 @@ export declare class EpubConfig implements IEpubConfig {
      * @returns {this}
      */
     addIdentifier(type: string, id?: string): this;
+    setVertical(vertical?: boolean | EnumEpubConfigVertical): this;
     $clone(): any;
     static $create(epubConfig?: IEpubConfig, options?: any): EpubConfig;
     $auto(): this;

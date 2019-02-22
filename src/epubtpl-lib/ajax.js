@@ -62,6 +62,7 @@ async function fetchFile(file, ...argv) {
                 plugins: [
                     imageminOptipng(),
                     imageminJpegtran(),
+                    // @ts-ignore
                     imageminPngquant({ quality: '65-80' })
                 ]
             });

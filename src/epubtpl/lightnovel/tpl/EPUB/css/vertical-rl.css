@@ -1,0 +1,10 @@
+body, html, :root
+{
+
+	-epub-writing-mode: vertical-rl; /*直式設定 for epub*/
+	-epub-line-break: normal; /*斷行設定 for epub*/
+	-webkit-writing-mode: vertical-rl; /*直式設定*/
+	-webkit-line-break: normal; /*斷行設定*/
+	line-break: strict; /*斷行設定,參數(normal , auto , strict)*/
+	writing-mode: vertical-rl; /*直式設定 for Kindle*/
+}

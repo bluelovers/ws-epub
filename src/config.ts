@@ -109,6 +109,14 @@ export interface IEpubConfig
 	infoPrefaceHTML?: string;
 
 	links?: EpubMetaLink[],
+
+	vertical?: boolean | EnumEpubConfigVertical,
+}
+
+export enum EnumEpubConfigVertical
+{
+	NONE = 0,
+	VERTICAL_RL = 1
 }
 
 export interface EpubMetaLink
@@ -187,6 +195,11 @@ export class EpubConfig implements IEpubConfig
 	infoPrefaceHTML?: string;
 
 	links?: EpubMetaLink[];
+
+	/**
+	 * 輸出成 直排
+	 */
+	vertical?: boolean | EnumEpubConfigVertical;
 
 	constructor(epubConfig: IEpubConfig = {}, options: any = {})
 	{
@@ -335,6 +348,18 @@ export class EpubConfig implements IEpubConfig
 		return this;
 	}
 
+	setVertical(vertical?: boolean | EnumEpubConfigVertical)
+	{
+		if (vertical === true)
+		{
+			vertical = EnumEpubConfigVertical.VERTICAL_RL;
+		}
+
+		this.vertical = vertical || 0;
+
+		return this;
+	}
+
 	$clone()
 	{
 		// @ts-ignore
@@ -459,6 +484,8 @@ export class EpubConfig implements IEpubConfig
 			self.collection.type = self.collection.type || 'series';
 		}
 
+		this.setVertical(self.vertical);
+
 		return this;
 	}
 
@@ -498,6 +525,7 @@ export class EpubConfig implements IEpubConfig
 
 		return Object.entries(this);
 	}
+
 }
 
 export namespace EpubConfig

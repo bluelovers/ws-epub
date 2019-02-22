@@ -1,13 +1,12 @@
 import zipLib, { JSZip } from '../../epubtpl-lib/zip';
-import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
+import { compileTpl, Handlebars } from '../../epubtpl-lib/handlebar-helpers';
 import { fetchFile } from '../../epubtpl-lib/ajax';
 import { compileCss } from '../../epubtpl-lib/postcss';
-import * as path from 'path';
-import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
+import path = require('path');
+import { IBuilder } from '../../var';
 import { EpubMaker } from '../../index';
-import { shortid, BPromise } from '../../lib/util';
-
-import epubTplLib, {} from '../../epubtpl-lib';
+import { BPromise, shortid } from '../../lib/util';
+import { EnumEpubConfigVertical } from '../../config';
 
 export const EPUB_TEMPLATES_PATH = path.join(__dirname) as string;
 export const EPUB_TEMPLATES_TPL = path.join(EPUB_TEMPLATES_PATH, 'tpl') as string;
@@ -250,6 +249,24 @@ export namespace Builder
 
 	export async function addStylesheets(zip, epub: EpubMaker, options)
 	{
+		if (epub.epubConfig.vertical === EnumEpubConfigVertical.VERTICAL_RL)
+		{
+			const fs = require('fs') as typeof import('fs');
+
+			try
+			{
+				let file = await fetchFile({
+					data: fs.readFileSync('./tpl/EPUB/css/main.css')
+				});
+
+				epub.epubConfig.stylesheet.styles += "\n" + file.data.toString();
+			}
+			catch (e)
+			{
+
+			}
+		}
+
 		if (epub.epubConfig.stylesheet.url || epub.epubConfig.stylesheet.file)
 		{
 			let file = await fetchFile(epub.epubConfig.stylesheet);

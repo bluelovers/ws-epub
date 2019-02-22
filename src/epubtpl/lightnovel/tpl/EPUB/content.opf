@@ -5,7 +5,7 @@
          xmlns:media="http://www.idpf.org/epub/vocab/overlays/#"
          version="3.0"
          unique-identifier="uuid"
-         xml:lang="en-US"
+         xml:lang="{{lang}}"
          prefix="cc: http://creativecommons.org/ns#">
     <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata"
               xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -18,6 +18,9 @@
         <opf:meta property="role" refines="#id-author" scheme="marc:relators">aut</opf:meta>
         <opf:meta property="file-as" refines="#id-author">{{author}}</opf:meta>
         <dc:language>{{lang}}</dc:language>
+        {{#if vertical}}
+        <meta content="vertical-rl" name="primary-writing-mode" />
+        {{/if}}
         <dc:date>{{publicationDate}}</dc:date>
         {{#if modification}}
         <meta property="dcterms:modified">{{modificationDate}}</meta>
@@ -80,7 +83,7 @@
       <item id="{{id}}" href="{{href}}" media-type="{{mime}}"/>
       {{/each}}
     </manifest>
-    <spine toc="ncx">
+    <spine toc="ncx" {{#if vertical}} page-progression-direction="rtl" {{/if}}>
         {{#if cover}}
             {{#if cover.name}}
                  <itemref idref="CoverPage_html" />

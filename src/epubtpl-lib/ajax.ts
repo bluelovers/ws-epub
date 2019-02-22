@@ -93,6 +93,7 @@ export async function fetchFile(file: IFiles, ...argv)
 					plugins: [
 						imageminOptipng(),
 						imageminJpegtran(),
+						// @ts-ignore
 						imageminPngquant({quality: '65-80'})
 					]
 				})
