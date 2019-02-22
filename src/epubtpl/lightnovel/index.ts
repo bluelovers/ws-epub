@@ -251,19 +251,21 @@ export namespace Builder
 	{
 		if (epub.epubConfig.vertical === EnumEpubConfigVertical.VERTICAL_RL)
 		{
-			const fs = require('fs') as typeof import('fs');
-
 			try
 			{
+				const fs = require('fs') as typeof import('fs');
+
+				let data = fs.readFileSync(path.join(__dirname, './tpl/EPUB/css/vertical-rl.css'));
+
 				let file = await fetchFile({
-					data: fs.readFileSync('./tpl/EPUB/css/main.css')
+					data,
 				});
 
 				epub.epubConfig.stylesheet.styles += "\n" + file.data.toString();
 			}
 			catch (e)
 			{
-
+				console.error(e);
 			}
 		}
 

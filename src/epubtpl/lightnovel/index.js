@@ -172,14 +172,16 @@ var Builder;
     Builder.addEpub3Nav = addEpub3Nav;
     async function addStylesheets(zip, epub, options) {
         if (epub.epubConfig.vertical === config_1.EnumEpubConfigVertical.VERTICAL_RL) {
-            const fs = require('fs');
             try {
+                const fs = require('fs');
+                let data = fs.readFileSync(path.join(__dirname, './tpl/EPUB/css/vertical-rl.css'));
                 let file = await ajax_1.fetchFile({
-                    data: fs.readFileSync('./tpl/EPUB/css/main.css')
+                    data,
                 });
                 epub.epubConfig.stylesheet.styles += "\n" + file.data.toString();
             }
             catch (e) {
+                console.error(e);
             }
         }
         if (epub.epubConfig.stylesheet.url || epub.epubConfig.stylesheet.file) {
