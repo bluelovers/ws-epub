@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import * as novelGlobby from 'node-novel-globby';
 import { IMdconfMeta } from 'node-novel-info';
 import { Console } from 'debug-color2';
+import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 export declare const console: Console;
 export interface IOptions {
     /**
@@ -28,6 +29,7 @@ export interface IOptions {
     useTitle?: boolean;
     filenameLocal?: boolean | string[] | string;
     noLog?: boolean;
+    vertical?: boolean | EnumEpubConfigVertical;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Promise<IMdconfMeta>;

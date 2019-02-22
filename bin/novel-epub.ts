@@ -90,11 +90,14 @@ let cli = yargs
 		type: 'string',
 		desc: 'epub lang',
 	})
+	.option('vertical', {
+		type: 'boolean',
+	})
 	// @ts-ignore
 	.command('$0', '', function (yargs)
 	{
 		let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;
-		let outputPath = yargs.argv.output;
+		let outputPath = yargs.argv.output as any as string;
 
 		if (!path.isAbsolute(inputPath))
 		{
@@ -134,6 +137,7 @@ let cli = yargs
 			epubLanguage: yargs.argv.lang,
 			epubTemplate: yargs.argv.tpl,
 			padEndDate: yargs.argv.date,
+			vertical: yargs.argv.vertical,
 		});
 
 		//yargs.showHelp('log');

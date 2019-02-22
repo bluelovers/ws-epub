@@ -18,6 +18,7 @@ import deepmerge = require('deepmerge-plus');
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
+import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -60,11 +61,14 @@ export interface IOptions
 	filenameLocal?: boolean | string[] | string,
 
 	noLog?: boolean,
+
+	vertical?: boolean | EnumEpubConfigVertical;
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
 	epubTemplate: 'lightnovel',
-	epubLanguage: 'zh',
+	//epubLanguage: 'zh',
+	epubLanguage: 'zh-Hant-TW',
 	//padEndDate: true,
 
 	globbyOptions: {
@@ -206,6 +210,11 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 			.addTag(meta.novel.tags)
 			.addAuthor(meta.contribute)
 		;
+
+		if (options.vertical)
+		{
+			epub.setVertical(options.vertical);
+		}
 
 		let titles = getNovelTitleFromMeta(meta);
 		if (titles && titles.length)
