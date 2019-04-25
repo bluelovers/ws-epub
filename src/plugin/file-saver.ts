@@ -2,6 +2,7 @@
  * Created by user on 2017/12/17/017.
  */
 
+// @ts-ignore
 import { saveAs } from 'file-saver';
 
 import { EpubMaker } from '..';

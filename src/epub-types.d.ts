@@ -9,5 +9,5 @@ export declare let groups: {
 };
 export declare function getGroup(epubtype: string): string;
 export declare const types: IEpubtypes[];
-import * as self from './epub-types';
-export default self;
+declare const _default: typeof import("./epub-types");
+export default _default;

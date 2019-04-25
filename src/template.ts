@@ -203,5 +203,4 @@ export class TemplateManagers
 
 export const templateManagers = new TemplateManagers();
 
-import self = require('./template');
-export default self;
+export default exports as typeof import('./template');

@@ -117,5 +117,4 @@ export function getGroup(epubtype: string): string
 
 export const types = epubtypes;
 
-import * as self from './epub-types';
-export default self;
+export default exports as typeof import('./epub-types');

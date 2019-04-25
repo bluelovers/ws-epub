@@ -130,6 +130,5 @@ function addSubSections(zip, section, cb, epub, options) {
     });
 }
 exports.addSubSections = addSubSections;
-const self = require("./zip");
-exports.default = self;
+exports.default = exports;
 //# sourceMappingURL=zip.js.map

@@ -125,6 +125,5 @@ class TemplateManagers {
 }
 exports.TemplateManagers = TemplateManagers;
 exports.templateManagers = new TemplateManagers();
-const self = require("./template");
-exports.default = self;
+exports.default = exports;
 //# sourceMappingURL=template.js.map

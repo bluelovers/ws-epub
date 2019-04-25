@@ -32,6 +32,5 @@ async function compileCss(css) {
     return result.content;
 }
 exports.compileCss = compileCss;
-const self = require("./postcss");
-exports.default = self;
+exports.default = exports;
 //# sourceMappingURL=postcss.js.map

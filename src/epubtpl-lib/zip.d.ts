@@ -15,5 +15,5 @@ export interface IAddSubSectionsCallback {
     (zip: JSZip, section: EpubMaker.Section, epubConfig: EpubConfig, options?: any): any;
 }
 export declare function addSubSections(zip: JSZip, section: EpubMaker.Section, cb: IAddSubSectionsCallback, epub: EpubMaker, options?: any): any;
-import * as self from './zip';
-export default self;
+declare const _default: typeof import("./zip");
+export default _default;

@@ -104,6 +104,5 @@ function getGroup(epubtype) {
 }
 exports.getGroup = getGroup;
 exports.types = exports.epubtypes;
-const self = require("./epub-types");
-exports.default = self;
+exports.default = exports;
 //# sourceMappingURL=epub-types.js.map

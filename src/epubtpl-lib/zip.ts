@@ -206,6 +206,4 @@ export function addSubSections(zip: JSZip,
 		;
 }
 
-import * as self from './zip';
-
-export default self;
+export default exports as typeof import('./zip');

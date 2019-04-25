@@ -36,5 +36,5 @@ export declare class TemplateManagers {
     search(name: string): string;
 }
 export declare const templateManagers: TemplateManagers;
-import self = require('./template');
-export default self;
+declare const _default: typeof import("./template");
+export default _default;

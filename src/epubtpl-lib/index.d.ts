@@ -4,5 +4,5 @@
 import { Options as IMinifyOptions } from 'html-minifier';
 export declare function formatHTML(htmlstr: any, skipFormatting?: boolean): string;
 export declare function htmlminify(html: string, options?: IMinifyOptions): any;
-import * as self from './index';
-export default self;
+declare const _default: typeof import(".");
+export default _default;

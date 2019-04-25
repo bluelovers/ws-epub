@@ -12,5 +12,5 @@ export interface IBuilder {
 export interface IBuilderCallback<T, U> extends Function {
     (zip: T, epubConfig: IEpubConfig, options?: any, ...argv: any[]): Promise<U>;
 }
-import * as self from './var';
-export default self;
+declare const _default: typeof import("./var");
+export default _default;

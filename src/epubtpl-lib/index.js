@@ -53,6 +53,5 @@ function htmlminify(html, options = {}) {
     return html;
 }
 exports.htmlminify = htmlminify;
-const self = require("./index");
-exports.default = self;
+exports.default = exports;
 //# sourceMappingURL=index.js.map
