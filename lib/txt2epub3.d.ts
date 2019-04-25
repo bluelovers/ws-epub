@@ -3,8 +3,8 @@
  */
 import EpubMaker from 'epub-maker2';
 import Promise = require('bluebird');
-import * as moment from 'moment';
-import * as novelGlobby from 'node-novel-globby';
+import moment = require('moment');
+import novelGlobby = require('node-novel-globby');
 import { IMdconfMeta } from 'node-novel-info';
 import { Console } from 'debug-color2';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
@@ -21,8 +21,8 @@ export interface IOptions {
      */
     novelID?: string;
     filename?: string;
-    novelConf?: any;
-    epubTemplate?: any;
+    novelConf?: unknown;
+    epubTemplate?: unknown;
     epubLanguage?: string;
     padEndDate?: boolean;
     globbyOptions?: novelGlobby.IOptions;

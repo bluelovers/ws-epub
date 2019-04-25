@@ -4,13 +4,13 @@
 
 import { ISectionContent } from 'epub-maker2/src/index';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
-import * as fs from 'fs-iconv';
+import fs = require('fs-iconv');
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import Promise = require('bluebird');
-import * as path from 'upath2';
-import * as StrUtil from 'str-util';
-import * as moment from 'moment';
-import * as novelGlobby from 'node-novel-globby';
+import path = require('upath2');
+import StrUtil = require('str-util');
+import moment = require('moment');
+import novelGlobby = require('node-novel-globby');
 import { mdconf_parse, IMdconfMeta, chkInfo, getNovelTitleFromMeta } from 'node-novel-info';
 import { splitTxt } from './util';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
@@ -47,9 +47,9 @@ export interface IOptions
 	novelID?: string,
 	filename?: string,
 
-	novelConf?,
+	novelConf?: unknown,
 
-	epubTemplate?,
+	epubTemplate?: unknown,
 
 	epubLanguage?: string,
 
@@ -128,7 +128,7 @@ export function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta
 	})
 }
 
-export function makeOptions(options: IOptions)
+export function makeOptions(options: IOptions): IOptions
 {
 	options = Object.keys(options)
 		.filter(v => typeof options[v] != 'undefined')
