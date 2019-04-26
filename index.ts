@@ -325,7 +325,7 @@ export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: str
 
 	if (meta && meta.novel)
 	{
-		let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${meta.novel.source || ''}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
+		let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${metaLib.sources().join(eol)}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
 
 		let a2 = [];
 

@@ -68,7 +68,7 @@ let cli = yargs
 		}
 
 		let inputPath = yargs.argv.input || yargs.argv._[0] || CWD;
-		let outputPath = yargs.argv.output;
+		let outputPath = yargs.argv.output as any as string;
 
 		if (!path.isAbsolute(inputPath))
 		{
