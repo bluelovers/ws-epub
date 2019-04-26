@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -73,7 +73,7 @@
     "uuid-by-string": "^2.1.1"
   },
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.2",
+    "@bluelovers/tsconfig": "^1.0.3",
     "@types/node": "^11"
   },
   "peerDependencies": {},

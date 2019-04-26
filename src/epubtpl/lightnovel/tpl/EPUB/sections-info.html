@@ -14,6 +14,9 @@
 {{#if modificationDateYMD}}
 <div class="center">{{modificationDateYMD}}</div>
 {{/if}}
+
+{{#each links}}<div class="center"><a href="{{href}}" rel="{{rel}}" target="_blank">{{href}}</a></div>{{/each}}
+
 <div class="state-indicator center" id="state-indicator"></div>
 
 {{#if infoPrefaceHTML}}
