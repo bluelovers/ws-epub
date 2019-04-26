@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.23",
+  "version": "1.1.25",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",
@@ -40,7 +40,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "local-link": "npm link epub-maker2",
+    "prepublishOnly": "npx npm-check-updates -u --packageFile ./package.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -50,7 +50,7 @@
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.0.7",
     "deepmerge-plus": "^2.1.3",
-    "epub-maker2": "^2.4.8",
+    "epub-maker2": "^2.4.9",
     "fs-iconv": "^2.0.6",
     "moment": "^2.24.0",
     "node-novel-globby": "^2.0.6",
@@ -61,7 +61,7 @@
     "yargs": "^13.2.2"
   },
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.2",
-    "novel-txt-merge": "^1.0.19"
+    "@bluelovers/tsconfig": "^1.0.3",
+    "novel-txt-merge": "^1.0.20"
   }
 }

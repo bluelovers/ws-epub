@@ -19,6 +19,7 @@ import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
+import { NodeNovelInfo } from 'node-novel-info/class';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -175,6 +176,11 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 		let meta = await getNovelConf(options, cache);
 
+		const metaLib = new NodeNovelInfo(meta, {
+			throw: false,
+			lowCheckLevel: true,
+		});
+
 		let globby_patterns: string[];
 		let globby_options: novelGlobby.IOptions = Object.assign({}, options.globbyOptions, {
 			cwd: TXT_PATH,
@@ -207,8 +213,8 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 				name: meta.novel.title,
 			})
 			.withInfoPreface(meta.novel.preface)
-			.addTag(meta.novel.tags)
-			.addAuthor(meta.contribute)
+			.addTag(metaLib.tags())
+			.addAuthor(metaLib.contributes())
 		;
 
 		if (options.vertical)
@@ -216,21 +222,16 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 			epub.setVertical(options.vertical);
 		}
 
-		let titles = getNovelTitleFromMeta(meta);
-		if (titles && titles.length)
-		{
-			epub.addTitles(titles);
-		}
+		epub.addTitles(metaLib.titles());
 
 		if (options.filename)
 		{
 			epub.epubConfig.filename = options.filename;
 		}
 
-		if (meta.novel.source)
-		{
-			epub.addLinks(meta.novel.source);
-		}
+		metaLib.sources()
+			.forEach(link => epub.addLinks(link))
+		;
 
 		if (meta.novel.series)
 		{
