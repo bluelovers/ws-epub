@@ -2,8 +2,9 @@
  * Created by user on 2018/1/28/028.
  */
 
-import { IReturnList } from 'node-novel-globby';
+import { IArrayDeepInterface, IReturnList, IReturnRow } from 'node-novel-globby';
 import novelGlobby = require('node-novel-globby');
+import novelGlobbyBase = require('node-novel-globby/g');
 import path = require('path');
 import BluebirdPromise = require('bluebird');
 import moment = require('moment');
@@ -17,6 +18,12 @@ import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { NodeNovelInfo } from 'node-novel-info/class';
 import { getNovelTitleFromMeta } from 'node-novel-info';
+import {
+	eachVolumeTitle,
+	foreachArrayDeepAsync,
+	IForeachArrayDeepCache,
+	IForeachArrayDeepReturn,
+} from 'node-novel-globby/lib/util';
 
 const console = new Console(null, {
 	enabled: true,
@@ -36,6 +43,22 @@ const eol2 = eol.repeat(2);
 
 const hr1 = '＝'.repeat(hr_len);
 const hr2 = '－'.repeat(hr_len);
+
+export type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
+	toc: string[],
+	context: string[],
+}, {
+	cache_vol: {
+		[vol: string]: number;
+	},
+
+	prev_volume_title: string,
+
+	count_idx: number,
+	count_f: number,
+	count_d: number,
+
+}>
 
 /**
  *
@@ -73,7 +96,7 @@ export function txtMerge(inputPath: string,
 		};
 
 		{
-			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
+			[globby_patterns, globby_options] = novelGlobby.getOptions2(globby_options);
 
 			//globby_patterns.push('!*/*/*/**/*');
 		}
@@ -86,11 +109,10 @@ export function txtMerge(inputPath: string,
 		//console.log(globby_options);
 
 		// @ts-ignore
-		meta = await novelGlobby.globbyASync([
+		meta = await novelGlobbyBase.globbyASync([
 				'README.md',
 			], globby_options)
-			.then(novelGlobby.returnGlobList)
-			.then(sortTree)
+			//.then(sortTree)
 			.tap(function (ls)
 			{
 				//console.log(ls);
@@ -115,12 +137,16 @@ export function txtMerge(inputPath: string,
 
 		//console.log(globby_patterns);
 
-		return novelGlobby.globbyASync(globby_patterns, globby_options)
+		return novelGlobbyBase.globbyASync(globby_patterns, globby_options)
+			.then(ls => sortTree(ls, null, globby_options))
+			.then(function (ls)
+			{
+				return novelGlobby.globToListArrayDeep(ls, globby_options)
+			})
 			.tap(function (ls)
 			{
 				//console.log(ls);
 				//throw new Error('test');
-
 				//process.exit();
 			})
 			.then(function (_ls)
@@ -131,71 +157,100 @@ export function txtMerge(inputPath: string,
 					return BluebirdPromise.reject(`沒有可合併的檔案存在`);
 				}
 
-				let count_f = 0;
-				let count_d = 0;
+				//let count_f = 0;
+				//let count_d = 0;
 
-				let count_idx = 0;
+				//let count_idx = 0;
 
-				return BluebirdPromise
-					.mapSeries(Object.keys(_ls), async function (val_dir, index, len)
+				return foreachArrayDeepAsync(_ls as IArrayDeepInterface<IReturnRow>, async ({
+					value,
+					index,
+					array,
+					cache,
+				}) =>
+				{
+					const { volume_title, chapter_title } = value;
+					const { temp, data } = cache;
+
+					//temp.cache_vol = temp.cache_vol || {};
+					//temp.toc = temp.toc || [];
+					//temp.context = temp.context || [];
+
+					let vs_ret = eachVolumeTitle(volume_title, true);
+
+					vs_ret.titles_full
+						.forEach(function (key, index)
 					{
-						let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
+						let title = vs_ret.titles[index];
 
-						let volume_title = ls[0].volume_title;
-
-						count_d++;
-
-						let vs = volume_title
-							.split('/')
-							.map(function (v)
-							{
-								return normalize_strip(v, true)
-							})
-						;
-
-						volume_title = vs
-							.join(LF)
-						;
-
-						let _vol_prefix = '';
-
-						if (1)
+						if (temp.cache_vol[key] == null)
 						{
-							_vol_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.join('／')}${eol}`;
+							data.toc.push('- '.repeat(index + 1) + title);
+
+							temp.count_d++;
+
+							temp.cache_vol[key] = (temp.cache_vol[key] | 0);
 						}
-
-						let txt = `${hr1}CHECK${eol}${_vol_prefix}${volume_title}${eol}${hr1}${eol}`;
-
-						let a = await BluebirdPromise.mapSeries(ls, async function (row: novelGlobby.IReturnRow)
-						{
-							let data = await fs.readFile(row.path);
-
-							count_f++;
-
-							let chapter_title = row.chapter_title;
-
-							let _prefix = '';
-
-							if (1)
-							{
-								_prefix = `第${String(++count_idx).padStart(5, '0')}話：${chapter_title}${eol}`
-
-								//_prefix = `第${String(++count_idx).padStart(5, '0')}話：${vs.concat([chapter_title]).join('／')}\n`;
-							}
-
-							let txt = `${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${data}${eol2}${hr2}END${eol2}`;
-
-							return txt;
-						});
-
-						a.unshift(txt);
-
-						return a.join(eol);
 					})
-					.then(async function (a)
+					;
+
+					let vi = vs_ret.level - 1;
+
+					let vol_key = vs_ret.titles_full[vi];
+
+					temp.cache_vol[vol_key]++;
+
+					if (temp.prev_volume_title != volume_title)
 					{
+						let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${vol_key}${eol}`;
+
+						data.context.push(`${hr1}CHECK${eol}${_vol_prefix}${vs_ret.titles[vi]}${eol}${hr1}${eol}`)
+					}
+
+					data.toc.push('- '.repeat(vs_ret.level + 1) + chapter_title);
+
+					let _prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${chapter_title}${eol}`;
+
+					let txt = await fs.readFile(value.path);
+
+					temp.count_f++;
+
+					data.context.push(`${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${txt}${eol2}${hr2}END${eol2}`);
+
+					temp.prev_volume_title = volume_title;
+
+				}, <ITxtRuntimeReturn>{
+
+					data: {
+						toc: [] as string[],
+						context: [] as string[],
+					},
+
+					temp: {
+						cache_vol: {},
+
+						prev_volume_title: null,
+
+						count_idx: 0,
+						count_f: 0,
+						count_d: 0,
+					},
+				})
+					.tap(function (ret)
+					{
+						//console.dir(ret.temp);
+
+						//console.log(ret.temp.context.join(eol));
+
+						//process.exit();
+					})
+					.then(async function (processReturn)
+					{
+						let a = processReturn.data.context;
+
 						let filename2 = makeFilename(meta, outputFilename, a, _ls, {
 							TXT_PATH,
+							processReturn,
 						});
 
 						let txt = a.join(eol);
@@ -212,13 +267,15 @@ export function txtMerge(inputPath: string,
 							filename: filename2,
 							fullpath,
 							data: txt,
+
+							temp: processReturn.temp,
 						};
 					})
 					.tap(function (data)
 					{
 						console.success('[DONE] done.');
 
-						console.info(`Total D: ${count_d}\nTotal F: ${count_f}\n\n[FILENAME] ${data.filename}`);
+						console.info(`Total D: ${data.temp.count_d}\nTotal F: ${data.temp.count_f}\n\n[FILENAME] ${data.filename}`);
 					})
 					// @ts-ignore
 					.tapCatch(function (e)
@@ -247,75 +304,17 @@ export function getMetaTitles(meta: IMdconfMeta): string[]
  */
 export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IReturnList, _argv: {
 	TXT_PATH?: string,
-} = {}): string
+	processReturn?: ITxtRuntimeReturn,
+} = {} as any): string
 {
-	if (_ls)
+	if (_argv.processReturn && _argv.processReturn.data.toc.length)
 	{
-		let current_level = 0;
-		let _lest = {
-			_ts: [],
-		} as {
-			val_dir: string,
-			volume_title: string,
-			_ts: string[],
-			level: number,
-		};
+		let ret = _argv.processReturn.data.toc;
 
-		let c = '- ';
+		ret.unshift(`目錄索引：`);
+		ret.push(hr2 + eol);
 
-		let ret = Object.keys(_ls)
-			.reduce(function (a1, val_dir)
-			{
-				let ls: novelGlobby.IReturnRow[] = _ls[val_dir];
-
-				let volume_title = ls[0].volume_title;
-
-				let _ts = volume_title.split('/');
-
-				if (_lest.val_dir != val_dir)
-				{
-					for (let i = 0; i < _ts.length; i++)
-					{
-						if (_lest._ts[i] != _ts[i])
-						{
-							a1.push(c.repeat(i + 1) + normalize_strip(_ts[i], true))
-						}
-					}
-				}
-
-				//console.log(ls[0]);
-
-				ls.forEach(function (row)
-				{
-					a1.push(c.repeat(_ts.length + 1) + row.chapter_title);
-				});
-
-				_lest = {
-					_ts,
-					val_dir,
-					volume_title,
-					level: _ts.length,
-				};
-
-				return a1;
-			}, [])
-		;
-
-		if (ret.length)
-		{
-			ret.unshift(`目錄索引：`);
-			ret.push(hr2 + eol);
-
-			a.unshift(ret.join(eol));
-		}
-
-//		console.dir({
-//			//_ls,
-//			ret,
-//		}, {
-//			depth: null,
-//		});
-//		process.exit();
+		a.unshift(ret.join(eol));
 	}
 
 	const metaLib = new NodeNovelInfo(meta, {
@@ -325,7 +324,8 @@ export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: str
 
 	if (meta && meta.novel)
 	{
-		let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${metaLib.sources().join(eol)}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
+		let txt = `${meta.novel.title}${eol}${meta.novel.author}${eol}${metaLib.sources()
+			.join(eol)}${eol}${eol}${meta.novel.preface}${eol}${eol}`;
 
 		let a2 = [];
 
