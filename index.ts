@@ -302,7 +302,7 @@ export function getMetaTitles(meta: IMdconfMeta): string[]
 /**
  * 回傳處理後的檔案名稱
  */
-export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IReturnList, _argv: {
+export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IArrayDeepInterface<IReturnRow>, _argv: {
 	TXT_PATH?: string,
 	processReturn?: ITxtRuntimeReturn,
 } = {} as any): string

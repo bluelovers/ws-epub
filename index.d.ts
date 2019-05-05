@@ -1,7 +1,7 @@
 /**
  * Created by user on 2018/1/28/028.
  */
-import { IReturnList, IReturnRow } from 'node-novel-globby';
+import { IArrayDeepInterface, IReturnRow } from 'node-novel-globby';
 import BluebirdPromise = require('bluebird');
 import { IMdconfMeta } from 'node-novel-info';
 import { IForeachArrayDeepReturn } from 'node-novel-globby/lib/util';
@@ -33,7 +33,7 @@ export declare function getMetaTitles(meta: IMdconfMeta): string[];
 /**
  * 回傳處理後的檔案名稱
  */
-export declare function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a?: string[], _ls?: IReturnList, _argv?: {
+export declare function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a?: string[], _ls?: IArrayDeepInterface<IReturnRow>, _argv?: {
     TXT_PATH?: string;
     processReturn?: ITxtRuntimeReturn;
 }): string;
