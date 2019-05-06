@@ -7,8 +7,11 @@ const zip_1 = require("./epubtpl-lib/zip");
 const uuid_1 = require("./lib/uuid");
 const config_1 = require("./config");
 const util_1 = require("./lib/util");
-exports.shortid = util_1.shortid;
 exports.hashSum = util_1.hashSum;
+exports.shortid = util_1.shortid;
+const epub_types_1 = require("./epub-types");
+exports.EnumEpubType = epub_types_1.EnumEpubType;
+const libEpubtypes = require("./epub-types");
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
         // @ts-ignore
@@ -265,7 +268,7 @@ class EpubMaker {
      * for node.js
      *
      * @param options
-     * @returns {Promise<T>}
+     * @returns {Bluebird<T>}
      */
     makeEpub(options) {
         let self = this;
@@ -291,7 +294,7 @@ exports.EpubMaker = EpubMaker;
     EpubMaker.dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
     // epubtypes and descriptions, useful for vendors implementing a GUI
     // @ts-ignore
-    EpubMaker.epubtypes = require('./epub-types.js');
+    EpubMaker.epubtypes = libEpubtypes;
     // @ts-ignore
     EpubMaker.libSlugify = _slugify;
     /**
@@ -373,10 +376,10 @@ exports.EpubMaker = EpubMaker;
         }
         ;
         collectToc() {
-            return this.collectSections(this, 'includeInToc');
+            return this.collectSections(this, "includeInToc" /* INCLUDE_IN_TOC */);
         }
         collectLandmarks() {
-            return this.collectSections(this, 'includeInLandmarks');
+            return this.collectSections(this, "includeInLandmarks" /* INCLUDE_IN_LANDMARKS */);
         }
         collectSections(section, prop) {
             let sections = section[prop] ? [section] : [];

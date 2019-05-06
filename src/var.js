@@ -4,4 +4,9 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = exports;
+var EnumSectionCollectType;
+(function (EnumSectionCollectType) {
+    EnumSectionCollectType["INCLUDE_IN_TOC"] = "includeInToc";
+    EnumSectionCollectType["INCLUDE_IN_LANDMARKS"] = "includeInLandmarks";
+})(EnumSectionCollectType = exports.EnumSectionCollectType || (exports.EnumSectionCollectType = {}));
 //# sourceMappingURL=var.js.map

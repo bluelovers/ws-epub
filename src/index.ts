@@ -1,21 +1,24 @@
-import * as _slugify from 'slugify';
-import { TemplateManagers, templateManagers } from './template';
+import _slugify = require('slugify');
+import { templateManagers } from './template';
 import { trimFilename } from 'fs-iconv';
-import * as path from 'path';
 import { parseFileSetting } from './epubtpl-lib/zip';
 import { createUUID } from './lib/uuid';
 import {
-	EpubConfig,
-	IEpubConfig,
-	ICover,
-	IRightsConfig,
-	IFiles,
-	IStylesheet,
-	ICollection,
 	EnumEpubConfigVertical,
+	EpubConfig,
+	ICollection,
+	ICover,
+	IEpubConfig,
+	IRightsConfig,
+	IStylesheet,
 } from './config';
+import { BPromise, hashSum, moment, shortid } from './lib/util';
+import { EnumEpubType, EnumEpubTypeName } from './epub-types';
+import { EnumSectionCollectType } from './var';
+export { EnumEpubType, EnumEpubTypeName };
+export { EnumSectionCollectType };
+import libEpubtypes = require('./epub-types');
 import JSZip = require('jszip');
-import { shortid, hashSum, moment, BPromise } from './lib/util';
 
 export { shortid, hashSum }
 
@@ -427,9 +430,9 @@ export class EpubMaker
 	 * for node.js
 	 *
 	 * @param options
-	 * @returns {Promise<T>}
+	 * @returns {Bluebird<T>}
 	 */
-	makeEpub<T = Buffer | Blob>(options?): Promise<T | any | Buffer | Blob>
+	makeEpub<T = Buffer | Blob>(options?): BPromise<T | any | Buffer | Blob>
 	{
 		let self = this;
 
@@ -483,7 +486,7 @@ export namespace EpubMaker
 
 	// epubtypes and descriptions, useful for vendors implementing a GUI
 	// @ts-ignore
-	export const epubtypes = require('./epub-types.js');
+	export const epubtypes = libEpubtypes;
 
 	// @ts-ignore
 	export let libSlugify = _slugify as ISlugify;
@@ -497,7 +500,7 @@ export namespace EpubMaker
 	{
 		public _EpubMaker_: EpubMaker;
 
-		public epubType;
+		public epubType: string | EnumEpubTypeName;
 		public id;
 		public content: ISectionContent;
 		public includeInToc: boolean;
@@ -509,7 +512,7 @@ export namespace EpubMaker
 		public parentSection: Section;
 		public parentEpubMaker: EpubMaker;
 
-		constructor(epubType, id, content, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv)
+		constructor(epubType: string | EnumEpubTypeName, id, content, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv)
 		{
 			this.epubType = epubType;
 			this.id = id;
@@ -573,7 +576,7 @@ export namespace EpubMaker
 			return this;
 		}
 
-		get epubTypeGroup()
+		get epubTypeGroup(): string | EnumEpubType
 		{
 			return epubtypes.getGroup(this.epubType);
 		}
@@ -588,7 +591,7 @@ export namespace EpubMaker
 			return (this._EpubMaker_ ? this._EpubMaker_.lang : null) || null;
 		}
 
-		static create(epubType, id, content, includeInToc: boolean, includeInLandmarks: boolean, ...argv)
+		static create(epubType: string | EnumEpubTypeName, id, content, includeInToc: boolean, includeInLandmarks: boolean, ...argv)
 		{
 			return new this(epubType, id, content, includeInToc, includeInLandmarks, ...argv);
 		}
@@ -611,15 +614,15 @@ export namespace EpubMaker
 
 		collectToc()
 		{
-			return this.collectSections(this, 'includeInToc');
+			return this.collectSections(this, EnumSectionCollectType.INCLUDE_IN_TOC);
 		}
 
 		collectLandmarks()
 		{
-			return this.collectSections(this, 'includeInLandmarks');
+			return this.collectSections(this, EnumSectionCollectType.INCLUDE_IN_LANDMARKS);
 		}
 
-		collectSections(section: Section, prop: string): Section[]
+		collectSections(section: Section, prop: string | EnumSectionCollectType): Section[]
 		{
 			let sections = section[prop] ? [section] : [];
 			for (let i = 0; i < section.subSections.length; i++)

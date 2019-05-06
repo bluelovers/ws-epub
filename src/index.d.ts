@@ -1,8 +1,13 @@
 /// <reference types="bluebird" />
 /// <reference types="node" />
-import { EpubConfig, IEpubConfig, ICover, IRightsConfig, ICollection, EnumEpubConfigVertical } from './config';
+import { EnumEpubConfigVertical, EpubConfig, ICollection, ICover, IEpubConfig, IRightsConfig } from './config';
+import { BPromise, hashSum, shortid } from './lib/util';
+import { EnumEpubType, EnumEpubTypeName } from './epub-types';
+import { EnumSectionCollectType } from './var';
+export { EnumEpubType, EnumEpubTypeName };
+export { EnumSectionCollectType };
+import libEpubtypes = require('./epub-types');
 import JSZip = require('jszip');
-import { shortid, hashSum, BPromise } from './lib/util';
 export { shortid, hashSum };
 export declare function slugify(input: string, ...argv: any[]): string;
 export declare function slugifyWithFallback(input: string, ...argv: any[]): string;
@@ -52,9 +57,9 @@ export declare class EpubMaker {
      * for node.js
      *
      * @param options
-     * @returns {Promise<T>}
+     * @returns {Bluebird<T>}
      */
-    makeEpub<T = Buffer | Blob>(options?: any): Promise<T | any | Buffer | Blob>;
+    makeEpub<T = Buffer | Blob>(options?: any): BPromise<T | any | Buffer | Blob>;
 }
 export interface ISectionConfig {
     lang?: string;
@@ -74,7 +79,7 @@ export interface ISlugify {
 export declare namespace EpubMaker {
     let defaultExt: string;
     let dateFormat: string;
-    const epubtypes: any;
+    const epubtypes: typeof libEpubtypes;
     let libSlugify: ISlugify;
     /**
      * @epubType Optional. Allows you to add specific epub type content such as [epub:type="titlepage"]
@@ -83,7 +88,7 @@ export declare namespace EpubMaker {
      */
     class Section {
         _EpubMaker_: EpubMaker;
-        epubType: any;
+        epubType: string | EnumEpubTypeName;
         id: any;
         content: ISectionContent;
         includeInToc: boolean;
@@ -92,7 +97,7 @@ export declare namespace EpubMaker {
         sectionConfig: ISectionConfig;
         parentSection: Section;
         parentEpubMaker: EpubMaker;
-        constructor(epubType: any, id: any, content: any, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv: any[]);
+        constructor(epubType: string | EnumEpubTypeName, id: any, content: any, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv: any[]);
         /**
          *
          * @param {ISectionContent|string} content
@@ -100,10 +105,10 @@ export declare namespace EpubMaker {
          * @returns {this}
          */
         setContent(content: ISectionContent, allow_null?: boolean): this;
-        readonly epubTypeGroup: any;
+        readonly epubTypeGroup: string | EnumEpubType;
         readonly lang: string;
         readonly langMain: string;
-        static create(epubType: any, id: any, content: any, includeInToc: boolean, includeInLandmarks: boolean, ...argv: any[]): Section;
+        static create(epubType: string | EnumEpubTypeName, id: any, content: any, includeInToc: boolean, includeInLandmarks: boolean, ...argv: any[]): Section;
         /**
          * 用來檢查 Section 是否已經加入
          */
@@ -111,7 +116,7 @@ export declare namespace EpubMaker {
         withSubSection(subsection: Section): this;
         collectToc(): Section[];
         collectLandmarks(): Section[];
-        collectSections(section: Section, prop: string): Section[];
+        collectSections(section: Section, prop: string | EnumSectionCollectType): Section[];
     }
 }
 export default EpubMaker;

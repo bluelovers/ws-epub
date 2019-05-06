@@ -10,11 +10,19 @@ const imagemin = require("imagemin");
 const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminOptipng = require("imagemin-optipng");
+const Bluebird = require("bluebird");
+/**
+ * 處理附加檔案 本地檔案 > url
+ */
 async function fetchFile(file, ...argv) {
     let _file;
     let err;
     if (file.data) {
         _file = file.data;
+    }
+    let is_from_url;
+    if (!_file && file.file) {
+        _file = await fs.readFile(file.file);
     }
     if (!_file && file.url) {
         _file = await fetch(file.url, ...argv)
@@ -44,26 +52,37 @@ async function fetchFile(file, ...argv) {
             // @ts-ignore
             return ret.buffer();
         })
+            .then(buf => {
+            if (buf) {
+                is_from_url = true;
+            }
+            return buf;
+        })
             .catch(function (e) {
+            is_from_url = false;
             err = e;
+            return null;
         });
-    }
-    if (!_file && file.file) {
-        _file = await fs.readFile(file.file);
     }
     if (_file) {
         /**
          * 如果此部分發生錯誤則自動忽略
          */
-        await Promise
+        await Bluebird
             .resolve()
             .then(function () {
+            /**
+             * 只壓縮從網路抓取的 PNG 圖片
+             */
+            let pngOptions = {
+                quality: is_from_url ? [0.65, 0.8] : undefined,
+            };
             return imagemin.buffer(_file, {
                 plugins: [
                     imageminOptipng(),
                     imageminJpegtran(),
                     // @ts-ignore
-                    imageminPngquant({ quality: '65-80' })
+                    imageminPngquant(pngOptions)
                 ]
             });
         })
@@ -73,7 +92,7 @@ async function fetchFile(file, ...argv) {
             }
         })
             .catch(function (e) {
-            console.error('[ERROR] imagemin 發生不明錯誤，本次將忽略此錯誤', e.toString().replace(/^\s+|\s+$/, ''));
+            console.error('[ERROR] imagemin 發生錯誤，本次將忽略處理此檔案', e.toString().replace(/^\s+|\s+$/, ''), file);
             //console.error(e);
         });
     }

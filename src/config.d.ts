@@ -164,7 +164,7 @@ export declare class EpubConfig implements IEpubConfig {
     $auto(): this;
     entries(auto?: boolean): IEpubConfig;
     toJSON(auto?: boolean, replacer?: any, space?: string): string;
-    toArray(auto?: boolean): any;
+    toArray(auto?: boolean): [string, any][];
 }
 export declare namespace EpubConfig {
     let dateFormat: string;

@@ -20,3 +20,9 @@ export interface IBuilderCallback<T, U> extends Function
 }
 
 export default exports as typeof import('./var');
+
+export const enum EnumSectionCollectType
+{
+	INCLUDE_IN_TOC = 'includeInToc',
+	INCLUDE_IN_LANDMARKS = 'includeInLandmarks',
+}

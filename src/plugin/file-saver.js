@@ -12,7 +12,7 @@ exports.EpubMaker = __1.EpubMaker;
  *
  * @param callback
  * @param options
- * @returns {Promise<Blob>}
+ * @returns {Bluebird<Blob>}
  */
 // @ts-ignore
 __1.EpubMaker.prototype.downloadEpub = function downloadEpub(callback, options) {

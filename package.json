@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.4.9",
+  "version": "2.4.10",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -49,7 +49,7 @@
     "autoprefixer": "^9.5.1",
     "bluebird": "^3.5.4",
     "debug-color2": "^1.0.7",
-    "file-type": "^10.11.0",
+    "file-type": "^11.0.0",
     "fs-iconv": "^2",
     "handlebars": "^4.1.2",
     "hash-sum": "^1.0.2",
@@ -59,11 +59,11 @@
     "imagemin-optipng": "^6.0.0",
     "imagemin-pngquant": "^7.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "js-beautify": "^1.9.1",
+    "js-beautify": "^1.10.0",
     "jszip": "^3.2.1",
     "moment": "^2.24.0",
     "node-novel-info": "^2.3.33",
-    "postcss": "^7.0.14",
+    "postcss": "^7.0.16",
     "postcss-epub": "^3.0.1",
     "postcss-scss": "^2.0.0",
     "postcss-strip-inline-comments": "^0.1.5",
@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.3",
-    "@types/node": "^11"
+    "@types/node": "^12"
   },
   "peerDependencies": {},
   "optionalDependencies": {},

@@ -1,7 +1,7 @@
 
-import * as fs from 'fs-extra';
+import fs = require('fs-extra');
 import fetch = require('isomorphic-fetch');
-import * as path from "path";
+import path = require("path");
 import { IFiles } from '../config';
 import fileType = require('file-type');
 import { hashSum } from '../lib/util';
@@ -9,9 +9,13 @@ import imagemin = require('imagemin');
 import imageminJpegtran = require('imagemin-jpegtran');
 import imageminPngquant = require('imagemin-pngquant');
 import imageminOptipng = require('imagemin-optipng');
+import Bluebird = require('bluebird');
 
 export { fetch }
 
+/**
+ * 處理附加檔案 本地檔案 > url
+ */
 export async function fetchFile(file: IFiles, ...argv)
 {
 	let _file;
@@ -22,12 +26,18 @@ export async function fetchFile(file: IFiles, ...argv)
 		_file = file.data;
 	}
 
+	let is_from_url: boolean;
+
+	if (!_file && file.file)
+	{
+		_file = await fs.readFile(file.file);
+	}
+
 	if (!_file && file.url)
 	{
 		_file = await fetch(file.url, ...argv)
 			.then(function (ret)
 			{
-
 				//console.log(file.name, ret.type, ret.headers);
 
 				if (!file.mime)
@@ -67,17 +77,24 @@ export async function fetchFile(file: IFiles, ...argv)
 				// @ts-ignore
 				return ret.buffer()
 			})
+			.then(buf => {
+
+				if (buf)
+				{
+					is_from_url = true;
+				}
+
+				return buf;
+			})
 			.catch(function (e)
 			{
+				is_from_url = false;
+
 				err = e;
+
+				return null;
 			})
-
 		;
-	}
-
-	if (!_file && file.file)
-	{
-		_file = await fs.readFile(file.file);
 	}
 
 	if (_file)
@@ -85,16 +102,23 @@ export async function fetchFile(file: IFiles, ...argv)
 		/**
 		 * 如果此部分發生錯誤則自動忽略
 		 */
-		await Promise
+		await Bluebird
 			.resolve()
 			.then(function ()
 			{
+				/**
+				 * 只壓縮從網路抓取的 PNG 圖片
+				 */
+				let pngOptions: imageminPngquant.Options = {
+					quality: is_from_url ? [0.65, 0.8] : undefined,
+				};
+
 				return imagemin.buffer(_file, {
 					plugins: [
 						imageminOptipng(),
 						imageminJpegtran(),
 						// @ts-ignore
-						imageminPngquant({quality: '65-80'})
+						imageminPngquant(pngOptions)
 					]
 				})
 			})
@@ -107,7 +131,7 @@ export async function fetchFile(file: IFiles, ...argv)
 			})
 			.catch(function (e)
 			{
-				console.error('[ERROR] imagemin 發生不明錯誤，本次將忽略此錯誤', e.toString().replace(/^\s+|\s+$/, ''));
+				console.error('[ERROR] imagemin 發生錯誤，本次將忽略處理此檔案', e.toString().replace(/^\s+|\s+$/, ''), file);
 				//console.error(e);
 			})
 		;
