@@ -158,7 +158,9 @@ Promise.mapSeries([
 //
 //	'虫虫酱むいむいたん',
 
-	'你這種傢伙別想打贏魔王',
+//	'你這種傢伙別想打贏魔王',
+
+	'誰にでもできる影から助ける魔王討伐',
 
 ] as string[], makeEpub);
 
@@ -169,7 +171,7 @@ async function makeEpub(novelID: string)
 	 * @type {string}
 	 */
 	let TXT_PATH = path.join(__dirname, 'res', novelID);
-	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\user_out', novelID);
+	TXT_PATH = path.join('C:/Home/link/dist_novel/user_out/', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\dmzj_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\wenku8_out', novelID);
 //TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\webqxs_out', novelID);
@@ -190,7 +192,7 @@ async function makeEpub(novelID: string)
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
 
-	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\girl_out', novelID);
+//	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\girl_out', novelID);
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 

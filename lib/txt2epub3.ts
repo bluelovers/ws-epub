@@ -4,34 +4,35 @@
 
 import { ISectionContent } from 'epub-maker2/src/index';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
-import fs = require('fs-iconv');
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
-import Promise = require('bluebird');
-import path = require('upath2');
-import StrUtil = require('str-util');
-import moment = require('moment');
-import novelGlobby = require('node-novel-globby');
-import { mdconf_parse, IMdconfMeta, chkInfo, getNovelTitleFromMeta } from 'node-novel-info';
-import { splitTxt } from './util';
+import { array_unique, chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
+import { fsLowCheckLevelMdconfAsync, splitTxt, console } from './util';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
-import deepmerge = require('deepmerge-plus');
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import { NodeNovelInfo } from 'node-novel-info/class';
+import { sortTree } from 'node-novel-globby/lib/glob-sort';
+import { eachVolumeTitle, foreachArrayDeepAsync, IArrayDeepInterface, IReturnRow } from 'node-novel-globby';
+import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
+import {
+	_handleVolume,
+	_handleVolumeImage,
+	_handleVolumeImageEach,
+	IEpubRuntimeReturn,
+	makeChapterID,
+	makeVolumeID,
+	SymCache,
+} from './epub';
+import fs = require('fs-iconv');
+import Bluebird = require('bluebird');
+import path = require('upath2');
+import moment = require('moment');
+import novelGlobby = require('node-novel-globby/g');
+import deepmerge = require('deepmerge-plus');
 
-export const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
-
-console.enabledColor = true;
+export { console }
 
 export interface IOptions
 {
@@ -78,9 +79,9 @@ export const defaultOptions: Partial<IOptions> = Object.freeze({
 	},
 });
 
-export function getNovelConf(options: IOptions, cache = {}): Promise<IMdconfMeta>
+export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMeta>
 {
-	return Promise.resolve().then(async function ()
+	return Bluebird.resolve().then(async function ()
 	{
 		let meta: IMdconfMeta;
 		let confPath: string;
@@ -161,9 +162,9 @@ export interface INovelEpubReturnInfo
 	},
 }
 
-export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnInfo>
+export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturnInfo>
 {
-	return Promise.resolve().then(async function ()
+	return Bluebird.resolve().then(async function ()
 	{
 		//console.log(options, defaultOptions);
 
@@ -189,7 +190,7 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 		});
 
 		{
-			[globby_patterns, globby_options] = novelGlobby.getOptions(globby_options);
+			[globby_patterns, globby_options] = novelGlobby.getOptions2(globby_options);
 		}
 
 		//console.log(options, globby_options);
@@ -282,385 +283,307 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 		//process.exit();
 
-		let stat: INovelEpubReturnInfo["stat"] = {
-			volume: 0,
-			chapter: 0,
-			image: 0,
-		};
-
-		await novelGlobby
+		const processReturn = await novelGlobby
 			.globbyASync(globby_patterns, globby_options)
+			.tap(function (ls)
+			{
+				return ls;
+			})
 			.then(function (ls)
 			{
-				//console.log(ls);
+				return sortTree(ls, null, globby_options)
+			})
+			.then(function (ls)
+			{
+				//console.dir(ls);
 
-				//process.exit();
+				return novelGlobby.globToListArrayDeep(ls, globby_options)
+			})
+			.tap(function (ls)
+			{
+				/*
+				console.dir(ls, {
+					depth: null,
+					colors: true,
+				});
+				process.exit();
+			 */
 
 				return ls;
 			})
 			.then(_ls =>
 			{
-				let idx = 1;
+				//let idx = 1;
 
-				let cacheTreeSection = {} as {
-					[k: string]: EpubMaker.Section,
-				};
+				//let cacheTreeSection = {} as Record<string, EpubMaker.Section>;
 
-				const SymCache = Symbol('cache');
+				//const SymCache = Symbol('cache');
 
-				let _new_top_level: EpubMaker.Section;
-				let _old_top_level: EpubMaker.Section;
+				//let _new_top_level: EpubMaker.Section;
+				//let _old_top_level: EpubMaker.Section;
 
-				return Promise
-					.mapSeries(Object.keys(_ls), async function (val_dir)
-					{
-						let ls = _ls[val_dir];
-						let dirname = ls[0].path_dir;
-						let volume_title = ls[0].volume_title;
+				return foreachArrayDeepAsync(_ls as IArrayDeepInterface<IReturnRow>, async ({
+					value,
+					index,
+					array,
+					cache,
+				}) =>
+				{
+					const { volume_title, chapter_title } = value;
+					const { temp, data } = cache;
+					const { stat } = data;
 
-						let volume = cacheTreeSection[val_dir];
+					const { cacheTreeSection } = temp;
 
-						if (!cacheTreeSection[val_dir])
+					let vs_ret = eachVolumeTitle(volume_title, true);
+
+					const dirname = value.path_dir;
+
+					let _ds = (path.normalize(dirname) as string).split('/');
+
+					const volume: EpubMaker.Section = await Bluebird
+						.resolve(vs_ret.titles_full)
+						.reduce(async function (vp: EpubMaker.Section, key, index)
 						{
-							let _ts2 = volume_title.split('/');
-							let _ts = val_dir.split('/');
+							let title = vs_ret.titles[index];
 
-							let _ds = (path.normalize(dirname) as string).split('/');
+							key += '.dir';
 
-							let _last: EpubMaker.Section;
-
-							for (let i = 0; i < _ts.length; i++)
+							if (
+								0
+								&& temp.prev_volume_dir
+								&& temp.prev_volume_dir != dirname
+								&& (
+									dirname.length < temp.prev_volume_dir.length
+									//|| temp.prev_volume_dir.indexOf(dirname) == -1
+								)
+							)
 							{
-								let _navs = _ts.slice(0, i + 1);
-								let _nav = _navs.join('/');
-
-								let _nav_dir = _ds.slice(0, _ds.length - _ts.length + i + 1).join('/');
-
-								/*
-								console.dir({
-									i,
-									_navs,
-									_nav,
-									_nav_dir,
-									len: _ts.length,
-								});
-								*/
-
-								if (i < (_ts.length - 1))
-								{
-									_nav += '.dir';
-								}
-
-								if (!cacheTreeSection[_nav])
-								{
-									let vid = `volume${(idx++).toString().padStart(6, '0')}`;
-
-									let title = normalize_strip(_ts2[i], true);
-
-									cacheTreeSection[_nav] = new EpubMaker.Section('auto-toc', vid, {
-										title: title,
-									}, false, true);
-
-									cacheTreeSection[_nav][SymCache] = cacheTreeSection[_nav][SymCache] || {};
-
-									if (i == 0)
+								await _handleVolumeImage(temp.prev_volume, temp.prev_volume_row.dirname, {
+									epub,
+									processReturn: cache,
+								})
+									.tap(ls =>
 									{
-										//epub.withSection(cacheTreeSection[_nav]);
 
-										_old_top_level = _new_top_level;
-										_new_top_level = cacheTreeSection[_nav];
-									}
+										console.log(ls);
 
-									stat.volume++;
-
-									//console.log(_nav, cacheTreeSection[_nav].content.title);
-
-									await _handleVolume(cacheTreeSection[_nav], _nav_dir)
-								}
-
-								if (_last && !_last.hasSubSection(cacheTreeSection[_nav]))
-								{
-									_last.withSubSection(cacheTreeSection[_nav])
-								}
-
-								_last = cacheTreeSection[_nav];
-							}
-
-							volume = cacheTreeSection[val_dir];
-
-//							console.dir({
-//								cacheTreeSection,
-//								volume,
-//							}, {
-//								depth: 5,
-//								colors: true,
-//							});
-//							process.exit()
-						}
-
-						let vid: string = volume.id;
-
-						await _handleVolume(volume, dirname);
-
-						async function _handleVolume(volume: EpubMaker.Section, dirname: string)
-						{
-							let vid: string = volume.id;
-
-							if (!volume[SymCache].cover)
-							{
-								volume[SymCache].cover = true;
-
-								let file = path.join(dirname, 'README.md');
-								let meta = await fs.readFile(file)
-									.then(function (data)
-									{
-										return mdconf_parse(data, {
-											// 當沒有包含必要的內容時不產生錯誤
-											throw: false,
-											// 允許不標準的 info 內容
-											lowCheckLevel: true,
-										});
-									})
-									.catch(function ()
-									{
-										return null;
-									})
-								;
-
-								//console.log(file, meta);
-
-								await novelGlobby.globby([
-										'cover.*',
-									], {
-										cwd: dirname,
-										absolute: true,
-									})
-									.then(async (ls) =>
-									{
 										if (ls.length)
 										{
-											let ext = path.extname(ls[0]);
-											let name = `${vid}-cover${ext}`;
+											console.log({
 
-											epub.withAdditionalFile(ls[0], null, name);
+												prev_volume_dir: temp.prev_volume_dir,
+												dirname,
 
-											return name;
-										}
-										else if (fs.existsSync(file))
-										{
-											if (meta && meta.novel)
-											{
-												if (meta.novel.cover)
-												{
-													let ext = '.png';
-													let basename = `${vid}-cover`;
-													let name = `${basename}${ext}`;
-
-													let data = typeof meta.novel.cover === 'string' ? {
-														url: meta.novel.cover,
-													} : meta.novel.cover;
-
-													data.ext = null;
-													data.basename = basename;
-
-													epub.withAdditionalFile(data, null, name);
-
-													return name;
-												}
-											}
+												len: dirname.length < temp.prev_volume_dir.length,
+												indexOf: temp.prev_volume_dir.indexOf(dirname),
+											});
 										}
 									})
-									.then(function (name)
-									{
-										let _ok = false;
-										let data: ISectionContent = {};
-
-										if (name)
-										{
-											_ok = true;
-											data.cover = {
-												name,
-											};
-
-											stat.image += 1;
-										}
-
-										if (meta && meta.novel)
-										{
-											if (meta.novel.preface)
-											{
-												_ok = true;
-												//data.content = crlf(meta.novel.preface);
-
-												data.content = htmlPreface({
-													infoPreface: meta.novel.preface,
-												}).infoPrefaceHTML;
-											}
-										}
-
-										//console.log(name, _ok);
-
-										if (_ok)
-										{
-											return data
-										}
-
-										return null
-									})
-									.then(function (data)
-									{
-										if (data)
-										{
-											//console.log(volume);
-
-											volume.setContent(data, true);
-										}
-									})
-								;
-							}
-						}
-
-						//console.log(dirname, volume.id);
-
-						//volume.withSubSection(new EpubMaker.Section('auto-toc', null, null, false, false));
-
-						await Promise.mapSeries(ls, async function (row)
-						{
-							//console.log(filename);
-
-							//let data = await fs.readFile(path.join(TXT_PATH, dirname, filename));
-							let data: string | Buffer = await fs.readFile(row.path);
-
-							//console.log(data);
-
-							if (row.ext == '.txt')
-							{
-								data = splitTxt(data.toString());
 							}
 
-							if (Buffer.isBuffer(data))
+							let vc: EpubMaker.Section;
+
+							if (temp.cache_vol[key] == null)
 							{
-								data = data.toString();
-							}
+								let _nav_dir = _ds.slice(0, _ds.length - vs_ret.level + index + 1).join('/');
 
-							let name = row.chapter_title;
+								//data.toc.push('- '.repeat(index + 1) + title);
 
-							if (!options.noLog)
-							{
-								let {
-									source_idx,
-									volume_title,
-									chapter_title,
-									dir,
-									file,
-								} = row;
-
-								console.dir({
-									source_idx,
-									volume_title,
-									chapter_title,
-									dir,
-									file,
+								/*
+								console.log({
+									key,
+									_nav_dir,
 								});
+								 */
+
+								temp.count_d++;
+								stat.volume++;
+
+								temp.cache_vol[key] = (temp.cache_vol[key] | 0);
+
+								let vid = makeVolumeID(temp.count_idx++);
+
+								vc = cacheTreeSection[key] = new EpubMaker.Section('auto-toc', vid, {
+									title: title,
+								}, false, true);
+
+								vc[SymCache] = vc[SymCache] || {};
+
+								await _handleVolume(vc, _nav_dir, {
+									epub,
+									processReturn: cache,
+								});
+
+								if (index == 0)
+								{
+									if (temp._old_top_level)
+									{
+										await _handleVolumeImageEach(temp.cache_top_subs[temp._old_top_level.id], {
+											epub,
+											processReturn: cache,
+										});
+
+										if (!epub.hasSection(temp._old_top_level))
+										{
+											epub.withSection(temp._old_top_level);
+										}
+									}
+
+									temp._old_top_level = temp._new_top_level;
+									temp._new_top_level = vc;
+
+									temp.cache_top_subs[vc.id] = temp.cache_top_subs[vc.id] || [];
+
+									temp.cache_top_subs[vc.id].push({
+										vol_key: key,
+										dirname: _nav_dir,
+									});
+								}
 							}
 
-							let chapter = new EpubMaker.Section('chapter', `chapter${(idx++).toString()
-								.padStart(4, '0')}`, {
-								title: name,
-								content: crlf(data),
-							}, true, false);
+							vc = cacheTreeSection[key];
 
-							stat.chapter++;
+							if (vp && !vp.hasSubSection(vc))
+							{
+								vp.withSubSection(vc);
+							}
 
-							volume.withSubSection(chapter);
+							return vc
+						}, null)
+					;
+
+					const row = value;
+
+					let name = value.chapter_title;
+
+					let txt = await fs.loadFile(value.path, {
+							autoDecode: true,
+						})
+						.then(function (data)
+						{
+							let txt = crlf(data.toString());
+
+							if (value.ext == '.txt')
+							{
+								return splitTxt(txt);
+							}
+
+							return txt;
+						})
+					;
+
+					if (!options.noLog)
+					{
+						let {
+							source_idx,
+							volume_title,
+							chapter_title,
+							dir,
+							file,
+						} = row;
+
+						console.dir({
+							source_idx,
+							volume_title,
+							chapter_title,
+							dir,
+							file,
+						});
+					}
+
+					let chapter = new EpubMaker.Section(EnumEpubTypeName.CHAPTER, makeChapterID(temp.count_idx++), {
+						title: name,
+						content: txt,
+					}, true, false);
+
+					stat.chapter++;
+
+					volume.withSubSection(chapter);
+
+					let vi = vs_ret.level - 1;
+
+					let vol_key = vs_ret.titles_full[vi];
+
+					temp.cache_vol[vol_key]++;
+					temp.prev_volume_title = volume_title;
+					temp.prev_volume_dir = dirname;
+					temp.prev_volume = volume;
+
+					temp.prev_volume_row = {
+						vol_key: vol_key + '.dir',
+						dirname,
+						value,
+					};
+
+					temp.cache_volume_row.push(temp.prev_volume_row);
+
+					return volume;
+
+				}, <IEpubRuntimeReturn>{
+
+					data: {
+						stat: {
+							volume: 0,
+							chapter: 0,
+							image: 0,
+						},
+					},
+
+					temp: {
+						cache_vol: {},
+
+						prev_volume_title: null,
+						prev_volume_dir: null,
+
+						prev_volume: null,
+
+						prev_volume_row: null,
+
+						cache_top_subs: {},
+
+						cache_volume_row: [],
+
+						count_idx: 0,
+						count_f: 0,
+						count_d: 0,
+
+						cacheTreeSection: {},
+					},
+				})
+					.tap(async (processReturn: IEpubRuntimeReturn) =>
+					{
+						const { temp } = processReturn;
+
+						await _handleVolumeImageEach(temp.cache_volume_row, {
+							epub,
+							processReturn,
 						});
 
-						if (!volume[SymCache].image)
+						if (temp._old_top_level && !epub.hasSection(temp._old_top_level))
 						{
-							volume[SymCache].image = true;
-
-							await novelGlobby.globby([
-									'*.{jpg,gif,png,jpeg,svg}',
-									'image/*.{jpg,gif,png,jpeg,svg}',
-									'images/*.{jpg,gif,png,jpeg,svg}',
-									'!cover.*',
-									'!*.txt',
-								], {
-									cwd: dirname,
-									absolute: true,
-								})
-								.then(ls =>
-								{
-									let arr = [];
-
-									for (let i in ls)
-									{
-										let img = ls[i];
-
-										let ext = path.extname(img);
-
-										let basename = path.basename(img, ext);
-
-										// @ts-ignore
-										let name = slugify(basename);
-
-										if (!name || arr.includes(name))
-										{
-											name = hashSum([img, i, name]);
-										}
-
-										//name = `${vid}/${i}-` + name + ext;
-										name = `${vid}/` + name + ext;
-
-										arr.push('image/' + name);
-
-										epub.withAdditionalFile(img, 'image', name);
-									}
-
-									if (arr.length)
-									{
-										if (volume.content && volume.content.cover && volume.content.cover.name)
-										{
-											arr.unshift(volume.content.cover.name);
-										}
-
-										let chapter = new EpubMaker.Section('non-specific backmatter', `image${(idx++).toString()
-											.padStart(4, '0')}`, {
-											title: '插圖',
-											content: arr.reduce(function (a, b)
-											{
-												let html = `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${b}" alt="Cover" /></figure>`;
-
-												a.push(html);
-
-												return a;
-											}, []).join("\n"),
-										}, true, false);
-
-										stat.image += arr.length;
-
-										volume.withSubSection(chapter);
-									}
-								})
-							;
-
+							epub.withSection(temp._old_top_level);
 						}
 
-						//epub.withSection(volume);
-
-						if (_old_top_level && _old_top_level != _new_top_level && !epub.hasSection(_old_top_level))
+						if (temp._new_top_level && !epub.hasSection(temp._new_top_level))
 						{
-							epub.withSection(_old_top_level);
+							epub.withSection(temp._new_top_level);
 						}
 
-						return volume;
-					})
-					.tap(function ()
-					{
-						if (_new_top_level && !epub.hasSection(_new_top_level))
-						{
-							epub.withSection(_new_top_level);
-						}
+						/*
+
+						console.dir(ret.data, {
+							depth: null,
+							colors: true,
+						});
+						console.dir(ret.temp, {
+							depth: null,
+							colors: true,
+						});
+
+						 */
+
+						//process.exit();
 					})
 					;
 			})
@@ -678,7 +601,9 @@ export function create(options: IOptions, cache = {}): Promise<INovelEpubReturnI
 
 		await fs.outputFile(file, data);
 
-		console.success(filename, now.format());
+		const stat = processReturn.data.stat;
+
+		console.success(filename, now.format(), stat);
 
 		return {
 			file,
