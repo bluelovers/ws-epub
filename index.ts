@@ -24,25 +24,24 @@ import {
 	IForeachArrayDeepCache,
 	IForeachArrayDeepReturn,
 } from 'node-novel-globby/lib/util';
+import {
+	EnumTxtStyle,
+	TPL_CHAPTER_START,
+	TPL_EOL,
+	TPL_EOL2,
+	TPL_HR1,
+	TPL_HR2,
+	TPL_HR_LEN,
+	TPL_VOLUME_START,
+} from './lib/tpl';
+import { console, makeDefaultTplData, replaceTpl } from './lib/index';
 
-const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
+const hr_len = TPL_HR_LEN;
+const eol = TPL_EOL;
+const eol2 = TPL_EOL2;
 
-console.enabledColor = true;
-
-const hr_len = 15;
-const eol = CRLF;
-const eol2 = eol.repeat(2);
-
-const hr1 = '＝'.repeat(hr_len);
-const hr2 = '－'.repeat(hr_len);
+const hr1 = TPL_HR1;
+const hr2 = TPL_HR2;
 
 export type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
 	toc: string[],
@@ -60,6 +59,56 @@ export type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
 
 }>
 
+export interface ITxtMergeOptions
+{
+	inputPath: string,
+	outputPath: string,
+	outputFilename?: string,
+	noSave?: boolean,
+	/**
+	 * 檔案開頭
+	 */
+	tplBannerStart?: string,
+	/**
+	 * 章 風格
+	*/
+	tplVolumeStart?: string,
+	/**
+	 * 話 風格
+	 */
+	tplChapterStart?: string,
+
+	/**
+	 * 分隔線 章 開始
+	 */
+	hr01?: string;
+	/**
+	 * 分隔線 章
+	 */
+	hr02?: string;
+
+	/**
+	 * 分隔線 話 開始
+	 */
+	hr11?: string;
+	/**
+	 * 分隔線 話 內文
+	 */
+	hr12?: string;
+	/**
+	 * 分隔線 話 結束
+	 */
+	hr13?: string;
+
+	/**
+	 * 預設風格
+	 */
+	txtStyle?: EnumTxtStyle,
+
+	inputConfigPath?: string,
+
+}
+
 /**
  *
  * @param inputPath 輸入路徑
@@ -67,20 +116,96 @@ export type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
  * @param outputFilename 參考用檔案名稱
  * @param noSave 不儲存檔案僅回傳 txt 內容
  */
+export function txtMerge(inputOptions?: Partial<ITxtMergeOptions>,
+): BluebirdPromise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
+export function txtMerge(inputPath: string,
+	inputOptions?: Partial<ITxtMergeOptions>,
+): BluebirdPromise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
+export function txtMerge(inputPath: string,
+	outputPath: string,
+	inputOptions?: Partial<ITxtMergeOptions>,
+): BluebirdPromise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
+export function txtMerge(inputPath: string,
+	outputPath: string,
+	outputFilename?: string,
+	inputOptions?: Partial<ITxtMergeOptions>,
+): BluebirdPromise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
 export function txtMerge(inputPath: string,
 	outputPath: string,
 	outputFilename?: string,
 	noSave?: boolean,
+	inputOptions?: Partial<ITxtMergeOptions>,
+): BluebirdPromise<{
+	filename: string,
+	fullpath: string,
+	data: string,
+}>
+export function txtMerge(inputPath: string | Partial<ITxtMergeOptions>,
+	outputPath?: string | Partial<ITxtMergeOptions>,
+	outputFilename?: string | Partial<ITxtMergeOptions>,
+	noSave?: boolean | Partial<ITxtMergeOptions>,
+	inputOptions?: Partial<ITxtMergeOptions>,
 ): BluebirdPromise<{
 	filename: string,
 	fullpath: string,
 	data: string,
 }>
 {
+	if (typeof inputPath === 'object')
+	{
+		inputOptions = inputPath;
+
+		({inputPath, outputPath, outputFilename, noSave} = inputOptions);
+	}
+	else if (outputPath != null && typeof outputPath === 'object')
+	{
+		inputOptions = outputPath;
+
+		({outputPath, outputFilename, noSave} = inputOptions);
+	}
+	else if (outputFilename != null && typeof outputFilename === 'object')
+	{
+		inputOptions = outputFilename;
+
+		({outputFilename, noSave} = inputOptions);
+	}
+	else if (noSave != null && typeof noSave === 'object')
+	{
+		inputOptions = noSave;
+
+		({noSave} = inputOptions);
+	}
+
+	let _o = makeDefaultTplData(inputOptions, {
+		inputPath,
+		outputPath,
+		outputFilename,
+		noSave,
+	});
+
+	inputOptions = _o.inputOptions;
+	let tplBaseData = _o.tplBaseData;
+
 	return BluebirdPromise.resolve().then(async function ()
 	{
-		const TXT_PATH: string = inputPath;
-		const PATH_CWD: string = outputPath;
+		const TXT_PATH: string = inputOptions.inputPath;
+		const PATH_CWD: string = inputOptions.outputPath;
 		const outputDirPathPrefix = 'out';
 
 		if (!inputPath || !outputPath || typeof inputPath != 'string' || typeof outputPath != 'string')
@@ -202,20 +327,39 @@ export function txtMerge(inputPath: string,
 
 					if (temp.prev_volume_title != volume_title)
 					{
-						let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${vol_key}${eol}`;
+						//let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}章：${vol_key}${eol}`;
 
-						data.context.push(`${hr1}CHECK${eol}${_vol_prefix}${vs_ret.titles[vi]}${eol}${hr1}${eol}`)
+						//data.context.push(`${hr1}CHECK${eol}${_vol_prefix}${vs_ret.titles[vi]}${eol}${hr1}${eol}`);
+
+						let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}章：${vol_key}`;
+
+						let s = replaceTpl(inputOptions.tplVolumeStart, {
+							...tplBaseData,
+							prefix: _vol_prefix,
+							title: vs_ret.titles[vi],
+						});
+
+						data.context.push(`${inputOptions.hr01}${eol}${s}${eol}${inputOptions.hr02}${eol}`);
 					}
 
 					data.toc.push('- '.repeat(vs_ret.level + 1) + chapter_title);
 
-					let _prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${chapter_title}${eol}`;
+					//let _prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${chapter_title}${eol}`;
+					let _prefix = `第${String(++temp.count_idx).padStart(5, '0')}話：${chapter_title}`;
 
 					let txt = await fs.readFile(value.path);
 
 					temp.count_f++;
 
-					data.context.push(`${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${txt}${eol2}${hr2}END${eol2}`);
+					//data.context.push(`${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${txt}${eol2}${hr2}END${eol2}`);
+
+					let s = replaceTpl(inputOptions.tplVolumeStart, {
+						...tplBaseData,
+						prefix: _prefix,
+						title: chapter_title,
+					});
+
+					data.context.push(`${inputOptions.hr11}${eol}${s}${eol}${inputOptions.hr12}${eol2}${txt}${eol2}${inputOptions.hr13}${eol2}`);
 
 					temp.prev_volume_title = volume_title;
 
@@ -248,9 +392,11 @@ export function txtMerge(inputPath: string,
 					{
 						let a = processReturn.data.context;
 
-						let filename2 = makeFilename(meta, outputFilename, a, _ls, {
+						let filename2 = makeFilename(meta, inputOptions.outputFilename, a, _ls, {
 							TXT_PATH,
 							processReturn,
+							inputOptions,
+							tplBaseData,
 						});
 
 						let txt = a.join(eol);
@@ -305,8 +451,15 @@ export function getMetaTitles(meta: IMdconfMeta): string[]
 export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: string[] = [], _ls?: IArrayDeepInterface<IReturnRow>, _argv: {
 	TXT_PATH?: string,
 	processReturn?: ITxtRuntimeReturn,
+	inputOptions?: ReturnType<typeof makeDefaultTplData>["inputOptions"],
+	tplBaseData?: ReturnType<typeof makeDefaultTplData>["tplBaseData"],
 } = {} as any): string
 {
+	let { inputOptions, tplBaseData } = _argv;
+
+	a.unshift(eol);
+	a.unshift(TPL_HR1 + 'START');
+
 	if (_argv.processReturn && _argv.processReturn.data.toc.length)
 	{
 		let ret = _argv.processReturn.data.toc;
@@ -392,6 +545,20 @@ export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: str
 //		process.exit();
 
 		a.unshift(txt);
+	}
+
+	if (inputOptions.tplBannerStart)
+	{
+		let s = replaceTpl(inputOptions.tplBannerStart, {
+
+			...tplBaseData,
+
+			title: metaLib.title(),
+			author: metaLib.authors().join(' , '),
+			lang: 'zh-Hant',
+		});
+
+		a.unshift(s);
 	}
 
 	let filename: string;

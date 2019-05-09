@@ -1,17 +1,19 @@
 {
   "name": "novel-txt-merge",
-  "version": "1.0.22",
-  "description": "合併小說個別 txt 章節/目錄 => 單一 txt 合併",
+  "version": "1.0.23",
+  "description": "打包合併個別 txt 章節/目錄 => 單一整合 txt 小說合集",
   "keywords": [
+    "book",
     "cli",
     "file",
     "merge",
-    "pack",
     "node-novel",
     "node-text",
     "novel",
     "npx-bin",
     "npx-cli",
+    "pack",
+    "shubook",
     "text",
     "txt"
   ],
@@ -30,10 +32,15 @@
     "novel-txt-merge": "./bin/tmp-npx-txt-merge.js"
   },
   "directories": {
+    "lib": "lib",
+    "doc": "docs",
     "test": "test"
   },
   "scripts": {
+    "coverage": "npx nyc npm run test",
+    "ncu": "npx npm-check-updates -u",
     "prepublishOnly": "npx npm-check-updates -u --packageFile ./package.json",
+    "sort-package-json": "npx sort-package-json ./package.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -44,7 +51,7 @@
     "debug-color2": "^1.0.7",
     "fs-iconv": "^2.0.6",
     "moment": "^2.24.0",
-    "node-novel-globby": "^2.0.7",
+    "node-novel-globby": "^2.0.9",
     "node-novel-info": "^2.3.33",
     "uni-string": "^1.1.0",
     "update-notifier": "^2.5.0",

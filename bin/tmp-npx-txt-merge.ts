@@ -35,7 +35,7 @@ let cli = yargs
 		requiresArg: true,
 		normalize: true,
 		type: 'string',
-		desc: 'source novel txt folder path',
+		desc: 'source novel txt folder path 要打包的 txt 來源資料夾',
 		/*
 		default: function ()
 		{
@@ -49,7 +49,7 @@ let cli = yargs
 		requiresArg: true,
 		normalize: true,
 		type: 'string',
-		desc: ' output path',
+		desc: ' output path 輸出資料夾',
 		default: function ()
 		{
 			return CWD;
@@ -58,6 +58,14 @@ let cli = yargs
 	.option('zh', {
 		//default: true,
 		boolean: true,
+	})
+	.option('txtStyle', {
+		desc: '內建的 txt 風格 0=預設 16=書僕',
+		number: true,
+	})
+	.option('configPath', {
+		desc: '指定設定檔路徑會以設定檔內的資料來覆寫目前設定',
+		normalize: true,
 	})
 	// @ts-ignore
 	.command('$0', '', function (yargs)
@@ -99,7 +107,10 @@ let cli = yargs
 
 		//console.log(666, yargs.argv);
 
-		return txtMerge(inputPath, outputPath);
+		return txtMerge(inputPath, outputPath, {
+			txtStyle: yargs.argv.txtStyle,
+			inputConfigPath: yargs.argv.configPath,
+		});
 
 		//yargs.showHelp('log');
 	})
