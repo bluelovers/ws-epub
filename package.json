@@ -54,7 +54,7 @@
     "node-novel-globby": "^2.0.9",
     "node-novel-info": "^2.3.33",
     "uni-string": "^1.1.0",
-    "update-notifier": "^2.5.0",
+    "update-notifier": "^3.0.0",
     "yargs": "^13.2.2"
   },
   "devDependencies": {
