@@ -547,7 +547,7 @@ export function makeFilename(meta?: IMdconfMeta, outputFilename?: string, a: str
 		a.unshift(txt);
 	}
 
-	if (inputOptions.tplBannerStart)
+	if (inputOptions && inputOptions.tplBannerStart)
 	{
 		let s = replaceTpl(inputOptions.tplBannerStart, {
 
