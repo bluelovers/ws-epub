@@ -56,11 +56,11 @@
       {{#if infoPreface}}<dc:description><![CDATA[{{infoPreface}}]]></dc:description>{{/if}}
       {{#each tags}}<dc:subject>{{this}}</dc:subject>{{/each}}
       {{#if 0}}{{#each links}}<!--link rel="{{ rel }}" href="{{ href }}" {{#if id}} id="{{ id }}"{{/if}} {{#if refines}} refines="{{ refines }}"{{/if}} {{#if media-type}} media-type="{{ media-type }}"{{/if}} /-->{{/each}}{{/if}}
-      {{#if authors}}
+      {{#if 0}}{{#if authors}}
         {{#if authorsJSON}}
           <opf:meta property="calibre:author_link_map">{{{ authorsJSON }}}</opf:meta>
         {{/if}}
-      {{/if}}
+      {{/if}}{{/if}}
     </metadata>
     <manifest>
         {{#if cover}}

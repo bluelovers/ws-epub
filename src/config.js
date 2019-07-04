@@ -5,6 +5,7 @@ const util_1 = require("./lib/util");
 const lib_1 = require("node-novel-info/lib");
 const util_2 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
+const he_1 = require("he");
 var EnumEpubConfigVertical;
 (function (EnumEpubConfigVertical) {
     EnumEpubConfigVertical[EnumEpubConfigVertical["NONE"] = 0] = "NONE";
@@ -143,7 +144,16 @@ class EpubConfig {
                     self.authors[name] = (self.authors[name] || '').toString();
                     self.tags.push(name);
                 }
-                self.authorsJSON = JSON.stringify(self.authors);
+                /**
+                 * 防止名稱含有造成 epub 錯誤的狀況
+                 */
+                let encodeAuthors = Object.entries(self.authors)
+                    .reduce((a, b) => {
+                    let [key, value] = b.map(v => v && he_1.encode(`${v}`) || v);
+                    a[key] = value;
+                    return a;
+                }, {});
+                self.authorsJSON = JSON.stringify(encodeAuthors);
             }
             else {
                 self.authors = null;

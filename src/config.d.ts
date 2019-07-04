@@ -98,9 +98,7 @@ export declare class EpubConfig implements IEpubConfig {
     lang?: string;
     author?: string;
     authorUrl?: string;
-    authors?: {
-        [index: string]: string;
-    };
+    authors?: Record<string, string>;
     authorsJSON?: string;
     publisher?: string;
     rights?: IRightsConfig;

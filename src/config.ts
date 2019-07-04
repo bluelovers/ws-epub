@@ -5,6 +5,7 @@ import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
 import { htmlPreface } from './lib/util';
 import { createUUID } from './lib/uuid';
+import { encode as encodeHE } from 'he';
 
 export interface ICover extends IFiles
 {
@@ -146,9 +147,7 @@ export class EpubConfig implements IEpubConfig
 
 	author?: string;
 	authorUrl?: string;
-	authors?: {
-		[index: string]: string,
-	};
+	authors?: Record<string, string>;
 	authorsJSON?: string;
 
 	publisher?: string;
@@ -406,7 +405,21 @@ export class EpubConfig implements IEpubConfig
 					self.tags.push(name);
 				}
 
-				self.authorsJSON = JSON.stringify(self.authors);
+				/**
+				 * 防止名稱含有造成 epub 錯誤的狀況
+				 */
+				let encodeAuthors = Object.entries(self.authors)
+					.reduce((a, b) => {
+
+						let [key, value] = b.map(v => v && encodeHE(`${v}`) || v);
+
+						a[key] = value;
+
+						return a;
+					}, {} as EpubConfig["authors"])
+				;
+
+				self.authorsJSON = JSON.stringify(encodeAuthors);
 			}
 			else
 			{
