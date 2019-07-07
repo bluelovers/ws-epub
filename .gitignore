@@ -21,3 +21,9 @@ texst/temp
 /test/temp/
 /bin/*.d.ts
 /node-novel-epub.iml
+/.eslintignore
+/.eslintrc.json.tpl
+/.browserslistrc
+/.nvmrc
+/tsconfig.esm.json.tpl
+/tsconfig.tsbuildinfo

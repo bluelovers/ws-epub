@@ -204,6 +204,49 @@ export function makeChapterID(count_idx: number)
 	return makePrefixID(count_idx, EnumPrefixIDType.CHAPTER);
 }
 
+export interface IAttachMetaData
+{
+	images: Record<string, string>
+}
+
+export function getAttachMeta(dirname: string): Promise<IAttachMetaData>
+{
+	return fsLowCheckLevelMdconfAsync(path.join(dirname, 'ATTACH.md'))
+		.then<IAttachMetaData>((v: IMdconfMeta & {
+			attach: IAttachMetaData
+		}) =>
+		{
+			if (v.attach)
+			{
+				return v.attach
+			}
+			// @ts-ignore
+			else if (v.novel && v.novel.attach)
+			{
+				// @ts-ignore
+				return v.novel.attach as any as IAttachMetaData
+			}
+
+			return v as any as IAttachMetaData
+		})
+		.catch(e => null as IAttachMetaData)
+		;
+}
+
+const AttachMetaMap = new Map<string, IAttachMetaData>();
+
+export async function getAttachMetaByRow(row: IReturnRow)
+{
+	if (!AttachMetaMap.has(row.path_dir))
+	{
+		let data = await getAttachMeta(row.path_dir);
+
+		AttachMetaMap.set(row.path_dir, data);
+	}
+
+	return AttachMetaMap.get(row.path_dir)
+}
+
 export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
 	processReturn: Partial<IEpubRuntimeReturn>,
 	epub: EpubMaker,
@@ -234,7 +277,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 					cwd: dirname,
 					absolute: true,
 				})
-				.then(ls =>
+				.then(async (ls) =>
 				{
 					let arr: string[] = [];
 
@@ -260,6 +303,21 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 						arr.push('image/' + name);
 
 						epub.withAdditionalFile(img, 'image', name);
+					}
+
+					let md_attach = await getAttachMeta(dirname);
+
+					if (md_attach && (md_attach.images))
+					{
+						Object.values(md_attach.images)
+							.forEach(v =>
+							{
+								if (v)
+								{
+									arr.push(v);
+								}
+							})
+						;
 					}
 
 					if (arr.length)
@@ -303,7 +361,7 @@ export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_vol
 	epub: EpubMaker,
 })
 {
-	const { processReturn, epub }  = _data_;
+	const { processReturn, epub } = _data_;
 	const temp = processReturn.temp;
 
 	return Bluebird
@@ -311,7 +369,7 @@ export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_vol
 		.mapSeries(async function (row)
 		{
 			let key = row.vol_key;
-			let volume = temp.cacheTreeSection[ key];
+			let volume = temp.cacheTreeSection[key];
 
 			return _handleVolumeImage(volume, row.dirname, {
 				epub,
@@ -327,7 +385,7 @@ export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_vol
 						});
 					}
 				})
-			;
+				;
 		})
-	;
+		;
 }

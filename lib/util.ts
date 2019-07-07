@@ -8,6 +8,9 @@ import { createUUID } from 'epub-maker2/src/lib/uuid';
 import { IMdconfMeta, mdconf_parse } from 'node-novel-info';
 import fs = require('fs-iconv');
 import { Console } from 'debug-color2';
+import { IAttachMetaData } from './epub';
+import zhRegExp from 'regexp-cjk';
+import { toHalfWidth } from 'str-util';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -28,8 +31,22 @@ export { createUUID }
 //	return getUuidByString(String(input)).toLowerCase();
 //}
 
-export function splitTxt(txt)
+const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫)([a-z0-9ａ-ｚ０-９_-]+)[)）]`, 'ug', {
+	greedyTable: 2,
+});
+
+export function novelImage(src: string)
 {
+	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image"/></figure>`;
+}
+
+export function splitTxt(txt, plusData?: {
+	attach?: IAttachMetaData
+})
+{
+	const { attach = {} as IAttachMetaData } = plusData || {};
+	const { images } = attach || {} as IAttachMetaData;
+
 	return (
 		'<div>' +
 		txt
@@ -44,6 +61,21 @@ export function splitTxt(txt)
 				//console.log(m);
 
 				return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
+			})
+
+			.replace(reTxtImgTag, (s, id) => {
+
+				if (images && id)
+				{
+					id = toHalfWidth(id);
+
+					if (images[id])
+					{
+						return novelImage(images[id]);
+					}
+				}
+
+				return s;
 			})
 
 			.replace(/^[ ]*[－＝\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
@@ -85,4 +117,3 @@ export function fsLowCheckLevelMdconfAsync(file: string)
 	return fs.readFile(file).then(parseLowCheckLevelMdconf);
 }
 
-export default exports as typeof import('./util');

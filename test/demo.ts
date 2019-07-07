@@ -160,7 +160,9 @@ Promise.mapSeries([
 
 //	'你這種傢伙別想打贏魔王',
 
-	'誰にでもできる影から助ける魔王討伐',
+//	'誰にでもできる影から助ける魔王討伐',
+
+	'裏世界郊游',
 
 ] as string[], makeEpub);
 
@@ -193,6 +195,8 @@ async function makeEpub(novelID: string)
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\millionbook', novelID);
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\girl_out', novelID);
+
+	TXT_PATH = path.join('C:/Home/link/dist_novel/girl', novelID);
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 

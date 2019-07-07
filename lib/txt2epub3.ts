@@ -19,7 +19,7 @@ import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
 import {
 	_handleVolume,
 	_handleVolumeImage,
-	_handleVolumeImageEach,
+	_handleVolumeImageEach, getAttachMetaByRow,
 	IEpubRuntimeReturn,
 	makeChapterID,
 	makeVolumeID,
@@ -31,6 +31,7 @@ import path = require('upath2');
 import moment = require('moment');
 import novelGlobby = require('node-novel-globby/g');
 import deepmerge = require('deepmerge-plus');
+import { inspect } from 'util';
 
 export { console }
 
@@ -123,7 +124,7 @@ export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMet
 
 		if (!meta || !meta.novel || !meta.novel.title)
 		{
-			throw new Error(`not a valid novelInfo data`);
+			throw new Error(`not a valid novelInfo data, ${inspect(options)}`);
 		}
 
 		return meta;
@@ -460,13 +461,17 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 					let txt = await fs.loadFile(value.path, {
 							autoDecode: true,
 						})
-						.then(function (data)
+						.then(async function (data)
 						{
 							let txt = crlf(data.toString());
 
 							if (value.ext == '.txt')
 							{
-								return splitTxt(txt);
+								let attach = await getAttachMetaByRow(row);
+
+								return splitTxt(txt, {
+									attach,
+								});
 							}
 
 							return txt;

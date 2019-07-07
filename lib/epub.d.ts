@@ -52,6 +52,11 @@ export declare function _handleVolume(volume: EpubMaker.Section, dirname: string
 export declare function makePrefixID(count_idx: number, prefix: EnumPrefixIDType): string;
 export declare function makeVolumeID(count_idx: number): string;
 export declare function makeChapterID(count_idx: number): string;
+export interface IAttachMetaData {
+    images: Record<string, string>;
+}
+export declare function getAttachMeta(dirname: string): Promise<IAttachMetaData>;
+export declare function getAttachMetaByRow(row: IReturnRow): Promise<IAttachMetaData>;
 export declare function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
     processReturn: Partial<IEpubRuntimeReturn>;
     epub: EpubMaker;
