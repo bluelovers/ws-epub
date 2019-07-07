@@ -31,7 +31,7 @@ export { createUUID }
 //	return getUuidByString(String(input)).toLowerCase();
 //}
 
-const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫)([a-z0-9ａ-ｚ０-９_-]+)[)）]`, 'iug', {
+const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫|画像)([a-z0-9ａ-ｚ０-９_-]+)[)）]`, 'iug', {
 	greedyTable: 2,
 });
 

@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.28",
+  "version": "1.1.29",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",
@@ -53,7 +53,7 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@node-novel/normalize": "^1.0.8",
+    "@node-novel/normalize": "^1.0.9",
     "array-hyper-unique": "^1.0.7",
     "bluebird": "^3.5.5",
     "crlf-normalize": "^1.0.3",

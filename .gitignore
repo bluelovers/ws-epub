@@ -27,3 +27,4 @@ texst/temp
 /.nvmrc
 /tsconfig.esm.json.tpl
 /tsconfig.tsbuildinfo
+*.tgz
