@@ -31,7 +31,7 @@ export { createUUID }
 //	return getUuidByString(String(input)).toLowerCase();
 //}
 
-const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫)([a-z0-9ａ-ｚ０-９_-]+)[)）]`, 'ug', {
+const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫)([a-z0-9ａ-ｚ０-９_-]+)[)）]`, 'iug', {
 	greedyTable: 2,
 });
 
@@ -63,13 +63,21 @@ export function splitTxt(txt, plusData?: {
 				return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
 			})
 
-			.replace(reTxtImgTag, (s, id) => {
+			.replace(reTxtImgTag, (s, id: string) => {
 
 				if (images && id)
 				{
 					id = toHalfWidth(id);
 
 					if (images[id])
+					{
+						return novelImage(images[id]);
+					}
+					else if (images[id = id.toLowerCase()])
+					{
+						return novelImage(images[id]);
+					}
+					else if (images[id = id.toUpperCase()])
 					{
 						return novelImage(images[id]);
 					}

@@ -229,6 +229,35 @@ export function getAttachMeta(dirname: string): Promise<IAttachMetaData>
 
 			return v as any as IAttachMetaData
 		})
+		.then(attach => {
+
+			if (attach && attach.images)
+			{
+				attach.images = Object.entries(attach.images)
+					.reduce((a, [k, v]) => {
+
+						a[k] = v;
+
+						let k2 = k.toString().toLowerCase();
+
+						if (a[k2] == null)
+						{
+							a[k2] = v;
+						}
+
+						k2 = k2.toUpperCase();
+
+						if (a[k2] == null)
+						{
+							a[k2] = v;
+						}
+
+						return a;
+					}, {})
+			}
+
+			return attach
+		})
 		.catch(e => null as IAttachMetaData)
 		;
 }
