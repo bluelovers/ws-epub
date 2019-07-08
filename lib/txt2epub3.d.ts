@@ -8,6 +8,7 @@ import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import Bluebird = require('bluebird');
 import moment = require('moment');
 import novelGlobby = require('node-novel-globby/g');
+import { EpubStore } from './store';
 export { console };
 export interface IOptions {
     /**
@@ -29,7 +30,14 @@ export interface IOptions {
     useTitle?: boolean;
     filenameLocal?: boolean | string[] | string;
     noLog?: boolean;
+    /**
+     * 是否直排
+     */
     vertical?: boolean | EnumEpubConfigVertical;
+    /**
+     * 下載網路資源
+     */
+    downloadRemoteFile?: boolean;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Bluebird<IMdconfMeta>;
@@ -46,6 +54,7 @@ export interface INovelEpubReturnInfo {
         chapter: number;
         image: number;
     };
+    store: EpubStore;
 }
 export declare function create(options: IOptions, cache?: {}): Bluebird<INovelEpubReturnInfo>;
 export declare function makeFilename(options: IOptions, epub: EpubMaker, meta: IMdconfMeta): {

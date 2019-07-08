@@ -39,7 +39,7 @@ let cli = yargs
 		requiresArg: true,
 		normalize: true,
 		type: 'string',
-		desc: 'source novel txt folder path',
+		desc: '小說資料夾路徑 source novel txt folder path',
 		/*
 		default: function ()
 		{
@@ -53,7 +53,7 @@ let cli = yargs
 		requiresArg: true,
 		normalize: true,
 		type: 'string',
-		desc: ' output path',
+		desc: 'epub 輸出路徑 output path',
 		default: function ()
 		{
 			return CWD;
@@ -63,13 +63,13 @@ let cli = yargs
 		alias: ['t'],
 		requiresArg: true,
 		type: 'string',
-		desc: 'epub tpl',
+		desc: 'epub 模板 epub tpl',
 	})
 	.option('filename', {
 		alias: ['f'],
 		requiresArg: true,
 		type: 'string',
-		desc: 'filename',
+		desc: 'epub 檔名 filename',
 	})
 	.option('useTitle', {
 		requiresArg: true,
@@ -83,16 +83,22 @@ let cli = yargs
 	.option('date', {
 		boolean: true,
 		alias: ['d'],
-		desc: 'add current date end of filename',
+		desc: 'epub 檔名後面追加日期 add current date end of filename',
 	})
 	.option('lang', {
 		alias: ['l'],
 		type: 'string',
-		desc: 'epub lang',
+		desc: 'epub 語言 epub lang',
 	})
 	.option('vertical', {
 		type: 'boolean',
+		desc: `是否輸出直排模式`,
 	})
+	.option('downloadRemoteFile', {
+		type: 'boolean',
+		desc: `是否將網路資源下載到 epub 內`,
+	})
+	.showHelpOnFail(true)
 	// @ts-ignore
 	.command('$0', '', function (yargs)
 	{
@@ -138,6 +144,7 @@ let cli = yargs
 			epubTemplate: yargs.argv.tpl,
 			padEndDate: yargs.argv.date,
 			vertical: yargs.argv.vertical,
+			downloadRemoteFile: yargs.argv.downloadRemoteFile,
 		});
 
 		//yargs.showHelp('log');

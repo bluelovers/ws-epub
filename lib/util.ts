@@ -11,6 +11,9 @@ import { Console } from 'debug-color2';
 import { IAttachMetaData } from './epub';
 import zhRegExp from 'regexp-cjk';
 import { toHalfWidth } from 'str-util';
+import { EpubStore, getAttachID, handleAttachFile } from './store';
+import { EpubMaker } from 'epub-maker2';
+import { IOptions } from './txt2epub3';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -35,16 +38,29 @@ const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫|画像)([a-z0-9�
 	greedyTable: 2,
 });
 
-export function novelImage(src: string)
+export function novelImage(src: string, failback?: string)
 {
-	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image"/></figure>`;
+	if (failback)
+	{
+		failback = ` lowsrc="${failback}" `;
+	}
+	else
+	{
+		failback = '';
+	}
+
+	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image" ${failback}/></figure>`;
 }
 
 export function splitTxt(txt, plusData?: {
-	attach?: IAttachMetaData
+	attach: IAttachMetaData,
+	store: EpubStore,
+	vid: string,
+	epub: EpubMaker,
+	epubOptions: IOptions
 })
 {
-	const { attach = {} as IAttachMetaData } = plusData || {};
+	const { attach = {} as IAttachMetaData, store, vid, epub, epubOptions } = plusData || {};
 	const { images } = attach || {} as IAttachMetaData;
 
 	return (
@@ -65,21 +81,34 @@ export function splitTxt(txt, plusData?: {
 
 			.replace(reTxtImgTag, (s, id: string) => {
 
-				if (images && id)
+				if (images && store && id)
 				{
-					id = toHalfWidth(id);
+					let input: string;
 
-					if (images[id])
+					({ id, input } = getAttachID(id, {
+						images,
+					}));
+
+					if (input)
 					{
-						return novelImage(images[id]);
-					}
-					else if (images[id = id.toLowerCase()])
-					{
-						return novelImage(images[id]);
-					}
-					else if (images[id = id.toUpperCase()])
-					{
-						return novelImage(images[id]);
+						let ret = handleAttachFile(input, {
+							store,
+							epubOptions,
+							epub,
+							vid,
+							failbackExt: '.jpg',
+							basePath: 'image',
+						});
+
+						if (ret)
+						{
+							if (ret.ok && !ret.isFile)
+							{
+								return novelImage(ret.returnPath, ret.input);
+							}
+
+							return novelImage(ret.returnPath);
+						}
 					}
 				}
 

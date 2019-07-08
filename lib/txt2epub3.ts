@@ -32,6 +32,7 @@ import moment = require('moment');
 import novelGlobby = require('node-novel-globby/g');
 import deepmerge = require('deepmerge-plus');
 import { inspect } from 'util';
+import { EpubStore } from './store';
 
 export { console }
 
@@ -65,7 +66,15 @@ export interface IOptions
 
 	noLog?: boolean,
 
+	/**
+	 * 是否直排
+	 */
 	vertical?: boolean | EnumEpubConfigVertical;
+
+	/**
+	 * 下載網路資源
+	 */
+	downloadRemoteFile?: boolean;
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
@@ -122,13 +131,26 @@ export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMet
 
 		meta = chkInfo(meta);
 
-		if (!meta || !meta.novel || !meta.novel.title)
-		{
-			throw new Error(`not a valid novelInfo data, ${inspect(options)}`);
-		}
-
 		return meta;
 	})
+		.catch((e: Error) => {
+
+			if (e.message == 'Error: mdconf_parse' || e.message == 'mdconf_parse')
+			{
+				return null
+			}
+
+			return Bluebird.reject(e)
+		})
+		.tap(meta => {
+
+			if (!meta || !meta.novel || !meta.novel.title)
+			{
+				throw new Error(`not a valid novelInfo data, ${inspect(options)}`);
+			}
+
+			return meta;
+		})
 }
 
 export function makeOptions(options: IOptions): IOptions
@@ -161,6 +183,8 @@ export interface INovelEpubReturnInfo
 		chapter: number,
 		image: number,
 	},
+
+	store: EpubStore,
 }
 
 export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturnInfo>
@@ -284,6 +308,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		//process.exit();
 
+		let store = new EpubStore();
+
 		const processReturn = await novelGlobby
 			.globbyASync(globby_patterns, globby_options)
 			.tap(function (ls)
@@ -363,6 +389,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 								await _handleVolumeImage(temp.prev_volume, temp.prev_volume_row.dirname, {
 									epub,
 									processReturn: cache,
+									epubOptions: options,
+									store,
 								})
 									.tap(ls =>
 									{
@@ -423,6 +451,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 										await _handleVolumeImageEach(temp.cache_top_subs[temp._old_top_level.id], {
 											epub,
 											processReturn: cache,
+											epubOptions: options,
+											store,
 										});
 
 										if (!epub.hasSection(temp._old_top_level))
@@ -471,6 +501,10 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 								return splitTxt(txt, {
 									attach,
+									store,
+									vid: volume.id,
+									epub,
+									epubOptions: options,
 								});
 							}
 
@@ -563,6 +597,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						await _handleVolumeImageEach(temp.cache_volume_row, {
 							epub,
 							processReturn,
+							epubOptions: options,
+							store,
 						});
 
 						if (temp._old_top_level && !epub.hasSection(temp._old_top_level))
@@ -621,6 +657,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 			ext,
 
 			stat,
+
+			store,
 		};
 	});
 }

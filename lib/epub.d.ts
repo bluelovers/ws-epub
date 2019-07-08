@@ -1,9 +1,8 @@
 import { IForeachArrayDeepReturn, IReturnRow } from 'node-novel-globby';
 import EpubMaker from 'epub-maker2';
 import Bluebird = require('bluebird');
-import { INovelEpubReturnInfo } from './txt2epub3';
-declare const _default: typeof import("./epub");
-export default _default;
+import { INovelEpubReturnInfo, IOptions } from './txt2epub3';
+import { EpubStore } from './store';
 export declare const SymCache: unique symbol;
 export declare const enum EnumPrefixIDType {
     VOLUME = "volume",
@@ -60,9 +59,13 @@ export declare function getAttachMetaByRow(row: IReturnRow): Promise<IAttachMeta
 export declare function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
     processReturn: Partial<IEpubRuntimeReturn>;
     epub: EpubMaker;
+    epubOptions: IOptions;
+    store: EpubStore;
 }): Bluebird<string[]>;
 export declare function htmlImage(src: string): string;
 export declare function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: {
     processReturn: Partial<IEpubRuntimeReturn>;
     epub: EpubMaker;
+    epubOptions: IOptions;
+    store: EpubStore;
 }): Bluebird<string[][]>;

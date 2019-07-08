@@ -215,6 +215,8 @@ async function makeEpub(novelID: string)
 		noLog: true,
 
 		vertical: EnumEpubConfigVertical.VERTICAL_RL,
+
+		downloadRemoteFile: true,
 	});
 
 	console.timeEnd();

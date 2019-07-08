@@ -11,10 +11,9 @@ import deepmerge = require('deepmerge-plus');
 import { crlf, LF } from 'crlf-normalize';
 import { chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
 import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
-import { INovelEpubReturnInfo } from './txt2epub3';
+import { INovelEpubReturnInfo, IOptions } from './txt2epub3';
 import { array_unique } from 'array-hyper-unique';
-
-export default exports as typeof import('./epub');
+import { EpubStore, handleAttachFile } from './store';
 
 export const SymCache = Symbol('cache');
 
@@ -279,6 +278,8 @@ export async function getAttachMetaByRow(row: IReturnRow)
 export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
 	processReturn: Partial<IEpubRuntimeReturn>,
 	epub: EpubMaker,
+	epubOptions: IOptions,
+	store: EpubStore,
 })
 {
 	return Bluebird.resolve(null)
@@ -289,7 +290,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 				return [] as string[];
 			}
 
-			const { processReturn, epub } = _data_;
+			const { processReturn, epub, epubOptions, store } = _data_;
 			const { stat } = processReturn.data;
 
 			const vid: string = volume.id;
@@ -297,9 +298,9 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 			volume[SymCache].image = true;
 
 			return novelGlobby.globby([
-					'*.{jpg,gif,png,jpeg,svg}',
-					'image/*.{jpg,gif,png,jpeg,svg}',
-					'images/*.{jpg,gif,png,jpeg,svg}',
+					'*.{jpg,gif,png,jpeg,svg,webp,apng}',
+					'image/*.{jpg,gif,png,jpeg,svg,webp,apng}',
+					'images/*.{jpg,gif,png,jpeg,svg,webp,apng}',
 					'!cover.*',
 					'!*.txt',
 				], {
@@ -314,6 +315,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 					{
 						let img = ls[i];
 
+						/*
 						let ext = path.extname(img);
 
 						let basename = path.basename(img, ext);
@@ -332,6 +334,21 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 						arr.push('image/' + name);
 
 						epub.withAdditionalFile(img, 'image', name);
+						 */
+
+						let ret = handleAttachFile(img, {
+							vid,
+							epub,
+							epubOptions,
+							store,
+							basePath: 'image',
+							failbackExt: '.jpg',
+						});
+
+						if (ret)
+						{
+							arr.push(ret.returnPath);
+						}
 					}
 
 					let md_attach = await getAttachMeta(dirname);
@@ -343,7 +360,19 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 							{
 								if (v)
 								{
-									arr.push(v);
+									let ret = handleAttachFile(v, {
+										vid,
+										epub,
+										epubOptions,
+										store,
+										basePath: 'image',
+										failbackExt: '.jpg',
+									});
+
+									if (ret)
+									{
+										arr.push(ret.returnPath);
+									}
 								}
 							})
 						;
@@ -388,9 +417,11 @@ export function htmlImage(src: string)
 export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: {
 	processReturn: Partial<IEpubRuntimeReturn>,
 	epub: EpubMaker,
+	epubOptions: IOptions,
+	store: EpubStore,
 })
 {
-	const { processReturn, epub } = _data_;
+	const { processReturn, epub, store, epubOptions } = _data_;
 	const temp = processReturn.temp;
 
 	return Bluebird
@@ -403,6 +434,8 @@ export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_vol
 			return _handleVolumeImage(volume, row.dirname, {
 				epub,
 				processReturn,
+				store,
+				epubOptions,
 			})
 				.tap(function (ls)
 				{
