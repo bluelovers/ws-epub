@@ -18,6 +18,7 @@ export declare function splitTxt(txt: any, plusData?: {
     vid: string;
     epub: EpubMaker;
     epubOptions: IOptions;
+    cwd: string;
 }): string;
 /**
  * 讀取不標準的 mdconf

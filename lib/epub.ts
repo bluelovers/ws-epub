@@ -343,6 +343,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 							store,
 							basePath: 'image',
 							failbackExt: '.jpg',
+							cwd: dirname,
 						});
 
 						if (ret)
@@ -367,6 +368,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 										store,
 										basePath: 'image',
 										failbackExt: '.jpg',
+										cwd: dirname,
 									});
 
 									if (ret)

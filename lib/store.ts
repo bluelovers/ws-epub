@@ -32,6 +32,8 @@ export interface IEpubStoreOptions
 	chkExt?(ext: string): boolean;
 	failbackExt?: string,
 	failbackName?: string,
+
+	cwd: string,
 }
 
 export class EpubStore
@@ -106,7 +108,7 @@ export class EpubStore
 
 	get(input: string, options: IEpubStoreOptions)
 	{
-		let _data = parsePath(input);
+		let _data = parsePath(input, options.cwd);
 
 		if (_data)
 		{
@@ -166,7 +168,7 @@ export function parsePath(input: string, cwd?: string)
 				data,
 			}
 		}
-		else if (pathExistsSync(input = path.join(cwd, input)))
+		else if (cwd && pathExistsSync(input = path.resolve(cwd, input)))
 		{
 			let data = path.parse(input);
 			let { ext, name } = data;

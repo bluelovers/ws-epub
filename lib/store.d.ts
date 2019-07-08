@@ -22,6 +22,7 @@ export interface IEpubStoreOptions {
     chkExt?(ext: string): boolean;
     failbackExt?: string;
     failbackName?: string;
+    cwd: string;
 }
 export declare class EpubStore {
     protected $cache: Map<string, IEpubStoreValue>;

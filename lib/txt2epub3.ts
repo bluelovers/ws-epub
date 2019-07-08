@@ -505,6 +505,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									vid: volume.id,
 									epub,
 									epubOptions: options,
+									cwd: dirname,
 								});
 							}
 

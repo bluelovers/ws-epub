@@ -57,10 +57,11 @@ export function splitTxt(txt, plusData?: {
 	store: EpubStore,
 	vid: string,
 	epub: EpubMaker,
-	epubOptions: IOptions
+	epubOptions: IOptions,
+	cwd: string,
 })
 {
-	const { attach = {} as IAttachMetaData, store, vid, epub, epubOptions } = plusData || {};
+	const { attach = {} as IAttachMetaData, store, vid, epub, epubOptions, cwd } = plusData || {};
 	const { images } = attach || {} as IAttachMetaData;
 
 	return (
@@ -98,6 +99,7 @@ export function splitTxt(txt, plusData?: {
 							vid,
 							failbackExt: '.jpg',
 							basePath: 'image',
+							cwd,
 						});
 
 						if (ret)
