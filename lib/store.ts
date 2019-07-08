@@ -152,6 +152,7 @@ export function parsePath(input: string, cwd?: string)
 	try
 	{
 		const isFile = true as const;
+		let tempInput: string;
 
 		if (pathExistsSync(input))
 		{
@@ -168,9 +169,9 @@ export function parsePath(input: string, cwd?: string)
 				data,
 			}
 		}
-		else if (cwd && pathExistsSync(input = path.resolve(cwd, input)))
+		else if (cwd && pathExistsSync(tempInput = path.resolve(cwd, input)))
 		{
-			let data = path.parse(input);
+			let data = path.parse(tempInput);
 			let { ext, name } = data;
 
 			name = decodeURIComponent(name);
