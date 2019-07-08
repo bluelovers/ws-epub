@@ -19,6 +19,8 @@
 並且 ATTACH.md 內具有對應的 xxx 則會將該圖片於打包時插入內文中
 如果路徑為網址，只有在設定了 downloadRemoteFile 時，才會將網路圖片下載為檔案並且置入 epub，否則只會保持原有的網路圖片形式
 
+> `npx novel-epub --downloadRemoteFile`
+
 `xxx` 為隨意英文數字組合(純英文與數字)，可自由設定，也不需要按照順序
 
 ATTACH.md

@@ -126,10 +126,6 @@ export function isBadName(input: string)
 	return /index|^img$|\d{10,}/i.test(input) || isEncodeURI(input)
 }
 
-
-
-console.dir(parsePath('https://gitlab.com/novel-group/txt-source/blob/master/girl/%E8%A3%8F%E4%B8%96%E7%95%8C%E9%83%8A%E6%B8%B8/00000_%E7%AC%AC%E4%B8%80%E5%8D%B7%20%E5%85%A9%E4%BA%BA%E7%9A%84%E6%80%AA%E7%95%B0%E6%8E%A2%E9%9A%AA%E6%AA%94%E6%A1%88'))
-
 export function isHashedLike(input: string, maxCount: number = 3)
 {
 	let r = execall(/([a-f][0-9]|[0-9][a-f])/ig, input);

@@ -119,3 +119,4 @@ bin/*.d.ts
 /.browserslistrc
 /tsconfig.tsbuildinfo
 /.nvmrc
+*.tgz
