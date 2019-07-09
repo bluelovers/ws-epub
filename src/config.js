@@ -80,7 +80,7 @@ class EpubConfig {
             'media-type': '',
         }, data);
         link.href = (link.href || data.href || '').toString();
-        link.rel = link.rel || rel || data.rel || 'link-' + util_1.shortid();
+        link.rel = link.rel || rel || data.rel || 'link-' + util_1.hashSum(link);
         this.links = this.links || [];
         this.links.push(link);
         return this;

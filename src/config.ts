@@ -305,7 +305,7 @@ export class EpubConfig implements IEpubConfig
 		} as EpubMetaLink, data);
 
 		link.href = (link.href || data.href || '').toString();
-		link.rel = link.rel || rel || data.rel || 'link-' + shortid();
+		link.rel = link.rel || rel || data.rel || 'link-' + hashSum(link);
 
 		this.links = this.links || [];
 		this.links.push(link);
