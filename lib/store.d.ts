@@ -1,8 +1,7 @@
 /// <reference types="node" />
-import { EpubMaker } from 'epub-maker2';
 import * as path from 'path';
 import { IAttachMetaData } from './epub';
-import { IOptions } from './txt2epub3';
+import { IInternalProcessOptions } from './types';
 export interface IEpubStoreValue {
     uuid: string;
     vid: string;
@@ -52,10 +51,7 @@ export declare function parsePath(input: string, cwd?: string): {
     name: string;
     data: import("lazy-url").IURLObject;
 };
-export interface IHandleAttachFileOptions extends IEpubStoreOptions {
-    store: EpubStore;
-    epub: EpubMaker;
-    epubOptions: IOptions;
+export interface IHandleAttachFileOptions extends IEpubStoreOptions, IInternalProcessOptions {
 }
 export declare function handleAttachFile(input: string, plusData?: IHandleAttachFileOptions): {
     ok: false;

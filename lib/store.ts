@@ -7,7 +7,9 @@ import { transliterate as tr, slugify as tr_slugify } from 'transliteration';
 import { IAttachMetaData } from './epub';
 import { IOptions } from './txt2epub3';
 import { toHalfWidth } from 'str-util';
-import { novelImage } from './util';
+import { IInternalProcessOptions } from './types';
+import { console } from './log';
+import { novelImage } from './html';
 
 export interface IEpubStoreValue
 {
@@ -227,11 +229,9 @@ export function parsePath(input: string, cwd?: string)
 	return null;
 }
 
-export interface IHandleAttachFileOptions extends IEpubStoreOptions
+export interface IHandleAttachFileOptions extends IEpubStoreOptions, IInternalProcessOptions
 {
-	store: EpubStore,
-	epub: EpubMaker,
-	epubOptions: IOptions,
+
 }
 
 export function handleAttachFile(input: string, plusData?: IHandleAttachFileOptions)

@@ -6,7 +6,8 @@ import { ISectionContent } from 'epub-maker2/src/index';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import { array_unique, chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
-import { fsLowCheckLevelMdconfAsync, splitTxt, console } from './util';
+import { fsLowCheckLevelMdconfAsync} from './util';
+import { console } from './log';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 import { normalize_strip } from '@node-novel/normalize';
 import { Console } from 'debug-color2';
@@ -33,6 +34,7 @@ import novelGlobby = require('node-novel-globby/g');
 import deepmerge = require('deepmerge-plus');
 import { inspect } from 'util';
 import { EpubStore } from './store';
+import { splitTxt } from './html';
 
 export { console }
 
@@ -69,12 +71,14 @@ export interface IOptions
 	/**
 	 * 是否直排
 	 */
-	vertical?: boolean | EnumEpubConfigVertical;
+	vertical?: boolean | EnumEpubConfigVertical,
 
 	/**
 	 * 下載網路資源
 	 */
-	downloadRemoteFile?: boolean;
+	downloadRemoteFile?: boolean,
+
+	iconv?: string | 'cn' | 'tw' | 'chs' | 'cht' | 'zhs' | 'zht',
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
@@ -92,48 +96,49 @@ export const defaultOptions: Partial<IOptions> = Object.freeze({
 export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMeta>
 {
 	return Bluebird.resolve().then(async function ()
-	{
-		let meta: IMdconfMeta;
-		let confPath: string;
+		{
+			let meta: IMdconfMeta;
+			let confPath: string;
 
-		if (options.novelConf && typeof options.novelConf == 'object')
-		{
-			meta = options.novelConf;
-		}
-		else
-		{
-			if (typeof options.novelConf == 'string')
+			if (options.novelConf && typeof options.novelConf == 'object')
 			{
-				confPath = options.novelConf;
+				meta = options.novelConf;
 			}
 			else
 			{
-				confPath = options.inputPath;
+				if (typeof options.novelConf == 'string')
+				{
+					confPath = options.novelConf;
+				}
+				else
+				{
+					confPath = options.inputPath;
+				}
+
+				if (fs.existsSync(path.join(confPath, 'meta.md')))
+				{
+					let file = path.join(confPath, 'meta.md');
+
+					meta = await fs.readFile(file)
+						.then(mdconf_parse)
+					;
+				}
+				else if (fs.existsSync(path.join(confPath, 'README.md')))
+				{
+					let file = path.join(confPath, 'README.md');
+
+					meta = await fs.readFile(file)
+						.then(mdconf_parse)
+					;
+				}
 			}
 
-			if (fs.existsSync(path.join(confPath, 'meta.md')))
-			{
-				let file = path.join(confPath, 'meta.md');
+			meta = chkInfo(meta);
 
-				meta = await fs.readFile(file)
-					.then(mdconf_parse)
-				;
-			}
-			else if (fs.existsSync(path.join(confPath, 'README.md')))
-			{
-				let file = path.join(confPath, 'README.md');
-
-				meta = await fs.readFile(file)
-					.then(mdconf_parse)
-				;
-			}
-		}
-
-		meta = chkInfo(meta);
-
-		return meta;
-	})
-		.catch((e: Error) => {
+			return meta;
+		})
+		.catch((e: Error) =>
+		{
 
 			if (e.message == 'Error: mdconf_parse' || e.message == 'mdconf_parse')
 			{
@@ -142,7 +147,8 @@ export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMet
 
 			return Bluebird.reject(e)
 		})
-		.tap(meta => {
+		.tap(meta =>
+		{
 
 			if (!meta || !meta.novel || !meta.novel.title)
 			{
@@ -165,7 +171,28 @@ export function makeOptions(options: IOptions): IOptions
 		}, {} as IOptions)
 	;
 
-	return options = deepmerge.all([{}, defaultOptions, options]);
+	options = deepmerge.all([{}, defaultOptions, options]);
+
+	if (options.iconv)
+	{
+		switch (options.iconv)
+		{
+			case 'chs':
+			case 'cn':
+			case 'zhs':
+				options.iconv = 'cn';
+				break;
+			case 'cht':
+			case 'tw':
+			case 'zht':
+				options.iconv = 'tw';
+				break;
+			default:
+				break;
+		}
+	}
+
+	return options
 }
 
 export interface INovelEpubReturnInfo
@@ -391,6 +418,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									processReturn: cache,
 									epubOptions: options,
 									store,
+									cwd: dirname,
 								})
 									.tap(ls =>
 									{
@@ -441,7 +469,10 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 								await _handleVolume(vc, _nav_dir, {
 									epub,
+									store,
+									epubOptions: options,
 									processReturn: cache,
+									cwd: dirname,
 								});
 
 								if (index == 0)
@@ -453,6 +484,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 											processReturn: cache,
 											epubOptions: options,
 											store,
+											cwd: dirname,
 										});
 
 										if (!epub.hasSection(temp._old_top_level))

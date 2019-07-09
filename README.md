@@ -7,6 +7,15 @@
 
 ### changelog
 
+> 從 1.1.35 開始支援 在打包時同時進行簡繁轉換 以及 部分格式語法
+
+```bash
+npx novel-epub --iconv cn
+# 轉簡
+npx novel-epub --iconv tw
+# 轉繁
+```
+
 > 從 1.1.29 開始支援 附件表 ATTACH.md
 
 只要小說內文出現以下格式(無視簡繁日漢字與全形半形)
@@ -15,6 +24,7 @@
 - `(插圖xxx)`
 - `(插畫xxx)`
 - `(畫像xxx)`
+- `(圖像xxx)`
 
 並且 ATTACH.md 內具有對應的 xxx 則會將該圖片於打包時插入內文中
 如果路徑為網址，只有在設定了 downloadRemoteFile 時，才會將網路圖片下載為檔案並且置入 epub，否則只會保持原有的網路圖片形式
@@ -80,6 +90,7 @@ Options:
   --lang, -l            epub 語言 epub lang                             [string]
   --vertical            是否輸出直排模式                               [boolean]
   --downloadRemoteFile  是否將網路資源下載到 epub 內                   [boolean]
+  --iconv               是否在打包時同時進行 cn 轉為簡體, tw 轉為繁體   [string]
   --version             Show version number                            [boolean]
 ```
 

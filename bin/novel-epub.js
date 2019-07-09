@@ -9,17 +9,7 @@ const path = require("path");
 const index_1 = require("../index");
 const updateNotifier = require("update-notifier");
 const PACKAGE_JSON = require("../package.json");
-const debug_color2_1 = require("debug-color2");
-const console = new debug_color2_1.Console(null, {
-    enabled: true,
-    inspectOptions: {
-        colors: true,
-    },
-    chalkOptions: {
-        enabled: true,
-    },
-});
-console.enabledColor = true;
+const log_1 = require("../lib/log");
 const CWD = process.cwd();
 updateNotifier({
     pkg: PACKAGE_JSON,
@@ -86,6 +76,11 @@ let cli = yargs
     type: 'boolean',
     desc: `是否將網路資源下載到 epub 內`,
 })
+    .option('iconv', {
+    type: 'string',
+    requiresArg: true,
+    desc: `是否在打包時同時進行簡繁轉換 cn 轉為簡體, tw 轉為繁體`,
+})
     .showHelpOnFail(true)
     // @ts-ignore
     .command('$0', '', function (yargs) {
@@ -97,16 +92,16 @@ let cli = yargs
     if (!path.isAbsolute(outputPath)) {
         outputPath = path.join(CWD, outputPath);
     }
-    console.grey(`currentPath:\n  `, inputPath);
-    console.grey(`inputPath:\n  `, inputPath);
-    console.grey(`outputPath:\n  `, outputPath);
+    log_1.console.grey(`currentPath:\n  `, inputPath);
+    log_1.console.grey(`inputPath:\n  `, inputPath);
+    log_1.console.grey(`outputPath:\n  `, outputPath);
     if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0) {
-        console.error(`[FAIL] path not allow`);
+        log_1.console.error(`[FAIL] path not allow`);
         yargs.showHelp();
         process.exit(1);
         return;
     }
-    console.log(`\n`);
+    log_1.console.log(`\n`);
     //console.log(666, yargs.argv);
     return index_1.default({
         inputPath,
@@ -119,6 +114,7 @@ let cli = yargs
         padEndDate: yargs.argv.date,
         vertical: yargs.argv.vertical,
         downloadRemoteFile: yargs.argv.downloadRemoteFile,
+        iconv: yargs.argv.iconv,
     });
     //yargs.showHelp('log');
 })

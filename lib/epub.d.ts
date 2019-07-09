@@ -1,8 +1,8 @@
 import { IForeachArrayDeepReturn, IReturnRow } from 'node-novel-globby';
 import EpubMaker from 'epub-maker2';
 import Bluebird = require('bluebird');
-import { INovelEpubReturnInfo, IOptions } from './txt2epub3';
-import { EpubStore } from './store';
+import { INovelEpubReturnInfo } from './txt2epub3';
+import { IInternalProcessVolumeOptions } from './types';
 export declare const SymCache: unique symbol;
 export declare const enum EnumPrefixIDType {
     VOLUME = "volume",
@@ -44,10 +44,7 @@ export declare type IEpubRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any
     _new_top_level?: EpubMaker.Section;
     _old_top_level?: EpubMaker.Section;
 }>;
-export declare function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_: {
-    processReturn: Partial<IEpubRuntimeReturn>;
-    epub: EpubMaker;
-}): Bluebird<void>;
+export declare function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<void>;
 export declare function makePrefixID(count_idx: number, prefix: EnumPrefixIDType): string;
 export declare function makeVolumeID(count_idx: number): string;
 export declare function makeChapterID(count_idx: number): string;
@@ -56,16 +53,6 @@ export interface IAttachMetaData {
 }
 export declare function getAttachMeta(dirname: string): Promise<IAttachMetaData>;
 export declare function getAttachMetaByRow(row: IReturnRow): Promise<IAttachMetaData>;
-export declare function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
-    processReturn: Partial<IEpubRuntimeReturn>;
-    epub: EpubMaker;
-    epubOptions: IOptions;
-    store: EpubStore;
-}): Bluebird<string[]>;
+export declare function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<string[]>;
 export declare function htmlImage(src: string): string;
-export declare function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: {
-    processReturn: Partial<IEpubRuntimeReturn>;
-    epub: EpubMaker;
-    epubOptions: IOptions;
-    store: EpubStore;
-}): Bluebird<string[][]>;
+export declare function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: IInternalProcessVolumeOptions): Bluebird<string[][]>;

@@ -162,7 +162,9 @@ Promise.mapSeries([
 
 //	'誰にでもできる影から助ける魔王討伐',
 
-	'裏世界郊游',
+//	'裏世界郊游',
+
+	'Genocide Online ～極惡千金的玩遊戲日記～',
 
 ] as string[], makeEpub);
 

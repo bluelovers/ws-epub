@@ -3,7 +3,7 @@
  */
 import EpubMaker from 'epub-maker2';
 import { IMdconfMeta } from 'node-novel-info';
-import { console } from './util';
+import { console } from './log';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import Bluebird = require('bluebird');
 import moment = require('moment');
@@ -38,6 +38,7 @@ export interface IOptions {
      * 下載網路資源
      */
     downloadRemoteFile?: boolean;
+    iconv?: string | 'cn' | 'tw' | 'chs' | 'cht' | 'zhs' | 'zht';
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Bluebird<IMdconfMeta>;

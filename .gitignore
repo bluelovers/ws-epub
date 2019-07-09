@@ -28,3 +28,8 @@ texst/temp
 /tsconfig.esm.json.tpl
 /tsconfig.tsbuildinfo
 *.tgz
+/test/temp*
+!/test/temp*/
+/test/temp*/**
+!/test/temp/test.epub
+

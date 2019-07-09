@@ -1,7 +1,8 @@
 import { IForeachArrayDeepReturn, IReturnRow } from 'node-novel-globby';
 import EpubMaker, { hashSum, ISectionContent, slugify } from 'epub-maker2';
 import Bluebird = require('bluebird');
-import { console, fsLowCheckLevelMdconfAsync, splitTxt } from './util';
+import { console } from './log';
+import { fsLowCheckLevelMdconfAsync} from './util';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
 import path = require('upath2');
 import fs = require('fs-iconv');
@@ -14,6 +15,8 @@ import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
 import { INovelEpubReturnInfo, IOptions } from './txt2epub3';
 import { array_unique } from 'array-hyper-unique';
 import { EpubStore, handleAttachFile } from './store';
+import { IInternalProcessOptions, IInternalProcessVolumeOptions } from './types';
+import { splitTxt } from './html';
 
 export const SymCache = Symbol('cache');
 
@@ -71,10 +74,7 @@ export type IEpubRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
 
 }>;
 
-export function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_: {
-	processReturn: Partial<IEpubRuntimeReturn>,
-	epub: EpubMaker,
-})
+export function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
 	return Bluebird
 		.resolve(null)
@@ -275,12 +275,7 @@ export async function getAttachMetaByRow(row: IReturnRow)
 	return AttachMetaMap.get(row.path_dir)
 }
 
-export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: {
-	processReturn: Partial<IEpubRuntimeReturn>,
-	epub: EpubMaker,
-	epubOptions: IOptions,
-	store: EpubStore,
-})
+export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
 	return Bluebird.resolve(null)
 		.then(async function ()
@@ -416,14 +411,9 @@ export function htmlImage(src: string)
 	return `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${src}" alt="Cover" /></figure>`;
 }
 
-export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: {
-	processReturn: Partial<IEpubRuntimeReturn>,
-	epub: EpubMaker,
-	epubOptions: IOptions,
-	store: EpubStore,
-})
+export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: IInternalProcessVolumeOptions)
 {
-	const { processReturn, epub, store, epubOptions } = _data_;
+	const { processReturn, epub, store, epubOptions, cwd } = _data_;
 	const temp = processReturn.temp;
 
 	return Bluebird
@@ -433,12 +423,7 @@ export function _handleVolumeImageEach(ls: IEpubRuntimeReturn["temp"]["cache_vol
 			let key = row.vol_key;
 			let volume = temp.cacheTreeSection[key];
 
-			return _handleVolumeImage(volume, row.dirname, {
-				epub,
-				processReturn,
-				store,
-				epubOptions,
-			})
+			return _handleVolumeImage(volume, row.dirname, _data_)
 				.tap(function (ls)
 				{
 					if (0 && ls.length)

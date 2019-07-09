@@ -11,17 +11,7 @@ import novelEpub from '../index';
 import updateNotifier = require('update-notifier');
 import PACKAGE_JSON = require('../package.json');
 import { Console } from 'debug-color2';
-const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
-
-console.enabledColor = true;
+import { console } from '../lib/log';
 
 const CWD = process.cwd();
 
@@ -98,6 +88,11 @@ let cli = yargs
 		type: 'boolean',
 		desc: `是否將網路資源下載到 epub 內`,
 	})
+	.option('iconv', {
+		type: 'string',
+		requiresArg: true,
+		desc: `是否在打包時同時進行簡繁轉換 cn 轉為簡體, tw 轉為繁體`,
+	})
 	.showHelpOnFail(true)
 	// @ts-ignore
 	.command('$0', '', function (yargs)
@@ -145,6 +140,7 @@ let cli = yargs
 			padEndDate: yargs.argv.date,
 			vertical: yargs.argv.vertical,
 			downloadRemoteFile: yargs.argv.downloadRemoteFile,
+			iconv: yargs.argv.iconv,
 		});
 
 		//yargs.showHelp('log');
