@@ -375,6 +375,8 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 						;
 					}
 
+					arr = array_unique(arr);
+
 					if (arr.length)
 					{
 						if (volume.content && volume.content.cover && volume.content.cover.name)
