@@ -1,7 +1,7 @@
 import { EpubMaker, hashSum, slugify } from 'epub-maker2';
 import * as path from 'path';
 import LazyURL from 'lazy-url';
-import { pathExistsSync } from 'fs-extra';
+import { pathExistsSync, realpathSync } from 'fs-extra';
 import execall from 'execall2';
 import { transliterate as tr, slugify as tr_slugify } from 'transliteration';
 import { IAttachMetaData } from './epub';
@@ -156,22 +156,7 @@ export function parsePath(input: string, cwd?: string)
 		const isFile = true as const;
 		let tempInput: string;
 
-		if (pathExistsSync(input))
-		{
-			let data = path.parse(input);
-			let { ext, name } = data;
-
-			name = decodeURIComponent(name);
-
-			return {
-				isFile,
-				input,
-				ext,
-				name,
-				data,
-			}
-		}
-		else if (cwd && pathExistsSync(tempInput = path.resolve(cwd, input)))
+		if (cwd && pathExistsSync(tempInput = path.resolve(cwd, input)))
 		{
 			let data = path.parse(tempInput);
 			let { ext, name } = data;
@@ -180,7 +165,37 @@ export function parsePath(input: string, cwd?: string)
 
 			return {
 				isFile,
-				input,
+				input: tempInput,
+				ext,
+				name,
+				data,
+			}
+		}
+		else if (pathExistsSync(tempInput = path.resolve(input)))
+		{
+			let data = path.parse(tempInput);
+			let { ext, name } = data;
+
+			name = decodeURIComponent(name);
+
+			return {
+				isFile,
+				input: tempInput,
+				ext,
+				name,
+				data,
+			}
+		}
+		else if (pathExistsSync(tempInput = realpathSync(input)))
+		{
+			let data = path.parse(tempInput);
+			let { ext, name } = data;
+
+			name = decodeURIComponent(name);
+
+			return {
+				isFile,
+				input: tempInput,
 				ext,
 				name,
 				data,
