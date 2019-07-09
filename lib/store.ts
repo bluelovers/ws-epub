@@ -43,6 +43,7 @@ export class EpubStore
 
 	protected $cache = new Map<string, IEpubStoreValue>();
 	protected $names = new Set<string>();
+	protected $exists = new WeakSet<IEpubStoreValue>();
 
 	_name(_data: ReturnType<typeof parsePath>, options: IEpubStoreOptions)
 	{
@@ -122,6 +123,16 @@ export class EpubStore
 		{
 			return this._name(_data, options)
 		}
+	}
+
+	add(data: IEpubStoreValue)
+	{
+		this.$exists.add(data)
+	}
+
+	exists(data: IEpubStoreValue)
+	{
+		return this.$exists.has(data)
 	}
 
 }
@@ -301,12 +312,12 @@ export function handleAttachFile(input: string, plusData?: IHandleAttachFileOpti
 					data,
 				};
 			}
-
-			epub.withAdditionalFile(input, basePath, value);
 		}
-		else
+
+		if (!store.exists(data))
 		{
 			epub.withAdditionalFile(input, basePath, value);
+			store.add(data);
 		}
 
 		return {
