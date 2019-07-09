@@ -14,3 +14,9 @@ test/*.d.ts
 /dist/
 /test/temp/
 /test/res/
+/.eslintignore
+/tsconfig.esm.json.tpl
+/.eslintrc.json.tpl
+/.browserslistrc
+/tsconfig.tsbuildinfo
+/.nvmrc

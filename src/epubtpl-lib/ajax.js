@@ -11,6 +11,7 @@ const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminOptipng = require("imagemin-optipng");
 const Bluebird = require("bluebird");
+const bluebird_cancellation_1 = require("bluebird-cancellation");
 const bluebird_1 = require("bluebird");
 /**
  * 處理附加檔案 本地檔案 > url
@@ -79,7 +80,7 @@ async function fetchFile(file, ...argv) {
             let pngOptions = {
                 quality: is_from_url ? [0.65, 0.8] : undefined,
             };
-            return Bluebird
+            let pc = bluebird_cancellation_1.default
                 .resolve(imagemin.buffer(_file, {
                 plugins: [
                     imageminOptipng(),
@@ -87,10 +88,12 @@ async function fetchFile(file, ...argv) {
                     // @ts-ignore
                     imageminPngquant(pngOptions),
                 ],
-            }))
+            }));
+            return Bluebird.resolve(pc)
                 .timeout(timeout)
                 .tapCatch(bluebird_1.TimeoutError, (e) => {
                 console.error(`[ERROR] imagemin 處理時間過久 ${timeout}ms 放棄壓縮此圖片`);
+                pc.cancel();
             });
         })
             .then(function (buf) {

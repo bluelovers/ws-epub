@@ -82,3 +82,9 @@ __tests__/*.d.ts
 *.test.js.map
 
 
+/.eslintignore
+/tsconfig.esm.json.tpl
+/.eslintrc.json.tpl
+/.browserslistrc
+/tsconfig.tsbuildinfo
+/.nvmrc

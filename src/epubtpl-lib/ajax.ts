@@ -9,6 +9,7 @@ import imageminJpegtran = require('imagemin-jpegtran');
 import imageminPngquant = require('imagemin-pngquant');
 import imageminOptipng = require('imagemin-optipng');
 import Bluebird = require('bluebird');
+import BluebirdCancellation from 'bluebird-cancellation';
 import { TimeoutError } from 'bluebird';
 
 export { fetch }
@@ -116,18 +117,22 @@ export async function fetchFile(file: IFiles, ...argv)
 					quality: is_from_url ? [0.65, 0.8] : undefined,
 				};
 
-				return Bluebird
+				let pc = BluebirdCancellation
 					.resolve(imagemin.buffer(_file, {
-						plugins: [
-							imageminOptipng(),
-							imageminJpegtran(),
-							// @ts-ignore
-							imageminPngquant(pngOptions),
-						],
-					}))
+					plugins: [
+						imageminOptipng(),
+						imageminJpegtran(),
+						// @ts-ignore
+						imageminPngquant(pngOptions),
+					],
+				}))
+				;
+
+				return Bluebird.resolve(pc)
 					.timeout(timeout)
 					.tapCatch(TimeoutError, (e) => {
 						console.error(`[ERROR] imagemin 處理時間過久 ${timeout}ms 放棄壓縮此圖片`)
+						pc.cancel();
 					})
 			})
 			.then(function (buf)

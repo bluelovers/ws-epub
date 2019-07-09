@@ -21,11 +21,13 @@
         {{#if vertical}}
         <meta content="vertical-rl" name="primary-writing-mode" />
         {{/if}}
+        {{#if 0}}
         <dc:date>{{publicationDate}}</dc:date>
         {{#if modification}}
         <meta property="dcterms:modified">{{modificationDate}}</meta>
         {{else}}
         <meta property="dcterms:modified">{{publicationDate}}</meta>
+        {{/if}}
         {{/if}}
         <dc:publisher>{{ publisher }}</dc:publisher>
         {{#if rights}}
