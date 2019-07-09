@@ -55,7 +55,13 @@ export class EpubStore
 
 			name = name || _data.name;
 
-			name = tr_slugify(name) || name;
+			try
+			{
+				name = tr_slugify(name).trim().slice(0, 10).trim() || name;
+			}
+			catch (e)
+			{
+			}
 
 			let cur_name = name;
 
