@@ -28,4 +28,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 	});
 
 	console.timeEnd();
+
+	// 由於無法取消壓縮圖片 導致仍然無法結束進程 只能用此方式強制停止
+	process.exit();
 })();

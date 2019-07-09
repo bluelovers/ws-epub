@@ -1,17 +1,17 @@
 此頁面是用來測試字元在不同環境/閱讀器下的相容性與實際畫面效果
 
-1. ════════════ 無間斷的
-2. ＝＝＝＝＝＝＝＝＝＝＝＝ 全形
-3. ============ 半形
+1. \u2550 ════════════ 無間斷的
+2. \uff1d ＝＝＝＝＝＝＝＝＝＝＝＝ 全形
+3. \u003D ============ 半形
 
 https://en.wikipedia.org/wiki/Dash
 
-1. -- HYPHEN-MINUS ( 鍵盤上的 -
-2. －－ FULLWIDTH HYPHEN-MINUS
-3. ── 無間斷的 BOX DRAWINGS LIGHT HORIZONTAL
-4. —— EM DASH 對非英數時預設的全形
-5. −− 減號
-6. ‐‐ 連字號
+1. \u002D -- HYPHEN-MINUS ( 鍵盤上的 -
+2. \uff0d －－ FULLWIDTH HYPHEN-MINUS
+3. \u2500 ── 無間斷的 BOX DRAWINGS LIGHT HORIZONTAL
+4. \u2014 —— EM DASH 對非英數時預設的全形
+5. \u2212 −− 減號
+6. \u2010 ‐‐ 連字號
 
 ---------------------
 
