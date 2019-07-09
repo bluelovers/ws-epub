@@ -58,7 +58,7 @@ export class EpubStore
 
 			try
 			{
-				name = tr_slugify(name).trim().slice(0, 10).trim() || name;
+				name = tr_slugify(name).trim().slice(0, 22).trim() || name;
 			}
 			catch (e)
 			{

@@ -26,8 +26,11 @@ export interface IEpubStoreOptions {
 export declare class EpubStore {
     protected $cache: Map<string, IEpubStoreValue>;
     protected $names: Set<string>;
+    protected $exists: WeakSet<IEpubStoreValue>;
     _name(_data: ReturnType<typeof parsePath>, options: IEpubStoreOptions): IEpubStoreValue;
     get(input: string, options: IEpubStoreOptions): IEpubStoreValue;
+    add(data: IEpubStoreValue): void;
+    exists(data: IEpubStoreValue): boolean;
 }
 export declare function defaultChkExt(ext: string): boolean;
 export declare function isBadName(input: string): boolean;
