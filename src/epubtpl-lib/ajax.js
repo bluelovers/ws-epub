@@ -11,6 +11,7 @@ const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminOptipng = require("imagemin-optipng");
 const Bluebird = require("bluebird");
+const bluebird_1 = require("bluebird");
 /**
  * 處理附加檔案 本地檔案 > url
  */
@@ -65,6 +66,7 @@ async function fetchFile(file, ...argv) {
         });
     }
     if (_file) {
+        const timeout = 5000;
         /**
          * 如果此部分發生錯誤則自動忽略
          */
@@ -77,13 +79,18 @@ async function fetchFile(file, ...argv) {
             let pngOptions = {
                 quality: is_from_url ? [0.65, 0.8] : undefined,
             };
-            return imagemin.buffer(_file, {
+            return Bluebird
+                .resolve(imagemin.buffer(_file, {
                 plugins: [
                     imageminOptipng(),
                     imageminJpegtran(),
                     // @ts-ignore
-                    imageminPngquant(pngOptions)
-                ]
+                    imageminPngquant(pngOptions),
+                ],
+            }))
+                .timeout(timeout)
+                .tapCatch(bluebird_1.TimeoutError, (e) => {
+                console.error(`[ERROR] imagemin 處理時間過久 ${timeout}ms 放棄壓縮此圖片`);
             });
         })
             .then(function (buf) {

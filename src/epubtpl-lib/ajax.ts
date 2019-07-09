@@ -1,4 +1,3 @@
-
 import fs = require('fs-extra');
 import fetch = require('isomorphic-fetch');
 import path = require("path");
@@ -10,6 +9,7 @@ import imageminJpegtran = require('imagemin-jpegtran');
 import imageminPngquant = require('imagemin-pngquant');
 import imageminOptipng = require('imagemin-optipng');
 import Bluebird = require('bluebird');
+import { TimeoutError } from 'bluebird';
 
 export { fetch }
 
@@ -77,7 +77,8 @@ export async function fetchFile(file: IFiles, ...argv)
 				// @ts-ignore
 				return ret.buffer()
 			})
-			.then(buf => {
+			.then(buf =>
+			{
 
 				if (buf)
 				{
@@ -99,6 +100,8 @@ export async function fetchFile(file: IFiles, ...argv)
 
 	if (_file)
 	{
+		const timeout = 5000;
+
 		/**
 		 * 如果此部分發生錯誤則自動忽略
 		 */
@@ -113,14 +116,19 @@ export async function fetchFile(file: IFiles, ...argv)
 					quality: is_from_url ? [0.65, 0.8] : undefined,
 				};
 
-				return imagemin.buffer(_file, {
-					plugins: [
-						imageminOptipng(),
-						imageminJpegtran(),
-						// @ts-ignore
-						imageminPngquant(pngOptions)
-					]
-				})
+				return Bluebird
+					.resolve(imagemin.buffer(_file, {
+						plugins: [
+							imageminOptipng(),
+							imageminJpegtran(),
+							// @ts-ignore
+							imageminPngquant(pngOptions),
+						],
+					}))
+					.timeout(timeout)
+					.tapCatch(TimeoutError, (e) => {
+						console.error(`[ERROR] imagemin 處理時間過久 ${timeout}ms 放棄壓縮此圖片`)
+					})
 			})
 			.then(function (buf)
 			{
