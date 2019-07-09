@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.37",
+  "version": "1.1.38",
   "description": "create epub from node-novel style ( this module from epub-maker2 submodule )",
   "keywords": [
     "archive",
@@ -63,7 +63,7 @@
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.6",
     "deepmerge-plus": "^2.1.3",
-    "epub-maker2": "^2.4.13",
+    "epub-maker2": "^2.4.14",
     "execall2": "^1.1.1",
     "fs-iconv": "^2.0.10",
     "is-relative": "^1.0.0",
