@@ -13,6 +13,10 @@ const zhRegExp = _zhRegExp.use({
 export const allowedHtmlTagList = [
 	's',
 	'ruby',
+	'i',
+	'b',
+	'sup',
+	'sub',
 ] as const;
 
 export const enum EnumHtmlTag

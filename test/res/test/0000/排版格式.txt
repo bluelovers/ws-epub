@@ -4,3 +4,8 @@
 <ruby>漢<rt>Kan</rt>字<rt>ji</rt></ruby>
 
 <s>刪除綫</s>
+<b>粗</b>
+<i>斜</i>
+
+这段文本包含 <sup>上标</sup>
+这段文本包含 <sub>下标</sub>

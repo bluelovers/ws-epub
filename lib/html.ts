@@ -106,7 +106,11 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 				switch (tagName as (typeof allowedHtmlTagList)[number])
 				{
 					case 's':
-						return '<s>' + innerContext + '</s>';
+					case 'i':
+					case 'b':
+					case 'sup':
+					case 'sub':
+						return `<${tagName}>` + innerContext + `</${tagName}>`;
 					case 'ruby':
 						return '<ruby>' + _fixRubyInnerContext(innerContext) + '</ruby>';
 					default:
