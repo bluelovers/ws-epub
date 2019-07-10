@@ -1,0 +1,21 @@
+{
+  "name": "ws-epub",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "lerna:publish": "lerna publish",
+    "ncu": "npx npm-check-updates -u",
+    "sort-package-json": "npx \"sort-package-json\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@bluelovers/tsconfig": "^1.0.3"
+  },
+  "peerDependencies": {
+    "lerna": "^3.14.1"
+  },
+  "resolutions": {}
+}
