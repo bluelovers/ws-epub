@@ -1,0 +1,48 @@
+{
+  "name": "@node-novel/extract-bad-epub",
+  "version": "1.0.0",
+  "description": "從各種錯誤不合規範的 epub 內暴力提取 txt",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "bin": {
+    "extract-bad-epub": "bin/extract-bad-epub.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "coverage": "npx nyc yarn run test",
+    "lint": "npx eslint **/*.ts",
+    "ncu": "npx yarn-tool ncu -u",
+    "npm:publish": "npm publish",
+    "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
+    "postpublish": "git commit -m \"publish new version\" .",
+    "sort-package-json": "npx sort-package-json ./package.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc:default": "tsc -p tsconfig.json",
+    "tsc:esm": "tsc -p tsconfig.esm.json"
+  },
+  "dependencies": {
+    "@bluelovers/fast-glob": "^3.0.4",
+    "bluebird": "^3.5.5",
+    "epub.js": "^0.2.15",
+    "fs-iconv": "^2.0.10",
+    "html-minifier": "^4.0.0",
+    "jsdom-extra": "^1.3.4",
+    "jszip": "^3.2.2",
+    "micromatch": "^4.0.2",
+    "node-novel-info": "^2.3.33",
+    "upath2": "^2.1.3"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.27",
+    "@types/html-minifier": "^3.5.3",
+    "@types/jszip": "^3.1.6",
+    "@types/micromatch": "^3.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
