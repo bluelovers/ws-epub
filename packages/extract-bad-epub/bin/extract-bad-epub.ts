@@ -1,6 +1,4 @@
-/**
- * Created by user on 2019/7/10.
- */
+#!/usr/bin/env node
 
 import { load, saveAttach, autoExtract, console } from '../lib/index';
 import FastGlob from '@bluelovers/fast-glob/bluebird';
