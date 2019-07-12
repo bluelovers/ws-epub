@@ -12,6 +12,8 @@ import { minify } from 'html-minifier';
 import path from 'upath2';
 import { stringify } from 'mdconf2';
 import { Console } from 'debug-color2';
+import execall from 'execall2';
+import { cloneDeep } from 'lodash';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -205,11 +207,20 @@ export function saveAttach(options: IReturnData & {
 		{
 			let cwd = path.join(options.cwd, dir);
 
+			data = cloneDeep(data);
+
 			await Bluebird
 				.resolve(Object.entries(data.images))
 				.map(async ([id, src], index, length) => {
+
+					let _parse = path.parse(src);
+
+					let _src = path.join(_parse.dir, id + _parse.ext);
+
 					let _img = path.join(dir, src);
-					let _img_path = path.join(cwd, src);
+					let _img_path = path.join(cwd, _src);
+
+					data.images[id] = _src;
 
 					return Bluebird
 						.resolve(options.zip.file(_img))
@@ -277,4 +288,23 @@ export function fixHtml(html: string): string
 		conservativeCollapse: true,
 		caseSensitive: true,
 	});
+}
+
+export function isBadName(input: string)
+{
+	return /index|^img$|\d{10,}/i.test(input) || isEncodeURI(input) || isHashedLike(input)
+}
+
+export function isHashedLike(input: string, maxCount: number = 3)
+{
+	let r = execall(/([a-f][0-9]|[0-9][a-f])/ig, input);
+
+	return r.length >= maxCount;
+}
+
+export function isEncodeURI(input: string, maxCount: number = 3)
+{
+	let r = execall(/(%[0-9a-f]{2,})/ig, input);
+
+	return r.length >= maxCount;
 }

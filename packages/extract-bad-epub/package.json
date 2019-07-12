@@ -1,6 +1,6 @@
 {
   "name": "extract-bad-epub",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "從各種錯誤不合規範的 epub 內暴力提取 txt",
   "homepage": "https://github.com/bluelovers/ws-epub#readme",
   "bugs": {
@@ -35,10 +35,12 @@
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
     "bluebird": "^3.5.5",
+    "execall2": "^1.1.1",
     "fs-iconv": "^2.0.10",
     "html-minifier": "^4.0.0",
     "jsdom-extra": "^1.3.4",
     "jszip": "^3.2.2",
+    "lodash": "^4.17.14",
     "node-novel-info": "^2.3.33",
     "upath2": "^2.1.3"
   },

@@ -3,6 +3,7 @@
 import { load, saveAttach, autoExtract, console } from '../lib/index';
 import FastGlob from '@bluelovers/fast-glob/bluebird';
 import Bluebird = require('bluebird');
+import * as path from 'path';
 
 console.setOptions({
 	time: true,
@@ -15,6 +16,7 @@ FastGlob([
 ], {
 	cwd,
 	absolute: true,
+	deep: 0,
 })
 	.tap(ls => {
 
@@ -24,7 +26,12 @@ FastGlob([
 	})
 	.mapSeries(file => {
 		console.log(file);
-		return autoExtract(file)
+
+		let target_path = path.join(cwd, path.parse(file).name + '_out');
+
+		return autoExtract(file, {
+			cwd: target_path,
+		})
 	})
 	.then(ls => {
 
