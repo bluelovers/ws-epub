@@ -123,7 +123,7 @@ declare class EPub extends EventEmitter {
      *  Walks the NavMap object through all levels and finds elements
      *  for TOC
      **/
-    walkNavMap(branch: any, path: any, id_list: any, level: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?: any): any[];
+    walkNavMap(branch: any, path: any, id_list: any, level?: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?: any): any[];
     /**
      *  EPub#getChapter(id, callback) -> undefined
      *  - id (String): Manifest id value for a chapter

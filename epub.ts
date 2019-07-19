@@ -5,6 +5,7 @@ import NodeUrl = require('url');
 import { EventEmitter } from 'events';
 import { ZipFile, IZipFile } from './zipfile';
 import { array_unique } from 'array-hyper-unique';
+import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
 //TODO: Cache parsed data
 
@@ -162,7 +163,7 @@ class EPub extends EventEmitter
 			this.emit("error", new Error("No mimetype file in archive"));
 			return;
 		}
-		this.zip.readFile(this.mimeFile, (function (err, data)
+		this.zip.readFile(this.mimeFile, (err, data) =>
 		{
 			if (err)
 			{
@@ -177,7 +178,7 @@ class EPub extends EventEmitter
 			}
 
 			this.getRootFiles();
-		}).bind(this));
+		});
 	}
 
 	protected _Elem(element: EPub.TocElement)
@@ -223,17 +224,17 @@ class EPub extends EventEmitter
 
 		const xml2jsOptions = this._getStatic().xml2jsOptions;
 
-		this.zip.readFile(this.containerFile, (function (err, data)
+		this.zip.readFile(this.containerFile,  (err, data) =>
 		{
 			if (err)
 			{
 				this.emit("error", new Error("Reading archive failed"));
 				return;
 			}
-			var xml = data.toString("utf-8").toLowerCase().trim(),
+			let xml = data.toString("utf-8").toLowerCase().trim(),
 				xmlparser = new xml2js.Parser(xml2jsOptions);
 
-			xmlparser.on("end", (function (result)
+			let parser = xmlparser.on("end", (result) =>
 			{
 
 				if (!result.rootfiles || !result.rootfiles.rootfile)
@@ -279,7 +280,7 @@ class EPub extends EventEmitter
 
 				for (i = 0, len = this.zip.names.length; i < len; i++)
 				{
-					if (this.zip.names[i].toLowerCase() == filename)
+					if (this.zip.names[i].toLowerCase() == (filename as any as string))
 					{
 						this.rootFile = this.zip.names[i];
 						break;
@@ -294,17 +295,17 @@ class EPub extends EventEmitter
 
 				this.handleRootFile();
 
-			}).bind(this));
+			});
 
-			xmlparser.on("error", (function (err)
+			xmlparser.on("error", (err) =>
 			{
 				this.emit("error", new Error("Parsing container XML failed"));
 				return;
-			}).bind(this));
+			});
 
 			xmlparser.parseString(xml);
 
-		}).bind(this));
+		});
 	}
 
 	/**
@@ -316,7 +317,7 @@ class EPub extends EventEmitter
 	{
 		const xml2jsOptions = this._getStatic().xml2jsOptions;
 
-		this.zip.readFile(this.rootFile, (function (err, data)
+		this.zip.readFile(this.rootFile, (err, data) =>
 		{
 			if (err)
 			{
@@ -328,15 +329,15 @@ class EPub extends EventEmitter
 
 			xmlparser.on("end", this.parseRootFile.bind(this));
 
-			xmlparser.on("error", (function (err)
+			xmlparser.on("error", (err) =>
 			{
 				this.emit("error", new Error("Parsing container XML failed"));
 				return;
-			}).bind(this));
+			});
 
 			xmlparser.parseString(xml);
 
-		}).bind(this));
+		});
 	}
 
 	/**
@@ -555,7 +556,7 @@ class EPub extends EventEmitter
 		}
 
 		let metas = metadata['meta'] || {};
-		Object.keys(metas).forEach(function (key)
+		Object.keys(metas).forEach((key) =>
 		{
 			var meta = metas[key];
 			if (meta['@'] && meta['@'].name)
@@ -676,7 +677,7 @@ class EPub extends EventEmitter
 
 		const xml2jsOptions = this._getStatic().xml2jsOptions;
 
-		this.zip.readFile(this.spine.toc.href, (function (err, data)
+		this.zip.readFile(this.spine.toc.href,  (err, data) =>
 		{
 			if (err)
 			{
@@ -686,7 +687,7 @@ class EPub extends EventEmitter
 			var xml = data.toString("utf-8"),
 				xmlparser = new xml2js.Parser(xml2jsOptions);
 
-			xmlparser.on("end", (function (result)
+			xmlparser.on("end", (result) =>
 			{
 				if (result.navMap && result.navMap.navPoint)
 				{
@@ -694,17 +695,17 @@ class EPub extends EventEmitter
 				}
 
 				this.emit("end");
-			}).bind(this));
+			});
 
-			xmlparser.on("error", (function (err)
+			xmlparser.on("error", (err) =>
 			{
 				this.emit("error", new Error("Parsing container XML failed"));
 				return;
-			}).bind(this));
+			});
 
 			xmlparser.parseString(xml);
 
-		}).bind(this));
+		});
 	}
 
 	/**
@@ -717,7 +718,7 @@ class EPub extends EventEmitter
 	 *  Walks the NavMap object through all levels and finds elements
 	 *  for TOC
 	 **/
-	walkNavMap(branch, path, id_list, level: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?)
+	walkNavMap(branch, path, id_list, level?: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?)
 	{
 		ncx_idx = ncx_idx || {
 			index: 0,
@@ -849,7 +850,7 @@ class EPub extends EventEmitter
 	{
 		let self = this;
 
-		this.getChapterRaw(chapterId, (function (err, str)
+		this.getChapterRaw(chapterId, (err, str) =>
 		{
 			if (err)
 			{
@@ -869,6 +870,7 @@ class EPub extends EventEmitter
 			str = str.replace(/\r?\n/g, "\u0000");
 
 			// keep only <body> contents
+			// @ts-ignore
 			str.replace(/<body[^>]*?>(.*)<\/body[^>]*?>/i, function (o, d)
 			{
 				str = d.trim();
@@ -951,7 +953,7 @@ class EPub extends EventEmitter
 			*/
 
 			// replace links
-			str = str.replace(/(\shref\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (function (o, a, b, c)
+			str = str.replace(/(\shref\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (o, a, b, c) =>
 			{
 				var linkparts = b && b.split("#"),
 					link = path.concat([(linkparts.shift() || "")]).join("/").trim(),
@@ -981,13 +983,13 @@ class EPub extends EventEmitter
 					return a + b + c;
 				}
 
-			}).bind(this));
+			});
 
 			// bring back linebreaks
 			str = str.replace(/\u0000/g, "\n").trim();
 
 			callback(null, str);
-		}).bind(this));
+		});
 	}
 
 	/**
@@ -1001,23 +1003,25 @@ class EPub extends EventEmitter
 	{
 		if (this.manifest[chapterId])
 		{
-
 			if (!(this.manifest[chapterId]['media-type'] == "application/xhtml+xml" || this.manifest[chapterId]['media-type'] == "image/svg+xml"))
 			{
 				return callback(new Error(`Invalid mime type for chapter "${chapterId}" ${this.manifest[chapterId]['media-type']}`));
 			}
 
-			this.zip.readFile(this.manifest[chapterId].href, (function (err, data)
+			this.zip.readFile(this.manifest[chapterId].href, (function (this: EPub, err, data)
 			{
 				if (err)
 				{
-					callback(new Error(`Reading archive failed "${chapterId}"`));
+					callback(new Error(`Reading archive failed "${chapterId}", ${this.manifest[chapterId].href}`));
+					return;
+				}
+				else if (!data)
+				{
+					callback(new Error(`Reading archive failed "${chapterId}", ${this.manifest[chapterId].href}`));
 					return;
 				}
 
-				var str = data.toString("utf-8");
-
-				callback(null, str);
+				callback(null, crlf(data.toString("utf-8")));
 
 			}).bind(this));
 		}
@@ -1068,7 +1072,7 @@ class EPub extends EventEmitter
 		{
 			let self = this;
 
-			this.zip.readFile(this.manifest[id].href, (function (err, data)
+			this.zip.readFile(this.manifest[id].href, (err, data) =>
 			{
 				if (err)
 				{
@@ -1077,7 +1081,7 @@ class EPub extends EventEmitter
 				}
 
 				callback(null, data, this.manifest[id]['media-type']);
-			}).bind(this));
+			});
 		}
 		else
 		{

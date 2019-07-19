@@ -39,11 +39,18 @@ catch (err)
 
 		public readFile(name: string, cb: (error, buffer) => void)
 		{
-			this.admZip.readFileAsync(this.admZip.getEntry(name), function (buffer, error)
+			this.admZip.readFileAsync(this.admZip.getEntry(name), (buffer, error) =>
 			{
-				// `error` is bogus right now, so let's just drop it.
-				// see https://github.com/cthackers/adm-zip/pull/88
-				return cb(null, buffer);
+				if (error || !buffer)
+				{
+					name = decodeURIComponent(name);
+
+					this.admZip.readFileAsync(this.admZip.getEntry(name), (buffer, error) => cb(error, buffer));
+				}
+				else
+				{
+					cb(error, buffer);
+				}
 			});
 		}
 
