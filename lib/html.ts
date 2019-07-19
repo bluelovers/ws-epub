@@ -11,7 +11,10 @@ export function fixHtml(html): string
 		preserveLineBreaks: true,
 		conservativeCollapse: true,
 		caseSensitive: true,
-	});
+	})
+		.replace(/(?<=<br\/?>)(?!\s*[\r\n])/ig, '\n')
+		.replace(/(?<=<\/p>)(?!\s*[\r\n])/ig, '\n')
+		;
 }
 
 export default fixHtml;
