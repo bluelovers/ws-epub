@@ -11,3 +11,5 @@ export { createUUID };
 export declare function parseLowCheckLevelMdconf(data: string | Buffer): IMdconfMeta;
 export declare function fsLowCheckLevelMdconf(file: string): IMdconfMeta;
 export declare function fsLowCheckLevelMdconfAsync(file: string): Promise<IMdconfMeta>;
+export declare function pathAtParent(cwd: string, cwdRoot: string): boolean;
+export declare function pathDirNormalize(dir: string): string;

@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "@node-novel/normalize": "^1.0.9",
+    "@toycode/markdown-it-class": "^1.1.0",
     "@types/node": "^12.6.8",
     "array-hyper-unique": "^1.0.7",
     "bluebird": "^3.5.5",
@@ -74,9 +75,18 @@
     "is-relative": "^1.0.0",
     "lazy-url": "^1.0.8",
     "lodash": "^4.17.15",
+    "markdown-it": "^9.0.1",
+    "markdown-it-emoji": "^1.4.0",
+    "markdown-it-footnote": "^3.0.2",
+    "markdown-it-implicit-figures": "^0.9.0",
+    "markdown-it-include": "^1.1.0",
+    "markdown-it-ruby": "^0.1.1",
+    "markdown-it-title": "^1.0.4",
+    "markdown-it-toc-and-anchor": "^4.2.0",
     "moment": "^2.24.0",
     "node-novel-globby": "^2.0.9",
     "node-novel-info": "^2.3.33",
+    "path-dir-normalize": "^1.0.1",
     "regexp-cjk": "^3.3.7",
     "regexp-cjk-plugin-extra": "^1.0.4",
     "str-util": "^2.3.21",
@@ -87,7 +97,9 @@
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.12",
+    "@types/fs-extra": "^8.0.0",
     "@types/lodash": "^4.14.136",
+    "@types/markdown-it": "^0.0.8",
     "novel-txt-merge": "^1.0.24"
   }
 }

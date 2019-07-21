@@ -7,6 +7,8 @@ import { readFile, readFileSync } from 'fs-iconv';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import Bluebird = require('bluebird');
+import path = require('upath2');
+import { pathDirNormalize as _pathDirNormalize } from 'path-dir-normalize';
 
 export { createUUID }
 
@@ -36,4 +38,17 @@ export function fsLowCheckLevelMdconf(file: string)
 export function fsLowCheckLevelMdconfAsync(file: string)
 {
 	return (readFile(file) as Promise<Buffer>).then(parseLowCheckLevelMdconf);
+}
+
+export function pathAtParent(cwd: string, cwdRoot: string)
+{
+	cwd = path.normalize(cwd).toLowerCase();
+	cwdRoot = pathDirNormalize(cwdRoot).toLowerCase();
+
+	return (cwdRoot === cwd) || pathDirNormalize(path.dirname(cwd)).startsWith(cwdRoot)
+}
+
+export function pathDirNormalize(dir: string)
+{
+	return _pathDirNormalize(dir, path)
 }

@@ -6,7 +6,7 @@ import { ISectionContent } from 'epub-maker2/src/index';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import { array_unique, chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
-import { fsLowCheckLevelMdconfAsync} from './util';
+import { fsLowCheckLevelMdconfAsync, pathDirNormalize } from './util';
 import { console } from './log';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 import { normalize_strip } from '@node-novel/normalize';
@@ -20,7 +20,12 @@ import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
 import {
 	_handleVolume,
 	_handleVolumeImage,
-	_handleVolumeImageEach, getAttachMetaByRow,
+	_handleVolumeImageEach,
+	_hookAfterEpub,
+	_hookAfterVolume,
+	addContributeSection,
+	createContributeSection,
+	getAttachMetaByRow,
 	IEpubRuntimeReturn,
 	makeChapterID,
 	makeVolumeID,
@@ -35,6 +40,7 @@ import deepmerge = require('deepmerge-plus');
 import { inspect } from 'util';
 import { EpubStore } from './store';
 import { splitTxt } from './html';
+import { handleMarkdown } from './md';
 
 export { console }
 
@@ -224,8 +230,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		//console.dir(options, {colors: true});
 
-		let novelID = options.novelID;
-		let TXT_PATH = options.inputPath;
+		const novelID = options.novelID;
+		const TXT_PATH = pathDirNormalize(options.inputPath);
 
 		let meta = await getNovelConf(options, cache);
 
@@ -419,6 +425,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									epubOptions: options,
 									store,
 									cwd: dirname,
+									cwdRoot: TXT_PATH,
 								})
 									.tap(ls =>
 									{
@@ -473,6 +480,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									epubOptions: options,
 									processReturn: cache,
 									cwd: dirname,
+									cwdRoot: TXT_PATH,
 								});
 
 								if (index == 0)
@@ -485,6 +493,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 											epubOptions: options,
 											store,
 											cwd: dirname,
+											cwdRoot: TXT_PATH,
 										});
 
 										if (!epub.hasSection(temp._old_top_level))
@@ -538,6 +547,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									epub,
 									epubOptions: options,
 									cwd: dirname,
+									cwdRoot: TXT_PATH,
 								});
 							}
 
@@ -627,12 +637,26 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 					{
 						const { temp } = processReturn;
 
+						/*
 						await _handleVolumeImageEach(temp.cache_volume_row, {
 							epub,
 							processReturn,
 							epubOptions: options,
 							store,
+							cwdRoot: TXT_PATH,
 						});
+						 */
+
+						await _hookAfterVolume(temp.cache_volume_row, {
+							epub,
+							processReturn,
+							epubOptions: options,
+							store,
+							cwdRoot: TXT_PATH,
+						}, [
+							_handleVolumeImage,
+							addContributeSection,
+						]);
 
 						if (temp._old_top_level && !epub.hasSection(temp._old_top_level))
 						{
@@ -643,23 +667,58 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						{
 							epub.withSection(temp._new_top_level);
 						}
-
-						/*
-
-						console.dir(ret.data, {
-							depth: null,
-							colors: true,
-						});
-						console.dir(ret.temp, {
-							depth: null,
-							colors: true,
-						});
-
-						 */
-
-						//process.exit();
 					})
 					;
+			})
+			.tap(async (processReturn: IEpubRuntimeReturn) =>
+			{
+
+				_hookAfterEpub(epub, {
+					epub,
+					processReturn,
+					epubOptions: options,
+					store,
+					cwd: TXT_PATH,
+					cwdRoot: TXT_PATH,
+				}, [
+
+					async (epub, _data_) =>
+					{
+						const { cwdRoot } = _data_;
+
+						novelGlobby.globby([
+								'CONTRIBUTE.md',
+							], {
+								cwd: cwdRoot,
+								absolute: true,
+								deep: 0,
+							})
+							.then(async (ls) =>
+							{
+								if (ls.length)
+								{
+									let file = ls[0];
+
+									let source = await fs.readFile(file);
+
+									let mdReturn = handleMarkdown(source, {
+										..._data_,
+										cwd: cwdRoot,
+									});
+
+									createContributeSection({
+										target: epub,
+										mdReturn,
+										processReturn,
+									})
+								}
+							})
+						;
+
+					},
+
+				])
+
 			})
 		;
 

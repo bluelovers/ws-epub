@@ -5,6 +5,10 @@
 import novelEpub from '../index';
 import txtMerge from 'novel-txt-merge';
 import * as path from 'path';
+import crypto = require('crypto');
+import JSZip = require('jszip');
+import fs from 'fs-iconv';
+import ZipFile from 'epub2/zipfile';
 
 /**
  * 小說資料夾名稱
@@ -21,11 +25,30 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 {
 	console.time();
 
-	await novelEpub({
+	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
 		filename: novelID,
 	});
+
+	console.dir(ret);
+
+	let buf = await fs.readFile(ret.file);
+
+	let zip = await JSZip.loadAsync(buf);
+
+	console.dir(zip.files);
+
+	Object.values(zip.files).forEach(v => {
+		// @ts-ignore
+		console.log(v.name, v._data && v._data.crc32)
+	})
+
+//
+	const md5 = crypto.createHash('md5');
+	let result = md5.update(buf).digest('hex');
+
+	console.dir(result);
 
 	console.timeEnd();
 
