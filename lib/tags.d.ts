@@ -14,3 +14,4 @@ export declare const reHtmlAttr: _zhRegExp;
 export declare function createHtmlTagRe(allowedHtmlTagList: string[] | readonly string[]): _zhRegExp;
 export declare function _convertHtmlTag001(input: string): string;
 export declare function _fixRubyInnerContext(innerContext: string): string;
+export declare function _replaceHtmlTag(replacer: ((substring: string, ...args: string[]) => string)): ($0: string, $1: string, $2: string, ...argv: string[]) => string;

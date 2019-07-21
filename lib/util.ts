@@ -2,9 +2,11 @@
  * Created by user on 2018/2/18/018.
  */
 
+// @ts-ignore
 import { readFile, readFileSync } from 'fs-iconv';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
-import { mdconf_parse } from 'node-novel-info';
+import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
+import Bluebird = require('bluebird');
 
 export { createUUID }
 
@@ -33,5 +35,5 @@ export function fsLowCheckLevelMdconf(file: string)
 
 export function fsLowCheckLevelMdconfAsync(file: string)
 {
-	return readFile(file).then(parseLowCheckLevelMdconf);
+	return (readFile(file) as Promise<Buffer>).then(parseLowCheckLevelMdconf);
 }

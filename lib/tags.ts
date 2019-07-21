@@ -1,6 +1,7 @@
 import _zhRegExp from 'regexp-cjk';
 import createZhRegExpPlugin from 'regexp-cjk-plugin-extra';
 import { console } from './log';
+import { toHalfWidth } from 'str-util';
 
 const zhRegExp = _zhRegExp.use({
 	on: [
@@ -55,7 +56,7 @@ if (0)
 
 export function createHtmlTagRe(allowedHtmlTagList: string[] | readonly string[])
 {
-	return new zhRegExp(`(?:${EnumHtmlTag.OPEN})(${allowedHtmlTagList.join('|')})((?:\\s+[\\w \\t＝═=ａ-ｚ０-９]*?)?)(?:${EnumHtmlTag.CLOSE})([^\\n]*?)(?:${EnumHtmlTag.OPEN})(?:\\/\\1)(?:${EnumHtmlTag.CLOSE})`, 'iug', {
+	return new zhRegExp(`(?:${EnumHtmlTag.OPEN})(${allowedHtmlTagList.join('|')})((?:\\s+[\\w \\t＝═=ａ-ｚ０-９]*?)?)(?:${EnumHtmlTag.CLOSE})([^\\n]*?)(?:${EnumHtmlTag.OPEN})(?:(?:\\/|／)\\1)(?:${EnumHtmlTag.CLOSE})`, 'iug', {
 		greedyTable: 2,
 	})
 }
@@ -71,7 +72,22 @@ export function _convertHtmlTag001(input: string)
 export function _fixRubyInnerContext(innerContext: string)
 {
 	return innerContext
-		.replace(reHtmlRubyRt, '<$1$2>$3</$1>')
-		.replace(reHtmlRubyRp, '<$1$2>$3</$1>')
+		.replace(reHtmlRubyRt, _replaceHtmlTag(($0, $1, $2, $3) => {
+			return `<${$1}${$2}>${$3}</${$1}>`
+		}))
+		.replace(reHtmlRubyRp, _replaceHtmlTag(($0, $1, $2, $3) => {
+			return `<${$1}${$2}>${$3}</${$1}>`
+		}))
 	;
+}
+
+export function _replaceHtmlTag(replacer: ((substring: string, ...args: string[]) => string))
+{
+	return ($0: string, $1: string, $2: string, ...argv: string[]) => {
+
+		$1 = toHalfWidth($1);
+		$2 = toHalfWidth($2);
+
+		return replacer($0, $1, $2, ...argv)
+	}
 }
