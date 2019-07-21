@@ -1,7 +1,7 @@
 # novel-epub
 
-> create epub from node-novel style ( this module from epub-maker2 submodule )
-> 合併小說 => epub
+> 製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style
+> 合併小說 txt => epub
 
 ## usage
 
