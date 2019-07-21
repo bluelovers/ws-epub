@@ -71,13 +71,13 @@ export function _convertHtmlTag001(input: string)
 
 export function _fixRubyInnerContext(innerContext: string)
 {
+	let fn = _replaceHtmlTag(($0, $1, $2, $3) => {
+		return `<${$1}${$2}>${$3}</${$1}>`
+	});
+
 	return innerContext
-		.replace(reHtmlRubyRt, _replaceHtmlTag(($0, $1, $2, $3) => {
-			return `<${$1}${$2}>${$3}</${$1}>`
-		}))
-		.replace(reHtmlRubyRp, _replaceHtmlTag(($0, $1, $2, $3) => {
-			return `<${$1}${$2}>${$3}</${$1}>`
-		}))
+		.replace(reHtmlRubyRt, fn)
+		.replace(reHtmlRubyRp, fn)
 	;
 }
 
