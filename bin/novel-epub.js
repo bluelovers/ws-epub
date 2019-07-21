@@ -66,7 +66,7 @@ let cli = yargs
     .option('lang', {
     alias: ['l'],
     type: 'string',
-    desc: 'epub 語言 epub lang',
+    desc: 'epub 語言 epub lang (此選項僅影響 epub meta 資訊 不會影響任何其他內容)',
 })
     .option('vertical', {
     type: 'boolean',

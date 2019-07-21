@@ -33,3 +33,4 @@ texst/temp
 /test/temp*/**
 !/test/temp/test.epub
 
+/test/res.char.ts

@@ -72,6 +72,11 @@ ATTACH.md
 * 每一個子資料夾代表一個章/卷
 * 會自動對名稱排序 即使是 全形/半形 + 中文數字 混用的情況依然可以排序
 
+## epub 範例
+
+- [test](test/res/test) - 原始內容
+- [test.epub](test/temp/test.epub) - 打包後的 epub
+
 ## cli
 
 > novel-epub --help
