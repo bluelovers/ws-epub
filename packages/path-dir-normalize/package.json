@@ -1,0 +1,28 @@
+{
+  "name": "path-dir-normalize",
+  "version": "1.0.0",
+  "description": "dir normalize with end of path.sep",
+  "homepage": "https://github.com/bluelovers/ws-epub#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/ws-epub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/ws-epub.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "coverage": "npx nyc yarn run test",
+    "lint": "npx eslint **/*.ts",
+    "ncu": "npx yarn-tool ncu -u",
+    "npm:publish": "npm publish",
+    "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
+    "postpublish": "git commit -m \"publish new version\" .",
+    "sort-package-json": "npx sort-package-json ./package.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc:default": "tsc -p tsconfig.json",
+    "tsc:esm": "tsc -p tsconfig.esm.json"
+  }
+}

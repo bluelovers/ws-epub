@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const path = require("path");
+/**
+ * dir normalize with end of path.sep
+ */
+function pathDirNormalize(dir, pathLib = path) {
+    return path.normalize(dir + path.sep);
+}
+exports.pathDirNormalize = pathDirNormalize;
+exports.default = pathDirNormalize;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLDZCQUE2QjtBQUU3Qjs7R0FFRztBQUNILFNBQWdCLGdCQUFnQixDQUFDLEdBQVcsRUFBRSxVQUcxQyxJQUFJO0lBRVAsT0FBTyxJQUFJLENBQUMsU0FBUyxDQUFDLEdBQUcsR0FBRyxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUE7QUFDdEMsQ0FBQztBQU5ELDRDQU1DO0FBRUQsa0JBQWUsZ0JBQWdCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgKiBhcyBwYXRoIGZyb20gJ3BhdGgnO1xuXG4vKipcbiAqIGRpciBub3JtYWxpemUgd2l0aCBlbmQgb2YgcGF0aC5zZXBcbiAqL1xuZXhwb3J0IGZ1bmN0aW9uIHBhdGhEaXJOb3JtYWxpemUoZGlyOiBzdHJpbmcsIHBhdGhMaWI6IHtcblx0bm9ybWFsaXplKHBhdGg6IHN0cmluZyk6IHN0cmluZyxcblx0c2VwOiBzdHJpbmcsXG59ID0gcGF0aClcbntcblx0cmV0dXJuIHBhdGgubm9ybWFsaXplKGRpciArIHBhdGguc2VwKVxufVxuXG5leHBvcnQgZGVmYXVsdCBwYXRoRGlyTm9ybWFsaXplO1xuIl19
