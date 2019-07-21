@@ -6,7 +6,7 @@ import * as path from 'path';
 export function pathDirNormalize(dir: string, pathLib: {
 	normalize(path: string): string,
 	sep: string,
-} = path)
+} = path): string
 {
 	return path.normalize(dir + path.sep)
 }

@@ -1,6 +1,6 @@
 {
   "name": "path-dir-normalize",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "dir normalize with end of path.sep",
   "homepage": "https://github.com/bluelovers/ws-epub#readme",
   "bugs": {
