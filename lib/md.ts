@@ -10,6 +10,8 @@ import { buffer } from 'extract-bad-epub/lib/index';
 import * as path from 'path';
 import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike } from 'ts-type';
 
+import { HTML_OPEN_CLOSE_TAG_RE } from 'markdown-it/lib/common/html_re';
+
 export function createMarkdownIt(options?: MarkdownIt.Options, plusData?: Partial<IInternalProcessMarkdownItOptions>)
 {
 	options = defaultsDeep({}, options, <MarkdownIt.Options>{
@@ -98,10 +100,15 @@ export function render(input: string, options: Partial<IInternalProcessMarkdownI
 	// @ts-ignore
 	if (options.md.options.xhtmlOut)
 	{
-		html = html.replace(/<br\s*>/ig, '<br/>')
+		html = html
+			.replace(/<br\s*>/ig, '<br/>')
 	}
 
-	return html;
+	return html
+		.replace(/(<p(?: class="linegroup calibre1")?>)<\/p>/ig, '<p class="linegroup calibre1">$1　 </p>')
+		.replace(/<p(?=\s|>)/ig, '<div')
+		.replace(/<\/\s*p>/ig, '</div>')
+		;
 }
 
 export function handleMarkdown(txt: Buffer | string, plusData?: IInternalProcessMarkdownItOptions)
@@ -124,14 +131,3 @@ export function handleMarkdown(txt: Buffer | string, plusData?: IInternalProcess
 		mdHtml,
 	}
 }
-
-//let file = 'G:/Users/The Project/nodejs-yarn/ws-epub/packages/node-novel-epub/test/res/test/CONTRIBUTE.md';
-//
-//let plusData: Partial<IInternalProcessMarkdownItOptions> = {
-//	cwd: path.dirname(file)
-//};
-//
-//console.dir(handleMarkdown(fs.readFileSync(file), plusData as any));
-
-//console.dir(plusData)
-

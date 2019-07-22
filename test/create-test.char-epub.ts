@@ -37,12 +37,12 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 	let zip = await JSZip.loadAsync(buf);
 
-	console.dir(zip.files);
+//	console.dir(zip.files);
 
 	Object.values(zip.files).forEach(v => {
 		// @ts-ignore
 		console.log(v.name, v._data && v._data.crc32)
-	})
+	});
 
 //
 	const md5 = crypto.createHash('md5');
