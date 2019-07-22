@@ -24,6 +24,11 @@ section
 	-webkit-column-break-before: avoid;
 }
 
+pre, code
+{
+	white-space: pre-wrap;
+}
+
 :root
 {
 
