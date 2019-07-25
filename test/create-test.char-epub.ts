@@ -41,8 +41,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 //	console.dir(zip.files);
 
 	Object.values(zip.files).forEach(v => {
-		// @ts-ignore
-		console.log(v.name, v._data && v._data.crc32)
+		console.log(v.name, v.date)
 	});
 
 //
