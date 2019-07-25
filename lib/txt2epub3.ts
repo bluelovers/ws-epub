@@ -85,6 +85,11 @@ export interface IOptions
 	downloadRemoteFile?: boolean,
 
 	iconv?: string | 'cn' | 'tw' | 'chs' | 'cht' | 'zhs' | 'zht',
+
+	/**
+	 * 允許指定 epub 內的檔案更新日期
+	 */
+	epubContextDate?: moment.MomentInput | Date | moment.Moment;
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
@@ -337,6 +342,11 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 					console.log(ls);
 				})
 			;
+		}
+
+		if (options.epubContextDate)
+		{
+			epub.withContextDate(options.epubContextDate);
 		}
 
 		//process.exit();

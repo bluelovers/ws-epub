@@ -39,6 +39,10 @@ export interface IOptions {
      */
     downloadRemoteFile?: boolean;
     iconv?: string | 'cn' | 'tw' | 'chs' | 'cht' | 'zhs' | 'zht';
+    /**
+     * 允許指定 epub 內的檔案更新日期
+     */
+    epubContextDate?: moment.MomentInput | Date | moment.Moment;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Bluebird<IMdconfMeta>;

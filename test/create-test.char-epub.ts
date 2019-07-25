@@ -29,6 +29,7 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
 		filename: novelID,
+		epubContextDate: new Date('2019-07-24 06:00:00Z'),
 	});
 
 	console.dir(ret);
