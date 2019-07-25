@@ -42,7 +42,7 @@ export interface IOptions {
     /**
      * 允許指定 epub 內的檔案更新日期
      */
-    epubContextDate?: moment.MomentInput | Date | moment.Moment;
+    epubContextDate?: moment.MomentInput | Date | moment.Moment | true;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Bluebird<IMdconfMeta>;

@@ -81,6 +81,9 @@ let cli = yargs
     requiresArg: true,
     desc: `是否在打包時同時進行簡繁轉換 cn 轉為簡體, tw 轉為繁體`,
 })
+    .option('epubContextDate', {
+    desc: `指定 epub 內檔案的日期標記`,
+})
     .showHelpOnFail(true)
     // @ts-ignore
     .command('$0', '', function (yargs) {
@@ -115,6 +118,7 @@ let cli = yargs
         vertical: yargs.argv.vertical,
         downloadRemoteFile: yargs.argv.downloadRemoteFile,
         iconv: yargs.argv.iconv,
+        epubContextDate: yargs.argv.epubContextDate,
     });
     //yargs.showHelp('log');
 })

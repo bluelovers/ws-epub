@@ -89,7 +89,7 @@ export interface IOptions
 	/**
 	 * 允許指定 epub 內的檔案更新日期
 	 */
-	epubContextDate?: moment.MomentInput | Date | moment.Moment;
+	epubContextDate?: moment.MomentInput | Date | moment.Moment | true;
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
@@ -346,6 +346,11 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		if (options.epubContextDate)
 		{
+			if (typeof options.epubContextDate == 'boolean')
+			{
+				options.epubContextDate = new Date('2000-12-24 23:00:00Z');
+			}
+
 			epub.withContextDate(options.epubContextDate);
 		}
 
