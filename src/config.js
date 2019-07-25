@@ -190,6 +190,9 @@ class EpubConfig {
         if (!self.publication) {
             this.setPublication(true);
         }
+        if (self.epubContextDate) {
+            self.epubContextDate = util_1.moment(self.epubContextDate);
+        }
         if (self.infoPreface) {
             /*
             self.infoPreface = crlf(self.infoPreface).replace(/[ \t\uFEFF\xA0　]+$/gm, '');

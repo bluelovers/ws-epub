@@ -75,6 +75,10 @@ export interface IEpubConfig {
     infoPrefaceHTML?: string;
     links?: EpubMetaLink[];
     vertical?: boolean | EnumEpubConfigVertical;
+    /**
+     * 允許指定 epub 內的檔案更新日期
+     */
+    epubContextDate?: moment.MomentInput | Date | moment.Moment;
 }
 export declare enum EnumEpubConfigVertical {
     NONE = 0,
@@ -139,6 +143,10 @@ export declare class EpubConfig implements IEpubConfig {
      * 輸出成 直排
      */
     vertical?: boolean | EnumEpubConfigVertical;
+    /**
+     * 允許指定 epub 內的檔案更新日期
+     */
+    epubContextDate?: moment.MomentInput | Date | moment.Moment;
     constructor(epubConfig?: IEpubConfig, options?: any);
     readonly langMain: string;
     subjects: string[];

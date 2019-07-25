@@ -1,13 +1,13 @@
-/// <reference types="bluebird" />
 /// <reference types="node" />
 import { EnumEpubConfigVertical, EpubConfig, ICollection, ICover, IEpubConfig, IRightsConfig } from './config';
-import { BPromise, hashSum, shortid } from './lib/util';
+import { BPromise, hashSum, moment, shortid } from './lib/util';
 import { EnumEpubType, EnumEpubTypeName } from './epub-types';
 import { EnumSectionCollectType } from './var';
 export { EnumEpubType, EnumEpubTypeName };
 export { EnumSectionCollectType };
 import libEpubtypes = require('./epub-types');
 import JSZip = require('jszip');
+import Bluebird = require('bluebird');
 export { shortid, hashSum };
 export declare function slugify(input: string, ...argv: any[]): string;
 export declare function slugifyWithFallback(input: string, ...argv: any[]): string;
@@ -52,7 +52,8 @@ export declare class EpubMaker {
     setVertical(vertical?: boolean | EnumEpubConfigVertical): this;
     getFilename(useTitle?: boolean, noExt?: boolean): string;
     vaild(): string[];
-    build(options?: any): BPromise<JSZip>;
+    withContextDate(epubContextDate: moment.MomentInput | Date | moment.Moment): this;
+    build(options?: any): Bluebird<JSZip>;
     /**
      * for node.js
      *

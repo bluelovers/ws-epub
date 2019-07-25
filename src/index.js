@@ -12,6 +12,7 @@ exports.shortid = util_1.shortid;
 const epub_types_1 = require("./epub-types");
 exports.EnumEpubType = epub_types_1.EnumEpubType;
 const libEpubtypes = require("./epub-types");
+const jszip_fixed_date_1 = require("jszip-fixed-date");
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
         // @ts-ignore
@@ -244,6 +245,10 @@ class EpubMaker {
         }
         return null;
     }
+    withContextDate(epubContextDate) {
+        this.epubConfig.epubContextDate = util_1.moment(epubContextDate).local();
+        return this;
+    }
     build(options) {
         let self = this;
         if (!this.epubConfig.publication) {
@@ -262,7 +267,14 @@ class EpubMaker {
             .forEach(function (section, index) {
             section._EpubMaker_ = self;
         });
-        return template_1.templateManagers.exec(this.epubConfig.templateName, this, options);
+        return template_1.templateManagers
+            .exec(this.epubConfig.templateName, this, options)
+            .tap((epubZip) => {
+            if (this.epubConfig.epubContextDate) {
+                let date = this.epubConfig.epubContextDate.toDate();
+                return jszip_fixed_date_1.default(epubZip, date);
+            }
+        });
     }
     /**
      * for node.js

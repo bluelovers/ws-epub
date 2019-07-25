@@ -112,6 +112,11 @@ export interface IEpubConfig
 	links?: EpubMetaLink[],
 
 	vertical?: boolean | EnumEpubConfigVertical,
+
+	/**
+	 * 允許指定 epub 內的檔案更新日期
+	 */
+	epubContextDate?: moment.MomentInput | Date | moment.Moment;
 }
 
 export enum EnumEpubConfigVertical
@@ -199,6 +204,11 @@ export class EpubConfig implements IEpubConfig
 	 * 輸出成 直排
 	 */
 	vertical?: boolean | EnumEpubConfigVertical;
+
+	/**
+	 * 允許指定 epub 內的檔案更新日期
+	 */
+	epubContextDate?: moment.MomentInput | Date | moment.Moment;
 
 	constructor(epubConfig: IEpubConfig = {}, options: any = {})
 	{
@@ -473,6 +483,11 @@ export class EpubConfig implements IEpubConfig
 		if (!self.publication)
 		{
 			this.setPublication(true);
+		}
+
+		if (self.epubContextDate)
+		{
+			self.epubContextDate = moment(self.epubContextDate)
 		}
 
 		if (self.infoPreface)

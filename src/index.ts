@@ -19,6 +19,8 @@ export { EnumEpubType, EnumEpubTypeName };
 export { EnumSectionCollectType };
 import libEpubtypes = require('./epub-types');
 import JSZip = require('jszip');
+import fixedJSZipDate from 'jszip-fixed-date';
+import Bluebird = require('bluebird');
 
 export { shortid, hashSum }
 
@@ -392,7 +394,14 @@ export class EpubMaker
 		return null;
 	}
 
-	build(options?)
+	withContextDate(epubContextDate: moment.MomentInput | Date | moment.Moment)
+	{
+		this.epubConfig.epubContextDate = moment(epubContextDate).local();
+
+		return this
+	}
+
+	build(options?): Bluebird<JSZip>
 	{
 		let self = this;
 
@@ -423,7 +432,18 @@ export class EpubMaker
 			})
 		;
 
-		return templateManagers.exec(this.epubConfig.templateName, this, options);
+		return templateManagers
+			.exec(this.epubConfig.templateName, this, options)
+			.tap((epubZip: JSZip) => {
+
+				if (this.epubConfig.epubContextDate)
+				{
+					let date = (this.epubConfig.epubContextDate as moment.Moment).toDate();
+
+					return fixedJSZipDate(epubZip, date)
+				}
+			})
+			;
 	}
 
 	/**
