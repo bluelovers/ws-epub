@@ -9,6 +9,7 @@ import crypto = require('crypto');
 import JSZip = require('jszip');
 import fs from 'fs-iconv';
 import ZipFile from 'epub2/zipfile';
+import Bluebird = require('bluebird');
 
 /**
  * 小說資料夾名稱
@@ -25,6 +26,8 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 {
 	console.time();
 
+	let old_md5 = await fileMd5('./temp/test.epub').then(data => data.md5).catch(e => null);
+
 	let ret = await novelEpub({
 		inputPath: TXT_PATH,
 		outputPath: OUTPUT_PATH,
@@ -34,9 +37,9 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 	console.dir(ret);
 
-	let buf = await fs.readFile(ret.file);
+	let _data = await fileMd5(ret.file);
 
-	let zip = await JSZip.loadAsync(buf);
+	let zip = await JSZip.loadAsync(_data.buf);
 
 //	console.dir(zip.files);
 
@@ -44,14 +47,29 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 		console.log(v.name, v.date)
 	});
 
-//
-	const md5 = crypto.createHash('md5');
-	let result = md5.update(buf).digest('hex');
-
-	console.dir(result);
+	console.dir({
+		old_md5,
+		md5: _data.md5,
+	});
 
 	console.timeEnd();
 
 	// 由於無法取消壓縮圖片 導致仍然無法結束進程 只能用此方式強制停止
 	process.exit();
 })();
+
+function fileMd5(file: string)
+{
+	return Bluebird.resolve(fs.readFile(file))
+		.then((buf) => {
+
+			const md5 = crypto.createHash('md5').update(buf).digest('hex');
+
+			return Bluebird.props({
+				file,
+				buf,
+				md5,
+			})
+		})
+	;
+}
