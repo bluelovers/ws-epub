@@ -7,12 +7,17 @@ import { IAttachMetaData } from './epub';
 import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
 import { _fixRubyInnerContext, allowedHtmlTagList, reTxtHtmlTag, reTxtImgTag } from './tags';
 import { getAttachID, handleAttachFile } from './store';
-import { toHalfWidth } from 'str-util';
+import { toHalfWidth, toFullWidth } from 'str-util';
 import { console } from './log';
 
-export function novelImage(src: string, failback?: string)
+export function novelImage(src: string, options: {
+	failback?: string,
+	attr?: string,
+} = {})
 {
-	if (failback)
+	let { failback = '', attr = '' } = options || {};
+
+	if (failback && failback.length)
 	{
 		failback = ` lowsrc="${failback}" `;
 	}
@@ -21,7 +26,7 @@ export function novelImage(src: string, failback?: string)
 		failback = '';
 	}
 
-	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image" ${failback}/></figure>`;
+	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image" ${failback} ${attr}/></figure>`;
 }
 
 export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
@@ -83,12 +88,18 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 
 						if (ret)
 						{
+							let _options: Parameters<typeof novelImage>["1"] = {
+								attr: ` alt="（插圖${toFullWidth(id)}）"`
+							};
+
 							if (ret.ok && !ret.isFile)
 							{
-								return novelImage(ret.returnPath, ret.input);
+								_options.failback = ret.input;
+
+								return novelImage(ret.returnPath, _options);
 							}
 
-							return novelImage(ret.returnPath);
+							return novelImage(ret.returnPath, _options);
 						}
 					}
 				}
