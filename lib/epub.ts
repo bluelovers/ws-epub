@@ -427,7 +427,7 @@ export function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow
 
 	return Bluebird
 		.resolve(array_unique(ls))
-		.mapSeries(async function (row)
+		.mapSeries(async function (row: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>)
 		{
 			let key = row.vol_key;
 			let volume = temp.cacheTreeSection[key];
@@ -460,7 +460,7 @@ export function _hookAfterVolume(ls: IEpubRuntimeReturn["temp"]["cache_volume_ro
 
 	return Bluebird
 		.resolve(ls)
-		.mapSeries(async function (row, index)
+		.mapSeries(async function (row: IEpubRuntimeReturnCacheVolumeRow, index)
 		{
 			let key = row.vol_key;
 			let volume = temp.cacheTreeSection[key];

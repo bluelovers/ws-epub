@@ -26,7 +26,7 @@ export const enum EnumHtmlTag
 	CLOSE = '&gt;|\\u003E|＞',
 }
 
-export const reTxtImgTag = new zhRegExp(`[(（](?:插圖|圖片|插畫|画像|圖像)([a-z0-9ａ-ｚ０-９_―——─－一─——－\u2E3A\u0332\u0331\u02CD﹘\\-]+)[)）]`, 'iug', {
+export const reTxtImgTag = new zhRegExp(`[(（](?:插(?:圖|畫|絵)|圖(?:片|像)|画像)([a-z0-9ａ-ｚ０-９_―——─－一─——－\u2E3A\u0332\u0331\u02CD﹘\\-]+)[)）]`, 'iug', {
 	greedyTable: 2,
 });
 
