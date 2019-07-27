@@ -51,7 +51,6 @@ export interface IAttachMetaData {
 export declare function getAttachMeta(dirname: string): Promise<IAttachMetaData>;
 export declare function getAttachMetaByRow(row: IReturnRow): Promise<IAttachMetaData>;
 export declare function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<string[]>;
-export declare function htmlImage(src: string): string;
 export declare function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>[], _data_: IInternalProcessVolumeOptions): Bluebird<string[][]>;
 export declare function _hookAfterVolume(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: IInternalProcessVolumeOptions, afterVolumeTasks: ((volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => IResolvableBluebird<unknown>)[]): Bluebird<{
     index: number;

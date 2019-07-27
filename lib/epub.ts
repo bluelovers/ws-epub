@@ -21,10 +21,11 @@ import {
 	IInternalProcessVolumeOptions,
 	IResolvableBluebird,
 } from './types';
-import { splitTxt } from './html';
+import { novelImage, splitTxt } from './html';
 import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike, ITSRequiredWith } from 'ts-type';
 import { handleMarkdown } from './md';
 import { toGlobExtImage } from './ext';
+import { toHalfWidth, toFullWidth } from 'str-util';
 
 export const SymCache = Symbol('cache');
 
@@ -315,6 +316,10 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 				.then(async (ls) =>
 				{
 					let arr: string[] = [];
+					let arr2: {
+						attr?: string,
+						src: string,
+					}[] = [];
 
 					for (let i in ls)
 					{
@@ -352,9 +357,13 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 							cwdRoot,
 						});
 
-						if (ret)
+						if (ret && !arr.includes(ret.returnPath))
 						{
 							arr.push(ret.returnPath);
+							arr2.push({
+								attr: ` alt="（IMG：${toFullWidth('' + ret.data.basename)}）"`,
+								src: ret.returnPath,
+							})
 						}
 					}
 
@@ -378,9 +387,13 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 										cwdRoot,
 									});
 
-									if (ret)
+									if (ret && !arr.includes(ret.returnPath))
 									{
 										arr.push(ret.returnPath);
+										arr2.push({
+											attr: ` alt="（插圖${toFullWidth(v)}）"`,
+											src: ret.returnPath,
+										})
 									}
 								}
 							})
@@ -398,9 +411,11 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 
 						let chapter = new EpubMaker.Section(EnumEpubTypeName.NON_SPECIFIC_BACKMATTER, makePrefixID(processReturn.temp.count_idx++, EnumPrefixIDType.IMAGE), {
 							title: EnumPrefixIDTitle.IMAGE,
-							content: arr.reduce(function (a, b)
+							content: arr2.reduce(function (a, b)
 							{
-								let html = htmlImage(b);
+								let html = novelImage(b.src, {
+									attr: b.attr,
+								});
 
 								a.push(html);
 
@@ -418,11 +433,6 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 				;
 		})
 		;
-}
-
-export function htmlImage(src: string)
-{
-	return `<figure class="fullpage ImageContainer page-break-before"><img id="CoverImage" class="CoverImage" src="${src}" alt="Cover" /></figure>`;
 }
 
 export function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>[], _data_: IInternalProcessVolumeOptions)
