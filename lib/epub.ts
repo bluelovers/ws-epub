@@ -24,6 +24,7 @@ import {
 import { splitTxt } from './html';
 import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike, ITSRequiredWith } from 'ts-type';
 import { handleMarkdown } from './md';
+import { toGlobExtImage } from './ext';
 
 export const SymCache = Symbol('cache');
 
@@ -282,6 +283,16 @@ export async function getAttachMetaByRow(row: IReturnRow)
 
 export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
+
+	const globImages = [
+		...toGlobExtImage(),
+		'!cover.*',
+		'!*.txt',
+	];
+
+	const baseImagePath = 'image';
+	const failbackExt = '.png';
+
 	return Bluebird.resolve(null)
 		.then(async function ()
 		{
@@ -297,13 +308,7 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 
 			volume[SymCache].image = true;
 
-			return novelGlobby.globby([
-					'*.{jpg,gif,png,jpeg,svg,webp,apng}',
-					'image/*.{jpg,gif,png,jpeg,svg,webp,apng}',
-					'images/*.{jpg,gif,png,jpeg,svg,webp,apng}',
-					'!cover.*',
-					'!*.txt',
-				], {
+			return novelGlobby.globby(globImages, {
 					cwd: dirname,
 					absolute: true,
 				})
@@ -341,8 +346,8 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 							epub,
 							epubOptions,
 							store,
-							basePath: 'image',
-							failbackExt: '.jpg',
+							basePath: baseImagePath,
+							failbackExt,
 							cwd: dirname,
 							cwdRoot,
 						});
@@ -367,8 +372,8 @@ export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _
 										epub,
 										epubOptions,
 										store,
-										basePath: 'image',
-										failbackExt: '.jpg',
+										basePath: baseImagePath,
+										failbackExt,
 										cwd: dirname,
 										cwdRoot,
 									});

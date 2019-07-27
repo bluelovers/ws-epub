@@ -356,7 +356,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		//process.exit();
 
-		let store = new EpubStore();
+		const store = new EpubStore();
 
 		const processReturn = await novelGlobby
 			.globbyASync(globby_patterns, globby_options)

@@ -10,6 +10,9 @@ import { toHalfWidth } from 'str-util';
 import { IInternalProcessOptions } from './types';
 import { console } from './log';
 import { novelImage } from './html';
+import { ParsedPath } from "path";
+import { allowExtImage, isAllowExtImage } from './ext';
+import { pathAtParent } from './util';
 
 export interface IEpubStoreValue
 {
@@ -36,6 +39,7 @@ export interface IEpubStoreOptions
 	failbackName?: string,
 
 	cwd: string,
+	cwdRoot: string,
 }
 
 export class EpubStore
@@ -117,7 +121,7 @@ export class EpubStore
 
 	get(input: string, options: IEpubStoreOptions)
 	{
-		let _data = parsePath(input, options.cwd);
+		let _data = parsePath(input, options);
 
 		if (_data)
 		{
@@ -166,8 +170,10 @@ export function isEncodeURI(input: string, maxCount: number = 3)
  * @example console.dir(parsePath(__filename))
  * @example console.dir(parsePath('https://xs.dmzj.com/img/1406/79/a7e62ec50db1db823c61a2127aec9827.jpg'))
  */
-export function parsePath(input: string, cwd?: string)
+export function parsePath(input: string, options: IEpubStoreOptions)
 {
+	const { cwd, cwdRoot } = options;
+
 	try
 	{
 		const isFile = true as const;
@@ -180,13 +186,11 @@ export function parsePath(input: string, cwd?: string)
 
 			name = decodeURIComponent(name);
 
-			return {
-				isFile,
-				input: tempInput,
-				ext,
+			return _fn001({
 				name,
+				ext,
 				data,
-			}
+			})
 		}
 		else if (pathExistsSync(tempInput = path.resolve(input)))
 		{
@@ -195,13 +199,11 @@ export function parsePath(input: string, cwd?: string)
 
 			name = decodeURIComponent(name);
 
-			return {
-				isFile,
-				input: tempInput,
-				ext,
+			return _fn001({
 				name,
+				ext,
 				data,
-			}
+			})
 		}
 		else if (pathExistsSync(tempInput = realpathSync(input)))
 		{
@@ -209,6 +211,40 @@ export function parsePath(input: string, cwd?: string)
 			let { ext, name } = data;
 
 			name = decodeURIComponent(name);
+
+			return _fn001({
+				name,
+				ext,
+				data,
+			})
+		}
+
+		function _fn001({
+			name,
+			ext,
+			data,
+		}: {
+			name: string,
+			ext: string,
+			data: ParsedPath,
+		})
+		{
+			/**
+			 * 當使用本地圖片時只允許指定的副檔名
+			 */
+			if (isFile && (!isAllowExtImage(ext) || pathAtParent(tempInput, cwdRoot)))
+			{
+				if (!isAllowExtImage(ext))
+				{
+					console.error(`'${ext}' 副導名不在允許清單內, ${allowExtImage}`)
+				}
+				else if (pathAtParent(tempInput, cwdRoot))
+				{
+					console.error(`檔案路徑必須要存在於目前小說資料夾下，不允許讀取其他資料夾 ${tempInput}`)
+				}
+
+				return null;
+			}
 
 			return {
 				isFile,

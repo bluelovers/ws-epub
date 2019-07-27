@@ -22,6 +22,7 @@ export interface IEpubStoreOptions {
     failbackExt?: string;
     failbackName?: string;
     cwd: string;
+    cwdRoot: string;
 }
 export declare class EpubStore {
     protected $cache: Map<string, IEpubStoreValue>;
@@ -41,7 +42,7 @@ export declare function isEncodeURI(input: string, maxCount?: number): boolean;
  * @example console.dir(parsePath(__filename))
  * @example console.dir(parsePath('https://xs.dmzj.com/img/1406/79/a7e62ec50db1db823c61a2127aec9827.jpg'))
  */
-export declare function parsePath(input: string, cwd?: string): {
+export declare function parsePath(input: string, options: IEpubStoreOptions): {
     isFile: true;
     input: string;
     ext: string;
