@@ -26,7 +26,10 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 {
 	console.time();
 
-	let old_md5 = await fileMd5('./temp/test.epub').then(data => data.md5).catch(e => null);
+	let old_md5 = await fileMd5(path.join(OUTPUT_PATH, novelID + '.epub'))
+		.then(data => data.md5)
+		.catch(e => null)
+	;
 
 	let ret = await novelEpub({
 		inputPath: TXT_PATH,
@@ -44,9 +47,9 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 
 //	console.dir(zip.files);
 
-	Object.values(zip.files).forEach(v => {
-		console.log(v.name, v.date)
-	});
+//	Object.values(zip.files).forEach(v => {
+//		console.log(v.name, v.date)
+//	});
 
 	console.dir({
 		old_md5,

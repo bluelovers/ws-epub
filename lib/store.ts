@@ -232,18 +232,20 @@ export function parsePath(input: string, options: IEpubStoreOptions)
 			/**
 			 * 當使用本地圖片時只允許指定的副檔名
 			 */
-			if (isFile && (!isAllowExtImage(ext) || pathAtParent(tempInput, cwdRoot)))
+			if (isFile)
 			{
 				if (!isAllowExtImage(ext))
 				{
-					console.error(`'${ext}' 副導名不在允許清單內, ${allowExtImage}`)
-				}
-				else if (pathAtParent(tempInput, cwdRoot))
-				{
-					console.error(`檔案路徑必須要存在於目前小說資料夾下，不允許讀取其他資料夾 ${tempInput}`)
-				}
+					console.error(`'${ext}' 副導名不在允許清單內, ${allowExtImage}`);
 
-				return null;
+					return null;
+				}
+				else if (!pathAtParent(tempInput, cwdRoot))
+				{
+					console.error(`檔案路徑必須要存在於目前小說資料夾下，不允許讀取其他資料夾\n${cwdRoot}\n${tempInput}`);
+
+					return null;
+				}
 			}
 
 			return {
