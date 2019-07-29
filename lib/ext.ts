@@ -15,6 +15,7 @@ export const allowExtImage = [
 	'svg',
 	'webp',
 	'ico',
+	'jfif',
 ] as const;
 
 export function toGlobExtImage()
