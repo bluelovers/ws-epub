@@ -105,6 +105,7 @@ export function render(input: string, options: Partial<IInternalProcessMarkdownI
 	}
 
 	return html
+		.replace(/(<p(?: class="linegroup calibre1")?>.+?)<\/p>/igs, '$1</p>\n<br/>')
 		.replace(/(<p(?: class="linegroup calibre1")?>)<\/p>/ig, '<p class="linegroup calibre1">$1　 </p>')
 		.replace(/<p(?=\s|>)/ig, '<div')
 		.replace(/<\/\s*p>/ig, '</div>')
