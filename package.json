@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.47",
+  "version": "1.1.48",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",
@@ -71,7 +71,7 @@
     "@types/node": "^12.6.8",
     "array-hyper-unique": "^1.1.0",
     "bluebird": "^3.5.5",
-    "cjk-conv": "^1.2.1",
+    "cjk-conv": "^1.2.3",
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.6",
     "deepmerge-plus": "^2.1.3",
