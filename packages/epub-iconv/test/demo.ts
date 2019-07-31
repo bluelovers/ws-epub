@@ -5,11 +5,11 @@ import { handleZipFile, handleGlob } from 'epub-iconv';
 import { outputFile } from 'fs-extra';
 import * as path from 'path';
 
-handleZipFile('./res/書蟲公主.epub', {
+handleZipFile(path.join(__dirname, 'res', '書蟲公主.epub'), {
 	iconv: 'cn',
 })
 	.tap(buf => {
-		return outputFile('./temp/書蟲公主.epub', buf)
+		return outputFile(path.join(__dirname, 'temp', '書蟲公主.epub'), buf)
 	})
 ;
 
