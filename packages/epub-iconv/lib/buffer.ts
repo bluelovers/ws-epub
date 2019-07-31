@@ -49,7 +49,10 @@ export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvO
 						.then(buf => Buffer.from(fnIconv(buf.toString())))
 					;
 
-					return zip.file(zipFile.name, buf)
+					return zip.file(zipFile.name, buf, {
+						date: zipFile.date,
+						createFolders: false,
+					})
 				})
 			;
 
