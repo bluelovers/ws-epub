@@ -7,7 +7,7 @@
 import yargs = require('yargs');
 import path = require('path');
 import Promise = require('bluebird');
-import novelEpub from '../index';
+import novelEpub, { IOptions, makeOptions } from '../index';
 import updateNotifier = require('update-notifier');
 import PACKAGE_JSON = require('../package.json');
 import { Console } from 'debug-color2';
@@ -132,7 +132,7 @@ let cli = yargs
 
 		//console.log(666, yargs.argv);
 
-		return novelEpub({
+		let options: IOptions = {
 			inputPath,
 			outputPath,
 			filename: yargs.argv.filename || null,
@@ -145,7 +145,11 @@ let cli = yargs
 			downloadRemoteFile: yargs.argv.downloadRemoteFile,
 			iconv: yargs.argv.iconv,
 			epubContextDate: yargs.argv.epubContextDate,
-		});
+		};
+
+		console.dir(makeOptions(options));
+
+		return novelEpub(options);
 
 		//yargs.showHelp('log');
 	})

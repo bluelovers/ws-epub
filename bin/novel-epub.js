@@ -106,7 +106,7 @@ let cli = yargs
     }
     log_1.console.log(`\n`);
     //console.log(666, yargs.argv);
-    return index_1.default({
+    let options = {
         inputPath,
         outputPath,
         filename: yargs.argv.filename || null,
@@ -119,7 +119,9 @@ let cli = yargs
         downloadRemoteFile: yargs.argv.downloadRemoteFile,
         iconv: yargs.argv.iconv,
         epubContextDate: yargs.argv.epubContextDate,
-    });
+    };
+    log_1.console.dir(index_1.makeOptions(options));
+    return index_1.default(options);
     //yargs.showHelp('log');
 })
     .version()
