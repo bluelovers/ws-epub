@@ -410,14 +410,21 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 					const { cacheTreeSection } = temp;
 
+					/**
+					 * 去除掉排序ID後的章節名稱
+					 */
 					let vs_ret = eachVolumeTitle(volume_title, true);
+					/**
+					 * 章節名稱 含 排序用的ID 來避免同一個資料夾下 有兩個相同 章節名稱
+					 */
+					let vs_ret2 = eachVolumeTitle(value.dir, false);
 
 					const dirname = value.path_dir;
 
 					let _ds = (path.normalize(dirname) as string).split('/');
 
 					const volume: EpubMaker.Section = await Bluebird
-						.resolve(vs_ret.titles_full)
+						.resolve(vs_ret2.titles_full)
 						.reduce(async function (vp: EpubMaker.Section, key, index)
 						{
 							let title = vs_ret.titles[index];
@@ -600,7 +607,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 					let vi = vs_ret.level - 1;
 
-					let vol_key = vs_ret.titles_full[vi];
+					let vol_key = vs_ret2.titles_full[vi];
 
 					temp.cache_vol[vol_key]++;
 					temp.prev_volume_title = volume_title;

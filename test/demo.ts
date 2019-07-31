@@ -164,7 +164,9 @@ Promise.mapSeries([
 
 //	'裏世界郊游',
 
-	'Genocide Online ～極惡千金的玩遊戲日記～',
+//	'Genocide Online ～極惡千金的玩遊戲日記～',
+
+	'惡役轉生但是為什麼會變成這樣',
 
 ] as string[], makeEpub);
 
