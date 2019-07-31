@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Created by user on 2019/7/31.
+ */
+const buffer_1 = require("./buffer");
+exports.loadZipBuffer = buffer_1.loadZipBuffer;
+exports.handleZipBuffer = buffer_1.handleZipBuffer;
+const fs_1 = require("./fs");
+exports.loadZipFile = fs_1.loadZipFile;
+exports.handleZipFile = fs_1.handleZipFile;
+const glob_1 = require("./glob");
+exports.handleGlob = glob_1.handleGlob;
+exports.default = fs_1.handleZipFile;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBOztHQUVHO0FBQ0gscUNBQTBEO0FBTXpELHdCQU5RLHNCQUFhLENBTVI7QUFBRSwwQkFOUSx3QkFBZSxDQU1SO0FBTC9CLDZCQUFrRDtBQU1qRCxzQkFOUSxnQkFBVyxDQU1SO0FBQUUsd0JBTlEsa0JBQWEsQ0FNUjtBQUozQixpQ0FBb0M7QUFLbkMscUJBTFEsaUJBQVUsQ0FLUjtBQUdYLGtCQUFlLGtCQUFhLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIENyZWF0ZWQgYnkgdXNlciBvbiAyMDE5LzcvMzEuXG4gKi9cbmltcG9ydCB7IGxvYWRaaXBCdWZmZXIsIGhhbmRsZVppcEJ1ZmZlciB9IGZyb20gJy4vYnVmZmVyJztcbmltcG9ydCB7IGxvYWRaaXBGaWxlLCBoYW5kbGVaaXBGaWxlIH0gZnJvbSAnLi9mcyc7XG5cbmltcG9ydCB7IGhhbmRsZUdsb2IgfSBmcm9tICcuL2dsb2InO1xuXG5leHBvcnQge1xuXHRsb2FkWmlwQnVmZmVyLCBoYW5kbGVaaXBCdWZmZXIsXG5cdGxvYWRaaXBGaWxlLCBoYW5kbGVaaXBGaWxlLFxuXHRoYW5kbGVHbG9iLFxufTtcblxuZXhwb3J0IGRlZmF1bHQgaGFuZGxlWmlwRmlsZTtcbiJdfQ==
