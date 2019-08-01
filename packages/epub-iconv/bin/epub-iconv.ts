@@ -1,6 +1,4 @@
-/**
- * Created by user on 2019/7/31.
- */
+#!/usr/bin/env node
 
 import updateNotifier from '@yarn-tool/update-notifier';
 import yargs = require('yargs');

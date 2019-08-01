@@ -7,6 +7,7 @@ import Bluebird = require('bluebird');
 import ICONV from 'iconv-jschardet';
 import { ITSResolvable } from 'ts-type';
 import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { createJSZipGeneratorOptions } from '@node-novel/epub-util/lib/const';
 
 export function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>)
 {
@@ -65,13 +66,7 @@ export function handleZipBuffer(zipBuffer: ITSResolvable<Buffer>, options?: IEpu
 {
 	return loadZipBuffer(zipBuffer)
 		.then(buf => handleZipObject(buf, options))
-		.then(zip => zip.generateAsync({
-			type: 'nodebuffer',
-			mimeType: 'application/epub+zip',
-			compression: 'DEFLATE',
-			compressionOptions: {
-				level: 9
-			},
-		}))
+		.then(zip => zip.generateAsync(createJSZipGeneratorOptions()))
 	;
 }
+
