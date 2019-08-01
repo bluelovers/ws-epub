@@ -41,6 +41,7 @@ import { inspect } from 'util';
 import { EpubStore } from './store';
 import { splitTxt } from './html';
 import { handleMarkdown } from './md';
+import { createEpubContextDate, EPUB_CONTEXT_DATE } from '@node-novel/epub-util/lib/const';
 
 export { console }
 
@@ -348,7 +349,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 		{
 			if (typeof options.epubContextDate == 'boolean')
 			{
-				options.epubContextDate = new Date('2000-12-24 23:00:00Z');
+				options.epubContextDate = createEpubContextDate();
 			}
 
 			epub.withContextDate(options.epubContextDate);

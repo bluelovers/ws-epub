@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.49",
+  "version": "1.1.50",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",
@@ -66,6 +66,7 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
+    "@node-novel/epub-util": "^1",
     "@node-novel/normalize": "^1.0.10",
     "@toycode/markdown-it-class": "^1.1.0",
     "@types/node": "^12.6.8",
