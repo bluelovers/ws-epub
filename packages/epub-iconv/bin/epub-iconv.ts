@@ -13,6 +13,7 @@ let argv = yargs
 	.scriptName(pkg.name)
 	.example(`epub-iconv --iconv cn *.epub`, ``)
 	.option('cwd', {
+		normalize: true,
 		desc: `搜尋檔案時的基準資料夾`,
 		default: process.cwd(),
 	})
@@ -49,12 +50,7 @@ let argv = yargs
 			pattern = ['*.epub'];
 		}
 
-		console.dir({
-			pattern,
-			options,
-		});
-
 		return handleGlob(pattern, options);
 	})
-	.argv;
+	.argv
 ;

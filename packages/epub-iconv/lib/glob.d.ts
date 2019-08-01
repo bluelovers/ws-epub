@@ -10,7 +10,6 @@ export interface IEpubIconvGlobOptions extends IEpubIconvOptions {
     output?: string;
     showLog?: boolean;
 }
-export declare function _toArray(pattern: ITSValueOrArray<string>): string[];
 export declare function handleGlob(pattern: ITSResolvable<ITSValueOrArray<string>>, options?: IEpubIconvGlobOptions): Bluebird<{
     output_path: string;
     root: string;

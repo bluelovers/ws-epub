@@ -8,6 +8,7 @@ import ICONV from 'iconv-jschardet';
 import { ITSResolvable } from 'ts-type';
 import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
 import { createJSZipGeneratorOptions } from '@node-novel/epub-util/lib/const';
+import { handleOptions } from './options';
 
 export function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>)
 {
@@ -27,7 +28,7 @@ export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvO
 		.then(async (zip) => {
 
 			let fnIconv: typeof cn2tw_min | typeof tw2cn_min;
-			options = options || {};
+			options = handleOptions(options);
 
 			switch (options.iconv)
 			{
