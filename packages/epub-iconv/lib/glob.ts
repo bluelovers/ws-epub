@@ -11,12 +11,26 @@ import { handleZipFile } from './fs';
 import * as path from 'path';
 import { outputFile, pathExistsSync } from 'fs-extra';
 import { console } from 'debug-color2';
+import { upath } from 'upath2/core';
 
 export interface IEpubIconvGlobOptions extends IEpubIconvOptions
 {
 	cwd?: string,
 	output?: string,
 	showLog?: boolean,
+}
+
+export function _toArray(pattern: ITSValueOrArray<string>)
+{
+	if (!Array.isArray(pattern))
+	{
+		pattern = [pattern];
+	}
+
+	return pattern
+		.filter(v => v)
+		.map(v => v.replace(/\\/g, '/'))
+	;
 }
 
 export function handleGlob(pattern: ITSResolvable<ITSValueOrArray<string>>, options?: IEpubIconvGlobOptions)
@@ -28,7 +42,7 @@ export function handleGlob(pattern: ITSResolvable<ITSValueOrArray<string>>, opti
 	const startTime = Date.now();
 
 	return Bluebird.resolve(pattern)
-		.then(pattern => Array.isArray(pattern) ? pattern : [pattern])
+		.then(pattern => _toArray(pattern))
 		.then(pattern => FastGlob.async(pattern, {
 			cwd,
 		}))

@@ -1,6 +1,6 @@
 {
   "name": "epub-iconv",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "簡易型 epub 簡繁轉換",
   "homepage": "https://github.com/bluelovers/ws-epub#readme",
   "bugs": {
@@ -43,6 +43,7 @@
     "iconv-jschardet": "^1.1.3",
     "jszip": "^3.2.2",
     "ts-type": "^1.2.9",
+    "upath2": "^2.1.3",
     "yargs": "^13.3.0"
   },
   "devDependencies": {
