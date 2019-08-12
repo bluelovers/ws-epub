@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.50",
+  "version": "1.1.51",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",
@@ -69,10 +69,10 @@
     "@node-novel/epub-util": "^1",
     "@node-novel/normalize": "^1.0.10",
     "@toycode/markdown-it-class": "^1.1.0",
-    "@types/node": "^12.6.8",
+    "@types/node": "^12.7.1",
     "array-hyper-unique": "^1.1.0",
     "bluebird": "^3.5.5",
-    "cjk-conv": "^1.2.3",
+    "cjk-conv": "^1.2.11",
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.6",
     "deepmerge-plus": "^2.1.3",
@@ -82,7 +82,7 @@
     "is-relative": "^1.0.0",
     "lazy-url": "^1.0.8",
     "lodash": "^4.17.15",
-    "markdown-it": "^9.0.1",
+    "markdown-it": "^9.1.0",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-implicit-figures": "^0.9.0",
@@ -97,7 +97,7 @@
     "regexp-cjk": "^3.3.8",
     "regexp-cjk-plugin-extra": "^1.0.5",
     "str-util": "^2.3.21",
-    "transliteration": "^2.1.4",
+    "transliteration": "^2.1.5",
     "update-notifier": "^3.0.1",
     "uuid-by-string": "^2.1.5",
     "yargs": "^13.3.0"
