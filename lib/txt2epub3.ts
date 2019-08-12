@@ -30,6 +30,7 @@ import {
 	makeChapterID,
 	makeVolumeID,
 	SymCache,
+	IEpubMakerSectionWithCache, addMarkdown, EnumPrefixIDType, EnumPrefixIDTitle, createMarkdownSection,
 } from './epub';
 import fs = require('fs-iconv');
 import Bluebird = require('bluebird');
@@ -359,6 +360,38 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		const store = new EpubStore();
 
+		let count_idx = 0;
+
+		{
+			let file = path.join(TXT_PATH, 'FOREWORD.md');
+
+			if (fs.pathExistsSync(file))
+			{
+				let source = await fs.readFile(file);
+
+				let mdReturn = handleMarkdown(source, {
+					cwd: TXT_PATH,
+				});
+
+				createMarkdownSection({
+					target: epub,
+					mdReturn,
+					processReturn: {
+						// @ts-ignore
+						temp: {
+							count_idx,
+						}
+					},
+
+					epubType: EnumEpubTypeName.FOREWORD,
+					epubTitle: EnumPrefixIDTitle.FOREWORD,
+					epubPrefix: EnumPrefixIDType.FOREWORD,
+				});
+
+				count_idx++;
+			}
+		};
+
 		const processReturn = await novelGlobby
 			.globbyASync(globby_patterns, globby_options)
 			.tap(function (ls)
@@ -424,9 +457,9 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 					let _ds = (path.normalize(dirname) as string).split('/');
 
-					const volume: EpubMaker.Section = await Bluebird
+					const volume: IEpubMakerSectionWithCache = await Bluebird
 						.resolve(vs_ret2.titles_full)
-						.reduce(async function (vp: EpubMaker.Section, key, index)
+						.reduce(async function (vp: IEpubMakerSectionWithCache, key, index)
 						{
 							let title = vs_ret.titles[index];
 
@@ -469,7 +502,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									})
 							}
 
-							let vc: EpubMaker.Section;
+							let vc: IEpubMakerSectionWithCache;
 
 							if (temp.cache_vol[key] == null)
 							{
@@ -621,7 +654,8 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						value,
 					};
 
-					temp.cache_volume_row.push(temp.prev_volume_row);
+					temp.
+					cache_volume_row.push(temp.prev_volume_row);
 
 					return volume;
 
@@ -649,7 +683,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 						cache_volume_row: [],
 
-						count_idx: 0,
+						count_idx: count_idx,
 						count_f: 0,
 						count_d: 0,
 

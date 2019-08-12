@@ -26,7 +26,7 @@ export function novelImage(src: string, options: {
 		failback = '';
 	}
 
-	return `<figure class="fullpage ImageContainer page-break-before"><img src="${src}" class="inner-image" ${failback} ${attr}/></figure>`;
+	return `<figure class="fullpage ImageContainer page-break-before duokan-image-single"><img src="${src}" class="inner-image" ${failback} ${attr}/></figure>`;
 }
 
 export function splitTxt(txt, plusData?: IInternalProcessContextOptions)

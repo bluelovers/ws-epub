@@ -1,31 +1,24 @@
 import { IForeachArrayDeepReturn, IReturnRow } from 'node-novel-globby';
-import EpubMaker, { hashSum, ISectionContent, slugify } from 'epub-maker2';
-import Bluebird = require('bluebird');
+import EpubMaker, { ISectionContent } from 'epub-maker2';
 import { console } from './log';
-import { fsLowCheckLevelMdconfAsync} from './util';
+import { fsLowCheckLevelMdconfAsync } from './util';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
-import path = require('upath2');
-import fs = require('fs-iconv');
-import moment = require('moment');
-import novelGlobby = require('node-novel-globby/g');
-import deepmerge = require('deepmerge-plus');
-import { crlf, LF } from 'crlf-normalize';
-import { chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
+import { LF } from 'crlf-normalize';
+import { IMdconfMeta } from 'node-novel-info';
 import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
-import { INovelEpubReturnInfo, IOptions } from './txt2epub3';
+import { INovelEpubReturnInfo } from './txt2epub3';
 import { array_unique } from 'array-hyper-unique';
-import { EpubStore, handleAttachFile } from './store';
-import {
-	IInternalProcessEpubOptions,
-	IInternalProcessOptions,
-	IInternalProcessVolumeOptions,
-	IResolvableBluebird,
-} from './types';
-import { novelImage, splitTxt } from './html';
-import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike, ITSRequiredWith } from 'ts-type';
+import { handleAttachFile } from './store';
+import { IInternalProcessEpubOptions, IInternalProcessVolumeOptions, IResolvableBluebird } from './types';
+import { novelImage } from './html';
 import { handleMarkdown } from './md';
 import { toGlobExtImage } from './ext';
-import { toHalfWidth, toFullWidth } from 'str-util';
+import { toFullWidth } from 'str-util';
+import Bluebird = require('bluebird');
+import path = require('upath2');
+import fs = require('fs-iconv');
+import novelGlobby = require('node-novel-globby/g');
+import novelGlobby2 = require('node-novel-globby');
 
 export const SymCache = Symbol('cache');
 
@@ -35,12 +28,14 @@ export const enum EnumPrefixIDType
 	CHAPTER = 'chapter',
 	IMAGE = 'image',
 	CONTRIBUTE = 'contribute',
+	FOREWORD = 'foreword',
 }
 
 export const enum EnumPrefixIDTitle
 {
 	IMAGE = '插圖',
 	CONTRIBUTE = 'CONTRIBUTE',
+	FOREWORD = 'FOREWORD',
 }
 
 export interface IEpubRuntimeReturnCacheVolumeRow
@@ -72,16 +67,26 @@ export type IEpubRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
 	count_f: number,
 	count_d: number,
 
-	cacheTreeSection: Record<string, EpubMaker.Section>,
+	cacheTreeSection: Record<string, IEpubMakerSectionWithCache>,
 
-	prev_volume?: EpubMaker.Section,
+	prev_volume?: IEpubMakerSectionWithCache,
 
-	_new_top_level?: EpubMaker.Section,
-	_old_top_level?: EpubMaker.Section,
+	_new_top_level?: IEpubMakerSectionWithCache,
+	_old_top_level?: IEpubMakerSectionWithCache,
 
 }>;
 
-export function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions)
+export interface IEpubMakerSectionWithCache extends EpubMaker.Section
+{
+	[SymCache]?: {
+		cover?: boolean;
+		image?: boolean;
+		contribute?: boolean;
+		foreword?: boolean;
+	}
+}
+
+export function _handleVolume(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
 	return Bluebird
 		.resolve(null)
@@ -191,8 +196,70 @@ export function _handleVolume(volume: EpubMaker.Section, dirname: string, _data_
 					})
 				;
 			}
+
+			if (!volume[SymCache].foreword)
+			{
+				volume[SymCache].foreword = true;
+
+				let file = path.join(dirname, 'FOREWORD.md');
+
+				if (fs.pathExistsSync(file))
+				{
+					addMarkdown({
+						volume,
+						dirname,
+						_data_,
+						file,
+						epubType: EnumEpubTypeName.FOREWORD,
+						epubPrefix: EnumPrefixIDType.FOREWORD,
+						epubTitle: EnumPrefixIDTitle.FOREWORD,
+					})
+				}
+			}
 		})
 		;
+}
+
+export function addMarkdown(options: {
+	volume: IEpubMakerSectionWithCache,
+	dirname: string,
+	_data_: IInternalProcessVolumeOptions,
+	file: string,
+	epubType: EnumEpubTypeName,
+	epubPrefix: EnumPrefixIDType,
+	epubTitle: string | EnumPrefixIDTitle
+	})
+{
+	return Bluebird.resolve(options)
+		.then(async () => {
+
+			let { volume, _data_, file, dirname } = options;
+
+			const vid: string = volume.id;
+
+			const { processReturn } = _data_;
+
+			let source = await fs.readFile(file);
+
+			let mdReturn = handleMarkdown(source, {
+				..._data_,
+				cwd: dirname,
+				vid,
+			});
+
+			let chapter = createMarkdownSection({
+				target: volume,
+				mdReturn,
+				processReturn,
+
+				epubType: options.epubType,
+				epubTitle: options.epubTitle,
+				epubPrefix: options.epubPrefix,
+			});
+
+			return chapter
+		})
+	;
 }
 
 export function makePrefixID(count_idx: number, prefix: EnumPrefixIDType)
@@ -282,7 +349,7 @@ export async function getAttachMetaByRow(row: IReturnRow)
 	return AttachMetaMap.get(row.path_dir)
 }
 
-export function _handleVolumeImage(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions)
+export function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
 
 	const globImages = [
@@ -465,7 +532,7 @@ export function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow
 
 export function _hookAfterVolume(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"],
 	_data_: IInternalProcessVolumeOptions,
-	afterVolumeTasks: ((volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => IResolvableBluebird<unknown>)[],
+	afterVolumeTasks: ((volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => IResolvableBluebird<unknown>)[],
 )
 {
 	const { processReturn, epub, store, epubOptions, cwd } = _data_;
@@ -525,7 +592,7 @@ export function _hookAfterEpub(epub: EpubMaker,
 		;
 }
 
-export function addContributeSection(volume: EpubMaker.Section, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow)
+export function addContributeSection(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow)
 {
 	return Bluebird.resolve(volume)
 		.then(async (volume) => {
@@ -579,16 +646,34 @@ export function addContributeSection(volume: EpubMaker.Section, dirname: string,
 }
 
 export function createContributeSection(options : {
-	target: EpubMaker.Section | EpubMaker,
+	target: IEpubMakerSectionWithCache | EpubMaker,
 	mdReturn: ReturnType<typeof handleMarkdown>,
 	processReturn: Partial<IEpubRuntimeReturn>,
 })
 {
-	const { target, mdReturn, processReturn } = options;
+	return createMarkdownSection({
+		...options,
+		epubType: EnumEpubTypeName.NON_SPECIFIC_BACKMATTER,
+		epubTitle: EnumPrefixIDTitle.CONTRIBUTE,
+		epubPrefix: EnumPrefixIDType.CONTRIBUTE,
+	})
+}
 
-	let title = mdReturn.mdEnv.title || EnumPrefixIDTitle.CONTRIBUTE;
+export function createMarkdownSection(options : {
+	target: IEpubMakerSectionWithCache | EpubMaker,
+	mdReturn: ReturnType<typeof handleMarkdown>,
+	processReturn: Partial<IEpubRuntimeReturn>,
 
-	let chapter = new EpubMaker.Section(EnumEpubTypeName.NON_SPECIFIC_BACKMATTER, makePrefixID(processReturn.temp.count_idx++, EnumPrefixIDType.CONTRIBUTE), {
+	epubType: EnumEpubTypeName,
+	epubPrefix: EnumPrefixIDType,
+	epubTitle: string | EnumPrefixIDTitle
+})
+{
+	const { target, mdReturn, processReturn, } = options;
+
+	let title = mdReturn.mdEnv.title || options.epubTitle;
+
+	let chapter = new EpubMaker.Section(options.epubType, makePrefixID(processReturn.temp.count_idx++, options.epubPrefix), {
 		title,
 		content: mdReturn.mdHtml,
 	}, true, false);
