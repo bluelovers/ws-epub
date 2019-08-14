@@ -14,4 +14,5 @@ export interface IOptions {
     noVolume?: boolean;
 }
 export declare function epubExtract(srcFile: string, options?: IOptions): Promise<string>;
+export declare function fixText(txt: string): string;
 export default epubExtract;

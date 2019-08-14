@@ -72,3 +72,7 @@ gen
 ### jsonly_bin template
 bin/*.ts
 bin/*.d.ts
+/.eslintignore
+/tsconfig.esm.json.tpl
+/.eslintrc.json.tpl
+/.browserslistrc

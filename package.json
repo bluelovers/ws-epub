@@ -1,21 +1,30 @@
 {
   "name": "epub-extract",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "epub-extract for node-novel style",
   "keywords": [
+    "Google Play Books",
     "archive",
     "async",
     "book",
     "books",
     "chapter",
+    "cli",
     "comic",
     "creator",
+    "ebook",
     "epub",
     "epub-maker",
     "epub-maker2",
+    "epub2",
+    "epub3",
     "extract",
     "file",
     "generator",
+    "google book",
+    "google books",
+    "google play",
+    "ibook",
     "image",
     "maker",
     "manifest",
@@ -26,30 +35,17 @@
     "parse",
     "promise",
     "raw",
-    "epub",
-    "epub2",
-    "epub3",
-    "ebook",
-    "book",
-    "books",
-    "chapter",
-    "cli",
-    "book",
-    "ibook",
-    "google book",
-    "google books",
-    "google play",
-    "Google Play Books",
-    "node-novel",
-    "novel",
     "txt",
-    "volume",
     "volume",
     "zip"
   ],
   "homepage": "https://github.com/bluelovers/epub-extract#readme",
   "bugs": {
     "url": "https://github.com/bluelovers/epub-extract/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/epub-extract.git"
   },
   "license": "ISC",
   "author": "",
@@ -58,14 +54,20 @@
     "epub-extract": "bin/epub-extract.js"
   },
   "directories": {
+    "lib": "lib",
     "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bluelovers/epub-extract.git"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "npx nyc yarn run test",
+    "lint": "npx eslint **/*.ts",
+    "ncu": "npx yarn-tool ncu -u",
+    "npm:publish": "npm publish",
+    "prepublishOnly": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish": "git commit -m \"publish new version\" .",
+    "sort-package-json": "npx sort-package-json ./package.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc:default": "tsc -p tsconfig.json",
+    "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
@@ -74,11 +76,12 @@
     "html-minifier": "^4.0.0",
     "node-novel-globby": "^2.0.9",
     "node-novel-info": "^2.3.33",
-    "yargs": "^13.3.0"
+    "yargs": "^13.3.0",
+    "zero-width": "^1.0.5"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.12",
     "@types/bluebird": "^3.5.27",
-    "@types/yargs": "^13.0.0"
+    "@types/yargs": "^13.0.2"
   }
 }

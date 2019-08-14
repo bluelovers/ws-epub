@@ -13,6 +13,7 @@ import { trimFilename } from 'fs-iconv';
 import * as Promise from 'bluebird';
 import * as novelInfo from 'node-novel-info';
 import fixHtml from './lib/html';
+import removeZeroWidth, { nbspToSpace } from 'zero-width/lib';
 
 export const IDKEY = 'epub';
 
@@ -79,7 +80,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 			}
 
 			let path_novel = path.join(PATH_NOVEL_MAIN,
-				trimFilename(epub.metadata.title)
+				fixText(trimFilename(epub.metadata.title))
 			);
 
 			let currentVolume;
@@ -157,6 +158,8 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 						volume_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
 
+						volume_title = fixText(volume_title);
+
 						currentVolume = volume_list[volume_list.length] = {
 							level: elem.level,
 							volume_index: volume_index,
@@ -187,10 +190,14 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 							a = $('title').eq(0);
 						}
 
+						let volume_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
+
+						volume_title = fixText(volume_title);
+
 						currentVolume = volume_list[volume_list.length] = {
 							level: elem.level,
 							volume_index: volume_index,
-							volume_title: (a.text() || elem.title).replace(/^\s+|\s+$/g, ''),
+							volume_title,
 							chapter_list: [],
 						}
 					}
@@ -217,6 +224,8 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						}
 
 						chapter_title = (a.text() || elem.title).replace(/^\s+|\s+$/g, '');
+
+						chapter_title = fixText(chapter_title);
 
 						a = $('section article').eq(0);
 
@@ -245,6 +254,8 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 								chapter_list: [],
 							};
 						}
+
+						chapter_article = fixText(chapter_article);
 
 						if (chapter_article.indexOf(chapter_title) == 0)
 						{
@@ -361,6 +372,11 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 			return path_novel;
 		})
 		;
+}
+
+export function fixText(txt: string)
+{
+	return nbspToSpace(removeZeroWidth(txt))
 }
 
 export default epubExtract;
