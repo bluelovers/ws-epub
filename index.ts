@@ -49,7 +49,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 		if (!exists)
 		{
-			throw new Error(`file not exists. "${srcFile}"`);
+			throw new Error(`file doesn't exist. "${srcFile}"`);
 		}
 	}
 
