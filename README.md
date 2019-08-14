@@ -13,6 +13,23 @@ npx epub-extract -i path_of_file.epub
 npx epub-extract --all
 ```
 
+```
+epub-extract.js [-o dir] [-i file]
+
+Commands:
+  epub-extract.js all  extract all epub
+  epub-extract.js v    show log
+
+Options:
+  --help        Show help                                              [boolean]
+  --version     Show version number                                    [boolean]
+  -o, --output  output dir path
+  -i, --input   input file path
+
+Examples:
+  epub-extract.js -o epub name.epub  extract name.epub to epub dir
+```
+
 ## demo
 
 ```
@@ -23,11 +40,11 @@ epubExtract(srcFile, options);
 
 #### Options
 
-If ouput directory is ommited epub-extract will output the decompressed epub to the current working directory. 
+If ouput directory is ommited epub-extract will output the decompressed epub to the current working directory.
 
 E.g. User/username/here
 
-``` 
+```
 {
     cwd: 'string' // current working directory
     outputDir: 'string' // output directory

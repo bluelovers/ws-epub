@@ -27,9 +27,17 @@ srcFile = 'D:\\Users\\Downloads\\賢者之劍.epub';
 
 srcFile = `D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\Qiu Ye  You\\Shi Yu Yuan Wei De Bu Si Mao Xian Z (168)\\Shi Yu Yuan Wei De Bu Si Mao Xi - Qiu Ye  You.epub`;
 
-srcFile = 'D:\\Users\\Downloads\\%E5%B9%B3%E5%87%A1%E8%81%8C%E4%B8%9A%E5%90%8E%E6%97%A5%E8%B0%88III.epub';
+srcFile = 'C:\\Users\\User\\Downloads\\幼女轉生.epub';
+
+srcFile = 'D:\\Users\\Downloads\\班级同学都被召唤到异世界.epub';
+
+srcFile = 'D:\\Users\\Downloads\\衔尾蛇的纪录WEB_cd46a.epub';
+
+//srcFile = 'D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\wai_San Dao  Yu Meng\\Yi Nu geShi Jie hamobuniYan siiShi (415)\\Yi Nu geShi Jie hamobuniYan sii - wai_San Dao  Yu Meng.epub';
 
 //srcFile = 'D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\Wei Zhi\\[Title here] (388)\\[Title here] - Wei Zhi.epub';
+
+srcFile = 'D:\\Users\\Downloads\\再见龙生你好人生08（带插图）\\再见龙生你好人生08（带插图）.epub';
 
 /*
 [
@@ -47,6 +55,8 @@ srcFile = 'D:\\Users\\Downloads\\%E5%B9%B3%E5%87%A1%E8%81%8C%E4%B8%9A%E5%90%8E%E
 
 if (1)
 {
+	console.log(777);
+
 	epubExtract(srcFile, {
 		cwd: __dirname,
 		//noFirePrefix: true,
@@ -55,6 +65,8 @@ if (1)
 		.then(function (ret)
 		{
 			console.log(ret);
+
+			console.log(888);
 		})
 	;
 }

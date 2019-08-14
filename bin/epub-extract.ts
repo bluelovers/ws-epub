@@ -3,7 +3,7 @@
 import { globby } from 'node-novel-globby';
 import * as yargs from 'yargs';
 import * as path from 'path';
-import epubExtract from '../index';
+import epubExtract, { IOptions } from '../index';
 import * as Promise from 'bluebird';
 
 let cli = yargs
@@ -26,8 +26,8 @@ let cli = yargs
 
 //console.log(cli.argv);
 
-let srcFile = cli.argv.input || cli.argv._[0];
-let outputDir = cli.argv.output;
+let srcFile: string = (cli.argv.input || cli.argv._[0]) as string;
+let outputDir: string = cli.argv.output as string;
 
 (async () =>
 {
@@ -45,10 +45,10 @@ let outputDir = cli.argv.output;
 
 	let ls: string[];
 
-	let options = {
+	let options: IOptions = {
 		cwd,
 		outputDir,
-		log: cli.argv.v,
+		log: cli.argv.v as boolean,
 	};
 
 	if (!srcFile)

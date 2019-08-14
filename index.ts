@@ -21,6 +21,10 @@ export interface IOptions
 {
 	outputDir?: string,
 	cwd?: string,
+
+	/**
+	 * print log message
+	 */
 	log?: boolean,
 
 	noFirePrefix?: boolean,
