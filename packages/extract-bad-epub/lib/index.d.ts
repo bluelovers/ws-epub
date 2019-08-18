@@ -44,7 +44,6 @@ export declare function padNum(n: string | number): string;
 export declare function saveTxt(options: IReturnData & {
     cwd: string;
 }): Bluebird<string[]>;
-export declare function fixHtml(html: string): string;
 export declare function isBadName(input: string): boolean;
 export declare function isHashedLike(input: string, maxCount?: number): boolean;
 export declare function isEncodeURI(input: string, maxCount?: number): boolean;

@@ -14,6 +14,9 @@ import { stringify } from 'mdconf2';
 import { Console } from 'debug-color2';
 import execall from 'execall2';
 import { cloneDeep } from 'lodash';
+import fixJQuery from '@node-novel/epub-util/lib/extract/jquery';
+import fixHtml, { fixHtml2 } from '@node-novel/epub-util/lib/extract/html';
+import fixText from '@node-novel/epub-util/lib/extract/text';
 
 export const console = new Console(null, {
 	enabled: true,
@@ -127,22 +130,19 @@ export function files(files: JSZip.JSZipObject[], cache: ICache = {})
 			let buf = await file.async("nodebuffer")
 				.then(decode)
 				.then(buf => {
-
-					try
-					{
-						return fixHtml(buf.toString())
-					}
-					catch (e)
-					{
-
-					}
-
-					return buf;
+					return fixHtml2(buf.toString());
 				})
 			;
 
 			let jsdom = await asyncJSDOM(buf);
 			let { $, document } = jsdom;
+
+			fixJQuery($('body'), $);
+
+			$('body').html(function (i, old)
+			{
+				return fixHtml2(old);
+			});
 
 			let title: string = document.title;
 
@@ -181,10 +181,7 @@ export function files(files: JSZip.JSZipObject[], cache: ICache = {})
 
 			});
 
-			let innerText: string = $(document.body)
-				.text()
-				.replace(/^\n{2,}|\n{2,}$/g, '\n')
-			;
+			let innerText = fixText($(document.body).text());
 
 			return <IFile>{
 				index,
@@ -278,16 +275,6 @@ export function saveTxt(options: IReturnData & {
 
 			return filename
 		})
-}
-
-export function fixHtml(html: string): string
-{
-	return minify(html, {
-		collapseWhitespace: true,
-		preserveLineBreaks: true,
-		conservativeCollapse: true,
-		caseSensitive: true,
-	});
 }
 
 export function isBadName(input: string)
