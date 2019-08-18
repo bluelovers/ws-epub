@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lib_1 = require("zero-width/lib");
+const crlf_normalize_1 = require("crlf-normalize");
+function fixText(text) {
+    return crlf_normalize_1.crlf(lib_1.default(lib_1.nbspToSpace(text)))
+        .replace(/^\n{2,}|\n{2,}$/g, '\n');
+}
+exports.fixText = fixText;
+exports.default = fixText;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGV4dC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInRleHQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSx3Q0FBOEQ7QUFDOUQsbURBQXNDO0FBRXRDLFNBQWdCLE9BQU8sQ0FBQyxJQUFZO0lBRW5DLE9BQU8scUJBQUksQ0FBQyxhQUFlLENBQUMsaUJBQVcsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDO1NBQzdDLE9BQU8sQ0FBQyxrQkFBa0IsRUFBRSxJQUFJLENBQUMsQ0FDbEM7QUFDRixDQUFDO0FBTEQsMEJBS0M7QUFFRCxrQkFBZSxPQUFPLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgcmVtb3ZlWmVyb1dpZHRoLCB7IG5ic3BUb1NwYWNlIH0gZnJvbSAnemVyby13aWR0aC9saWInO1xuaW1wb3J0IHsgY3JsZiB9IGZyb20gJ2NybGYtbm9ybWFsaXplJztcblxuZXhwb3J0IGZ1bmN0aW9uIGZpeFRleHQodGV4dDogc3RyaW5nKVxue1xuXHRyZXR1cm4gY3JsZihyZW1vdmVaZXJvV2lkdGgobmJzcFRvU3BhY2UodGV4dCkpKVxuXHRcdC5yZXBsYWNlKC9eXFxuezIsfXxcXG57Mix9JC9nLCAnXFxuJylcblx0O1xufVxuXG5leHBvcnQgZGVmYXVsdCBmaXhUZXh0Il19

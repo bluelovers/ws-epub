@@ -1,6 +1,6 @@
 {
   "name": "@node-novel/epub-util",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "homepage": "https://github.com/bluelovers/ws-epub#readme",
   "bugs": {
@@ -25,6 +25,13 @@
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
+  "dependencies": {
+    "@types/jquery": "^3.3.31",
+    "crlf-normalize": "^1.0.3",
+    "html-minifier": "^4.0.0",
+    "zero-width": "^1.0.5"
+  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   }
