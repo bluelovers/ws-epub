@@ -1,5 +1,3 @@
-/**
- * Created by user on 2018/3/17/017.
- */
-export declare function fixHtml(html: any): string;
+import { fixHtml2, fixHtml } from '@node-novel/epub-util/lib/extract/html';
+export { fixHtml2, fixHtml };
 export default fixHtml;

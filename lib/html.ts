@@ -1,20 +1,5 @@
-/**
- * Created by user on 2018/3/17/017.
- */
+import { fixHtml2, fixHtml } from '@node-novel/epub-util/lib/extract/html';
 
-import { minify } from 'html-minifier';
-
-export function fixHtml(html): string
-{
-	return minify(html, {
-		collapseWhitespace: true,
-		preserveLineBreaks: true,
-		conservativeCollapse: true,
-		caseSensitive: true,
-	})
-		.replace(/(?<=<br\/?>)(?!\s*[\r\n])/ig, '\n')
-		.replace(/(?<=<\/p>)(?!\s*[\r\n])/ig, '\n')
-		;
-}
+export { fixHtml2, fixHtml }
 
 export default fixHtml;

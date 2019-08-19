@@ -37,7 +37,7 @@ srcFile = 'D:\\Users\\Downloads\\衔尾蛇的纪录WEB_cd46a.epub';
 
 //srcFile = 'D:\\Program Files (Portable)\\Calibre Portable\\Calibre Library\\Wei Zhi\\[Title here] (388)\\[Title here] - Wei Zhi.epub';
 
-srcFile = 'D:\\Users\\Downloads\\再见龙生你好人生08（带插图）\\再见龙生你好人生08（带插图）.epub';
+srcFile = 'D:\\Users\\Downloads\\异世界转性龙之血脉.epub';
 
 /*
 [

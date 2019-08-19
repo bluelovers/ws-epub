@@ -12,8 +12,10 @@ import { trimFilename } from 'fs-iconv';
 
 import * as Promise from 'bluebird';
 import * as novelInfo from 'node-novel-info';
-import fixHtml from './lib/html';
+import { fixHtml2 } from './lib/html';
 import removeZeroWidth, { nbspToSpace } from 'zero-width/lib';
+import { fixText } from '@node-novel/epub-util/lib/extract/text';
+import { fixCheerio } from '@node-novel/epub-util/lib/extract/cheerio';
 
 export const IDKEY = 'epub';
 
@@ -139,9 +141,8 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					else if (!isVolume && lastLevel != elem.level)
 					{
 						// 強制產生目錄
-
 						doc = await epub.getChapterAsync(elem.id);
-						$ = cheerio.load(doc);
+						$ = getCheerio(doc = fixHtml2(doc));
 
 						let volume_title: string;
 
@@ -155,8 +156,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						if (!a.length && !elem.title)
 						{
 							let doc = await epub.getChapterRawAsync(elem.id);
-							let $ = cheerio.load(fixHtml(doc));
-
+							let $ = getCheerio(doc);
 							a = $('title').eq(0);
 						}
 
@@ -177,7 +177,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					if (isVolume)
 					{
 						doc = await epub.getChapterAsync(elem.id);
-						$ = cheerio.load(doc);
+						$ = getCheerio(doc = fixHtml2(doc));
 
 						let a = $('section header h2').eq(0);
 
@@ -189,7 +189,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						if (!a.length && !elem.title)
 						{
 							let doc = await epub.getChapterRawAsync(elem.id);
-							let $ = cheerio.load(fixHtml(doc));
+							let $ = getCheerio(doc);
 
 							a = $('title').eq(0);
 						}
@@ -208,7 +208,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					else
 					{
 						doc = await epub.getChapterAsync(elem.id);
-						$ = cheerio.load(fixHtml(doc));
+						$ = getCheerio(doc = fixHtml2(doc));
 
 						let chapter_title: string;
 
@@ -222,7 +222,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						if (!a.length && !elem.title)
 						{
 							let doc = await epub.getChapterRawAsync(elem.id);
-							let $ = cheerio.load(fixHtml(doc));
+							let $ = getCheerio(doc = fixHtml2(doc));
 
 							a = $('title').eq(0);
 						}
@@ -240,7 +240,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 						a.html((function (old)
 						{
-							let html = fixHtml(old);
+							let html = fixHtml2(old);
 
 							html = html.replace(/(\/p>)(?=[^\n]*?<p)/ig, '$1\n');
 
@@ -306,7 +306,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 					)
 				;
 
-				return await Promise.mapSeries(volume.chapter_list, async function (chapter)
+				return Promise.mapSeries(volume.chapter_list, async function (chapter)
 				{
 					let ext = '.txt';
 
@@ -378,9 +378,15 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 		;
 }
 
-export function fixText(txt: string)
+export function getCheerio(doc: string)
 {
-	return nbspToSpace(removeZeroWidth(txt))
+	let $ = cheerio.load(fixHtml2(doc));
+
+	fixCheerio('body', $);
+
+	return $
 }
+
+export { fixText }
 
 export default epubExtract;
