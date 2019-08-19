@@ -1,32 +1,29 @@
 /// <reference types="jquery" />
 
-export function fixJQuery(target: unknown | JQueryStatic, $: JQueryStatic)
+export function fixJQuery<T extends unknown | JQueryStatic>(target: T, $: JQueryStatic)
 {
 	let _target = $(target);
 
 	_target.filter('br').each(function ()
 	{
-		// @ts-ignore
-		let _self = $(this);
-		// @ts-ignore
-		$.each(this.attributes, function() {
-			// @ts-ignore
-			_self.removeAttr(this.name);
-		});
+		_removeAttrs(this as HTMLElement, $);
 	});
 
 	_target.find('br').each(function ()
 	{
-		// @ts-ignore
-		let _self = $(this);
-		// @ts-ignore
-		$.each(this.attributes, function() {
-			// @ts-ignore
-			_self.removeAttr(this.name);
-		});
+		_removeAttrs(this as HTMLElement, $);
 	});
 
 	return _target;
+}
+
+export function _removeAttrs<T extends HTMLElement>(elem: T, $: JQueryStatic)
+{
+	let _self = $(elem);
+
+	Object.keys(elem.attributes).forEach(k => _self.removeAttr(k));
+
+	return _self;
 }
 
 export default fixJQuery
