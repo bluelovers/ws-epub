@@ -5,6 +5,7 @@ import EpubMaker from 'epub-maker2';
 import { IMdconfMeta } from 'node-novel-info';
 import { console } from './log';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
+import { IEpubRuntimeReturn } from './epub';
 import Bluebird = require('bluebird');
 import moment = require('moment');
 import novelGlobby = require('node-novel-globby/g');
@@ -43,6 +44,12 @@ export interface IOptions {
      * 允許指定 epub 內的檔案更新日期
      */
     epubContextDate?: moment.MomentInput | Date | moment.Moment | true;
+    beforeMakeEpub?(runtime: {
+        TXT_PATH: string;
+        epub: EpubMaker;
+        processReturn: IEpubRuntimeReturn;
+        options: IOptions;
+    }): void;
 }
 export declare const defaultOptions: Partial<IOptions>;
 export declare function getNovelConf(options: IOptions, cache?: {}): Bluebird<IMdconfMeta>;

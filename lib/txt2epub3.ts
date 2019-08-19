@@ -92,6 +92,13 @@ export interface IOptions
 	 * 允許指定 epub 內的檔案更新日期
 	 */
 	epubContextDate?: moment.MomentInput | Date | moment.Moment | true;
+
+	beforeMakeEpub?(runtime: {
+		TXT_PATH: string,
+		epub: EpubMaker,
+		processReturn: IEpubRuntimeReturn,
+		options: IOptions,
+	}): void;
 }
 
 export const defaultOptions: Partial<IOptions> = Object.freeze({
@@ -782,6 +789,16 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 		//console.dir(epub.epubConfig.sections[0]);
 		//console.dir(epub.epubConfig.landmarks.slice(0, 2));
 		//process.exit();
+
+		if (options.beforeMakeEpub)
+		{
+			options.beforeMakeEpub({
+				TXT_PATH: TXT_PATH,
+				epub,
+				options,
+				processReturn,
+			});
+		}
 
 		let data = await epub.makeEpub();
 

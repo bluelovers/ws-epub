@@ -3,13 +3,13 @@
  */
 
 import novelEpub from '../index';
-import txtMerge from 'novel-txt-merge';
 import * as path from 'path';
+import fs from 'fs-iconv';
+import { EnumEpubTypeName, EpubMaker } from 'epub-maker2/src/index';
 import crypto = require('crypto');
 import JSZip = require('jszip');
-import fs from 'fs-iconv';
-import ZipFile from 'epub2/zipfile';
 import Bluebird = require('bluebird');
+import Section = EpubMaker.Section;
 
 /**
  * 小說資料夾名稱
@@ -37,6 +37,19 @@ let OUTPUT_PATH = path.join(__dirname, './temp');
 		filename: novelID,
 		//epubContextDate: new Date('2019-07-24 06:00:00Z'),
 		epubContextDate: true,
+
+		beforeMakeEpub(runtime): void {
+
+			let htmlTest = new Section(EnumEpubTypeName.CHAPTER, 'html-test', {
+				title: 'html-test',
+			}, true, true);
+
+			htmlTest.setContent(fs.readFileSync(path.join(runtime.TXT_PATH, 'html-test.html')).toString());
+
+			//runtime.epub.withSection()
+
+			runtime.epub.withSection(htmlTest);
+		}
 	});
 
 	console.dir(ret);

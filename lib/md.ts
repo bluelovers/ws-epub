@@ -34,9 +34,10 @@ export function createMarkdownIt(options?: MarkdownIt.Options, plusData?: Partia
 		})
 		.use(require('@toycode/markdown-it-class'), {
 			figure: [
-				'fullpage',
+				//'fullpage',
 				'ImageContainer',
 				'page-break-before',
+				'duokan-image-single',
 			],
 			img: [
 				'inner-image',
@@ -105,8 +106,8 @@ export function render(input: string, options: Partial<IInternalProcessMarkdownI
 	}
 
 	return html
-		.replace(/(<p(?: class="linegroup calibre1")?>.+?)<\/p>/igs, '$1</p>\n<br/>')
-		.replace(/(<p(?: class="linegroup calibre1")?>)<\/p>/ig, '<p class="linegroup calibre1">$1　 </p>')
+		.replace(/(<p(?:\s\w="[\w\s]*")*>.+?)<\/p>/igs, '$1</p>\n<br/>')
+		.replace(/(<p(?:\s\w="[\w\s]*")*>)<\/p>/ig, '<p class="linegroup calibre1">$1　 </p>')
 		.replace(/<p(?=\s|>)/ig, '<div')
 		.replace(/<\/\s*p>/ig, '</div>')
 		;

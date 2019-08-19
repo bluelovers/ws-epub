@@ -166,7 +166,9 @@ Promise.mapSeries([
 
 //	'Genocide Online ～極惡千金的玩遊戲日記～',
 
-	'惡役轉生但是為什麼會變成這樣',
+//	'惡役轉生但是為什麼會變成這樣',
+
+	'世界最高の暗殺者、異世界貴族に転生する',
 
 ] as string[], makeEpub);
 
@@ -200,7 +202,9 @@ async function makeEpub(novelID: string)
 
 //	TXT_PATH = path.join('D:\\Users\\Documents\\The Project\\nodejs-test\\node-novel2\\dist_novel\\girl_out', novelID);
 
-	TXT_PATH = path.join('C:/Home/link/dist_novel/girl', novelID);
+//	TXT_PATH = path.join('C:/Home/link/dist_novel/girl', novelID);
+
+	TXT_PATH = path.join('C:/Home/link/dist_novel/syosetu', novelID);
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 
@@ -218,9 +222,8 @@ async function makeEpub(novelID: string)
 
 		noLog: true,
 
-		vertical: EnumEpubConfigVertical.VERTICAL_RL,
-
-		downloadRemoteFile: true,
+		//vertical: EnumEpubConfigVertical.VERTICAL_RL,
+		//downloadRemoteFile: true,
 	});
 
 	console.timeEnd();
