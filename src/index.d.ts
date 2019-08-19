@@ -98,14 +98,14 @@ export declare namespace EpubMaker {
         sectionConfig: ISectionConfig;
         parentSection: Section;
         parentEpubMaker: EpubMaker;
-        constructor(epubType: string | EnumEpubTypeName, id: any, content: any, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv: any[]);
+        constructor(epubType: string | EnumEpubTypeName, id: string, content?: string | ISectionContent, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv: any[]);
         /**
          *
          * @param {ISectionContent|string} content
          * @param {boolean} allow_null
          * @returns {this}
          */
-        setContent(content: ISectionContent, allow_null?: boolean): this;
+        setContent(content: string | ISectionContent, allow_null?: boolean): this;
         readonly epubTypeGroup: string | EnumEpubType;
         readonly lang: string;
         readonly langMain: string;

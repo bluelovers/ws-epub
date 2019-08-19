@@ -532,7 +532,7 @@ export namespace EpubMaker
 		public parentSection: Section;
 		public parentEpubMaker: EpubMaker;
 
-		constructor(epubType: string | EnumEpubTypeName, id, content, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv)
+		constructor(epubType: string | EnumEpubTypeName, id: string, content?: string | ISectionContent, includeInToc?: boolean, includeInLandmarks?: boolean, ...argv)
 		{
 			this.epubType = epubType;
 			this.id = id;
@@ -558,7 +558,7 @@ export namespace EpubMaker
 		 * @param {boolean} allow_null
 		 * @returns {this}
 		 */
-		setContent(content: ISectionContent, allow_null?: boolean)
+		setContent(content: string | ISectionContent, allow_null?: boolean)
 		{
 			let o = {} as ISectionContent;
 
@@ -566,7 +566,7 @@ export namespace EpubMaker
 			{
 				o.content = content;
 			}
-			else if (content.title || content.content || content.renderTitle || content.cover)
+			else if (content && (content.title || content.content || content.renderTitle || content.cover))
 			{
 				o = content;
 			}
@@ -586,7 +586,7 @@ export namespace EpubMaker
 
 			} else if (content)
 			{
-				this.content = content;
+				this.content = content as ISectionContent;
 			}
 			else if (!allow_null)
 			{

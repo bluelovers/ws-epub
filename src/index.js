@@ -343,7 +343,7 @@ exports.EpubMaker = EpubMaker;
             if (typeof content == 'string') {
                 o.content = content;
             }
-            else if (content.title || content.content || content.renderTitle || content.cover) {
+            else if (content && (content.title || content.content || content.renderTitle || content.cover)) {
                 o = content;
             }
             if (Object.keys(o).length) {
