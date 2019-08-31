@@ -1,6 +1,6 @@
 import fs = require('fs-extra');
 import fetch = require('isomorphic-fetch');
-import path = require("path");
+import path = require('upath2');
 import { IFiles } from '../config';
 import fileType = require('file-type');
 import { hashSum } from '../lib/util';

@@ -5,7 +5,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const JSZip = require("jszip");
 exports.JSZip = JSZip;
-const path = require("path");
+const path = require("upath2");
 const ajax_1 = require("./ajax");
 const util_1 = require("../lib/util");
 /*

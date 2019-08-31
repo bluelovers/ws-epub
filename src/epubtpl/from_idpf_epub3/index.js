@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const zip_1 = require("../../epubtpl-lib/zip");
 const handlebar_helpers_1 = require("../../epubtpl-lib/handlebar-helpers");
 const ajax_1 = require("../../epubtpl-lib/ajax");
-const path = require("path");
+const path = require("upath2");
 const epubtpl_lib_1 = require("../../epubtpl-lib");
 // @ts-ignore
 exports.EPUB_TEMPLATES_PATH = path.join(__dirname);

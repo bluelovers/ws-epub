@@ -3,7 +3,7 @@
  * Created by user on 2017/12/12/012.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require("path");
+const path = require("upath2");
 const util_1 = require("./lib/util");
 exports.defaultPath = path.join(__dirname, './epubtpl');
 exports.defaultList = {
@@ -97,6 +97,7 @@ class TemplateManagers {
                 return require.reverse(id);
             });
         };
+        // @ts-ignore
         return fn(name)
             .catch(function () {
             return fn(path.join(self.basePath, name));

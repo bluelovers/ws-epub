@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const handlebars_1 = require("handlebars");
 exports.Handlebars = handlebars_1.default;
 // @ts-ignore
-const path = require("path");
+const path = require("upath2");
 // @ts-ignore
 const fs = require("fs");
 const _1 = require(".");
@@ -26,6 +26,7 @@ handlebars_1.default.registerHelper('mimetype', function (str) {
 handlebars_1.default.registerHelper('import', function (filePath, options) {
     filePath = path.normalize(filePath);
     let source = fs.readFileSync(filePath).toString();
+    // @ts-ignore
     return new handlebars_1.default.SafeString(handlebars_1.default.compile(source)(Object.create(this)));
 });
 function ext(str) {

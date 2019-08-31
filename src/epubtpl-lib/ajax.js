@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs-extra");
 const fetch = require("isomorphic-fetch");
 exports.fetch = fetch;
-const path = require("path");
+const path = require("upath2");
 const fileType = require("file-type");
 const util_1 = require("../lib/util");
 const imagemin = require("imagemin");

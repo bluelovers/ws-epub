@@ -2,7 +2,7 @@
  * Created by user on 2017/12/12/012.
  */
 
-import * as path from 'path';
+import * as path from 'upath2';
 import { BPromise } from './lib/util';
 import { IEpubConfig, IBuilder } from './var';
 import { EpubMaker } from './index';
@@ -162,6 +162,7 @@ export class TemplateManagers
 			});
 		};
 
+		// @ts-ignore
 		return fn(name)
 			.catch(function ()
 			{

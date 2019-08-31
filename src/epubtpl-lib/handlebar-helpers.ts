@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 // @ts-ignore
-import * as path from 'path';
+import path = require('upath2');
 // @ts-ignore
 import * as fs from 'fs';
 
@@ -33,6 +33,7 @@ Handlebars.registerHelper('import', function (filePath, options)
 
 	let source = fs.readFileSync(filePath).toString();
 
+	// @ts-ignore
 	return new Handlebars.SafeString(Handlebars.compile(source)(Object.create(this)));
 });
 

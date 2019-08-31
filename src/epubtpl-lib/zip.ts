@@ -5,7 +5,7 @@
 import JSZip = require('jszip');
 import { IFiles, ICover, EpubConfig, IEpubConfig } from '../config';
 import { compileTpl } from './handlebar-helpers';
-import * as path from 'path';
+import * as path from 'upath2';
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 import { hashSum, BPromise } from '../lib/util';

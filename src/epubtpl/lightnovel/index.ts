@@ -2,7 +2,7 @@ import zipLib, { JSZip } from '../../epubtpl-lib/zip';
 import { compileTpl, Handlebars } from '../../epubtpl-lib/handlebar-helpers';
 import { fetchFile } from '../../epubtpl-lib/ajax';
 import { compileCss } from '../../epubtpl-lib/postcss';
-import path = require('path');
+import path = require('upath2');
 import { IBuilder } from '../../var';
 import { EpubMaker } from '../../index';
 import { BPromise, shortid } from '../../lib/util';
