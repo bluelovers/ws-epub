@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.1.52",
+  "version": "1.1.53",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",
@@ -69,14 +69,14 @@
     "@node-novel/epub-util": "^1.0.2",
     "@node-novel/normalize": "^1.0.10",
     "@toycode/markdown-it-class": "^1.1.0",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.3",
     "array-hyper-unique": "^1.1.0",
     "bluebird": "^3.5.5",
-    "cjk-conv": "^1.2.16",
+    "cjk-conv": "^1.2.24",
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.6",
     "deepmerge-plus": "^2.1.3",
-    "epub-maker2": "^2.4.18",
+    "epub-maker2": "^2.4.19",
     "execall2": "^1.1.4",
     "fs-iconv": "^2.0.10",
     "is-relative": "^1.0.0",
@@ -100,12 +100,12 @@
     "transliteration": "^2.1.5",
     "update-notifier": "^3.0.1",
     "uuid-by-string": "^2.1.5",
-    "yargs": "^13.3.0"
+    "yargs": "^14.0.0"
   },
   "devDependencies": {
     "@bluelovers/tsconfig": "^1.0.12",
     "@types/fs-extra": "^8.0.0",
-    "@types/lodash": "^4.14.137",
+    "@types/lodash": "^4.14.138",
     "@types/markdown-it": "^0.0.8",
     "novel-txt-merge": "^1.0.24"
   }
