@@ -348,7 +348,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						epub.withCover(ls[0]);
 					}
 
-					console.log(ls);
+					//console.log(ls);
 				})
 			;
 		}
@@ -493,9 +493,9 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 									.tap(ls =>
 									{
 
-										console.log(ls);
+										//console.log(ls);
 
-										if (ls.length)
+										if (0 && ls.length)
 										{
 											console.log({
 
@@ -628,6 +628,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 							file,
 						} = row;
 
+						/*
 						console.dir({
 							source_idx,
 							volume_title,
@@ -635,6 +636,9 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 							dir,
 							file,
 						});
+						 */
+
+						console.info(source_idx, volume_title, chapter_title)
 					}
 
 					let chapter = new EpubMaker.Section(EnumEpubTypeName.CHAPTER, makeChapterID(temp.count_idx++), {
