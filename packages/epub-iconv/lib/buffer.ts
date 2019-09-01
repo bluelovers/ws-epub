@@ -6,7 +6,7 @@ import JSZip = require('jszip');
 import Bluebird = require('bluebird');
 import ICONV from 'iconv-jschardet';
 import { ITSResolvable } from 'ts-type';
-import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { cn2tw_min as _cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
 import { createJSZipGeneratorOptions } from '@node-novel/epub-util/lib/const';
 import { handleOptions } from './options';
 
@@ -15,6 +15,13 @@ export function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>)
 	return Bluebird.resolve(zipBuffer)
 		.then(zipBuffer => JSZip.loadAsync(zipBuffer))
 	;
+}
+
+function cn2tw_min(input: string): string
+{
+	return _cn2tw_min(input, {
+		safe: false
+	})
 }
 
 export type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;

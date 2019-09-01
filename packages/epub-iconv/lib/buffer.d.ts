@@ -5,8 +5,9 @@
 import JSZip = require('jszip');
 import Bluebird = require('bluebird');
 import { ITSResolvable } from 'ts-type';
-import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
 export declare function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>): Bluebird<JSZip>;
+declare function cn2tw_min(input: string): string;
 export declare type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;
 export interface IEpubIconvOptions {
     iconv?: 'cn' | 'tw';
@@ -17,3 +18,4 @@ export interface IEpubIconvOptions {
 }
 export declare function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvOptions): Bluebird<JSZip>;
 export declare function handleZipBuffer(zipBuffer: ITSResolvable<Buffer>, options?: IEpubIconvOptions): Bluebird<Buffer>;
+export {};
