@@ -17,9 +17,15 @@ export function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>)
 	;
 }
 
+export type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;
+
 export interface IEpubIconvOptions
 {
 	iconv?: 'cn' | 'tw';
+	iconvFn?: {
+		'cn'?: IIconvFn,
+		'tw'?: IIconvFn,
+	}
 }
 
 export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvOptions)
@@ -27,18 +33,32 @@ export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvO
 	return Bluebird.resolve(zip)
 		.then(async (zip) => {
 
-			let fnIconv: typeof cn2tw_min | typeof tw2cn_min;
+			let fnIconv: IIconvFn;
 			options = handleOptions(options);
 
-			switch (options.iconv)
 			{
-				case 'cn':
-					fnIconv = tw2cn_min;
-					break;
-				case 'tw':
-				default:
-					fnIconv = cn2tw_min;
-					break;
+				let { tw = cn2tw_min, cn = tw2cn_min } = options.iconvFn;
+
+				options.iconvFn.tw = tw;
+				options.iconvFn.cn = cn;
+			};
+
+			if (options.iconvFn && options.iconvFn[options.iconv])
+			{
+				fnIconv = options.iconvFn[options.iconv];
+			}
+			else
+			{
+				switch (options.iconv)
+				{
+					case 'cn':
+						fnIconv = options.iconvFn.cn || tw2cn_min;
+						break;
+					case 'tw':
+					default:
+						fnIconv = options.iconvFn.tw || cn2tw_min;
+						break;
+				}
 			}
 
 			await Bluebird
@@ -48,7 +68,8 @@ export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvO
 					let buf = await zipFile
 						.async('nodebuffer')
 						.then(buf => ICONV.encode(buf, 'utf8'))
-						.then(buf => Buffer.from(fnIconv(buf.toString())))
+						.then(buf => fnIconv(buf.toString()))
+						.then(buf => Buffer.from(buf))
 					;
 
 					return zip.file(zipFile.name, buf, {
