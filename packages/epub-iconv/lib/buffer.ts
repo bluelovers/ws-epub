@@ -37,7 +37,9 @@ export function handleZipObject(zip: ITSResolvable<JSZip>, options?: IEpubIconvO
 			options = handleOptions(options);
 
 			{
-				let { tw = cn2tw_min, cn = tw2cn_min } = options.iconvFn;
+				options.iconvFn = options.iconvFn || {};
+
+				let { tw = cn2tw_min, cn = tw2cn_min } = options!.iconvFn;
 
 				options.iconvFn.tw = tw;
 				options.iconvFn.cn = cn;
