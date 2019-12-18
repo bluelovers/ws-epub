@@ -120,3 +120,4 @@ bin/*.d.ts
 /tsconfig.tsbuildinfo
 /.nvmrc
 *.tgz
+/package.d.ts

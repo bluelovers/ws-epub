@@ -7,13 +7,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const yargs = require("yargs");
 const path = require("path");
 const index_1 = require("../index");
-const updateNotifier = require("update-notifier");
-const PACKAGE_JSON = require("../package.json");
 const log_1 = require("../lib/log");
+const update_notifier_1 = require("@yarn-tool/update-notifier");
 const CWD = process.cwd();
-updateNotifier({
-    pkg: PACKAGE_JSON,
-}).notify();
+//updateNotifier({
+//	pkg: PACKAGE_JSON,
+//}).notify();
+update_notifier_1.updateNotifier(path.join(__dirname, '..'));
 let cli = yargs
     .default({
 //input: process.cwd(),

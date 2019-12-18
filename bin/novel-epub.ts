@@ -8,16 +8,19 @@ import yargs = require('yargs');
 import path = require('path');
 import Promise = require('bluebird');
 import novelEpub, { IOptions, makeOptions } from '../index';
-import updateNotifier = require('update-notifier');
+//import updateNotifier = require('@yarn-tool/update-notifier');
 import PACKAGE_JSON = require('../package.json');
 import { Console } from 'debug-color2';
 import { console } from '../lib/log';
+import { updateNotifier, notNpxMaybe, IUpdateNotifierObject } from '@yarn-tool/update-notifier';
 
 const CWD = process.cwd();
 
-updateNotifier({
-	pkg: PACKAGE_JSON,
-}).notify();
+//updateNotifier({
+//	pkg: PACKAGE_JSON,
+//}).notify();
+
+updateNotifier(path.join(__dirname, '..'));
 
 let cli = yargs
 	.default({

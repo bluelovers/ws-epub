@@ -34,3 +34,4 @@ texst/temp
 !/test/temp/test.epub
 
 /test/res.char.ts
+/package.d.ts
