@@ -741,7 +741,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 			.tap(async (processReturn: IEpubRuntimeReturn) =>
 			{
 
-				_hookAfterEpub(epub, {
+				await _hookAfterEpub(epub, {
 					epub,
 					processReturn,
 					epubOptions: options,
@@ -754,7 +754,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 					{
 						const { cwdRoot } = _data_;
 
-						novelGlobby.globby([
+						await novelGlobby.globby([
 								'CONTRIBUTE.md',
 							], {
 								cwd: cwdRoot,
@@ -782,6 +782,20 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 								}
 							})
 						;
+
+						if (epub[SymCache] ==  null)
+						{
+							epub[SymCache] = {};
+						}
+
+						await _handleVolumeImage(epub, TXT_PATH, {
+							epub,
+							processReturn: processReturn,
+							epubOptions: options,
+							store,
+							cwd: cwdRoot,
+							cwdRoot: TXT_PATH,
+						})
 
 					},
 

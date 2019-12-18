@@ -70,7 +70,7 @@ export interface IAttachMetaData {
 }
 export declare function getAttachMeta(dirname: string): Promise<IAttachMetaData>;
 export declare function getAttachMetaByRow(row: IReturnRow): Promise<IAttachMetaData>;
-export declare function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<string[]>;
+export declare function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMaker, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<string[]>;
 export declare function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>[], _data_: IInternalProcessVolumeOptions): Bluebird<string[][]>;
 export declare function _hookAfterVolume(ls: IEpubRuntimeReturn["temp"]["cache_volume_row"], _data_: IInternalProcessVolumeOptions, afterVolumeTasks: ((volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => IResolvableBluebird<unknown>)[]): Bluebird<{
     index: number;
@@ -104,3 +104,4 @@ export declare function createMarkdownSection(options: {
     epubPrefix: EnumPrefixIDType;
     epubTitle: string | EnumPrefixIDTitle;
 }): EpubMaker.Section;
+export declare function _withSection(target: IEpubMakerSectionWithCache | EpubMaker, chapter: EpubMaker.Section): EpubMaker.Section;

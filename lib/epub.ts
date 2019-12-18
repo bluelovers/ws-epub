@@ -349,7 +349,7 @@ export async function getAttachMetaByRow(row: IReturnRow)
 	return AttachMetaMap.get(row.path_dir)
 }
 
-export function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions)
+export function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMaker, dirname: string, _data_: IInternalProcessVolumeOptions)
 {
 
 	const globImages = [
@@ -372,7 +372,16 @@ export function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: 
 			const { processReturn, epub, epubOptions, store, cwdRoot } = _data_;
 			const { stat } = processReturn.data;
 
-			const vid: string = volume.id;
+			let vid: string;
+
+			if (volume instanceof EpubMaker)
+			{
+				vid = '';
+			}
+			else
+			{
+				vid = volume.id;
+			}
 
 			volume[SymCache].image = true;
 
@@ -471,9 +480,12 @@ export function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: 
 
 					if (arr.length)
 					{
-						if (volume.content && volume.content.cover && volume.content.cover.name)
+						if (volume instanceof EpubMaker.Section)
 						{
-							arr.unshift(volume.content.cover.name);
+							if (volume.content && volume.content.cover && volume.content.cover.name)
+							{
+								arr.unshift(volume.content.cover.name);
+							}
 						}
 
 						let chapter = new EpubMaker.Section(EnumEpubTypeName.NON_SPECIFIC_BACKMATTER, makePrefixID(processReturn.temp.count_idx++, EnumPrefixIDType.IMAGE), {
@@ -492,7 +504,9 @@ export function _handleVolumeImage(volume: IEpubMakerSectionWithCache, dirname: 
 
 						stat.image += arr.length;
 
-						volume.withSubSection(chapter);
+						//volume.withSubSection(chapter);
+
+						_withSection(volume, chapter)
 					}
 
 					return ls;
@@ -678,6 +692,11 @@ export function createMarkdownSection(options : {
 		content: mdReturn.mdHtml,
 	}, true, false);
 
+	return _withSection(target, chapter)
+}
+
+export function _withSection(target: IEpubMakerSectionWithCache | EpubMaker, chapter: EpubMaker.Section)
+{
 	if (target instanceof EpubMaker)
 	{
 		target.withSection(chapter);
