@@ -9,6 +9,7 @@ import { _fixRubyInnerContext, allowedHtmlTagList, reTxtHtmlTag, reTxtImgTag } f
 import { getAttachID, handleAttachFile } from './store';
 import { toHalfWidth, toFullWidth } from 'str-util';
 import { console } from './log';
+import { parse as parseNodeNovelTxtTag } from '@node-novel/parse-txt-tag';
 
 export function novelImage(src: string, options: {
 	failback?: string,
@@ -46,25 +47,28 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 		}
 	}
 
-	return (
-		'<div>' +
-		txt
-			.toString()
-			.replace(/\r\n|\r(?!\n)|\n/g, "\n")
+	let context: string = txt
+		.toString()
+		.replace(/\r\n|\r(?!\n)|\n/g, "\n")
 
-			.replace(/\u003C/g, '&lt;')
-			.replace(/\u003E/g, '&gt;')
+		.replace(/\u003C/g, '&lt;')
+		.replace(/\u003E/g, '&gt;')
 
-			.replace(/&lt;(img[^\n]+?)\/?&gt;/gm, function (...m)
-			{
-				//console.log(m);
+		.replace(/&lt;(img[^\n]+?)\/?&gt;/gm, function (...m)
+		{
+			//console.log(m);
 
-				return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
+			return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
+		})
+	;
+
+	context = parseNodeNovelTxtTag(context, {
+		on:{
+			img({
+				tagName,
+				innerContext: id,
 			})
-
-			.replace(reTxtImgTag, (s, id: string) =>
 			{
-
 				if (images && store && id)
 				{
 					let input: string;
@@ -89,7 +93,7 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 						if (ret)
 						{
 							let _options: Parameters<typeof novelImage>["1"] = {
-								attr: ` alt="（插圖${toFullWidth(id)}）"`
+								attr: ` alt="（插圖${toFullWidth(id)}）"`,
 							};
 
 							if (ret.ok && !ret.isFile)
@@ -104,38 +108,32 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 					}
 				}
 
-				return s;
+				return null;
+			},
+			default({
+				tagName,
+				attr,
+				innerContext,
+				cache,
+				attach,
 			})
-
-			.replace(reTxtHtmlTag, (s, ...argv) =>
 			{
-
-				let [tagName = '', attr = '', innerContext = ''] = argv as string[];
-
-				tagName = toHalfWidth(tagName).toLowerCase();
-
-				switch (tagName as (typeof allowedHtmlTagList)[number])
+				if (tagName !== 'img' && !allowedHtmlTagList.includes(tagName))
 				{
-					case 's':
-					case 'i':
-					case 'b':
-					case 'sup':
-					case 'sub':
-						return `<${tagName}>` + innerContext + `</${tagName}>`;
-					case 'ruby':
-						return '<ruby>' + _fixRubyInnerContext(innerContext) + '</ruby>';
-					default:
-						console.warn(`not support ${tagName}`, argv, s)
+					console.warn(`not support ${tagName}`, attr, innerContext)
 				}
 
-				return s;
-			})
+				return null
+			},
+		}
+	}).context;
 
-			.replace(/^[ ]*[－＝\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
+	context = ('<div>' + context
+		.replace(/^[ ]*[－＝\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
 
-			//.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
+		//.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
 
-			.replace(/\n/g, '</div>\n<div>')
+		.replace(/\n/g, '</div>\n<div>')
 		+ '</div>')
 
 		.replace(/<div><hr\/><\/div>/g, '<hr class="linehr"/>')
@@ -144,5 +142,9 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 
 		.replace(/<div><\/div>/g, '<div class="linegroup softbreak">　 </div>')
 		.replace(/<div>/g, '<div class="linegroup calibre1">')
-		;
+	;
+
+	return context;
 }
+
+export default splitTxt

@@ -7,3 +7,4 @@ export declare function novelImage(src: string, options?: {
     attr?: string;
 }): string;
 export declare function splitTxt(txt: any, plusData?: IInternalProcessContextOptions): string;
+export default splitTxt;
