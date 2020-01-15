@@ -34,7 +34,7 @@ export declare namespace Builder {
         contents: string;
     };
     let staticFiles: {
-        'mimetype': string;
+        mimetype: string;
         'META-INF/container.xml': string;
     };
     function make(epub: EpubMaker, options?: any): BPromise<JSZip>;

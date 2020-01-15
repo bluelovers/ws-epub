@@ -148,8 +148,9 @@ export declare class EpubConfig implements IEpubConfig {
      */
     epubContextDate?: moment.MomentInput | Date | moment.Moment;
     constructor(epubConfig?: IEpubConfig, options?: any);
-    readonly langMain: string;
-    subjects: string[];
+    get langMain(): string;
+    get subjects(): string[];
+    set subjects(val: string[]);
     setModification(val: any, ...argv: any[]): this;
     setPublication(val: any, ...argv: any[]): this;
     addAuthor(name: string, url?: string): this;
@@ -170,7 +171,15 @@ export declare class EpubConfig implements IEpubConfig {
     $auto(): this;
     entries(auto?: boolean): IEpubConfig;
     toJSON(auto?: boolean, replacer?: any, space?: string): string;
-    toArray(auto?: boolean): [string, any][];
+    toArray(auto?: boolean): [string, string | number | boolean | void | Date | Record<string, string> | moment.Moment | (string | number)[] | moment.MomentInputObject | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | EpubMetaLink[] | {
+        libSlugify?: ISlugify;
+        ext?: string;
+        generateOptions?: any;
+    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | void | Date | Record<string, string> | moment.Moment | (string | number)[] | moment.MomentInputObject | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | EpubMetaLink[] | {
+        libSlugify?: ISlugify;
+        ext?: string;
+        generateOptions?: any;
+    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | any][])][];
 }
 export declare namespace EpubConfig {
     let dateFormat: string;

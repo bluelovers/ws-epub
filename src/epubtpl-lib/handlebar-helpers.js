@@ -36,7 +36,12 @@ function ext(str) {
     return str.substr(str.lastIndexOf('.') + 1);
 }
 function compileTpl(template, content, skipFormatting) {
-    return _1.default.formatHTML(handlebars_1.default.compile(template)(content), skipFormatting);
+    return _1.default.formatHTML(handlebars_1.default.compile(template)(content, {
+        // @ts-ignore
+        allowProtoMethodsByDefault: true,
+        // @ts-ignore
+        allowProtoPropertiesByDefault: true,
+    }), skipFormatting);
 }
 exports.compileTpl = compileTpl;
 exports.default = handlebars_1.default;

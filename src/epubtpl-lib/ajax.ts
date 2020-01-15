@@ -2,7 +2,7 @@ import fs = require('fs-extra');
 import fetch = require('isomorphic-fetch');
 import path = require('upath2');
 import { IFiles } from '../config';
-import fileType = require('file-type');
+import { fromBuffer as fileType } from 'file-type';
 import { hashSum } from '../lib/util';
 import imagemin = require('imagemin');
 import imageminJpegtran = require('imagemin-jpegtran');
@@ -170,7 +170,7 @@ export async function fetchFile(file: IFiles, ...argv)
 
 	if (!file.ext || !file.mime)
 	{
-		let data = fileType(_file);
+		let data = await fileType(_file);
 
 		if (data)
 		{

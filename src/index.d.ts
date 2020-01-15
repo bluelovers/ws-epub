@@ -22,7 +22,7 @@ export declare class EpubMaker {
     withTitle(title: string, title_short?: string): this;
     addTitles(titles: string[]): this;
     withLanguage(lang: string): this;
-    readonly lang: string;
+    get lang(): string;
     withAuthor(fullName: string, url?: string): this;
     addAuthor(fullName: string, url?: string): this;
     addAuthor(fullName: string[]): this;
@@ -106,9 +106,9 @@ export declare namespace EpubMaker {
          * @returns {this}
          */
         setContent(content: string | ISectionContent, allow_null?: boolean): this;
-        readonly epubTypeGroup: string | EnumEpubType;
-        readonly lang: string;
-        readonly langMain: string;
+        get epubTypeGroup(): string | EnumEpubType;
+        get lang(): string;
+        get langMain(): string;
         static create(epubType: string | EnumEpubTypeName, id: any, content: any, includeInToc: boolean, includeInLandmarks: boolean, ...argv: any[]): Section;
         /**
          * 用來檢查 Section 是否已經加入

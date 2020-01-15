@@ -4,7 +4,7 @@ const fs = require("fs-extra");
 const fetch = require("isomorphic-fetch");
 exports.fetch = fetch;
 const path = require("upath2");
-const fileType = require("file-type");
+const file_type_1 = require("file-type");
 const util_1 = require("../lib/util");
 const imagemin = require("imagemin");
 const imageminJpegtran = require("imagemin-jpegtran");
@@ -118,7 +118,7 @@ async function fetchFile(file, ...argv) {
         }
     }
     if (!file.ext || !file.mime) {
-        let data = fileType(_file);
+        let data = await file_type_1.fromBuffer(_file);
         if (data) {
             if (file.ext !== '') {
                 file.ext = file.ext || '.' + data.ext;

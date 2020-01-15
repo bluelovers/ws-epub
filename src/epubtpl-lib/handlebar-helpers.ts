@@ -49,7 +49,12 @@ function ext(str)
 
 export function compileTpl(template, content, skipFormatting?: boolean): string
 {
-	return epubTplLib.formatHTML(Handlebars.compile(template)(content), skipFormatting);
+	return epubTplLib.formatHTML(Handlebars.compile(template)(content, {
+		// @ts-ignore
+		allowProtoMethodsByDefault: true,
+		// @ts-ignore
+		allowProtoPropertiesByDefault: true,
+	}), skipFormatting);
 }
 
 export { Handlebars };
