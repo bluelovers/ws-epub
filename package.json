@@ -93,7 +93,7 @@
     "markdown-it-toc-and-anchor": "^4.2.0",
     "moment": "^2.24.0",
     "node-novel-globby": "^2.0.9",
-    "node-novel-info": "^2.3.33",
+    "node-novel-info": "^3.0.0",
     "path-dir-normalize": "^1.0.1",
     "regexp-cjk": "^3.3.8",
     "regexp-cjk-plugin-extra": "^1.0.5",
