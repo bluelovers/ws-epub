@@ -168,7 +168,9 @@ Promise.mapSeries([
 
 //	'惡役轉生但是為什麼會變成這樣',
 
-	'世界最高の暗殺者、異世界貴族に転生する',
+//	'世界最高の暗殺者、異世界貴族に転生する',
+
+	'三度被龍輾死，我的轉生職人生活',
 
 ] as string[], makeEpub);
 
@@ -205,6 +207,8 @@ async function makeEpub(novelID: string)
 //	TXT_PATH = path.join('C:/Home/link/dist_novel/girl', novelID);
 
 	TXT_PATH = path.join('C:/Home/link/dist_novel/syosetu', novelID);
+
+	TXT_PATH = path.join('C:/Home/link/dist_novel/user2', novelID);
 
 	let OUTPUT_PATH = path.join(__dirname, './temp');
 
