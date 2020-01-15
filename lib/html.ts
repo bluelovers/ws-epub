@@ -66,16 +66,14 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 		on:{
 			img({
 				tagName,
-				innerContext: id,
+				innerContext,
 			})
 			{
-				if (images && store && id)
+				if (images && store && innerContext)
 				{
-					let input: string;
-
-					({ id, input } = getAttachID(id, {
+					let { id, input } = getAttachID(innerContext, {
 						images,
-					}));
+					});
 
 					if (input)
 					{
@@ -106,6 +104,14 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 							return novelImage(ret.returnPath, _options);
 						}
 					}
+					else
+					{
+						console.warn(`ID( ${innerContext} )，不存在於附件表內`);
+					}
+				}
+				else
+				{
+					console.warn(`偵測到 ID( ${innerContext} )，但附件表不存在`);
 				}
 
 				return null;

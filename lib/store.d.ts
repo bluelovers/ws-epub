@@ -74,7 +74,7 @@ export declare function handleAttachFile(input: string, plusData?: IHandleAttach
     isFile: boolean;
     data: IEpubStoreValue;
 };
-export declare function getAttachID(id: string, attach: IAttachMetaData): {
+export declare function getAttachID(id: string, attach: IAttachMetaData, returnFailbackObject?: boolean): {
     id: string;
     input: string;
 };

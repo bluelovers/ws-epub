@@ -370,7 +370,10 @@ export function handleAttachFile(input: string, plusData?: IHandleAttachFileOpti
 	}
 }
 
-export function getAttachID(id: string, attach: IAttachMetaData)
+export function getAttachID(id: string, attach: IAttachMetaData, returnFailbackObject?: boolean): {
+	id: string,
+	input: string,
+}
 {
 	const { images } = attach || {} as IAttachMetaData;
 	id = toHalfWidth(id).trim();
@@ -393,4 +396,6 @@ export function getAttachID(id: string, attach: IAttachMetaData)
 			id, input,
 		}
 	}
+
+	return {} as any
 }
