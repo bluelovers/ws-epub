@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("./index");
 const util_1 = require("./lib/util");
-const lib_1 = require("node-novel-info/lib");
+const const_1 = require("node-novel-info/lib/const");
+const deepmerge_plus_1 = require("deepmerge-plus");
 const util_2 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
 const he_1 = require("he");
@@ -18,9 +19,9 @@ class EpubConfig {
             delete epubConfig.slug;
             delete epubConfig.uuid;
         }
-        Object.assign(this, EpubConfig.getDefaultEpubConfig(), lib_1.deepmerge.all([{}, epubConfig, {
+        Object.assign(this, EpubConfig.getDefaultEpubConfig(), deepmerge_plus_1.default.all([{}, epubConfig, {
                 options
-            }], lib_1.deepmergeOptions));
+            }], const_1.deepmergeOptions));
     }
     get langMain() {
         return this.lang;

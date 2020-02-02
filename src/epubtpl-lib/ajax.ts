@@ -8,6 +8,8 @@ import imagemin = require('imagemin');
 import imageminJpegtran = require('imagemin-jpegtran');
 import imageminPngquant = require('imagemin-pngquant');
 import imageminOptipng = require('imagemin-optipng');
+import imageminWebp = require('imagemin-webp');
+import imageminMozjpeg = require('imagemin-mozjpeg');
 import Bluebird = require('bluebird');
 import BluebirdCancellation from 'bluebird-cancellation';
 import { TimeoutError } from 'bluebird';
@@ -114,14 +116,20 @@ export async function fetchFile(file: IFiles, ...argv)
 				 * 只壓縮從網路抓取的 PNG 圖片
 				 */
 				let pngOptions: imageminPngquant.Options = {
-					quality: is_from_url ? [0.65, 0.8] : undefined,
+					quality: is_from_url ? [0.65, 1] : [0.9, 1],
+				};
+
+				let otherOptions: imageminMozjpeg.Options = {
+					quality: is_from_url ? undefined : 100,
 				};
 
 				let pc = BluebirdCancellation
 					.resolve(imagemin.buffer(_file, {
 					plugins: [
 						imageminOptipng(),
-						imageminJpegtran(),
+						//imageminJpegtran(),
+						imageminWebp(),
+						imageminMozjpeg(otherOptions),
 						// @ts-ignore
 						imageminPngquant(pngOptions),
 					],

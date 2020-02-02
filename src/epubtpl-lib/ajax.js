@@ -7,9 +7,10 @@ const path = require("upath2");
 const file_type_1 = require("file-type");
 const util_1 = require("../lib/util");
 const imagemin = require("imagemin");
-const imageminJpegtran = require("imagemin-jpegtran");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminOptipng = require("imagemin-optipng");
+const imageminWebp = require("imagemin-webp");
+const imageminMozjpeg = require("imagemin-mozjpeg");
 const Bluebird = require("bluebird");
 const bluebird_cancellation_1 = require("bluebird-cancellation");
 const bluebird_1 = require("bluebird");
@@ -78,13 +79,18 @@ async function fetchFile(file, ...argv) {
              * 只壓縮從網路抓取的 PNG 圖片
              */
             let pngOptions = {
-                quality: is_from_url ? [0.65, 0.8] : undefined,
+                quality: is_from_url ? [0.65, 1] : [0.9, 1],
+            };
+            let otherOptions = {
+                quality: is_from_url ? undefined : 100,
             };
             let pc = bluebird_cancellation_1.default
                 .resolve(imagemin.buffer(_file, {
                 plugins: [
                     imageminOptipng(),
-                    imageminJpegtran(),
+                    //imageminJpegtran(),
+                    imageminWebp(),
+                    imageminMozjpeg(otherOptions),
                     // @ts-ignore
                     imageminPngquant(pngOptions),
                 ],

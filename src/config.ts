@@ -2,7 +2,9 @@ import { EpubMaker, ISlugify, slugify } from './index';
 import { shortid, hashSum, moment, array_unique } from './lib/util';
 import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
-import { deepmerge, deepmergeOptions } from 'node-novel-info/lib';
+import { deepmergeOptions } from 'node-novel-info/lib/const';
+import deepmerge from 'deepmerge-plus';
+
 import { htmlPreface } from './lib/util';
 import { createUUID } from './lib/uuid';
 import { encode as encodeHE } from 'he';

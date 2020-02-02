@@ -4,7 +4,7 @@
          xmlns:dcterms="http://purl.org/dc/terms/"
          xmlns:media="http://www.idpf.org/epub/vocab/overlays/#"
          version="3.0"
-         unique-identifier="uuid"
+         unique-identifier="uuid_id"
          xml:lang="{{lang}}"
          prefix="cc: http://creativecommons.org/ns#">
     <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata"
@@ -12,9 +12,9 @@
               xmlns:dcterms="http://purl.org/dc/terms/"
               xmlns:opf="http://www.idpf.org/2007/opf"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <dc:identifier id="uuid">urn:uuid:{{uuid}}</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">urn:uuid:{{uuid}}</dc:identifier>
         <dc:title>{{title}}</dc:title>
-        <dc:creator id="id-author">{{author}}</dc:creator>
+        <dc:creator opf:role="aut" id="id-author">{{author}}</dc:creator>
         <opf:meta property="role" refines="#id-author" scheme="marc:relators">aut</opf:meta>
         <opf:meta property="file-as" refines="#id-author">{{author}}</opf:meta>
         <dc:language>{{lang}}</dc:language>
