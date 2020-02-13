@@ -128,7 +128,7 @@ export async function fetchFile(file: IFiles, ...argv)
 					plugins: [
 						imageminOptipng(),
 						//imageminJpegtran(),
-						//imageminWebp(),
+						imageminWebp(),
 						imageminMozjpeg(otherOptions),
 						// @ts-ignore
 						imageminPngquant(pngOptions),
