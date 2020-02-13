@@ -171,11 +171,11 @@ export declare class EpubConfig implements IEpubConfig {
     $auto(): this;
     entries(auto?: boolean): IEpubConfig;
     toJSON(auto?: boolean, replacer?: any, space?: string): string;
-    toArray(auto?: boolean): [string, string | number | boolean | void | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
+    toArray(auto?: boolean): [string, string | number | boolean | void | Date | (string | number)[] | Record<string, string> | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | moment.MomentInputObject | {
         libSlugify?: ISlugify;
         ext?: string;
         generateOptions?: any;
-    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | void | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
+    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | void | Date | (string | number)[] | Record<string, string> | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | moment.MomentInputObject | {
         libSlugify?: ISlugify;
         ext?: string;
         generateOptions?: any;

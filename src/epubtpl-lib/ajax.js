@@ -9,7 +9,6 @@ const util_1 = require("../lib/util");
 const imagemin = require("imagemin");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminOptipng = require("imagemin-optipng");
-const imageminWebp = require("imagemin-webp");
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const Bluebird = require("bluebird");
 const bluebird_cancellation_1 = require("bluebird-cancellation");
@@ -89,7 +88,7 @@ async function fetchFile(file, ...argv) {
                 plugins: [
                     imageminOptipng(),
                     //imageminJpegtran(),
-                    imageminWebp(),
+                    //imageminWebp(),
                     imageminMozjpeg(otherOptions),
                     // @ts-ignore
                     imageminPngquant(pngOptions),
