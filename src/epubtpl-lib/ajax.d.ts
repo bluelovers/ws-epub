@@ -1,8 +1,5 @@
-import fetch = require('isomorphic-fetch');
-import { IFiles } from '../config';
+import fetch = require('cross-fetch');
+import fetchFile from '@node-novel/fetch-file-or-url';
 export { fetch };
-/**
- * 處理附加檔案 本地檔案 > url
- */
-export declare function fetchFile(file: IFiles, ...argv: any[]): Promise<IFiles>;
+export { fetchFile };
 export default fetch;
