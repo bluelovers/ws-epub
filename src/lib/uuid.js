@@ -3,6 +3,7 @@
  * Created by user on 2018/9/8/008.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createUUID = void 0;
 const getUuidByString = require("uuid-by-string");
 const util_1 = require("./util");
 function createUUID(input) {

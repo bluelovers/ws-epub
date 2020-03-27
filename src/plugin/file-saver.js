@@ -3,10 +3,11 @@
  * Created by user on 2017/12/17/017.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EpubMaker = void 0;
 // @ts-ignore
 const file_saver_1 = require("file-saver");
 const __1 = require("..");
-exports.EpubMaker = __1.EpubMaker;
+Object.defineProperty(exports, "EpubMaker", { enumerable: true, get: function () { return __1.EpubMaker; } });
 /**
  * for web
  *

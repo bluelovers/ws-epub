@@ -1,8 +1,7 @@
 import Handlebars from 'handlebars';
 // @ts-ignore
 import path = require('upath2');
-// @ts-ignore
-import * as fs from 'fs';
+import { readFileSync } from 'fs';
 
 import epubTplLib, {  } from '.';
 
@@ -31,7 +30,7 @@ Handlebars.registerHelper('import', function (filePath, options)
 {
 	filePath = path.normalize(filePath);
 
-	let source = fs.readFileSync(filePath).toString();
+	let source = readFileSync(filePath).toString();
 
 	// @ts-ignore
 	return new Handlebars.SafeString(Handlebars.compile(source)(Object.create(this)));

@@ -3,6 +3,7 @@
  * Created by user on 2017/12/12/012.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.templateManagers = exports.TemplateManagers = exports.defaultList = exports.defaultPath = void 0;
 const path = require("upath2");
 const util_1 = require("./lib/util");
 exports.defaultPath = path.join(__dirname, './epubtpl');

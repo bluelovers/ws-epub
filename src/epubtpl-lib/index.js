@@ -3,6 +3,7 @@
  * Created by user on 2017/12/15/015.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.htmlminify = exports.formatHTML = void 0;
 const js_beautify_1 = require("js-beautify");
 const html_minifier_1 = require("html-minifier");
 function formatHTML(htmlstr, skipFormatting) {
@@ -36,6 +37,7 @@ function htmlminify(html, options = {}) {
                 indent_char: '',
                 indent_inner_html: false,
                 indent_size: 0,
+                // @ts-ignore
                 indent_level: 0,
                 max_preserve_newlines: 1,
                 preserve_newlines: true,

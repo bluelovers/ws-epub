@@ -21,3 +21,5 @@ test/*.d.ts
 /tsconfig.tsbuildinfo
 /.nvmrc
 /test/
+/yarn-error.log
+*.map

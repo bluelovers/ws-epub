@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EpubConfig = exports.EnumEpubConfigVertical = void 0;
 const index_1 = require("./index");
 const util_1 = require("./lib/util");
 const const_1 = require("node-novel-info/lib/const");

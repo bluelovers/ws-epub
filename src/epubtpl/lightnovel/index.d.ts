@@ -38,7 +38,7 @@ export declare namespace Builder {
         'META-INF/container.xml': string;
     };
     function make(epub: EpubMaker, options?: any): BPromise<JSZip>;
-    function addStaticFiles(zip: any, epub: EpubMaker, options: any): BPromise<import("../../config").IFiles[]>;
+    function addStaticFiles(zip: any, epub: EpubMaker, options: any): BPromise<import("@node-novel/fetch-file-or-url").IFiles[]>;
     function tableOfContents(zip: any, epub: EpubMaker, options: any): Promise<void>;
     function addCover(zip: any, epub: EpubMaker, options: any): Promise<void>;
     function addInfoSection(section: any, titlePrefix?: any, namePrefix?: any): void;

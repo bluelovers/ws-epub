@@ -47,6 +47,7 @@ export function htmlminify(html: string, options: IMinifyOptions = {})
 				indent_char: '',
 				indent_inner_html: false,
 				indent_size: 0,
+				// @ts-ignore
 				indent_level: 0,
 				max_preserve_newlines: 1,
 				preserve_newlines: true,

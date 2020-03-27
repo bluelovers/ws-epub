@@ -3,6 +3,7 @@
  * Created by user on 2017/12/12/012.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addSubSections = exports.addCover = exports.addFiles = exports.addStaticFiles = exports.parseFileSetting = exports.JSZip = void 0;
 const JSZip = require("jszip");
 exports.JSZip = JSZip;
 const path = require("upath2");

@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Handlebars = exports.compileTpl = exports.mimetypes = void 0;
 const handlebars_1 = require("handlebars");
 exports.Handlebars = handlebars_1.default;
 // @ts-ignore
 const path = require("upath2");
-// @ts-ignore
-const fs = require("fs");
+const fs_1 = require("fs");
 const _1 = require(".");
 exports.mimetypes = {
     'jpeg': 'image/jpeg',
@@ -25,7 +25,7 @@ handlebars_1.default.registerHelper('mimetype', function (str) {
 });
 handlebars_1.default.registerHelper('import', function (filePath, options) {
     filePath = path.normalize(filePath);
-    let source = fs.readFileSync(filePath).toString();
+    let source = fs_1.readFileSync(filePath).toString();
     // @ts-ignore
     return new handlebars_1.default.SafeString(handlebars_1.default.compile(source)(Object.create(this)));
 });

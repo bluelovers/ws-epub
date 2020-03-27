@@ -8,6 +8,7 @@ import deepmerge from 'deepmerge-plus';
 import { htmlPreface } from './lib/util';
 import { createUUID } from './lib/uuid';
 import { encode as encodeHE } from 'he';
+import { IFiles } from '@node-novel/fetch-file-or-url';
 
 export interface ICover extends IFiles
 {
@@ -26,22 +27,7 @@ export interface IRightsConfig
 	license?: string,
 }
 
-export interface IFiles
-{
-	url?: string,
-	file?: string,
-
-	folder?: string,
-	name?: string,
-
-	basename?: string,
-	ext?: string,
-	mime?: string,
-	data?;
-
-	is?: string,
-	href?: string,
-}
+export { IFiles }
 
 export interface ICollection
 {

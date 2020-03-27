@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.types = exports.getGroup = exports.EnumEpubType = exports.groups = exports.epubtypes = exports.EnumEpubTypeGroup = exports.EnumEpubTypeName = void 0;
 var EnumEpubTypeName;
 (function (EnumEpubTypeName) {
     EnumEpubTypeName["ABSTRACT"] = "abstract";

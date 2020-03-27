@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.builder = exports.EPUB_TEMPLATES_TPL = exports.EPUB_TEMPLATES_PATH = void 0;
 const zip_1 = require("../../epubtpl-lib/zip");
 const handlebar_helpers_1 = require("../../epubtpl-lib/handlebar-helpers");
 const ajax_1 = require("../../epubtpl-lib/ajax");

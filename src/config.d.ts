@@ -1,5 +1,6 @@
 import { EpubMaker, ISlugify } from './index';
 import { moment } from './lib/util';
+import { IFiles } from '@node-novel/fetch-file-or-url';
 export interface ICover extends IFiles {
     rights?: IRightsConfig;
 }
@@ -11,18 +12,7 @@ export interface IRightsConfig {
     description?: string;
     license?: string;
 }
-export interface IFiles {
-    url?: string;
-    file?: string;
-    folder?: string;
-    name?: string;
-    basename?: string;
-    ext?: string;
-    mime?: string;
-    data?: any;
-    is?: string;
-    href?: string;
-}
+export { IFiles };
 export interface ICollection {
     name?: string;
     type?: string;
@@ -171,15 +161,15 @@ export declare class EpubConfig implements IEpubConfig {
     $auto(): this;
     entries(auto?: boolean): IEpubConfig;
     toJSON(auto?: boolean, replacer?: any, space?: string): string;
-    toArray(auto?: boolean): [string, string | number | boolean | void | Date | (string | number)[] | Record<string, string> | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | moment.MomentInputObject | {
+    toArray(auto?: boolean): [string, string | number | boolean | void | ICover | IRightsConfig | IStylesheet | ICollection | string[] | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
         libSlugify?: ISlugify;
         ext?: string;
         generateOptions?: any;
-    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | void | Date | (string | number)[] | Record<string, string> | ICover | IRightsConfig | IStylesheet | ICollection | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | moment.MomentInputObject | {
+    } | ((auto?: boolean) => IEpubConfig) | ((val: any, ...argv: any[]) => this) | ((vertical?: boolean | EnumEpubConfigVertical) => this) | (() => this) | ((val: any, ...argv: any[]) => this) | ((name: string, url?: string) => this) | ((data: string | EpubMetaLink, rel?: string) => this) | ((type: string, id?: string) => this) | (() => any) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | void | ICover | IRightsConfig | IStylesheet | ICollection | string[] | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
         libSlugify?: ISlugify;
         ext?: string;
         generateOptions?: any;
-    } | ((val: any, ...argv: any[]) => this) | ((auto?: boolean, replacer?: any, space?: string) => string) | any][])][];
+    } | ((auto?: boolean) => IEpubConfig) | ((val: any, ...argv: any[]) => this) | ((vertical?: boolean | EnumEpubConfigVertical) => this) | (() => this) | ((val: any, ...argv: any[]) => this) | ((name: string, url?: string) => this) | ((data: string | EpubMetaLink, rel?: string) => this) | ((type: string, id?: string) => this) | (() => any) | ((auto?: boolean, replacer?: any, space?: string) => string) | any][])][];
 }
 export declare namespace EpubConfig {
     let dateFormat: string;

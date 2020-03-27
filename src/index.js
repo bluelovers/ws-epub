@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EpubMaker = exports.slugifyWithFallback = exports.slugify = exports.hashSum = exports.shortid = exports.EnumSectionCollectType = exports.EnumEpubTypeName = exports.EnumEpubType = void 0;
 const _slugify = require("slugify");
 const template_1 = require("./template");
 const fs_iconv_1 = require("fs-iconv");
@@ -7,10 +8,10 @@ const zip_1 = require("./epubtpl-lib/zip");
 const uuid_1 = require("./lib/uuid");
 const config_1 = require("./config");
 const util_1 = require("./lib/util");
-exports.hashSum = util_1.hashSum;
-exports.shortid = util_1.shortid;
+Object.defineProperty(exports, "hashSum", { enumerable: true, get: function () { return util_1.hashSum; } });
+Object.defineProperty(exports, "shortid", { enumerable: true, get: function () { return util_1.shortid; } });
 const epub_types_1 = require("./epub-types");
-exports.EnumEpubType = epub_types_1.EnumEpubType;
+Object.defineProperty(exports, "EnumEpubType", { enumerable: true, get: function () { return epub_types_1.EnumEpubType; } });
 const libEpubtypes = require("./epub-types");
 const jszip_fixed_date_1 = require("jszip-fixed-date");
 function slugify(input, ...argv) {
