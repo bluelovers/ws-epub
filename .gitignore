@@ -35,3 +35,4 @@ texst/temp
 
 /test/res.char.ts
 /package.d.ts
+*.map
