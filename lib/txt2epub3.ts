@@ -5,7 +5,7 @@
 import { ISectionContent } from 'epub-maker2/src/index';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
-import { array_unique, chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
+import { chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
 import { fsLowCheckLevelMdconfAsync, pathDirNormalize } from './util';
 import { console } from './log';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
@@ -338,6 +338,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 		{
 			await novelGlobby.globby([
 					'cover.*',
+				// @ts-ignore
 				], Object.assign({}, globby_options, {
 					absolute: true,
 				}))
