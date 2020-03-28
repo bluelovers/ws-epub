@@ -285,13 +285,14 @@ export interface IAttachMetaData
 export function getAttachMeta(dirname: string): Promise<IAttachMetaData>
 {
 	return fsLowCheckLevelMdconfAsync(path.join(dirname, 'ATTACH.md'))
+		// @ts-ignore
 		.then<IAttachMetaData>((v: IMdconfMeta & {
 			attach: IAttachMetaData
 		}) =>
 		{
 			if (v.attach)
 			{
-				return v.attach
+				return v.attach as any as IAttachMetaData
 			}
 			// @ts-ignore
 			else if (v.novel && v.novel.attach)
@@ -302,7 +303,8 @@ export function getAttachMeta(dirname: string): Promise<IAttachMetaData>
 
 			return v as any as IAttachMetaData
 		})
-		.then(attach => {
+		// @ts-ignore
+		.then((attach: IAttachMetaData) => {
 
 			if (attach && attach.images)
 			{
@@ -326,7 +328,7 @@ export function getAttachMeta(dirname: string): Promise<IAttachMetaData>
 						}
 
 						return a;
-					}, {})
+					}, {} as IAttachMetaData["images"])
 			}
 
 			return attach
@@ -349,7 +351,7 @@ export async function getAttachMetaByRow(row: IReturnRow)
 	return AttachMetaMap.get(row.path_dir)
 }
 
-export function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMaker, dirname: string, _data_: IInternalProcessVolumeOptions)
+export function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMaker, dirname: string, _data_: IInternalProcessVolumeOptions): Bluebird<string[]>
 {
 
 	const globImages = [
@@ -516,7 +518,7 @@ export function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMake
 		;
 }
 
-export function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>[], _data_: IInternalProcessVolumeOptions)
+export function _handleVolumeImageEach(ls: Omit<IEpubRuntimeReturnCacheVolumeRow, 'value'>[], _data_: IInternalProcessVolumeOptions): Bluebird<string[][]>
 {
 	const { processReturn, epub, store, epubOptions, cwd } = _data_;
 	const temp = processReturn.temp;
@@ -606,7 +608,7 @@ export function _hookAfterEpub(epub: EpubMaker,
 		;
 }
 
-export function addContributeSection(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow)
+export function addContributeSection(volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow): Bluebird<boolean>
 {
 	return Bluebird.resolve(volume)
 		.then(async (volume) => {
