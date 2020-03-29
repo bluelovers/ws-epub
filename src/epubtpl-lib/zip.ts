@@ -133,10 +133,10 @@ export function addFiles(zip: JSZip, epub: EpubMaker, options)
 			epub.epubConfig.additionalFiles.forEach((v, i) =>
 			{
 
-				let s = staticFiles[i];
+				let s = staticFiles[i] ?? {};
 
 				v.mime = v.mime || s.mime;
-				v.name = s.name;
+				v.name = s.name ?? v.name;
 
 				if (v.folder === null)
 				{

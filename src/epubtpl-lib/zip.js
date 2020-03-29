@@ -88,9 +88,10 @@ function addFiles(zip, epub, options) {
     return addStaticFiles(zip, staticFiles)
         .then(function (staticFiles) {
         epub.epubConfig.additionalFiles.forEach((v, i) => {
-            let s = staticFiles[i];
+            var _a, _b;
+            let s = (_a = staticFiles[i]) !== null && _a !== void 0 ? _a : {};
             v.mime = v.mime || s.mime;
-            v.name = s.name;
+            v.name = (_b = s.name) !== null && _b !== void 0 ? _b : v.name;
             if (v.folder === null) {
                 // @ts-ignore
                 v.href = v.name;

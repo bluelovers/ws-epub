@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -93,7 +93,6 @@
     "@types/he": "^1.1.1",
     "@types/html-minifier": "^3.5.3",
     "@types/imagemin": "^7.0.0",
-    "@types/imagemin-jpegtran": "^5.0.0",
     "@types/imagemin-mozjpeg": "^8.0.0",
     "@types/imagemin-optipng": "^5.2.0",
     "@types/imagemin-pngquant": "^7.0.0",
@@ -105,7 +104,6 @@
   },
   "peerDependencies": {},
   "optionalDependencies": {
-    "imagemin-jpegtran": "^6.0.0",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-optipng": "^7.1.0",
     "imagemin-pngquant": "^8.0.0",
