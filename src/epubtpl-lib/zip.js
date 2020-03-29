@@ -9,6 +9,7 @@ exports.JSZip = JSZip;
 const path = require("upath2");
 const ajax_1 = require("./ajax");
 const util_1 = require("../lib/util");
+const debug_color2_1 = require("debug-color2");
 /*
 export async function addMimetype(zip: JSZip, epub: EpubMaker, options)
 {
@@ -56,7 +57,14 @@ function addStaticFiles(zip, staticFiles) {
             _file.data = cf.data;
             _file.mime = _file.mime || cf.mime;
         }
-        file = await ajax_1.fetchFile(_file);
+        file = await ajax_1.fetchFile(_file)
+            .catch(e => {
+            debug_color2_1.console.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, _file, e);
+            return null;
+        });
+        if (!file) {
+            return;
+        }
         if (_file.url) {
             cache[_file.url] = _file;
         }
@@ -104,7 +112,7 @@ async function addCover(zip, epub, options) {
         epub.epubConfig.cover.basename = 'CoverDesign';
         let file = await ajax_1.fetchFile(epub.epubConfig.cover)
             .catch(e => {
-            console.error(e && e.meggage || `can't fetch cover`);
+            debug_color2_1.console.error(e && e.meggage || `can't fetch cover`);
             return null;
         });
         if (!file) {

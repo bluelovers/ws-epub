@@ -9,6 +9,7 @@ import * as path from 'upath2';
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 import { hashSum, BPromise } from '../lib/util';
+import { console } from 'debug-color2';
 
 export { JSZip }
 
@@ -81,7 +82,19 @@ export function addStaticFiles(zip, staticFiles: IFiles[])
 				_file.mime = _file.mime || cf.mime;
 			}
 
-			file = await fetchFile(_file);
+			file = await fetchFile(_file)
+				.catch(e => {
+
+					console.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, _file, e);
+
+					return null
+				})
+			;
+
+			if (!file)
+			{
+				return;
+			}
 
 			if (_file.url)
 			{
