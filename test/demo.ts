@@ -210,7 +210,9 @@ async function makeEpub(novelID: string)
 
 	TXT_PATH = path.join('C:/Home/link/dist_novel/user2', novelID);
 
-	let OUTPUT_PATH = path.join(__dirname, './temp');
+	TXT_PATH = `T:\\cache\\yarn-cache\\tmp\\tmp-36628ADH6ujaobfp5\\dmzj\\2134`;
+
+		let OUTPUT_PATH = path.join(__dirname, './temp');
 
 	console.time();
 
@@ -224,10 +226,10 @@ async function makeEpub(novelID: string)
 
 		filenameLocal: novelID,
 
-		noLog: true,
+		//noLog: true,
 
 		//vertical: EnumEpubConfigVertical.VERTICAL_RL,
-		//downloadRemoteFile: true,
+		downloadRemoteFile: true,
 	});
 
 	console.timeEnd();
