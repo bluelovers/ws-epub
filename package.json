@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -40,12 +40,12 @@
   "scripts": {
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
-    "ncu": "npx yarn-tool ncu -u",
+    "test": "npx mocha",
     "npm:publish": "npm publish",
     "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
     "postpublish": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx yarn-tool sort",
-    "test": "npx mocha",
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
@@ -53,18 +53,18 @@
     "defaults"
   ],
   "dependencies": {
-    "@node-novel/fetch-file-or-url": "^1.1.4",
+    "@node-novel/fetch-file-or-url": "^1.1.5",
     "@types/bluebird": "^3",
     "@types/bluebird-global": "^3",
     "@types/hash-sum": "^1.0.0",
     "@types/jszip": "^3.1.7",
     "array-hyper-unique": "^1.1.0",
-    "autoprefixer": "^9.7.5",
+    "autoprefixer": "^9.7.6",
     "bluebird": "^3.7.2",
-    "bluebird-cancellation": "^1.0.12",
+    "bluebird-cancellation": "^1.0.13",
     "cross-fetch": "^3.0.4",
     "debug-color2": "^1.1.7",
-    "file-type": "^14.1.4",
+    "file-type": "^14.2.0",
     "fs-extra": "^9.0.0",
     "fs-iconv": "^2",
     "handlebars": "< 4.6 && >= 4.5",
@@ -72,8 +72,8 @@
     "he": "^1.2.0",
     "html-minifier": "^4.0.0",
     "imagemin": "^7.0.1",
-    "js-beautify": "^1.10.3",
-    "jszip": "^3.2.2",
+    "js-beautify": "^1.11.0",
+    "jszip": "^3.4.0",
     "jszip-fixed-date": "^1.0.0",
     "moment": "^2.24.0",
     "node-novel-info": "^3.0.1",
@@ -83,7 +83,7 @@
     "postcss-strip-inline-comments": "^0.1.5",
     "shortid": "^2.2.15",
     "slugify": "^1.4.0",
-    "uuid": "^7.0.2",
+    "uuid": "^7.0.3",
     "uuid-by-string": "^3.0.2"
   },
   "devDependencies": {
@@ -100,7 +100,7 @@
     "@types/js-beautify": "^1.8.2",
     "@types/node": "^13",
     "@types/shortid": "^0.0.29",
-    "@types/uuid": "^7.0.2"
+    "@types/uuid": "^7.0.3"
   },
   "peerDependencies": {},
   "optionalDependencies": {
