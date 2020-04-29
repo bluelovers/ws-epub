@@ -78,7 +78,7 @@ export declare function _hookAfterVolume(ls: IEpubRuntimeReturn["temp"]["cache_v
     volume: IEpubMakerSectionWithCache;
     mapData: {
         index: number;
-        fn: (volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => unknown;
+        fn: (volume: IEpubMakerSectionWithCache, dirname: string, _data_: IInternalProcessVolumeOptions, row: IEpubRuntimeReturnCacheVolumeRow) => IResolvableBluebird<unknown>;
         ret: unknown;
     }[];
 }[]>;
@@ -86,7 +86,7 @@ export declare function _hookAfterEpub(epub: EpubMaker, _data_: IInternalProcess
     epub: EpubMaker;
     mapData: {
         index: number;
-        fn: (epub: EpubMaker, _data_: IInternalProcessEpubOptions) => unknown;
+        fn: (epub: EpubMaker, _data_: IInternalProcessEpubOptions) => IResolvableBluebird<unknown>;
         ret: unknown;
     }[];
 }>;
