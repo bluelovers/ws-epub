@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+.DS_Store
+/test/**/*.d.ts
+/test/**/*.js
+/test/*.d.ts
+/test/*.js
+/.idea/
+/package-lock.json
+test/epub
+test/temp
+/bin/epub-extract.d.ts
+test/res/epub
+/node-epub-extract.iml
+/test/*.ts
+
