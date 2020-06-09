@@ -1,6 +1,6 @@
 {
   "name": "extract-bad-epub",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "從各種錯誤不合規範的 epub 內暴力提取 txt",
   "keywords": [
     "Google Play Books",
@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@node-novel/epub-util": "^1.0.2",
+    "@node-novel/epub-util": "^1.0.3",
     "bluebird": "^3.7.2",
     "execall2": "^1.1.4",
     "fs-iconv": "^3.0.7",
@@ -83,7 +83,6 @@
     "node-novel-info": "^3.0.3",
     "upath2": "^3.0.5"
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   }

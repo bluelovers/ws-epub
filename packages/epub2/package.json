@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",
@@ -63,8 +63,6 @@
     "crlf-normalize": "^1.0.3",
     "xml2js": "^0.4.23"
   },
-  "devDependencies": {},
-  "peerDependencies": {},
   "engine": [
     "node >=0.3.0"
   ],

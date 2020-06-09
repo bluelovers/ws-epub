@@ -1,6 +1,6 @@
 {
   "name": "epub-iconv",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "簡易型 epub 簡繁轉換",
   "keywords": [
     "Google Play Books",
@@ -105,7 +105,7 @@
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
     "@lazy-cjk/zh-convert": "^1.0.15",
-    "@node-novel/epub-util": "^1.0.2",
+    "@node-novel/epub-util": "^1.0.3",
     "@yarn-tool/update-notifier": "^1.0.11",
     "bluebird": "^3.7.2",
     "cjk-conv": "^1.2.83",
@@ -117,6 +117,5 @@
     "ts-type": "^1.2.17",
     "upath2": "^3.0.5",
     "yargs": "^15.3.1"
-  },
-  "devDependencies": {}
+  }
 }
