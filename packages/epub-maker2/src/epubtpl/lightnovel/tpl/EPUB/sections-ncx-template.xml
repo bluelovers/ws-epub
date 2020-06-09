@@ -1,0 +1,9 @@
+<navPoint id="{{id}}" epub-type="{{epubType}}" lang="{{lang}}" playOrder="{{playOrder}}">
+    <navLabel>
+        <text>{{content.title}}</text>
+    </navLabel>
+    {{#if needPage}}
+    <content src="{{name}}.xhtml" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}" />
+    {{/if}}
+    {{#each subSections}} {{> sectionsNCXTemplate}} {{/each}}
+</navPoint>

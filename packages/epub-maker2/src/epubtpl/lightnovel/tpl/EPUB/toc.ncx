@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncx xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/"
+     xmlns="http://www.daisy.org/z3986/2005/ncx/"
+     version="2005-1"
+     xml:lang="{{langMain}}" lang="{{langMain}}">
+  <head>
+  <meta name="dtb:uid" content="{{uuid}}" />
+  <meta name="dtb:depth" content="2" />
+  <meta name="dtb:totalPageCount" content="0" />
+  <meta name="dtb:maxPageNumber" content="0" />
+  </head>
+  <docTitle>
+    <text>{{title}}</text>
+  </docTitle>
+  <docAuthor>
+    <text>{{author}}</text>
+  </docAuthor>
+  <navMap>
+    {{#if cover}}
+    {{#if cover.name}}
+    <navPoint id="navPoint-cover">
+      <navLabel>
+        <text>CoverPage</text>
+      </navLabel>
+      <content src="CoverPage.xhtml" />
+    </navPoint>
+    {{/if}}
+    {{/if}}
+    <navPoint id="navPoint-toc">
+      <navLabel>
+        <text>Table of Contents</text>
+      </navLabel>
+      <content src="TableOfContents.xhtml" />
+    </navPoint>
+    <!-- 2.01 NCX: playOrder is optional -->
+    {{#each sections}}{{> sectionsNCXTemplate}}{{/each}}
+  </navMap>
+</ncx>

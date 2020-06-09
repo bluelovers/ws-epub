@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:epub="http://www.idpf.org/2007/ops"
+	  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+<meta charset="utf-8" />
+<title>{{options.tocName}}</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
+
+	{{#if cover}}
+	{{#if cover.name}}
+	<figure class="cover fullpage page-break-after" epub:type="frontmatter cover" epub-type="cover">
+		<img src="{{cover.name}}" alt="Cover" />
+	</figure>
+	{{/if}}
+	{{/if}}
+
+	<section class="center">
+		<h1>{{title}}</h1>
+		{{#if author}}
+		<div>{{author}}</div>
+		{{/if}}
+		{{#if publisher}}
+		<div>{{publisher}}</div>
+		{{/if}}
+		{{#if 0}}
+		{{#if modificationDateYMD}}
+		<div>{{modificationDateYMD}}</div>
+		{{/if}}
+		{{/if}}
+	</section>
+
+	<nav id="toc" epub:type="toc" epub-type="toc">
+		<ol>
+			{{#each sections}}{{> sectionsNavTemplate}}{{/each}}
+		</ol>
+	</nav>
+
+	<nav class="hidden" epub:type="landmarks" epub-type="landmarks">
+		<ol>
+			<li><a epub:type="toc" _href="nav.xhtml#toc">{{options.tocName}}</a></li>
+		</ol>
+	</nav>
+</body>
+</html>

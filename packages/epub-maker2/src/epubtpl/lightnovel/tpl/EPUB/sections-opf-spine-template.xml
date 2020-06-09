@@ -1,0 +1,2 @@
+<itemref idref="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}" />
+{{#each subSections}}{{> sectionsOPFSpineTemplate}}{{/each}}

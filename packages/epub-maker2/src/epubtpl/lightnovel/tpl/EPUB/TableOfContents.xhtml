@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:epub="http://www.idpf.org/2007/ops"
+	  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+<meta charset="UTF-8" />
+<title>Table of Contents</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += ' js1 ';">
+
+	<section class="center" lang="{{lang}}">
+		{{> sectionsInfo}}
+	</section>
+
+	<section>
+
+		<header>
+			<h3 class="P_TOC_Heading"><a id="tableofcontents" />Table of Contents</h3>
+		</header>
+
+		<nav>
+			<ol class="list_none toc">
+				{{#each sections}}{{> sectionsNavTemplate}}{{/each}}
+			</ol>
+		</nav>
+
+	</section>
+	{{> sectionsScript}}
+</body>
+</html>

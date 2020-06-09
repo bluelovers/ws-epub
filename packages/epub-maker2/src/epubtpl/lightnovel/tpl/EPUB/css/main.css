@@ -1,0 +1,545 @@
+@charset "UTF-8";
+@namespace "http://www.w3.org/1999/xhtml";
+@namespace epub "http://www.idpf.org/2007/ops";
+
+/*
+@import url("https://fonts.googleapis.com/earlyaccess/notosanstc.css");
+@import url("https://fonts.googleapis.com/earlyaccess/notosanssc.css");
+@import url("https://fonts.googleapis.com/earlyaccess/notosansjp.css");
+*/
+
+ol ul, ul ol, ul ul, ol ol {
+	-webkit-margin-before: 0px;
+	-webkit-margin-after: 0px;
+}
+
+div
+{
+	display: block;
+}
+
+section
+{
+	margin: auto;
+	-webkit-column-break-before: avoid;
+}
+
+pre, code
+{
+	white-space: pre-wrap;
+}
+
+:root
+{
+
+}
+
+body, html
+{
+	/*
+	text-align: justify;
+	background-color: rgb(255, 255, 245);
+	*/
+	-webkit-column-break-before: avoid;
+
+
+	-epub-word-break: break-all;
+	word-break: break-all;
+
+	word-wrap: break-word;
+
+	overflow-wrap: break-word;
+
+	-webkit-line-break: loose;
+	-epub-line-break: loose;
+	line-break: loose;
+}
+
+html
+{
+	margin: 0px;
+	padding: 0px;
+
+	/*-webkit-text-stroke: 0.6px;*/
+}
+
+body
+{
+	margin: 0px;
+	padding: 10pt;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+.list_none, #toc ol
+{
+	margin: auto;
+	padding: 0px;
+}
+
+.list_none ol, #toc ol ol
+{
+	margin-left: auto;
+	padding-left: 1em;
+}
+
+.list_none, .list_none *, .list_none li, .list_none ol, #toc *
+{
+	list-style: none;
+}
+
+ol ol
+{
+	margin-bottom: 0.5em;
+}
+
+p
+{ min-height: 1.35em; }
+
+body[lang*=zh], html[lang*=zh], section[lang*=zh]
+{
+	/*
+	font-family: Consolas, Noto Sans CJK JP, Noto Sans CJK SC, Noto Sans CJK TC, Noto Sans JP, Noto Sans SC, Noto Sans TC, Noto Sans CJK, Microsoft Yahei UI, sans-serif;
+	 */
+	line-height: 1.45em;
+	line-height: 1.6em;
+	/*-webkit-text-stroke: 0.6px;*/
+	/*-webkit-text-stroke: 0.4px;*/
+	/*
+	text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.75);
+	*/
+}
+
+body
+{
+	padding: 0;
+}
+
+[epub-type*="cover"], .ImageContainer
+{
+	padding: 0;
+}
+
+[epub|type*='bodymatter']
+{
+	padding: 0.5em 1em;
+}
+
+body[epub-type*='bodymatter']
+{
+	padding: 0.5em 1em;
+}
+
+body[epub-type*='frontmatter']
+{
+	padding: 0;
+}
+
+section
+{
+	padding: 0.5em 1.5em 0.5em 1em;
+}
+
+section[epub-type*="chapter"]
+{
+	padding: 0.5em 1.5em 0.5em 1em;
+}
+
+body[epub-type*='frontmatter'] section
+{
+	padding: 10px;
+}
+
+section[lang*=zh] p
+{ min-height: 1.6em; }
+
+nav, .toc
+{
+	margin: auto;
+	padding: 0;
+}
+
+div, p
+{
+	margin: auto;
+	padding: 0px;
+}
+
+.divimage
+{
+	page-break-after: always;
+}
+
+.cover
+{
+	width: 100%;
+	padding: 0px;
+}
+
+.center
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.left
+{
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.right
+{
+	text-align: right;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.quote
+{
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align: justify;
+}
+
+.hidden
+{
+	display: none;
+}
+
+h1
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: xx-large;
+}
+
+h2
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: x-large;
+}
+
+h3
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: large;
+}
+
+h4
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: medium;
+}
+
+h5
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: small;
+}
+
+h6
+{
+	line-height: 130%;
+	text-align: center;
+	font-weight: bold;
+	font-size: x-small;
+}
+
+.vertical-container
+{
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+.fullpage
+{
+	height: 100%;
+	height: 100vh;
+}
+
+figure
+{
+	margin-before: 0;
+	margin-after: 0;
+	margin-start: 0;
+	margin-end: 0;
+}
+
+figure.ImageContainer
+{
+	width: auto;
+	display: inline-block;
+	flex-wrap: wrap;
+}
+
+figure.fullpage
+{
+	max-height: 90%;
+	max-height: 90vh;
+	height: 90%;
+	height: 90vh;
+	margin: 0;
+	padding: 0;
+	display: block;
+
+	display: -webkit-flex;
+	display: flex;
+
+	/**
+	用來修正 figcaption 位置問題
+	 */
+	flex-wrap: wrap;
+
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+figure:before
+{ content: ''; display: inline-block; vertical-align: middle; height: 100%; }
+
+figure img
+{
+	max-height: 90%;
+	max-height: 90vh;
+	margin: auto;
+	padding: 0;
+}
+
+figure > div
+{
+	max-height: 100%;
+	margin: auto;
+	padding: 0;
+}
+
+figure > div img
+{
+	max-height: 100%;
+	max-height: 90vh;
+}
+
+figure figcaption
+{
+	text-align: center;
+}
+
+figure.ImageContainer figcaption
+{
+	/**
+	在靜讀天下內隱藏
+	 */
+	opacity: 0;
+
+	position: relative;
+	bottom: 0;
+	left: auto;
+	background: rgba(128, 0, 128, 0.87);
+	color: #fff;
+	padding: 10px;
+}
+
+figure.ImageContainer > figcaption
+{
+	display: none;
+}
+
+figure:hover figcaption
+{
+	opacity: 1;
+}
+
+hr, .linehr
+{
+	border: none;
+	border: 0px none currentcolor;
+	border-bottom: 0.2em dashed currentcolor;
+	border-bottom: 0.2em solid currentcolor;
+
+	margin: 0.5em auto;
+	opacity: 0.7;
+
+	text-align: center;
+}
+
+.linehr-double
+{
+	border-bottom: 0.3em double currentcolor;
+}
+
+p.linegroup, .calibre1, .softbreak
+{ display: block; }
+
+.linegroup, p, .softbreak, .calibre1
+{ margin: auto; }
+
+.linegroup:before, p:before, .calibre1:before, .softbreak:before
+{ content: ''; display: inline-block; }
+
+#toc li, #toc ol, #toc ul
+{
+	text-align: left;
+}
+
+.page-break-before
+{
+	page-break-before:always;
+}
+
+.page-break-after
+{
+	page-break-after: always;
+}
+
+.page-break-all
+{
+	page-break-before:always;
+	page-break-after: always;
+}
+
+header h2
+{
+	margin-top: 0.1em;
+	margin-before: 0.1em;
+	-webkit-margin-before: 0.1em;
+}
+
+.chapter-header-001
+{
+	padding-bottom: 0.1em;
+}
+
+.chapter-header-001 > h2
+{
+	text-align: left;
+	padding-bottom: 0.1em;
+	border-bottom: 0.1em solid #000;
+	border-bottom: 0.1em solid currentColor;
+	margin-after: 0.3em;
+	margin-bottom: 0.3em;
+	-webkit-margin-after: 0.3em;
+	font-size: large;
+}
+
+.state-indicator:before { content: ' desktop '; }
+
+.overflow-line
+{
+	overflow: hidden;
+	max-width: 99%;
+	white-space: nowrap;
+	-webkit-margin-before: 0px;
+	-webkit-margin-after: 0px;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	box-sizing: border-box;
+}
+
+.opacity-050
+{
+	opacity: 0.5
+}
+
+.font-size-070
+{
+	font-size: 0.7em;
+}
+
+.font-size-080
+{
+	font-size: 0.8em;
+}
+
+.text-light-shadow
+{
+	text-shadow: 0px 0px 10px rgb(52, 200, 236);
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+	.state-indicator:after { content: ' webkit '; }
+
+	body[lang*=zh], html[lang*=zh], section[lang*=zh]
+	{
+		/*
+		-webkit-text-stroke: 0.6px;
+		-webkit-text-stroke: 0.4px;
+		*/
+	}
+}
+
+/* 小屏幕桌面 */
+@media screen and (max-width: 1200px) {
+	.state-indicator:before { content: ' small-desktop '; }
+}
+
+/* 平板 */
+@media screen and (max-width: 1024px) {
+	.state-indicator:before { content: ' tablet '; }
+}
+
+/* 手机 */
+@media screen and (max-width: 768px) {
+	.state-indicator:before { content: ' mobile '; }
+
+	body[lang*=zh], html[lang*=zh], section[lang*=zh]
+	{
+		/*
+		-webkit-text-stroke: initial;
+		text-shadow: initial;
+		*/
+	}
+
+}
+
+@media screen and (device-aspect-ratio: 16/9) and (-webkit-min-device-pixel-ratio:0)
+, screen and (device-aspect-ratio: 16/10) and (-webkit-min-device-pixel-ratio:0)
+, screen and (device-aspect-ratio: 4/3) and (-webkit-min-device-pixel-ratio:0)
+{
+	.state-indicator:after { content: ' webkit2 '; }
+
+	body[lang*=zh], html[lang*=zh], section[lang*=zh]
+	{
+		/*
+		-webkit-text-stroke: 0.6px;
+		-webkit-text-stroke: 0.4px;
+		text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.75);
+		*/
+	}
+
+	hr, .linehr
+	{
+		border-bottom-width: 0.1em;
+	}
+
+	.linehr-double
+	{
+		border-bottom-width: 0.3em;
+	}
+}
+
+script {
+	display: none;
+}

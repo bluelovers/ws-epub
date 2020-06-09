@@ -1,0 +1,112 @@
+{
+  "name": "epub-maker2",
+  "version": "2.6.4",
+  "description": "Easily create epub files with javascript",
+  "keywords": [
+    "archive",
+    "book",
+    "chapter",
+    "comic",
+    "creator",
+    "ebook",
+    "epub",
+    "epub-maker",
+    "epub-maker2",
+    "generator",
+    "maker",
+    "manifest",
+    "metadata",
+    "mobile",
+    "node-novel",
+    "novel",
+    "volume",
+    "zip"
+  ],
+  "homepage": "https://github.com/bluelovers/js-epub-maker",
+  "bugs": {
+    "url": "https://github.com/bluelovers/js-epub-maker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/js-epub-maker.git"
+  },
+  "license": "MIT",
+  "author": "Benny Bottema (http://blog.projectnibble.org)",
+  "main": "index",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "coverage": "npx nyc yarn run test",
+    "lint": "npx eslint **/*.ts",
+    "test": "npx mocha",
+    "npm:publish": "npm publish",
+    "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
+    "postpublish": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
+    "sort-package-json": "npx yarn-tool sort",
+    "tsc:default": "tsc -p tsconfig.json",
+    "tsc:esm": "tsc -p tsconfig.esm.json"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "dependencies": {
+    "@node-novel/fetch-file-or-url": "^1.1.7",
+    "@types/bluebird": "^3",
+    "@types/bluebird-global": "^3",
+    "@types/hash-sum": "^1.0.0",
+    "@types/jszip": "^3.1.7",
+    "array-hyper-unique": "^1.1.0",
+    "autoprefixer": "^9.7.6",
+    "bluebird": "^3.7.2",
+    "bluebird-cancellation": "^1.0.13",
+    "cross-fetch": "^3.0.4",
+    "debug-color2": "^1.1.7",
+    "file-type": "^14.2.0",
+    "fs-extra": "^9.0.0",
+    "fs-iconv": "^2",
+    "handlebars": "< 4.6 && >= 4.5",
+    "hash-sum": "^2.0.0",
+    "he": "^1.2.0",
+    "html-minifier": "^4.0.0",
+    "imagemin": "^7.0.1",
+    "js-beautify": "^1.11.0",
+    "jszip": "^3.4.0",
+    "jszip-fixed-date": "^1.0.0",
+    "moment": "^2.24.0",
+    "node-novel-info": "^3.0.1",
+    "postcss": "^7.0.27",
+    "postcss-epub": "^3.0.1",
+    "postcss-scss": "^2.0.0",
+    "postcss-strip-inline-comments": "^0.1.5",
+    "shortid": "^2.2.15",
+    "slugify": "^1.4.0",
+    "uuid": "^7.0.3",
+    "uuid-by-string": "^3.0.2"
+  },
+  "devDependencies": {
+    "@bluelovers/tsconfig": "^1.0.19",
+    "@types/autoprefixer": "^9.7.2",
+    "@types/fs-extra": "^8.1.0",
+    "@types/he": "^1.1.1",
+    "@types/html-minifier": "^3.5.3",
+    "@types/imagemin": "^7.0.0",
+    "@types/imagemin-mozjpeg": "^8.0.0",
+    "@types/imagemin-optipng": "^5.2.0",
+    "@types/imagemin-pngquant": "^7.0.0",
+    "@types/imagemin-webp": "^5.1.0",
+    "@types/js-beautify": "^1.8.2",
+    "@types/node": "^13",
+    "@types/shortid": "^0.0.29",
+    "@types/uuid": "^7.0.3"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-optipng": "^7.1.0",
+    "imagemin-pngquant": "^8.0.0",
+    "imagemin-webp": "^5.1.0"
+  }
+}

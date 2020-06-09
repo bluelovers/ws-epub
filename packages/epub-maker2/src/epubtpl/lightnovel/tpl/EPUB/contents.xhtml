@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:epub="http://www.idpf.org/2007/ops"
+	  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+<meta charset="UTF-8" />
+<title>Table of Contents</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" lang="{{lang}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" onload="document.getElementById('state-indicator').textContent += ' js1 ';">
+
+	<section class="center">
+		{{> sectionsInfo}}
+	</section>
+
+	<section>
+
+		<header>
+			<h3>Table of Contents</h3>
+		</header>
+
+		<nav>
+			<ol class="list_none toc">
+				{{#each sections}}
+				{{#if needPage}}
+				<li><a href="{{name}}.xhtml" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
+				{{/if}}
+				{{#each subSections}}
+				<li><a href="{{name}}.xhtml" id="{{id}}" title="{{content.title}}" epub-type="{{epubType}}" lang="{{lang}}">{{content.title}}</a></li>
+				{{/each}}
+				{{/each}}
+			</ol>
+		</nav>
+
+	</section>
+	{{> sectionsScript}}
+</body>
+</html>

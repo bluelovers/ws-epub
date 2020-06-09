@@ -1,0 +1,31 @@
+<h1 class="center">{{title}}</h1>
+{{#if title_short}}
+<div class="center">{{title_short}}</div>
+{{/if}}
+{{#if titles}}
+{{#each titles}}<div class="center">{{this}}</div>{{/each}}
+{{/if}}
+{{#if author}}
+<div class="center"><label class="opacity-050 font-size-070">作者／</label>{{author}}</div>
+{{/if}}
+{{#if publisher}}
+<div class="center">{{publisher}}</div>
+{{/if}}
+{{#if 0}}
+{{#if modificationDateYMD}}
+<div class="center">{{modificationDateYMD}}</div>
+{{/if}}
+{{/if}}
+
+{{#each links}}<div class="center"><a href="{{href}}" rel="{{rel}}" target="_blank">{{href}}</a></div>{{/each}}
+
+<div class="state-indicator center" id="state-indicator"></div>
+
+{{#if infoPrefaceHTML}}
+<article style="margin-top: 1em"><div class="left" style="display: inline-block">{{{infoPrefaceHTML}}}</div></article>
+{{/if}}
+
+{{#if authors}}
+<div style="margin-top: 1em"><label class="opacity-050 font-size-070">contribute／</label>{{#each authors}}{{@key}} , {{/each}}...
+</div>
+{{/if}}

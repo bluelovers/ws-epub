@@ -1,0 +1,90 @@
+# Created by .ignore support plugin (hsz.mobi)
+/test/
+/.codeclimate.yml
+/.coveralls.yml
+/.travis.yml
+/bower.json.bak
+*.bak
+/node_modules/
+/demo/
+/.idea/
+/docs/
+/.npmignore
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+### jsonly template
+*.ts
+!*.d.ts
+### jsonly_bin template
+bin/*.ts
+bin/*.d.ts
+### npm2 template
+
+~ci.list.txt
+~ci.log.txt
+~ci.errors.txt
+
+*.stackdump
+*.old
+
+tsconfig.json
+package-lock.json
+
+test
+
+.github
+.gitkeep
+
+/.*
+
+tests
+
+
+
+/~*
+
+__test__
+__tests__
+
+**/node_modules/
+### tsonly_test template
+test/*.js
+test/*.d.ts
+
+tests/*.js
+tests/*.d.ts
+
+__test__/*.js
+__test__/*.d.ts
+
+__tests__/*.js
+__tests__/*.d.ts
+### temp template
+
+
+/*.log
+/*.lock
+
+*.tmp
+### test template
+*.spec.ts
+*.spec.js
+*.spec.js.map
+*.test.ts
+*.test.js
+*.test.js.map
+
+
+/.eslintignore
+/tsconfig.esm.json.tpl
+/.eslintrc.json.tpl
+/.browserslistrc
+/tsconfig.tsbuildinfo
+/.nvmrc

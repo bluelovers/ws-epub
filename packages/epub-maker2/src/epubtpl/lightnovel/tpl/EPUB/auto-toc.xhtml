@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:epub="http://www.idpf.org/2007/ops"
+	  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+	<meta charset="utf-8"/>
+	<title>{{content.fullTitle}}</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+</head>
+<body>
+
+
+  {{#if content.cover}}
+  {{#if content.cover.name}}
+  <section epub:type="cover" epub-type="cover">
+  <figure class="cover fullpage ImageContainer page-break-after" epub-type="cover">
+    <img id="CoverImage" class="CoverImage" src="{{content.cover.name}}" alt="Cover" />
+  </figure>
+  </section>
+  {{/if}}
+  {{/if}}
+
+	<section lang="{{lang}}" epub:type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter{{/if}}" epub-type="{{#if epubTypeGroup}}{{epubTypeGroup}}{{else}}frontmatter {{epubType}}{{/if}}">
+
+		{{#if content.renderTitle}}<header><h2 class="center">{{content.title}}</h2></header>{{/if}}
+
+	{{#if content.content}}
+	<article>
+		{{{content.content}}}
+	</article>
+		<p><br/></p>
+	{{/if}}
+
+	{{#if subSections}}
+		<nav>
+	<ol class="list_none toc">
+		{{#each subSections}}{{> sectionsNavTemplate}}{{/each}}
+	</ol>
+		</nav>
+	{{/if}}
+
+	</section>
+</body>
+</html>

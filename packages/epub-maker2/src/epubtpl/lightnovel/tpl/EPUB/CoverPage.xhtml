@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:epub="http://www.idpf.org/2007/ops"
+	  xml:lang="{{langMain}}" lang="{{langMain}}">
+<head>
+<meta charset="UTF-8" />
+<title>Cover Page</title>
+<meta name="calibre:cover" content="true" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<style type="text/css" title="override_css">
+@page
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{ margin: 0; padding: 0; oeb-column-number: 1; }
+
+.ImageContainer
+{ width: 100%; height: 100%; margin: auto; padding: 0; text-align: center; }
+
+.CoverImage
+{ height: 100%; max-width: 100%; max-height: 100%; padding: 0; margin: 0; }
+</style>
+</head>
+<body epub:type="cover" epub-type="cover">
+	<figure class="cover fullpage ImageContainer" epub-type="frontmatter cover">
+		{{#if cover}}
+		{{#if cover.name}}
+		<img id="CoverImage" class="CoverImage" src="{{cover.name}}" alt="Cover" />
+		{{/if}}
+		{{/if}}
+	</figure>
+</body>
+</html>
