@@ -1,0 +1,63 @@
+{
+  "name": "novel-txt-merge",
+  "version": "1.0.24",
+  "description": "打包合併個別 txt 章節/目錄 => 單一整合 txt 小說合集",
+  "keywords": [
+    "book",
+    "cli",
+    "file",
+    "merge",
+    "node-novel",
+    "node-text",
+    "novel",
+    "npx-bin",
+    "npx-cli",
+    "pack",
+    "shubook",
+    "text",
+    "txt"
+  ],
+  "homepage": "https://github.com/bluelovers/node-novel-txt-merge#readme",
+  "bugs": {
+    "url": "https://github.com/bluelovers/node-novel-txt-merge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/node-novel-txt-merge.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "bin": {
+    "novel-txt-merge": "./bin/tmp-npx-txt-merge.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "coverage": "npx nyc npm run test",
+    "ncu": "npx npm-check-updates -u",
+    "prepublishOnly": "npx npm-check-updates -u --packageFile ./package.json",
+    "sort-package-json": "npx sort-package-json ./package.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@node-novel/normalize": "^1.0.8",
+    "array-hyper-unique": "^1.0.7",
+    "bluebird": "^3.5.4",
+    "crlf-normalize": "^1.0.3",
+    "debug-color2": "^1.0.7",
+    "fs-iconv": "^2.0.6",
+    "moment": "^2.24.0",
+    "node-novel-globby": "^2.0.9",
+    "node-novel-info": "^2.3.33",
+    "uni-string": "^1.1.0",
+    "update-notifier": "^3.0.0",
+    "yargs": "^13.2.2"
+  },
+  "devDependencies": {
+    "@bluelovers/tsconfig": "^1.0.3"
+  }
+}
