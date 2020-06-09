@@ -47,7 +47,8 @@ test(`check`, async (done) =>
 	expect(ret.zip1.md5).toStrictEqual(ret.zip4.md5);
 
 	//expect(actual).toBeInstanceOf(Date);
-	//expect(actual).toMatchSnapshot();
+	expect(ret.zip1.md5).toMatchSnapshot();
+	expect(ret.zip3.md5).toMatchSnapshot();
 
 	done();
 });

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`check 1`] = `"1947c0944b2caace7fc0798432bea1de"`;
+
+exports[`check 2`] = `"1947c0944b2caace7fc0798432bea1de"`;
