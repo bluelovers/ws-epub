@@ -1,0 +1,12 @@
+1. ════════════ 無間斷的
+2. ＝＝＝＝＝＝＝＝＝＝＝＝ 全形
+3. ============ 半形
+
+https://en.wikipedia.org/wiki/Dash
+
+1. -- HYPHEN-MINUS ( 鍵盤上的 -
+2. －－ FULLWIDTH HYPHEN-MINUS
+3. ── 無間斷的 BOX DRAWINGS LIGHT HORIZONTAL
+4. —— EM DASH 對非英數時預設的全形
+5. −− 減號
+6. ‐‐ 連字號
