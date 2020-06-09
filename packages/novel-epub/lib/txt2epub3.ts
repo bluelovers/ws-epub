@@ -2,8 +2,6 @@
  * Created by user on 2017/12/16/016.
  */
 
-import { ISectionContent } from 'epub-maker2/src/index';
-import { htmlPreface } from 'epub-maker2/src/lib/util';
 import EpubMaker, { hashSum, slugify } from 'epub-maker2';
 import { chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
 import { fsLowCheckLevelMdconfAsync, pathDirNormalize } from './util';
@@ -14,8 +12,9 @@ import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import { NodeNovelInfo } from 'node-novel-info/class';
-import { sortTree } from 'node-novel-globby/lib/glob-sort';
-import { eachVolumeTitle, foreachArrayDeepAsync, IArrayDeepInterface, IReturnRow } from 'node-novel-globby';
+import { sortTree } from '@lazy-glob/sort-tree';
+import { IArrayDeepInterface, IReturnRow } from 'node-novel-globby';
+import { eachVolumeTitle, foreachArrayDeepAsync } from 'node-novel-globby/lib/util';
 import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
 import {
 	_handleVolume,
@@ -32,12 +31,12 @@ import {
 	SymCache,
 	IEpubMakerSectionWithCache, addMarkdown, EnumPrefixIDType, EnumPrefixIDTitle, createMarkdownSection,
 } from './epub';
-import fs = require('fs-iconv');
-import Bluebird = require('bluebird');
-import path = require('upath2');
-import moment = require('moment');
-import novelGlobby = require('node-novel-globby/g');
-import deepmerge = require('deepmerge-plus');
+import fs from 'fs-iconv';
+import Bluebird from 'bluebird';
+import path from 'upath2';
+import moment from 'moment';
+import * as novelGlobby from 'node-novel-globby/g';
+import deepmerge from 'deepmerge-plus';
 import { inspect } from 'util';
 import { EpubStore } from './store';
 import { splitTxt } from './html';

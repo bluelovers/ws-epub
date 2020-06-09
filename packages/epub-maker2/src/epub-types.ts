@@ -147,3 +147,4 @@ export function getGroup(epubtype: string | keyof EnumEpubType): string | EnumEp
 export const types = epubtypes;
 
 export default exports as typeof import('./epub-types');
+

@@ -1,7 +1,0 @@
-{
-  "extends": "@bluelovers/tsconfig",
-  "compilerOptions": {
-    "target": "es2017",
-    "strictBindCallApply": true
-  }
-}

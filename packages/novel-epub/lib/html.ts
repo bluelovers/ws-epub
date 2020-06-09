@@ -4,8 +4,8 @@
 
 import { IInternalProcessContextOptions } from './types';
 import { IAttachMetaData } from './epub';
-import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
-import { _fixRubyInnerContext, allowedHtmlTagList, reTxtHtmlTag, reTxtImgTag } from './tags';
+import { cn2tw_min, tw2cn_min } from '@lazy-cjk/zh-convert/min';
+import { allowedHtmlTagList } from './tags';
 import { getAttachID, handleAttachFile } from './store';
 import { toHalfWidth, toFullWidth } from 'str-util';
 import { console } from './log';

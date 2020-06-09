@@ -3,19 +3,16 @@
  */
 
 import { IArrayDeepInterface, IReturnList, IReturnRow } from 'node-novel-globby';
-import novelGlobby = require('node-novel-globby');
-import novelGlobbyBase = require('node-novel-globby/g');
-import path = require('path');
-import BluebirdPromise = require('bluebird');
-import moment = require('moment');
+import * as novelGlobby from 'node-novel-globby';
+import * as novelGlobbyBase from 'node-novel-globby/g';
+import path from 'path';
+import BluebirdPromise from 'bluebird';
+import moment from 'moment';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
 import { crlf, CRLF, LF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 import UString from 'uni-string';
-import { sortTree } from 'node-novel-globby/lib/glob-sort';
-import { array_unique } from 'array-hyper-unique';
-import { normalize_strip } from '@node-novel/normalize';
-import { Console } from 'debug-color2';
+import { sortTree } from '@lazy-glob/sort-tree';
 import { NodeNovelInfo } from 'node-novel-info/class';
 import { getNovelTitleFromMeta } from 'node-novel-info';
 import {
@@ -34,7 +31,8 @@ import {
 	TPL_HR_LEN,
 	TPL_VOLUME_START,
 } from './lib/tpl';
-import { console, makeDefaultTplData, replaceTpl } from './lib/index';
+import { makeDefaultTplData, replaceTpl } from './lib/index';
+import console from 'debug-color2';
 
 const hr_len = TPL_HR_LEN;
 const eol = TPL_EOL;

@@ -1,6 +1,3 @@
-/**
- * Created by user on 2019/7/27.
- */
 
 export const allowExtImage = [
 	'apng',

@@ -5,7 +5,6 @@
 import { BPromise } from './lib/util';
 import { IBuilder } from './var';
 import { EpubMaker } from './index';
-import JSZip = require('jszip');
 export declare const defaultPath: string;
 export declare const defaultList: IList;
 export interface IOptions {
@@ -32,7 +31,7 @@ export declare class TemplateManagers {
     has<T = any | string | IBuilder>(name: string): T;
     _get(t: any): BPromise<IBuilder>;
     get(name: string): BPromise<IBuilder>;
-    exec(name: string, epub: EpubMaker, options?: any): BPromise<JSZip>;
+    exec(name: string, epub: EpubMaker, options?: any): BPromise<import("jszip")>;
     search(name: string): string;
 }
 export declare const templateManagers: TemplateManagers;

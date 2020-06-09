@@ -73,3 +73,25 @@ tsconfig.esm.json.tpl
 
 .browserslistrc
 .nvmrc
+
+/.eslintignore
+/package.d.ts
+.nycrc
+.mocharc.yml
+#jest.config.js
+node_modules/.cache
+.yarn-integrity
+jest.config.d.ts
+jest.config.js.map
+/report.*.json
+*.js.map
+/now.json
+.nyc_output
+.coverage-cache
+.reify-cache
+*.spec.d.ts
+*.spec.js
+.nowignore
+*/**/.github
+!/.github
+!npm-shrinkwrap.json

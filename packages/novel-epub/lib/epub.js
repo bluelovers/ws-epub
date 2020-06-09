@@ -1,8 +1,29 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._withSection = exports.createMarkdownSection = exports.createContributeSection = exports.addContributeSection = exports._hookAfterEpub = exports._hookAfterVolume = exports._handleVolumeImageEach = exports._handleVolumeImage = exports.getAttachMetaByRow = exports.getAttachMeta = exports.makeChapterID = exports.makeVolumeID = exports.makePrefixID = exports.addMarkdown = exports._handleVolume = exports.EnumPrefixIDTitle = exports.EnumPrefixIDType = exports.SymCache = void 0;
-const epub_maker2_1 = require("epub-maker2");
-const log_1 = require("./log");
+const epub_maker2_1 = __importDefault(require("epub-maker2"));
 const util_1 = require("./util");
 const util_2 = require("epub-maker2/src/lib/util");
 const crlf_normalize_1 = require("crlf-normalize");
@@ -12,10 +33,11 @@ const html_1 = require("./html");
 const md_1 = require("./md");
 const ext_1 = require("./ext");
 const str_util_1 = require("str-util");
-const Bluebird = require("bluebird");
-const path = require("upath2");
-const fs = require("fs-iconv");
-const novelGlobby = require("node-novel-globby/g");
+const bluebird_1 = __importDefault(require("bluebird"));
+const upath2_1 = __importDefault(require("upath2"));
+const fs_iconv_1 = __importDefault(require("fs-iconv"));
+const novelGlobby = __importStar(require("node-novel-globby/g"));
+const log_1 = require("./log");
 exports.SymCache = Symbol('cache');
 var EnumPrefixIDType;
 (function (EnumPrefixIDType) {
@@ -32,7 +54,7 @@ var EnumPrefixIDTitle;
     EnumPrefixIDTitle["FOREWORD"] = "FOREWORD";
 })(EnumPrefixIDTitle = exports.EnumPrefixIDTitle || (exports.EnumPrefixIDTitle = {}));
 function _handleVolume(volume, dirname, _data_) {
-    return Bluebird
+    return bluebird_1.default
         .resolve(null)
         .then(async function () {
         const { processReturn, epub } = _data_;
@@ -40,10 +62,10 @@ function _handleVolume(volume, dirname, _data_) {
         let vid = volume.id;
         if (!volume[exports.SymCache].cover) {
             volume[exports.SymCache].cover = true;
-            let file = path.join(dirname, 'README.md');
+            let file = upath2_1.default.join(dirname, 'README.md');
             let meta = await util_1.fsLowCheckLevelMdconfAsync(file).catch(e => null);
             //console.log(file, meta);
-            await Bluebird.resolve(novelGlobby.globby([
+            await bluebird_1.default.resolve(novelGlobby.globby([
                 'cover.*',
             ], {
                 cwd: dirname,
@@ -51,12 +73,12 @@ function _handleVolume(volume, dirname, _data_) {
             }))
                 .then(async (ls) => {
                 if (ls.length) {
-                    let ext = path.extname(ls[0]);
+                    let ext = upath2_1.default.extname(ls[0]);
                     let name = `${vid}-cover${ext}`;
                     epub.withAdditionalFile(ls[0], null, name);
                     return name;
                 }
-                else if (fs.existsSync(file)) {
+                else if (fs_iconv_1.default.existsSync(file)) {
                     if (meta && meta.novel) {
                         if (meta.novel.cover) {
                             let ext = '.png';
@@ -107,8 +129,8 @@ function _handleVolume(volume, dirname, _data_) {
         }
         if (!volume[exports.SymCache].foreword) {
             volume[exports.SymCache].foreword = true;
-            let file = path.join(dirname, 'FOREWORD.md');
-            if (fs.pathExistsSync(file)) {
+            let file = upath2_1.default.join(dirname, 'FOREWORD.md');
+            if (fs_iconv_1.default.pathExistsSync(file)) {
                 addMarkdown({
                     volume,
                     dirname,
@@ -124,12 +146,12 @@ function _handleVolume(volume, dirname, _data_) {
 }
 exports._handleVolume = _handleVolume;
 function addMarkdown(options) {
-    return Bluebird.resolve(options)
+    return bluebird_1.default.resolve(options)
         .then(async () => {
         let { volume, _data_, file, dirname } = options;
         const vid = volume.id;
         const { processReturn } = _data_;
-        let source = await fs.readFile(file);
+        let source = await fs_iconv_1.default.readFile(file);
         let mdReturn = md_1.handleMarkdown(source, {
             ..._data_,
             cwd: dirname,
@@ -160,7 +182,7 @@ function makeChapterID(count_idx) {
 }
 exports.makeChapterID = makeChapterID;
 function getAttachMeta(dirname) {
-    return util_1.fsLowCheckLevelMdconfAsync(path.join(dirname, 'ATTACH.md'))
+    return util_1.fsLowCheckLevelMdconfAsync(upath2_1.default.join(dirname, 'ATTACH.md'))
         // @ts-ignore
         .then((v) => {
         if (v.attach) {
@@ -212,7 +234,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
     ];
     const baseImagePath = 'image';
     const failbackExt = '.png';
-    return Bluebird.resolve(null)
+    return bluebird_1.default.resolve(null)
         .then(async function () {
         if (volume[exports.SymCache].image) {
             return [];
@@ -328,7 +350,7 @@ exports._handleVolumeImage = _handleVolumeImage;
 function _handleVolumeImageEach(ls, _data_) {
     const { processReturn, epub, store, epubOptions, cwd } = _data_;
     const temp = processReturn.temp;
-    return Bluebird
+    return bluebird_1.default
         .resolve(array_hyper_unique_1.array_unique(ls))
         .mapSeries(async function (row) {
         let key = row.vol_key;
@@ -349,16 +371,16 @@ function _hookAfterVolume(ls, _data_, afterVolumeTasks) {
     const { processReturn, epub, store, epubOptions, cwd } = _data_;
     const temp = processReturn.temp;
     ls = array_hyper_unique_1.array_unique(ls);
-    return Bluebird
+    return bluebird_1.default
         .resolve(ls)
         .mapSeries(async function (row, index) {
         let key = row.vol_key;
         let volume = temp.cacheTreeSection[key];
-        return Bluebird.props({
+        return bluebird_1.default.props({
             index,
             row,
             volume,
-            mapData: Bluebird.mapSeries(afterVolumeTasks, async (fn, index) => {
+            mapData: bluebird_1.default.mapSeries(afterVolumeTasks, async (fn, index) => {
                 return {
                     index,
                     fn,
@@ -370,12 +392,12 @@ function _hookAfterVolume(ls, _data_, afterVolumeTasks) {
 }
 exports._hookAfterVolume = _hookAfterVolume;
 function _hookAfterEpub(epub, _data_, afterEpubTasks) {
-    return Bluebird
+    return bluebird_1.default
         .resolve(epub)
         .then(async function (epub) {
-        return Bluebird.props({
+        return bluebird_1.default.props({
             epub,
-            mapData: Bluebird.mapSeries(afterEpubTasks, async (fn, index) => {
+            mapData: bluebird_1.default.mapSeries(afterEpubTasks, async (fn, index) => {
                 return {
                     index,
                     fn,
@@ -387,7 +409,7 @@ function _hookAfterEpub(epub, _data_, afterEpubTasks) {
 }
 exports._hookAfterEpub = _hookAfterEpub;
 function addContributeSection(volume, dirname, _data_, row) {
-    return Bluebird.resolve(volume)
+    return bluebird_1.default.resolve(volume)
         .then(async (volume) => {
         if (volume[exports.SymCache].contribute != null) {
             return;
@@ -406,7 +428,7 @@ function addContributeSection(volume, dirname, _data_, row) {
                 const attach = await getAttachMetaByRow(row.value);
                 const { processReturn } = _data_;
                 let file = ls[0];
-                let source = await fs.readFile(file);
+                let source = await fs_iconv_1.default.readFile(file);
                 let mdReturn = md_1.handleMarkdown(source, {
                     ..._data_,
                     cwd: dirname,

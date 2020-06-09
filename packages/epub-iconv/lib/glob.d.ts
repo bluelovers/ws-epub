@@ -4,7 +4,7 @@
 /// <reference types="node" />
 import { ITSResolvable, ITSValueOrArray } from 'ts-type';
 import { IEpubIconvOptions } from './buffer';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 export interface IEpubIconvGlobOptions extends IEpubIconvOptions {
     cwd?: string;
     output?: string;

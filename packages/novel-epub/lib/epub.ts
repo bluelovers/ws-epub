@@ -1,6 +1,5 @@
 import { IForeachArrayDeepReturn, IReturnRow } from 'node-novel-globby';
 import EpubMaker, { ISectionContent } from 'epub-maker2';
-import { console } from './log';
 import { fsLowCheckLevelMdconfAsync } from './util';
 import { htmlPreface } from 'epub-maker2/src/lib/util';
 import { LF } from 'crlf-normalize';
@@ -14,11 +13,11 @@ import { novelImage } from './html';
 import { handleMarkdown } from './md';
 import { toGlobExtImage } from './ext';
 import { toFullWidth } from 'str-util';
-import Bluebird = require('bluebird');
-import path = require('upath2');
-import fs = require('fs-iconv');
-import novelGlobby = require('node-novel-globby/g');
-import novelGlobby2 = require('node-novel-globby');
+import Bluebird from 'bluebird';
+import path from 'upath2';
+import fs from 'fs-iconv';
+import * as novelGlobby from 'node-novel-globby/g';
+import { console } from './log';
 
 export const SymCache = Symbol('cache');
 

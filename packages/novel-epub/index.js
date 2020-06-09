@@ -14,5 +14,4 @@ function novelEpub(options) {
 }
 exports.novelEpub = novelEpub;
 exports.default = novelEpub;
-//export default exports;
 //# sourceMappingURL=index.js.map

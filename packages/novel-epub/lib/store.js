@@ -1,11 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAttachID = exports.handleAttachFile = exports.parsePath = exports.isEncodeURI = exports.isHashedLike = exports.isBadName = exports.defaultChkExt = exports.EpubStore = void 0;
 const epub_maker2_1 = require("epub-maker2");
-const path = require("path");
-const lazy_url_1 = require("lazy-url");
+const path_1 = __importDefault(require("path"));
+const lazy_url_1 = __importDefault(require("lazy-url"));
 const fs_extra_1 = require("fs-extra");
-const execall2_1 = require("execall2");
+const execall2_1 = __importDefault(require("execall2"));
 const transliteration_1 = require("transliteration");
 const str_util_1 = require("str-util");
 const log_1 = require("./log");
@@ -106,8 +109,8 @@ function parsePath(input, options) {
     try {
         const isFile = true;
         let tempInput;
-        if (cwd && fs_extra_1.pathExistsSync(tempInput = path.resolve(cwd, input))) {
-            let data = path.parse(tempInput);
+        if (cwd && fs_extra_1.pathExistsSync(tempInput = path_1.default.resolve(cwd, input))) {
+            let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
             return _fn001({
@@ -116,8 +119,8 @@ function parsePath(input, options) {
                 data,
             });
         }
-        else if (fs_extra_1.pathExistsSync(tempInput = path.resolve(input))) {
-            let data = path.parse(tempInput);
+        else if (fs_extra_1.pathExistsSync(tempInput = path_1.default.resolve(input))) {
+            let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
             return _fn001({
@@ -127,7 +130,7 @@ function parsePath(input, options) {
             });
         }
         else if (fs_extra_1.pathExistsSync(tempInput = fs_extra_1.realpathSync(input))) {
-            let data = path.parse(tempInput);
+            let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
             return _fn001({
@@ -166,8 +169,8 @@ function parsePath(input, options) {
         let u = new URL(input);
         if (u.protocol && u.host) {
             let pathname = decodeURIComponent(u.pathname);
-            let ext = path.extname(pathname);
-            let name = path.basename(pathname, ext);
+            let ext = path_1.default.extname(pathname);
+            let name = path_1.default.basename(pathname, ext);
             let data = new lazy_url_1.default(u).toObject();
             if (!name) {
                 name = epub_maker2_1.hashSum(input);

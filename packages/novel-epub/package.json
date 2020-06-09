@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",
@@ -32,19 +32,19 @@
     "volume",
     "zip"
   ],
-  "homepage": "https://github.com/bluelovers/node-novel-epub#readme",
+  "homepage": "https://github.com/bluelovers/ws-epub/tree/master/packages/novel-epub#readme",
   "bugs": {
-    "url": "https://github.com/bluelovers/node-novel-epub/issues"
+    "url": "https://github.com/bluelovers/ws-epub/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/node-novel-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "bluelovers",
   "main": "index.js",
   "bin": {
-    "novel-epub": "./bin/novel-epub.js"
+    "novel-epub": "bin/novel-epub.js"
   },
   "directories": {
     "lib": "lib",
@@ -53,11 +53,14 @@
   "scripts": {
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
-    "test": "npx mocha --require ts-node/register \"!(node_modules)/**/*.{test,spec}.{ts,tsx}\"",
+    "test": "jest",
     "build:epub:test": "ts-node ./test/create-test.char-epub",
     "npm:publish": "npm publish",
-    "prepublishOnly": "yarn run ncu && yarn run build:epub:test yarn run test && yarn run novel-epub:help",
-    "postpublish": "git commit -m \"chore(release): publish\" .",
+    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "prepublishOnly": "yarn run build:epub:test yarn run test && yarn run novel-epub:help",
+    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish_": "git commit -m \"chore(release): publish\" .",
     "ncu": "npx yarn-tool ncu -u",
     "novel-epub:help": "novel-epub --help",
     "sort-package-json": "npx yarn-tool sort",
@@ -65,51 +68,43 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
+    "@lazy-cjk/zh-convert": "^1.0.15",
+    "@lazy-glob/sort-tree": "^1.0.4",
     "@node-novel/epub-util": "^1.0.2",
-    "@node-novel/normalize": "^1.0.11",
-    "@node-novel/parse-txt-tag": "^1.0.6",
-    "@toycode/markdown-it-class": "^1.2.3",
-    "@yarn-tool/update-notifier": "^1.0.10",
-    "array-hyper-unique": "^1.1.0",
+    "@node-novel/normalize": "^1.0.17",
+    "@node-novel/parse-txt-tag": "^1.0.12",
+    "@toycode/markdown-it-class": "^1.2.4",
+    "@yarn-tool/update-notifier": "^1.0.11",
+    "array-hyper-unique": "^1.1.2",
     "bluebird": "^3.7.2",
-    "cjk-conv": "^1.2.42",
+    "cjk-conv": "^1.2.83",
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.7",
     "deepmerge-plus": "^2.1.3",
-    "epub-maker2": "^2.6.4",
+    "epub-maker2": "^3.0.0",
     "execall2": "^1.1.4",
-    "fs-iconv": "^2.0.10",
+    "fs-iconv": "^3.0.7",
     "is-relative": "^1.0.0",
-    "lazy-url": "^1.0.8",
+    "lazy-url": "^1.0.10",
     "lodash": "^4.17.15",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^11.0.0",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-footnote": "^3.0.2",
     "markdown-it-implicit-figures": "^0.10.0",
-    "markdown-it-include": "^1.1.0",
+    "markdown-it-include": "^1.1.1",
     "markdown-it-ruby": "^0.1.1",
     "markdown-it-title": "^3.0.0",
     "markdown-it-toc-and-anchor": "^4.2.0",
-    "moment": "^2.24.0",
-    "node-novel-globby": "^2.0.11",
-    "node-novel-info": "^3.0.1",
-    "path-dir-normalize": "^1.0.1",
-    "regexp-cjk": "^3.3.11",
-    "regexp-cjk-plugin-extra": "^1.0.5",
-    "str-util": "^2.3.21",
-    "transliteration": "^2.1.8",
+    "moment": "^2.26.0",
+    "node-novel-globby": "^2.0.17",
+    "node-novel-info": "^3.0.3",
+    "path-dir-normalize": "^1.0.7",
+    "regexp-cjk": "^3.3.49",
+    "regexp-cjk-plugin-extra": "^1.0.18",
+    "str-util": "^2.3.22",
+    "transliteration": "^2.1.11",
     "uuid-by-string": "^3.0.2",
     "yargs": "^15.3.1"
   },
-  "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.19",
-    "@types/bluebird": "^3.5.30",
-    "@types/fs-extra": "^8.1.0",
-    "@types/is-relative": "^1.0.0",
-    "@types/lodash": "^4.14.150",
-    "@types/markdown-it": "^10.0.1",
-    "@types/node": "^13.13.4",
-    "@types/yargs": "^15.0.4",
-    "novel-txt-merge": "^1.0.24"
-  }
+  "devDependencies": {}
 }

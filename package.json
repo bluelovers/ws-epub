@@ -6,16 +6,44 @@
     "packages/*"
   ],
   "scripts": {
-    "lerna:publish": "lerna publish",
+    "test": "echo \"Error: no test specified\"",
+    "lerna:publish": "npx lerna publish",
+    "lerna:publish:yes": "yarn run prepublish:lockfile && npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "ynpx sync-lockfile",
+    "prepare:fix-ws-links": "ynpx @yarn-tool/fix-ws-links",
     "ncu": "npx yarn-tool ncu -u && npx yarn-tool ws exec yarn-tool ncu -- -u",
-    "sort-package-json": "npx yarn-tool sort && npx yarn-tool ws exec yarn-tool sort",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sort-package-json": "npx yarn-tool sort && npx yarn-tool ws exec yarn-tool sort"
   },
+  "resolutions": {},
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.3"
+    "@bluelovers/tsconfig": "^1.0.19",
+    "@types/autoprefixer": "^9.7.2",
+    "@types/bluebird": "^3.5.32",
+    "@types/fs-extra": "^9.0.1",
+    "@types/he": "^1.1.1",
+    "@types/html-minifier": "^3.5.3",
+    "@types/imagemin": "^7.0.0",
+    "@types/imagemin-mozjpeg": "^8.0.0",
+    "@types/imagemin-optipng": "^5.2.0",
+    "@types/imagemin-pngquant": "^7.0.0",
+    "@types/imagemin-webp": "^5.1.0",
+    "@types/is-relative": "^1.0.0",
+    "@types/jest": "^26.0.0",
+    "@types/js-beautify": "^1.11.0",
+    "@types/jszip": "^3.4.1",
+    "@types/lodash": "^4.14.155",
+    "@types/markdown-it": "^10.0.1",
+    "@types/micromatch": "^4.0.1",
+    "@types/node": "^14.0.13",
+    "@types/shortid": "^0.0.29",
+    "@types/uuid": "^8.0.0",
+    "@types/xml2js": "^0.4.5",
+    "@types/yargs": "^15.0.5",
+    "jest": "^26.0.1",
+    "novel-txt-merge": "^1.0.24",
+    "ts-jest": "^26.1.0"
   },
   "peerDependencies": {
-    "lerna": "^3.14.1"
-  },
-  "resolutions": {}
+    "lerna": "^3.22.1"
+  }
 }

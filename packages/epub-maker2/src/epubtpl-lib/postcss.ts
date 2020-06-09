@@ -2,11 +2,12 @@
  * Created by user on 2017/12/15/015.
  */
 
-import * as postcss from 'postcss';
-import * as autoprefixer from 'autoprefixer';
-import * as postcss_epub from 'postcss-epub';
-import * as postcssStripInlineComments from 'postcss-strip-inline-comments';
-import * as postcssScss from 'postcss-scss';
+import postcss from 'postcss';
+import autoprefixer from 'autoprefixer';
+import postcss_epub from 'postcss-epub';
+import postcssStripInlineComments from 'postcss-strip-inline-comments';
+
+import postcssScss from 'postcss-scss';
 
 export { postcss, autoprefixer, postcss_epub, postcssStripInlineComments }
 

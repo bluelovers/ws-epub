@@ -3,8 +3,8 @@
  */
 
 import novelEpub from '../index';
-import * as path from 'path';
-import * as Promise from 'bluebird';
+import path from 'path';
+import Promise from 'bluebird';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 
 /**
@@ -210,7 +210,7 @@ async function makeEpub(novelID: string)
 
 	TXT_PATH = path.join('C:/Home/link/dist_novel/user2', novelID);
 
-	TXT_PATH = `T:\\cache\\yarn-cache\\tmp\\tmp-36628ADH6ujaobfp5\\dmzj\\2134`;
+//	TXT_PATH = `T:\\cache\\yarn-cache\\tmp\\tmp-36628ADH6ujaobfp5\\dmzj\\2134`;
 
 		let OUTPUT_PATH = path.join(__dirname, './temp');
 

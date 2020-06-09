@@ -2,7 +2,7 @@
 
 
 // @ts-ignore
-describe('angular-logger', function ()
+test('dummy', function ()
 {
 
 });

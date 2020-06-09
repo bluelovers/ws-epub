@@ -2,33 +2,19 @@
  * Created by user on 2019/7/10.
  */
 
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
 import { outputFile, readFile, trimFilename } from 'fs-iconv';
 import { BufferFrom, decode, ENUM_NODE_ENCODING } from 'iconv-jschardet';
-import micromatch = require('micromatch');
 import { JSDOM, createJSDOM, IJSDOM, asyncJSDOM } from 'jsdom-extra';
-import { minify } from 'html-minifier';
 import path from 'upath2';
 import { stringify } from 'mdconf2';
-import { Console } from 'debug-color2';
+import console from 'debug-color2';
 import execall from 'execall2';
 import { cloneDeep } from 'lodash';
 import fixJQuery from '@node-novel/epub-util/lib/extract/jquery';
 import fixHtml, { fixHtml2 } from '@node-novel/epub-util/lib/extract/html';
 import fixText from '@node-novel/epub-util/lib/extract/text';
-
-export const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
-
-console.enabledColor = true;
 
 export interface IImages extends Record<string, string>
 {
@@ -99,6 +85,7 @@ export function fixFilename(file: string)
 export function buffer(buf: Buffer, cache: ICache = {})
 {
 	return Bluebird.resolve(JSZip.loadAsync(buf, {
+		// @ts-ignore
 			decodeFileName(bytes)
 			{
 				return decodeURIComponent(decode(bytes))

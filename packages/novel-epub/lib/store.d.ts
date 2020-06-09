@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as path from 'path';
+import path from 'path';
 import { IAttachMetaData } from './epub';
 import { IInternalProcessOptions } from './types';
 export interface IEpubStoreValue {

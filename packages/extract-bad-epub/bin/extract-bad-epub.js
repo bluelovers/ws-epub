@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../lib/index");
-const bluebird_1 = require("@bluelovers/fast-glob/bluebird");
-const path = require("path");
-index_1.console.setOptions({
+const bluebird_1 = __importDefault(require("@bluelovers/fast-glob/bluebird"));
+const path_1 = __importDefault(require("path"));
+const debug_color2_1 = __importDefault(require("debug-color2"));
+debug_color2_1.default.setOptions({
     time: true,
 });
 const cwd = process.cwd();
@@ -16,22 +20,22 @@ bluebird_1.default([
     deep: 0,
 })
     .tap(ls => {
-    index_1.console.info(cwd);
-    index_1.console.info(`目前資料夾下找到`, ls.length, `epub`);
+    debug_color2_1.default.info(cwd);
+    debug_color2_1.default.info(`目前資料夾下找到`, ls.length, `epub`);
 })
     .mapSeries(file => {
-    index_1.console.log(file);
-    let target_path = path.join(cwd, path.parse(file).name + '_out');
+    debug_color2_1.default.log(file);
+    let target_path = path_1.default.join(cwd, path_1.default.parse(file).name + '_out');
     return index_1.autoExtract(file, {
         cwd: target_path,
     });
 })
     .then(ls => {
     if (ls.length) {
-        index_1.console.success(`處理完成`, ls.length, `epub`);
+        debug_color2_1.default.success(`處理完成`, ls.length, `epub`);
     }
     else {
-        index_1.console.red(`沒有找到任何 epub 檔案`);
+        debug_color2_1.default.red(`沒有找到任何 epub 檔案`);
     }
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZXh0cmFjdC1iYWQtZXB1Yi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImV4dHJhY3QtYmFkLWVwdWIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBRUEsd0NBQXNFO0FBQ3RFLDZEQUFzRDtBQUV0RCw2QkFBNkI7QUFFN0IsZUFBTyxDQUFDLFVBQVUsQ0FBQztJQUNsQixJQUFJLEVBQUUsSUFBSTtDQUNWLENBQUMsQ0FBQztBQUVILE1BQU0sR0FBRyxHQUFHLE9BQU8sQ0FBQyxHQUFHLEVBQUUsQ0FBQztBQUUxQixrQkFBUSxDQUFDO0lBQ1IsUUFBUTtDQUNSLEVBQUU7SUFDRixHQUFHO0lBQ0gsUUFBUSxFQUFFLElBQUk7SUFDZCxJQUFJLEVBQUUsQ0FBQztDQUNQLENBQUM7S0FDQSxHQUFHLENBQUMsRUFBRSxDQUFDLEVBQUU7SUFFVCxlQUFPLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO0lBQ2xCLGVBQU8sQ0FBQyxJQUFJLENBQUMsVUFBVSxFQUFFLEVBQUUsQ0FBQyxNQUFNLEVBQUUsTUFBTSxDQUFDLENBQUM7QUFFN0MsQ0FBQyxDQUFDO0tBQ0QsU0FBUyxDQUFDLElBQUksQ0FBQyxFQUFFO0lBQ2pCLGVBQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLENBQUM7SUFFbEIsSUFBSSxXQUFXLEdBQUcsSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLEVBQUUsSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQyxJQUFJLEdBQUcsTUFBTSxDQUFDLENBQUM7SUFFakUsT0FBTyxtQkFBVyxDQUFDLElBQUksRUFBRTtRQUN4QixHQUFHLEVBQUUsV0FBVztLQUNoQixDQUFDLENBQUE7QUFDSCxDQUFDLENBQUM7S0FDRCxJQUFJLENBQUMsRUFBRSxDQUFDLEVBQUU7SUFFVixJQUFJLEVBQUUsQ0FBQyxNQUFNLEVBQ2I7UUFDQyxlQUFPLENBQUMsT0FBTyxDQUFDLE1BQU0sRUFBRSxFQUFFLENBQUMsTUFBTSxFQUFFLE1BQU0sQ0FBQyxDQUFDO0tBQzNDO1NBRUQ7UUFDQyxlQUFPLENBQUMsR0FBRyxDQUFDLGdCQUFnQixDQUFDLENBQUM7S0FDOUI7QUFFRixDQUFDLENBQUMsQ0FDRiIsInNvdXJjZXNDb250ZW50IjpbIiMhL3Vzci9iaW4vZW52IG5vZGVcblxuaW1wb3J0IHsgbG9hZCwgc2F2ZUF0dGFjaCwgYXV0b0V4dHJhY3QsIGNvbnNvbGUgfSBmcm9tICcuLi9saWIvaW5kZXgnO1xuaW1wb3J0IEZhc3RHbG9iIGZyb20gJ0BibHVlbG92ZXJzL2Zhc3QtZ2xvYi9ibHVlYmlyZCc7XG5pbXBvcnQgQmx1ZWJpcmQgPSByZXF1aXJlKCdibHVlYmlyZCcpO1xuaW1wb3J0ICogYXMgcGF0aCBmcm9tICdwYXRoJztcblxuY29uc29sZS5zZXRPcHRpb25zKHtcblx0dGltZTogdHJ1ZSxcbn0pO1xuXG5jb25zdCBjd2QgPSBwcm9jZXNzLmN3ZCgpO1xuXG5GYXN0R2xvYihbXG5cdCcqLmVwdWInXG5dLCB7XG5cdGN3ZCxcblx0YWJzb2x1dGU6IHRydWUsXG5cdGRlZXA6IDAsXG59KVxuXHQudGFwKGxzID0+IHtcblxuXHRcdGNvbnNvbGUuaW5mbyhjd2QpO1xuXHRcdGNvbnNvbGUuaW5mbyhg55uu5YmN6LOH5paZ5aS+5LiL5om+5YiwYCwgbHMubGVuZ3RoLCBgZXB1YmApO1xuXG5cdH0pXG5cdC5tYXBTZXJpZXMoZmlsZSA9PiB7XG5cdFx0Y29uc29sZS5sb2coZmlsZSk7XG5cblx0XHRsZXQgdGFyZ2V0X3BhdGggPSBwYXRoLmpvaW4oY3dkLCBwYXRoLnBhcnNlKGZpbGUpLm5hbWUgKyAnX291dCcpO1xuXG5cdFx0cmV0dXJuIGF1dG9FeHRyYWN0KGZpbGUsIHtcblx0XHRcdGN3ZDogdGFyZ2V0X3BhdGgsXG5cdFx0fSlcblx0fSlcblx0LnRoZW4obHMgPT4ge1xuXG5cdFx0aWYgKGxzLmxlbmd0aClcblx0XHR7XG5cdFx0XHRjb25zb2xlLnN1Y2Nlc3MoYOiZleeQhuWujOaIkGAsIGxzLmxlbmd0aCwgYGVwdWJgKTtcblx0XHR9XG5cdFx0ZWxzZVxuXHRcdHtcblx0XHRcdGNvbnNvbGUucmVkKGDmspLmnInmib7liLDku7vkvZUgZXB1YiDmqpTmoYhgKTtcblx0XHR9XG5cblx0fSlcbjtcbiJdfQ==
+//# sourceMappingURL=extract-bad-epub.js.map

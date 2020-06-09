@@ -16,6 +16,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var var_1 = require("./src/var");
 Object.defineProperty(exports, "EnumSectionCollectType", { enumerable: true, get: function () { return var_1.EnumSectionCollectType; } });
 const src_1 = require("./src");
-exports.default = src_1.EpubMaker;
 __exportStar(require("./src"), exports);
+exports.default = src_1.EpubMaker;
 //# sourceMappingURL=index.js.map

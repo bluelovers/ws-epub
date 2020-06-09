@@ -20,4 +20,3 @@ export function createJSZipGeneratorOptions()
  * 固定 epub 內檔案日期 用來保持相同的 md5
  */
 export const EPUB_CONTEXT_DATE = createEpubContextDate();
-

@@ -12,10 +12,6 @@ export const TPL_EOL2 = CRLF.repeat(2);
 export const TPL_HR1 = '＝'.repeat(TPL_HR_LEN);
 export const TPL_HR2 = '－'.repeat(TPL_HR_LEN);
 
-//export const TPL_VOLUME_START = '${hr01}${eol}${prefix}${title}${eol}${hr02}${eol}';
-
-//export const TPL_CHAPTER_START = '`${hr11}${eol}${prefix}${chapter_title}${eol}${hr12}${eol2}${txt}${eol2}${hr2}END${eol2}`';
-
 export const TPL_VOLUME_START = '${prefix}${eol}${title}';
 
 export const TPL_CHAPTER_START = '${prefix}${eol}${title}';

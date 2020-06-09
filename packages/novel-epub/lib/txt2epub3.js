@@ -2,9 +2,31 @@
 /**
  * Created by user on 2017/12/16/016.
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeFilename = exports.create = exports.makeOptions = exports.getNovelConf = exports.defaultOptions = exports.console = void 0;
-const epub_maker2_1 = require("epub-maker2");
+const epub_maker2_1 = __importStar(require("epub-maker2"));
 const node_novel_info_1 = require("node-novel-info");
 const util_1 = require("./util");
 const log_1 = require("./log");
@@ -12,16 +34,16 @@ Object.defineProperty(exports, "console", { enumerable: true, get: function () {
 const uuid_1 = require("epub-maker2/src/lib/uuid");
 const crlf_normalize_1 = require("crlf-normalize");
 const class_1 = require("node-novel-info/class");
-const glob_sort_1 = require("node-novel-globby/lib/glob-sort");
-const node_novel_globby_1 = require("node-novel-globby");
+const sort_tree_1 = require("@lazy-glob/sort-tree");
+const util_2 = require("node-novel-globby/lib/util");
 const epub_1 = require("./epub");
-const fs = require("fs-iconv");
-const Bluebird = require("bluebird");
-const path = require("upath2");
-const moment = require("moment");
-const novelGlobby = require("node-novel-globby/g");
-const deepmerge = require("deepmerge-plus");
-const util_2 = require("util");
+const fs_iconv_1 = __importDefault(require("fs-iconv"));
+const bluebird_1 = __importDefault(require("bluebird"));
+const upath2_1 = __importDefault(require("upath2"));
+const moment_1 = __importDefault(require("moment"));
+const novelGlobby = __importStar(require("node-novel-globby/g"));
+const deepmerge_plus_1 = __importDefault(require("deepmerge-plus"));
+const util_3 = require("util");
 const store_1 = require("./store");
 const html_1 = require("./html");
 const md_1 = require("./md");
@@ -37,7 +59,7 @@ exports.defaultOptions = Object.freeze({
     },
 });
 function getNovelConf(options, cache = {}) {
-    return Bluebird.resolve().then(async function () {
+    return bluebird_1.default.resolve().then(async function () {
         let meta;
         let confPath;
         if (options.novelConf && typeof options.novelConf == 'object') {
@@ -50,14 +72,14 @@ function getNovelConf(options, cache = {}) {
             else {
                 confPath = options.inputPath;
             }
-            if (fs.existsSync(path.join(confPath, 'meta.md'))) {
-                let file = path.join(confPath, 'meta.md');
-                meta = await fs.readFile(file)
+            if (fs_iconv_1.default.existsSync(upath2_1.default.join(confPath, 'meta.md'))) {
+                let file = upath2_1.default.join(confPath, 'meta.md');
+                meta = await fs_iconv_1.default.readFile(file)
                     .then(node_novel_info_1.mdconf_parse);
             }
-            else if (fs.existsSync(path.join(confPath, 'README.md'))) {
-                let file = path.join(confPath, 'README.md');
-                meta = await fs.readFile(file)
+            else if (fs_iconv_1.default.existsSync(upath2_1.default.join(confPath, 'README.md'))) {
+                let file = upath2_1.default.join(confPath, 'README.md');
+                meta = await fs_iconv_1.default.readFile(file)
                     .then(node_novel_info_1.mdconf_parse);
             }
         }
@@ -68,11 +90,11 @@ function getNovelConf(options, cache = {}) {
         if (e.message == 'Error: mdconf_parse' || e.message == 'mdconf_parse') {
             return null;
         }
-        return Bluebird.reject(e);
+        return bluebird_1.default.reject(e);
     })
         .tap(meta => {
         if (!meta || !meta.novel || !meta.novel.title) {
-            throw new Error(`not a valid novelInfo data, ${util_2.inspect(options)}`);
+            throw new Error(`not a valid novelInfo data, ${util_3.inspect(options)}`);
         }
         return meta;
     });
@@ -85,7 +107,7 @@ function makeOptions(options) {
         a[b] = options[b];
         return a;
     }, {});
-    options = deepmerge.all([{}, exports.defaultOptions, options]);
+    options = deepmerge_plus_1.default.all([{}, exports.defaultOptions, options]);
     if (options.iconv) {
         switch (options.iconv) {
             case 'chs':
@@ -106,7 +128,7 @@ function makeOptions(options) {
 }
 exports.makeOptions = makeOptions;
 function create(options, cache = {}) {
-    return Bluebird.resolve().then(async function () {
+    return bluebird_1.default.resolve().then(async function () {
         //console.log(options, defaultOptions);
         options = makeOptions(options);
         //console.dir(options, {colors: true});
@@ -194,9 +216,9 @@ function create(options, cache = {}) {
         const store = new store_1.EpubStore();
         let count_idx = 0;
         {
-            let file = path.join(TXT_PATH, 'FOREWORD.md');
-            if (fs.pathExistsSync(file)) {
-                let source = await fs.readFile(file);
+            let file = upath2_1.default.join(TXT_PATH, 'FOREWORD.md');
+            if (fs_iconv_1.default.pathExistsSync(file)) {
+                let source = await fs_iconv_1.default.readFile(file);
                 let mdReturn = md_1.handleMarkdown(source, {
                     cwd: TXT_PATH,
                 });
@@ -223,7 +245,7 @@ function create(options, cache = {}) {
             return ls;
         })
             .then(function (ls) {
-            return glob_sort_1.sortTree(ls, null, globby_options);
+            return sort_tree_1.sortTree(ls, null, globby_options);
         })
             .then(function (ls) {
             //console.dir(ls);
@@ -245,7 +267,7 @@ function create(options, cache = {}) {
             //const SymCache = Symbol('cache');
             //let _new_top_level: EpubMaker.Section;
             //let _old_top_level: EpubMaker.Section;
-            return node_novel_globby_1.foreachArrayDeepAsync(_ls, async ({ value, index, array, cache, }) => {
+            return util_2.foreachArrayDeepAsync(_ls, async ({ value, index, array, cache, }) => {
                 const { volume_title, chapter_title } = value;
                 const { temp, data } = cache;
                 const { stat } = data;
@@ -253,14 +275,14 @@ function create(options, cache = {}) {
                 /**
                  * 去除掉排序ID後的章節名稱
                  */
-                let vs_ret = node_novel_globby_1.eachVolumeTitle(volume_title, true);
+                let vs_ret = util_2.eachVolumeTitle(volume_title, true);
                 /**
                  * 章節名稱 含 排序用的ID 來避免同一個資料夾下 有兩個相同 章節名稱
                  */
-                let vs_ret2 = node_novel_globby_1.eachVolumeTitle(value.dir, false);
+                let vs_ret2 = util_2.eachVolumeTitle(value.dir, false);
                 const dirname = value.path_dir;
-                let _ds = path.normalize(dirname).split('/');
-                const volume = await Bluebird
+                let _ds = upath2_1.default.normalize(dirname).split('/');
+                const volume = await bluebird_1.default
                     .resolve(vs_ret2.titles_full)
                     .reduce(async function (vp, key, index) {
                     let title = vs_ret.titles[index];
@@ -348,7 +370,7 @@ function create(options, cache = {}) {
                 }, null);
                 const row = value;
                 let name = value.chapter_title;
-                let txt = await fs.loadFile(value.path, {
+                let txt = await fs_iconv_1.default.loadFile(value.path, {
                     autoDecode: true,
                 })
                     .then(async function (data) {
@@ -472,7 +494,7 @@ function create(options, cache = {}) {
                         .then(async (ls) => {
                         if (ls.length) {
                             let file = ls[0];
-                            let source = await fs.readFile(file);
+                            let source = await fs_iconv_1.default.readFile(file);
                             let mdReturn = md_1.handleMarkdown(source, {
                                 ..._data_,
                                 cwd: cwdRoot,
@@ -512,7 +534,7 @@ function create(options, cache = {}) {
         let data = await epub.makeEpub();
         let _file_data = makeFilename(options, epub, meta);
         let { file, filename, now, basename, ext } = _file_data;
-        await fs.outputFile(file, data);
+        await fs_iconv_1.default.outputFile(file, data);
         const stat = processReturn.data.stat;
         log_1.console.success(filename, now.format(), stat);
         return {
@@ -562,12 +584,12 @@ function makeFilename(options, epub, meta) {
     }
     const basename = filename;
     let ext = epub_maker2_1.default.defaultExt;
-    let now = moment();
+    let now = moment_1.default();
     if (options.padEndDate) {
         filename += '_' + now.format('YYYYMMDD_HHmmss');
     }
     filename += ext;
-    let file = path.join(options.outputPath, filename);
+    let file = upath2_1.default.join(options.outputPath, filename);
     return {
         file,
         ext,

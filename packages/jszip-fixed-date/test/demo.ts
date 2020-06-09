@@ -2,9 +2,9 @@
  * Created by user on 2019/7/24.
  */
 
-import JSZip = require('jszip');
-import crypto = require('crypto');
-import Bluebird = require('bluebird');
+import JSZip from 'jszip';
+import crypto from 'crypto';
+import Bluebird from 'bluebird';
 import { fixedJSZipDate } from '../index';
 
 (async () => {

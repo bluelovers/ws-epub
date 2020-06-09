@@ -2,10 +2,8 @@
  * Created by user on 2019/7/10.
  */
 /// <reference types="node" />
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
-import { Console } from 'debug-color2';
-export declare const console: Console;
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
 export interface IImages extends Record<string, string> {
 }
 export interface ICache {

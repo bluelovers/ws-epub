@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import updateNotifier from '@yarn-tool/update-notifier';
-import yargs = require('yargs');
+import yargs from 'yargs';
 import { handleGlob, IEpubIconvGlobOptions } from '../lib/glob';
-import * as path from 'path';
+import path from 'path';
 import { console } from 'debug-color2';
 import * as pkg from '../package.json';
 
@@ -54,3 +54,4 @@ let argv = yargs
 	})
 	.argv
 ;
+

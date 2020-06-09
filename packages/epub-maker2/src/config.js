@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpubConfig = exports.EnumEpubConfigVertical = void 0;
 const index_1 = require("./index");
 const util_1 = require("./lib/util");
 const const_1 = require("node-novel-info/lib/const");
-const deepmerge_plus_1 = require("deepmerge-plus");
+const deepmerge_plus_1 = __importDefault(require("deepmerge-plus"));
 const util_2 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
 const he_1 = require("he");

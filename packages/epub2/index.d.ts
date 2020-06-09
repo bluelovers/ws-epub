@@ -25,3 +25,4 @@ export declare module EPub {
     let libPromise: typeof Promise;
 }
 export default EPub;
+export { SYMBOL_RAW_DATA } from './lib/types';

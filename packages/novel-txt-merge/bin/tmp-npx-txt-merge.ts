@@ -1,21 +1,12 @@
 #!/usr/bin/env node
 
-import yargs = require('yargs');
-import path = require('path');
-import Promise = require('bluebird');
+import yargs from 'yargs';
+import path from 'path';
+
 import txtMerge from '../index';
 import PACKAGE_JSON = require('../package.json');
-import updateNotifier = require('update-notifier');
-import { Console } from 'debug-color2';
-const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
+import updateNotifier from 'update-notifier';
+import console from 'debug-color2';
 
 console.enabledColor = true;
 

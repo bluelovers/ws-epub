@@ -1,5 +1,4 @@
-
-import JSZip = require('jszip');
+import JSZip from 'jszip';
 
 /**
  * this allow u try set date for all files, make u will get same md5 if context is same

@@ -1,7 +1,4 @@
 "use strict";
-/**
- * Created by user on 2019/7/27.
- */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAllowExtImage = exports.toGlobExtImage = exports.allowExtImage = void 0;
 exports.allowExtImage = [

@@ -6,9 +6,9 @@ import { IMdconfMeta } from 'node-novel-info';
 import { console } from './log';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import { IEpubRuntimeReturn } from './epub';
-import Bluebird = require('bluebird');
-import moment = require('moment');
-import novelGlobby = require('node-novel-globby/g');
+import Bluebird from 'bluebird';
+import moment from 'moment';
+import * as novelGlobby from 'node-novel-globby/g';
 import { EpubStore } from './store';
 export { console };
 export interface IOptions {

@@ -1,7 +1,29 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpubMaker = exports.slugifyWithFallback = exports.slugify = exports.hashSum = exports.shortid = exports.EnumSectionCollectType = exports.EnumEpubTypeName = exports.EnumEpubType = void 0;
-const _slugify = require("slugify");
+const slugify_1 = __importDefault(require("slugify"));
 const template_1 = require("./template");
 const fs_iconv_1 = require("fs-iconv");
 const zip_1 = require("./epubtpl-lib/zip");
@@ -12,12 +34,12 @@ Object.defineProperty(exports, "hashSum", { enumerable: true, get: function () {
 Object.defineProperty(exports, "shortid", { enumerable: true, get: function () { return util_1.shortid; } });
 const epub_types_1 = require("./epub-types");
 Object.defineProperty(exports, "EnumEpubType", { enumerable: true, get: function () { return epub_types_1.EnumEpubType; } });
-const libEpubtypes = require("./epub-types");
-const jszip_fixed_date_1 = require("jszip-fixed-date");
+const libEpubtypes = __importStar(require("./epub-types"));
+const jszip_fixed_date_1 = __importDefault(require("jszip-fixed-date"));
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
         // @ts-ignore
-        _slugify;
+        slugify_1.default;
     return fn(input || '', ...argv).trim();
 }
 exports.slugify = slugify;
@@ -309,7 +331,7 @@ exports.EpubMaker = EpubMaker;
     // @ts-ignore
     EpubMaker.epubtypes = libEpubtypes;
     // @ts-ignore
-    EpubMaker.libSlugify = _slugify;
+    EpubMaker.libSlugify = slugify_1.default;
     /**
      * @epubType Optional. Allows you to add specific epub type content such as [epub:type="titlepage"]
      * @id Optional, but required if section should be included in toc and / or landmarks

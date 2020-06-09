@@ -3,4 +3,5 @@
  */
 
 import { EPub } from './index';
+
 export = EPub;

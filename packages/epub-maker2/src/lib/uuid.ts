@@ -2,8 +2,8 @@
  * Created by user on 2018/9/8/008.
  */
 
-import getUuidByString = require('uuid-by-string');
-import uuidv1 = require('uuid/v1');
+import getUuidByString from 'uuid-by-string';
+import uuidv1 from 'uuid/v1';
 import { hashSum, shortid } from './util';
 import { EpubConfig } from '../config';
 
@@ -31,3 +31,4 @@ export function createUUID(input?: any): string
 }
 
 export default createUUID
+

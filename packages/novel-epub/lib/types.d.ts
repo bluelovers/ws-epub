@@ -2,9 +2,9 @@ import { IOptions } from './txt2epub3';
 import { EpubMaker } from 'epub-maker2';
 import { EpubStore } from './store';
 import { IAttachMetaData, IEpubRuntimeReturn } from './epub';
-import MarkdownIt = require('markdown-it');
+import MarkdownIt from 'markdown-it';
 import { ITSResolvable } from 'ts-type';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 export interface IInternalProcessOptions {
     store: EpubStore;
     epub: EpubMaker;

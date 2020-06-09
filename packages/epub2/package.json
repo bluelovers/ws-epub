@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "1.3.8",
+  "version": "2.0.0",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",
@@ -26,9 +26,13 @@
     "volume",
     "zip"
   ],
-  "homepage": "https://github.com/bluelovers/epub#readme",
+  "homepage": "https://github.com/bluelovers/ws-epub/tree/master/packages/epub2#readme",
   "bugs": {
-    "url": "https://github.com/bluelovers/epub/issues"
+    "url": "https://github.com/bluelovers/ws-epub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluelovers/ws-epub.git"
   },
   "license": "ISC",
   "author": "Andris Reinman",
@@ -39,28 +43,27 @@
   "main": "./index",
   "typings": "./index.d.ts",
   "directories": {
+    "lib": "lib",
     "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bluelovers/epub.git"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\"",
+    "npm:publish": "npm publish",
+    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish_": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
+    "sort-package-json": "npx yarn-tool sort"
   },
   "dependencies": {
-    "adm-zip": "^0.4.13",
-    "array-hyper-unique": "^1.0.7",
-    "bluebird": "^3.5.5",
+    "adm-zip": "^0.4.14",
+    "array-hyper-unique": "^1.1.2",
+    "bluebird": "^3.7.2",
     "crlf-normalize": "^1.0.3",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.23"
   },
-  "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.12",
-    "@types/bluebird": "^3.5.27",
-    "@types/node": "^12.6.8",
-    "@types/xml2js": "^0.4.4"
-  },
+  "devDependencies": {},
   "peerDependencies": {},
   "engine": [
     "node >=0.3.0"

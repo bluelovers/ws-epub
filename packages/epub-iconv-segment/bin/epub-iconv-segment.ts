@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import updateNotifier from '@yarn-tool/update-notifier';
-import yargs = require('yargs');
+import yargs from 'yargs';
 import handleGlobSegment from '..';
 import * as path from 'path';
 import { console } from 'debug-color2';
@@ -54,3 +54,4 @@ let argv = yargs
 	})
 	.argv
 ;
+

@@ -2,10 +2,10 @@
  * Created by user on 2017/12/12/012.
  */
 
-import JSZip = require('jszip');
+import JSZip from 'jszip';
 import { IFiles, ICover, EpubConfig, IEpubConfig } from '../config';
 import { compileTpl } from './handlebar-helpers';
-import * as path from 'upath2';
+import path from 'upath2';
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 import { hashSum, BPromise } from '../lib/util';

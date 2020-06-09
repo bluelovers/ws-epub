@@ -4,5 +4,8 @@
 
 export { EnumSectionCollectType } from './src/var';
 import { EpubMaker } from './src';
-export default EpubMaker;
+
 export * from './src';
+
+export default EpubMaker;
+

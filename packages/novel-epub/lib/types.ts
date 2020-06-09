@@ -2,9 +2,9 @@ import { IOptions } from './txt2epub3';
 import { EpubMaker } from 'epub-maker2';
 import { EpubStore } from './store';
 import { IAttachMetaData, IEpubRuntimeReturn } from './epub';
-import MarkdownIt = require('markdown-it');
+import MarkdownIt from 'markdown-it';
 import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike, ITSRequiredWith } from 'ts-type';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 
 export interface IInternalProcessOptions
 {
@@ -46,4 +46,3 @@ export interface IInternalProcessEpubOptions extends IInternalProcessOptions
 }
 
 export type IResolvableBluebird<T> = ITSResolvable<T> | Bluebird<T>
-

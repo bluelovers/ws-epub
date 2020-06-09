@@ -1,9 +1,8 @@
 import Handlebars from 'handlebars';
-// @ts-ignore
-import path = require('upath2');
+import path from 'upath2';
 import { readFileSync } from 'fs';
 
-import epubTplLib, {  } from '.';
+import epubTplLib, {  } from './index';
 
 export const mimetypes = {
 	'jpeg': 'image/jpeg',

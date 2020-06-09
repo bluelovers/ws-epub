@@ -2,9 +2,12 @@
 /**
  * Created by user on 2019/7/22.
  */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleMarkdown = exports.render = exports.createMarkdownIt = void 0;
-const MarkdownIt = require("markdown-it");
+const markdown_it_1 = __importDefault(require("markdown-it"));
 const lodash_1 = require("lodash");
 function createMarkdownIt(options, plusData) {
     options = lodash_1.defaultsDeep({}, options, {
@@ -13,7 +16,7 @@ function createMarkdownIt(options, plusData) {
         breaks: true,
         xhtmlOut: true,
     });
-    return new MarkdownIt(options)
+    return new markdown_it_1.default(options)
         .use(require('markdown-it-ruby'))
         .use(require('markdown-it-footnote'))
         .use(require('markdown-it-emoji'))

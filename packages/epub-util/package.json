@@ -1,8 +1,9 @@
 {
   "name": "@node-novel/epub-util",
   "version": "1.0.2",
-  "description": "",
-  "homepage": "https://github.com/bluelovers/ws-epub#readme",
+  "description": "<description>",
+  "keywords": [],
+  "homepage": "https://github.com/bluelovers/ws-epub/tree/master/packages/epub-util#readme",
   "bugs": {
     "url": "https://github.com/bluelovers/ws-epub/issues"
   },
@@ -11,26 +12,31 @@
     "url": "git+https://github.com/bluelovers/ws-epub.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "bluelovers",
   "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
-    "ncu": "npx yarn-tool ncu -u",
+    "test": "echo \"Error: no test specified\"",
     "npm:publish": "npm publish",
-    "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
-    "postpublish": "git commit -m \"publish new version\" .",
+    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish_": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx sort-package-json ./package.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@types/cheerio": "^0.22.13",
-    "@types/jquery": "^3.3.31",
+    "@types/cheerio": "*",
+    "@types/jquery": "*",
     "crlf-normalize": "^1.0.3",
     "html-minifier": "^4.0.0",
-    "zero-width": "^1.0.5"
+    "zero-width": "^1.0.11"
   },
   "devDependencies": {},
   "publishConfig": {

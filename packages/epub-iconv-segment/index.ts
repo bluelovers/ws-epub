@@ -4,9 +4,10 @@
 import { handleGlob } from 'epub-iconv/lib';
 import { IEpubIconvGlobOptions } from 'epub-iconv/lib/glob';
 import { ITSResolvable, ITSValueOrArray } from 'ts-type';
-import Bluebird = require('bluebird');
+
+import Bluebird from 'bluebird';
 import { textSegment, stringify } from 'novel-segment-cli';
-import { cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { cn2tw_min, tw2cn_min } from '@lazy-cjk/zh-convert/min';
 
 async function stringifySegment(input: string)
 {

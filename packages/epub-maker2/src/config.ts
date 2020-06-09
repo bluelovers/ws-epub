@@ -1,6 +1,5 @@
 import { EpubMaker, ISlugify, slugify } from './index';
 import { shortid, hashSum, moment, array_unique } from './lib/util';
-import { crlf, chkcrlf, LF, CRLF, CR } from 'crlf-normalize';
 
 import { deepmergeOptions } from 'node-novel-info/lib/const';
 import deepmerge from 'deepmerge-plus';

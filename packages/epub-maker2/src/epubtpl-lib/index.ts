@@ -53,6 +53,7 @@ export function htmlminify(html: string, options: IMinifyOptions = {})
 				preserve_newlines: true,
 				wrap_line_length: 0,
 				unformatted: [],
+				// @ts-ignore
 				selector_separator_newline: false,
 				newline_between_rules: true
 			});

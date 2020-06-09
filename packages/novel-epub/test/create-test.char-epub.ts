@@ -3,12 +3,13 @@
  */
 
 import novelEpub from '../index';
-import * as path from 'path';
+import path from 'path';
 import fs from 'fs-iconv';
 import { EnumEpubTypeName, EpubMaker } from 'epub-maker2/src/index';
-import crypto = require('crypto');
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
+import crypto from 'crypto';
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
+
 import Section = EpubMaker.Section;
 
 /**

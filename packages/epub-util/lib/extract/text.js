@@ -1,6 +1,26 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const lib_1 = require("zero-width/lib");
+exports.fixText = void 0;
+const lib_1 = __importStar(require("zero-width/lib"));
 const crlf_normalize_1 = require("crlf-normalize");
 function fixText(text) {
     return crlf_normalize_1.crlf(lib_1.default(lib_1.nbspToSpace(text)))
@@ -8,4 +28,4 @@ function fixText(text) {
 }
 exports.fixText = fixText;
 exports.default = fixText;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGV4dC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbInRleHQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSx3Q0FBOEQ7QUFDOUQsbURBQXNDO0FBRXRDLFNBQWdCLE9BQU8sQ0FBQyxJQUFZO0lBRW5DLE9BQU8scUJBQUksQ0FBQyxhQUFlLENBQUMsaUJBQVcsQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDO1NBQzdDLE9BQU8sQ0FBQyxrQkFBa0IsRUFBRSxJQUFJLENBQUMsQ0FDbEM7QUFDRixDQUFDO0FBTEQsMEJBS0M7QUFFRCxrQkFBZSxPQUFPLENBQUEiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgcmVtb3ZlWmVyb1dpZHRoLCB7IG5ic3BUb1NwYWNlIH0gZnJvbSAnemVyby13aWR0aC9saWInO1xuaW1wb3J0IHsgY3JsZiB9IGZyb20gJ2NybGYtbm9ybWFsaXplJztcblxuZXhwb3J0IGZ1bmN0aW9uIGZpeFRleHQodGV4dDogc3RyaW5nKVxue1xuXHRyZXR1cm4gY3JsZihyZW1vdmVaZXJvV2lkdGgobmJzcFRvU3BhY2UodGV4dCkpKVxuXHRcdC5yZXBsYWNlKC9eXFxuezIsfXxcXG57Mix9JC9nLCAnXFxuJylcblx0O1xufVxuXG5leHBvcnQgZGVmYXVsdCBmaXhUZXh0Il19
+//# sourceMappingURL=text.js.map

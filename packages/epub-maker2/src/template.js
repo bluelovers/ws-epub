@@ -2,14 +2,36 @@
 /**
  * Created by user on 2017/12/12/012.
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.templateManagers = exports.TemplateManagers = exports.defaultList = exports.defaultPath = void 0;
-const path = require("upath2");
+const upath2_1 = __importDefault(require("upath2"));
 const util_1 = require("./lib/util");
-exports.defaultPath = path.join(__dirname, './epubtpl');
+exports.defaultPath = upath2_1.default.join(__dirname, './epubtpl');
 exports.defaultList = {
-    'idpf-wasteland': path.join(exports.defaultPath, './from_idpf_epub3'),
-    'lightnovel': path.join(exports.defaultPath, './lightnovel'),
+    'idpf-wasteland': upath2_1.default.join(exports.defaultPath, './from_idpf_epub3'),
+    'lightnovel': upath2_1.default.join(exports.defaultPath, './lightnovel'),
 };
 class TemplateManagers {
     constructor(options = {}) {
@@ -62,7 +84,7 @@ class TemplateManagers {
                 //
             }
             else if (typeof t == 'string') {
-                let b = await Promise.resolve().then(() => require(t));
+                let b = await Promise.resolve().then(() => __importStar(require(t)));
                 r = await fn(b);
             }
             else {
@@ -101,13 +123,13 @@ class TemplateManagers {
         // @ts-ignore
         return fn(name)
             .catch(function () {
-            return fn(path.join(self.basePath, name));
+            return fn(upath2_1.default.join(self.basePath, name));
         })
             .catch(function (err) {
             if (Array.isArray(self.paths)) {
                 let ps = [];
                 for (let v of self.paths) {
-                    ps.push(fn(path.join(v, name)));
+                    ps.push(fn(upath2_1.default.join(v, name)));
                 }
                 return util_1.BPromise.any(ps);
             }
@@ -121,7 +143,7 @@ class TemplateManagers {
             return ret;
         })
             .catch(function () {
-            return fn(path.join('@epubtpl', name));
+            return fn(upath2_1.default.join('@epubtpl', name));
         });
     }
 }

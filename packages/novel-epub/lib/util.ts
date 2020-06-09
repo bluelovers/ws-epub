@@ -6,16 +6,11 @@
 import { readFile, readFileSync } from 'fs-iconv';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
 import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
-import Bluebird = require('bluebird');
-import path = require('upath2');
+import Bluebird from 'bluebird';
+import path from 'upath2';
 import { pathDirNormalize as _pathDirNormalize } from 'path-dir-normalize';
 
 export { createUUID }
-
-//export function createUUID(input?: unknown)
-//{
-//	return getUuidByString(String(input)).toLowerCase();
-//}
 
 /**
  * 讀取不標準的 mdconf

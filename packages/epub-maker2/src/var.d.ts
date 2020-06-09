@@ -1,7 +1,6 @@
 /**
  * Created by user on 2017/12/12/012.
  */
-/// <reference types="jszip" />
 import { JSZip } from './epubtpl-lib/zip';
 import { IEpubConfig } from './config';
 import { EpubMaker } from './index';

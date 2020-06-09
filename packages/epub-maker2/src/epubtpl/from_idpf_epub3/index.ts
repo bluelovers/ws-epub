@@ -2,7 +2,7 @@ import { IBuilder, IBuilderCallback, IEpubConfig } from '../../var';
 import zipLib, { JSZip, JSZipUtils } from '../../epubtpl-lib/zip';
 import { Handlebars, compileTpl } from '../../epubtpl-lib/handlebar-helpers';
 import { ajax } from '../../epubtpl-lib/ajax';
-import path = require('upath2');
+import path from 'upath2';
 
 import epubTplLib, {} from '../../epubtpl-lib';
 

@@ -1,3 +1,4 @@
+/// <reference types="moment" />
 /// <reference types="node" />
 import { EnumEpubConfigVertical, EpubConfig, ICollection, ICover, IEpubConfig, IRightsConfig } from './config';
 import { BPromise, hashSum, moment, shortid } from './lib/util';
@@ -5,9 +6,9 @@ import { EnumEpubType, EnumEpubTypeName } from './epub-types';
 import { EnumSectionCollectType } from './var';
 export { EnumEpubType, EnumEpubTypeName };
 export { EnumSectionCollectType };
-import libEpubtypes = require('./epub-types');
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
+import * as libEpubtypes from './epub-types';
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
 export { shortid, hashSum };
 export declare function slugify(input: string, ...argv: any[]): string;
 export declare function slugifyWithFallback(input: string, ...argv: any[]): string;

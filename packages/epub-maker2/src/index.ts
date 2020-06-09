@@ -1,4 +1,4 @@
-import _slugify = require('slugify');
+import _slugify from 'slugify';
 import { templateManagers } from './template';
 import { trimFilename } from 'fs-iconv';
 import { parseFileSetting } from './epubtpl-lib/zip';
@@ -17,10 +17,11 @@ import { EnumEpubType, EnumEpubTypeName } from './epub-types';
 import { EnumSectionCollectType } from './var';
 export { EnumEpubType, EnumEpubTypeName };
 export { EnumSectionCollectType };
-import libEpubtypes = require('./epub-types');
-import JSZip = require('jszip');
+import * as libEpubtypes from './epub-types';
+
+import JSZip from 'jszip';
 import fixedJSZipDate from 'jszip-fixed-date';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 
 export { shortid, hashSum }
 

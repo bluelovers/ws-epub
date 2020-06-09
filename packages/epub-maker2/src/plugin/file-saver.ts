@@ -44,3 +44,4 @@ EpubMaker.prototype.downloadEpub = function downloadEpub(callback, options?): Pr
 
 // @ts-ignore
 export default EpubMaker;
+

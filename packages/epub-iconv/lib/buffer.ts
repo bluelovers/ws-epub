@@ -2,11 +2,11 @@
  * Created by user on 2019/7/31.
  */
 
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
 import ICONV from 'iconv-jschardet';
 import { ITSResolvable } from 'ts-type';
-import { cn2tw_min as _cn2tw_min, tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { cn2tw_min as _cn2tw_min, tw2cn_min } from '@lazy-cjk/zh-convert/min';
 import { createJSZipGeneratorOptions } from '@node-novel/epub-util/lib/const';
 import { handleOptions } from './options';
 
@@ -100,4 +100,3 @@ export function handleZipBuffer(zipBuffer: ITSResolvable<Buffer>, options?: IEpu
 		.then(zip => zip.generateAsync(createJSZipGeneratorOptions()))
 	;
 }
-

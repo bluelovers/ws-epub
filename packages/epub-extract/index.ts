@@ -5,15 +5,15 @@
 // @ts-ignore
 import { EPub, SYMBOL_RAW_DATA } from 'epub2';
 import { fixToc } from 'epub2/lib/toc';
-import * as cheerio from 'cheerio';
-import * as path from 'path';
-import * as fs from 'fs-iconv';
+import cheerio from 'cheerio';
+import path from 'path';
+import fs from 'fs-iconv';
 import { trimFilename } from 'fs-iconv';
 
-import * as Promise from 'bluebird';
-import * as novelInfo from 'node-novel-info';
+import Promise from 'bluebird';
+import novelInfo from 'node-novel-info';
 import { fixHtml2 } from './lib/html';
-import removeZeroWidth, { nbspToSpace } from 'zero-width/lib';
+
 import { fixText } from '@node-novel/epub-util/lib/extract/text';
 import { fixCheerio } from '@node-novel/epub-util/lib/extract/cheerio';
 

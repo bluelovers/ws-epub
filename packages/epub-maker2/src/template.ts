@@ -2,11 +2,10 @@
  * Created by user on 2017/12/12/012.
  */
 
-import * as path from 'upath2';
+import path from 'upath2';
 import { BPromise } from './lib/util';
 import { IEpubConfig, IBuilder } from './var';
 import { EpubMaker } from './index';
-import JSZip = require('jszip');
 
 export const defaultPath = path.join(__dirname, './epubtpl') as string;
 

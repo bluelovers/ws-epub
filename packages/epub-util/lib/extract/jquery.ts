@@ -27,3 +27,4 @@ export function _removeAttrs<T extends HTMLElement>(elem: T, $: JQueryStatic)
 }
 
 export default fixJQuery
+

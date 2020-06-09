@@ -4,7 +4,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.splitTxt = exports.novelImage = void 0;
-const min_1 = require("cjk-conv/lib/zh/convert/min");
+const min_1 = require("@lazy-cjk/zh-convert/min");
 const tags_1 = require("./tags");
 const store_1 = require("./store");
 const str_util_1 = require("str-util");

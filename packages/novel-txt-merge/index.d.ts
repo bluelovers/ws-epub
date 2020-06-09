@@ -2,7 +2,7 @@
  * Created by user on 2018/1/28/028.
  */
 import { IArrayDeepInterface, IReturnRow } from 'node-novel-globby';
-import BluebirdPromise = require('bluebird');
+import BluebirdPromise from 'bluebird';
 import { IMdconfMeta } from 'node-novel-info';
 import { IForeachArrayDeepReturn } from 'node-novel-globby/lib/util';
 import { EnumTxtStyle } from './lib/tpl';

@@ -2,15 +2,9 @@
  * Created by user on 2019/7/22.
  */
 
-import MarkdownIt = require('markdown-it');
+import MarkdownIt from 'markdown-it';
 import { defaultsDeep } from 'lodash';
 import { IInternalProcessContextOptions, IInternalProcessMarkdownItOptions } from './types';
-import fs from 'fs-iconv';
-import { buffer } from 'extract-bad-epub/lib/index';
-import * as path from 'path';
-import { ITSResolvable, ITSPartialWith, ITSUnpackedPromiseLike } from 'ts-type';
-
-import { HTML_OPEN_CLOSE_TAG_RE } from 'markdown-it/lib/common/html_re';
 
 export function createMarkdownIt(options?: MarkdownIt.Options, plusData?: Partial<IInternalProcessMarkdownItOptions>)
 {

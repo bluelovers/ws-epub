@@ -4,10 +4,10 @@
 import { console } from 'debug-color2';
 import { IEpubConfig } from '../config';
 import { array_unique } from 'array-hyper-unique';
-import shortid = require('shortid');
-import hashSum = require('hash-sum');
-import moment = require('moment');
-import BPromise = require('bluebird');
+import shortid from 'shortid';
+import hashSum from 'hash-sum';
+import moment from 'moment';
+import BPromise from 'bluebird';
 export { hashSum, shortid };
 export { array_unique };
 export { moment };

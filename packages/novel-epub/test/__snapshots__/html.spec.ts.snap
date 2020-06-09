@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`epubOptions: { iconv: 'cn' } 1`] = `"<div class=\\"linegroup calibre1\\"><ruby>汉<rt>Ｋａｎ</rt>字<rt>ｊｉ</rt></ruby></div>"`;
+
+exports[`full-width ruby 1`] = `"<div class=\\"linegroup calibre1\\"><ruby>漢<rt>Ｋａｎ</rt>字<rt>ｊｉ</rt></ruby></div>"`;

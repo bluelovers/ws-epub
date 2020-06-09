@@ -1,4 +1,4 @@
-import cheerio  = require('cheerio');
+import cheerio from 'cheerio';
 
 export type ICheerio = ReturnType<typeof cheerio>
 export type ICheerioStatic = ReturnType<typeof cheerio.load>
@@ -31,3 +31,4 @@ export function _removeAttrs<T extends ICheerioElement>(elem: T, $: ICheerioStat
 }
 
 export default fixCheerio
+

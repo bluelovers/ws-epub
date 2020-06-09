@@ -3,6 +3,7 @@
  */
 
 import EPub from '../index';
+
 import libEPub = require('../epub');
 
 export function fixToc(epub: EPub | libEPub)

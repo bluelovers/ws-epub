@@ -1,7 +1,8 @@
 import { readFile } from 'fs-extra';
 import { handleZipObject, IEpubIconvOptions, loadZipBuffer, handleZipBuffer } from './buffer';
-import Bluebird = require('bluebird');
-import JSZip = require('jszip');
+
+import Bluebird from 'bluebird';
+import JSZip from 'jszip';
 
 export function loadZipFile(zipFilePath: string)
 {

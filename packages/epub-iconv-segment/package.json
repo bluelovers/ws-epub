@@ -72,7 +72,7 @@
     "zht",
     "zip"
   ],
-  "homepage": "https://github.com/bluelovers/ws-epub#readme",
+  "homepage": "https://github.com/bluelovers/ws-epub/tree/master/packages/epub-iconv-segment#readme",
   "bugs": {
     "url": "https://github.com/bluelovers/ws-epub/issues"
   },
@@ -81,7 +81,7 @@
     "url": "git+https://github.com/bluelovers/ws-epub.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "bluelovers",
   "main": "index.js",
   "bin": {
     "epub-iconv-segment": "bin/epub-iconv-segment.js"
@@ -89,18 +89,21 @@
   "scripts": {
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
-    "ncu": "npx yarn-tool ncu -u",
+    "test": "echo \"Error: no test specified\"",
     "npm:publish": "npm publish",
-    "prepublishOnly": "yarn run ncu && yarn run sort-package-json",
-    "postpublish": "git commit -m \"publish new version\" .",
+    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "prepublish:lockfile": "npx sync-lockfile .",
+    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
+    "postpublish_": "git commit -m \"chore(release): publish\" .",
+    "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx sort-package-json ./package.json",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "tsc:default": "tsc -p tsconfig.json",
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "epub-iconv": "^1.0.9",
-    "novel-segment-cli": "^1.1.0"
+    "@lazy-cjk/zh-convert": "^1.0.15",
+    "epub-iconv": "^1.0.10",
+    "novel-segment-cli": "^1.1.27"
   },
   "devDependencies": {}
 }

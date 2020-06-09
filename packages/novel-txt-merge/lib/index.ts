@@ -1,18 +1,6 @@
 import { ITxtMergeOptions } from '../index';
 import { EnumTxtStyle, presetTxtStyle, TPL_EOL, TPL_EOL2 } from './tpl';
-import { Console } from 'debug-color2';
-
-export const console = new Console(null, {
-	enabled: true,
-	inspectOptions: {
-		colors: true,
-	},
-	chalkOptions: {
-		enabled: true,
-	},
-});
-
-console.enabledColor = true;
+import console from 'debug-color2';
 
 export interface ITplData
 {
@@ -29,6 +17,7 @@ export function replaceTpl(tpl: string, data: ITplData)
 		})
 	;
 }
+
 export function makeDefaultTplData(inputOptions?: Partial<ITxtMergeOptions>, opts?: object)
 {
 	inputOptions = {

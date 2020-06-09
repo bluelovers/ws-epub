@@ -2,7 +2,7 @@
  * Created by user on 2018/2/18/018.
  */
 
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 import {
 	create,
 	IOptions,
@@ -21,4 +21,3 @@ export function novelEpub(options: IOptions)
 export { IOptions, getNovelConf, makeFilename, makeOptions, defaultOptions }
 
 export default novelEpub;
-//export default exports;

@@ -1,15 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.builder = exports.Builder = exports.EPUB_TEMPLATES_TPL = exports.EPUB_TEMPLATES_PATH = void 0;
-const zip_1 = require("../../epubtpl-lib/zip");
+const zip_1 = __importStar(require("../../epubtpl-lib/zip"));
 const handlebar_helpers_1 = require("../../epubtpl-lib/handlebar-helpers");
 const ajax_1 = require("../../epubtpl-lib/ajax");
 const postcss_1 = require("../../epubtpl-lib/postcss");
-const path = require("upath2");
+const upath2_1 = __importDefault(require("upath2"));
 const util_1 = require("../../lib/util");
 const config_1 = require("../../config");
-exports.EPUB_TEMPLATES_PATH = path.join(__dirname);
-exports.EPUB_TEMPLATES_TPL = path.join(exports.EPUB_TEMPLATES_PATH, 'tpl');
+exports.EPUB_TEMPLATES_PATH = upath2_1.default.join(__dirname);
+exports.EPUB_TEMPLATES_TPL = upath2_1.default.join(exports.EPUB_TEMPLATES_PATH, 'tpl');
 var Builder;
 (function (Builder) {
     Builder.templates = {
@@ -32,7 +54,7 @@ var Builder;
         contents: 'EPUB/contents.xhtml',
     };
     for (let i in Builder.templates) {
-        Builder.templates[i] = `\{\{import \'${path.join(exports.EPUB_TEMPLATES_TPL, Builder.templates[i])}'\}\}`;
+        Builder.templates[i] = `\{\{import \'${upath2_1.default.join(exports.EPUB_TEMPLATES_TPL, Builder.templates[i])}'\}\}`;
     }
     let playOrder = 0;
     Builder.staticFiles = {
@@ -40,7 +62,7 @@ var Builder;
         'META-INF/container.xml': 'META-INF/container.xml',
     };
     for (let i in Builder.staticFiles) {
-        Builder.staticFiles[i] = path.join(exports.EPUB_TEMPLATES_TPL, Builder.staticFiles[i]);
+        Builder.staticFiles[i] = upath2_1.default.join(exports.EPUB_TEMPLATES_TPL, Builder.staticFiles[i]);
     }
     function make(epub, options) {
         //let epubConfig = epub.epubConfig;
@@ -175,7 +197,7 @@ var Builder;
         if (epub.epubConfig.vertical === config_1.EnumEpubConfigVertical.VERTICAL_RL) {
             try {
                 const fs = require('fs');
-                let data = fs.readFileSync(path.join(__dirname, './tpl/EPUB/css/vertical-rl.css'));
+                let data = fs.readFileSync(upath2_1.default.join(__dirname, './tpl/EPUB/css/vertical-rl.css'));
                 let file = await ajax_1.fetchFile({
                     data,
                 });

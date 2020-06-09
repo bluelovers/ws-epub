@@ -1,13 +1,35 @@
 #!/usr/bin/env node
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const update_notifier_1 = require("@yarn-tool/update-notifier");
-const yargs = require("yargs");
+const update_notifier_1 = __importDefault(require("@yarn-tool/update-notifier"));
+const yargs_1 = __importDefault(require("yargs"));
 const glob_1 = require("../lib/glob");
-const path = require("path");
-const pkg = require("../package.json");
-update_notifier_1.default(path.join(__dirname, '..'));
-let argv = yargs
+const path_1 = __importDefault(require("path"));
+const pkg = __importStar(require("../package.json"));
+update_notifier_1.default(path_1.default.join(__dirname, '..'));
+let argv = yargs_1.default
     .scriptName(pkg.name)
     .example(`epub-iconv --iconv cn *.epub`, ``)
     .option('cwd', {
@@ -46,4 +68,4 @@ let argv = yargs
     return glob_1.handleGlob(pattern, options);
 })
     .argv;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZXB1Yi1pY29udi5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImVwdWItaWNvbnYudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBRUEsZ0VBQXdEO0FBQ3hELCtCQUFnQztBQUNoQyxzQ0FBZ0U7QUFDaEUsNkJBQTZCO0FBRTdCLHVDQUF1QztBQUV2Qyx5QkFBYyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsU0FBUyxFQUFFLElBQUksQ0FBQyxDQUFDLENBQUM7QUFFM0MsSUFBSSxJQUFJLEdBQUcsS0FBSztLQUNkLFVBQVUsQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDO0tBQ3BCLE9BQU8sQ0FBQyw4QkFBOEIsRUFBRSxFQUFFLENBQUM7S0FDM0MsTUFBTSxDQUFDLEtBQUssRUFBRTtJQUNkLFNBQVMsRUFBRSxJQUFJO0lBQ2YsSUFBSSxFQUFFLGFBQWE7SUFDbkIsT0FBTyxFQUFFLE9BQU8sQ0FBQyxHQUFHLEVBQUU7Q0FDdEIsQ0FBQztLQUNELE1BQU0sQ0FBQyxRQUFRLEVBQUU7SUFDakIsSUFBSSxFQUFFLFlBQVk7SUFDbEIsV0FBVyxFQUFFLElBQUk7SUFDakIsTUFBTSxFQUFFLElBQUk7Q0FDWixDQUFDO0tBQ0QsTUFBTSxDQUFDLE9BQU8sRUFBRTtJQUNoQixJQUFJLEVBQUUsYUFBYTtJQUNuQixXQUFXLEVBQUUsSUFBSTtJQUNqQixNQUFNLEVBQUUsSUFBSTtDQUNaLENBQUM7S0FDRCxNQUFNLENBQUMsU0FBUyxFQUFFO0lBQ2xCLElBQUksRUFBRSxRQUFRO0lBQ2QsT0FBTyxFQUFFLElBQUk7SUFDYixPQUFPLEVBQUUsSUFBSTtDQUNiLENBQUM7S0FDRCxjQUFjLENBQUMsSUFBSSxDQUFDO0tBQ3BCLE9BQU8sRUFBRTtLQUNULE9BQU8sQ0FBQyxJQUFJLEVBQUUsbUJBQW1CLEVBQUUsQ0FBQyxLQUFLLEVBQUUsRUFBRSxDQUFDLEtBQUssRUFBRyxVQUFVLElBQUk7SUFFcEUsSUFBSSxPQUFPLEdBQTBCO1FBQ3BDLEdBQUcsRUFBRSxJQUFJLENBQUMsR0FBRztRQUNiLE1BQU0sRUFBRSxJQUFJLENBQUMsTUFBTTtRQUNuQixLQUFLLEVBQUUsSUFBSSxDQUFDLEtBQXVDO1FBQ25ELE9BQU8sRUFBRSxJQUFJLENBQUMsT0FBTztLQUNyQixDQUFDO0lBRUYsSUFBSSxPQUFPLEdBQWEsSUFBSSxDQUFDLENBQUMsQ0FBQztJQUUvQixJQUFJLENBQUMsT0FBTyxDQUFDLE1BQU0sRUFDbkI7UUFDQyxPQUFPLEdBQUcsQ0FBQyxRQUFRLENBQUMsQ0FBQztLQUNyQjtJQUVELE9BQU8saUJBQVUsQ0FBQyxPQUFPLEVBQUUsT0FBTyxDQUFDLENBQUM7QUFDckMsQ0FBQyxDQUFDO0tBQ0QsSUFBSSxDQUNMIiwic291cmNlc0NvbnRlbnQiOlsiIyEvdXNyL2Jpbi9lbnYgbm9kZVxuXG5pbXBvcnQgdXBkYXRlTm90aWZpZXIgZnJvbSAnQHlhcm4tdG9vbC91cGRhdGUtbm90aWZpZXInO1xuaW1wb3J0IHlhcmdzID0gcmVxdWlyZSgneWFyZ3MnKTtcbmltcG9ydCB7IGhhbmRsZUdsb2IsIElFcHViSWNvbnZHbG9iT3B0aW9ucyB9IGZyb20gJy4uL2xpYi9nbG9iJztcbmltcG9ydCAqIGFzIHBhdGggZnJvbSAncGF0aCc7XG5pbXBvcnQgeyBjb25zb2xlIH0gZnJvbSAnZGVidWctY29sb3IyJztcbmltcG9ydCAqIGFzIHBrZyBmcm9tICcuLi9wYWNrYWdlLmpzb24nO1xuXG51cGRhdGVOb3RpZmllcihwYXRoLmpvaW4oX19kaXJuYW1lLCAnLi4nKSk7XG5cbmxldCBhcmd2ID0geWFyZ3Ncblx0LnNjcmlwdE5hbWUocGtnLm5hbWUpXG5cdC5leGFtcGxlKGBlcHViLWljb252IC0taWNvbnYgY24gKi5lcHViYCwgYGApXG5cdC5vcHRpb24oJ2N3ZCcsIHtcblx0XHRub3JtYWxpemU6IHRydWUsXG5cdFx0ZGVzYzogYOaQnOWwi+aqlOahiOaZgueahOWfuua6luizh+aWmeWkvmAsXG5cdFx0ZGVmYXVsdDogcHJvY2Vzcy5jd2QoKSxcblx0fSlcblx0Lm9wdGlvbignb3V0cHV0Jywge1xuXHRcdGRlc2M6IGDomZXnkIblvoznmoTmqpTmoYjovLjlh7rot6/lvpFgLFxuXHRcdHJlcXVpcmVzQXJnOiB0cnVlLFxuXHRcdHN0cmluZzogdHJ1ZSxcblx0fSlcblx0Lm9wdGlvbignaWNvbnYnLCB7XG5cdFx0ZGVzYzogYGNuIOi9ieewoSB0dyDovYnnuYFgLFxuXHRcdHJlcXVpcmVzQXJnOiB0cnVlLFxuXHRcdHN0cmluZzogdHJ1ZSxcblx0fSlcblx0Lm9wdGlvbignc2hvd0xvZycsIHtcblx0XHRkZXNjOiBg5piv5ZCm6Ly45Ye66KiK5oGvYCxcblx0XHRib29sZWFuOiB0cnVlLFxuXHRcdGRlZmF1bHQ6IHRydWUsXG5cdH0pXG5cdC5zaG93SGVscE9uRmFpbCh0cnVlKVxuXHQudmVyc2lvbigpXG5cdC5jb21tYW5kKCckMCcsIGBlcHViLWljb252ICouZXB1YmAsICh5YXJncykgPT4geWFyZ3MsICBmdW5jdGlvbiAoYXJndilcblx0e1xuXHRcdGxldCBvcHRpb25zOiBJRXB1Ykljb252R2xvYk9wdGlvbnMgPSB7XG5cdFx0XHRjd2Q6IGFyZ3YuY3dkLFxuXHRcdFx0b3V0cHV0OiBhcmd2Lm91dHB1dCxcblx0XHRcdGljb252OiBhcmd2Lmljb252IGFzIElFcHViSWNvbnZHbG9iT3B0aW9uc1tcImljb252XCJdLFxuXHRcdFx0c2hvd0xvZzogYXJndi5zaG93TG9nLFxuXHRcdH07XG5cblx0XHRsZXQgcGF0dGVybjogc3RyaW5nW10gPSBhcmd2Ll87XG5cblx0XHRpZiAoIXBhdHRlcm4ubGVuZ3RoKVxuXHRcdHtcblx0XHRcdHBhdHRlcm4gPSBbJyouZXB1YiddO1xuXHRcdH1cblxuXHRcdHJldHVybiBoYW5kbGVHbG9iKHBhdHRlcm4sIG9wdGlvbnMpO1xuXHR9KVxuXHQuYXJndlxuO1xuIl19
+//# sourceMappingURL=epub-iconv.js.map

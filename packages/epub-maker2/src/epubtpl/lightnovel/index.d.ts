@@ -1,5 +1,4 @@
 /// <reference types="bluebird" />
-/// <reference types="jszip" />
 import { JSZip } from '../../epubtpl-lib/zip';
 import { IBuilder } from '../../var';
 import { EpubMaker } from '../../index';

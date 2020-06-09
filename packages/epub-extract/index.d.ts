@@ -2,7 +2,7 @@
  * Created by user on 2018/2/7/007.
  */
 /// <reference types="cheerio" />
-import * as Promise from 'bluebird';
+import Promise from 'bluebird';
 import { fixText } from '@node-novel/epub-util/lib/extract/text';
 export declare const IDKEY = "epub";
 export interface IOptions {

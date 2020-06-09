@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import { globby } from 'node-novel-globby';
-import * as yargs from 'yargs';
-import * as path from 'path';
+import yargs from 'yargs';
+import path from 'path';
 import epubExtract, { IOptions } from '../index';
-import * as Promise from 'bluebird';
+import Promise from 'bluebird';
 
 let cli = yargs
 	.usage("$0 [-o dir] [-i file]")
@@ -113,3 +113,4 @@ let outputDir: string = cli.argv.output as string;
 		console.log('[DONE]\n', ls);
 	})
 ;
+

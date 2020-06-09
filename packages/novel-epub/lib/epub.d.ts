@@ -4,7 +4,7 @@ import { EnumEpubTypeName } from 'epub-maker2/src/epub-types';
 import { INovelEpubReturnInfo } from './txt2epub3';
 import { IInternalProcessEpubOptions, IInternalProcessVolumeOptions, IResolvableBluebird } from './types';
 import { handleMarkdown } from './md';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 export declare const SymCache: unique symbol;
 export declare const enum EnumPrefixIDType {
     VOLUME = "volume",

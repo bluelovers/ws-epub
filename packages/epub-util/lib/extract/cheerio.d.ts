@@ -1,4 +1,4 @@
-import cheerio = require('cheerio');
+import cheerio from 'cheerio';
 export declare type ICheerio = ReturnType<typeof cheerio>;
 export declare type ICheerioStatic = ReturnType<typeof cheerio.load>;
 export declare type ICheerioElement = Parameters<typeof cheerio.contains>["0"];

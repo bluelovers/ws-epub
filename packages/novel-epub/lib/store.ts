@@ -1,5 +1,5 @@
 import { EpubMaker, hashSum, slugify } from 'epub-maker2';
-import * as path from 'path';
+import path from 'path';
 import LazyURL from 'lazy-url';
 import { pathExistsSync, realpathSync } from 'fs-extra';
 import execall from 'execall2';
@@ -9,7 +9,6 @@ import { IOptions } from './txt2epub3';
 import { toHalfWidth } from 'str-util';
 import { IInternalProcessOptions } from './types';
 import { console } from './log';
-import { novelImage } from './html';
 import { ParsedPath } from "path";
 import { allowExtImage, isAllowExtImage } from './ext';
 import { pathAtParent } from './util';

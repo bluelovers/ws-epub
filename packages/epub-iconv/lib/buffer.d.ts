@@ -2,10 +2,10 @@
  * Created by user on 2019/7/31.
  */
 /// <reference types="node" />
-import JSZip = require('jszip');
-import Bluebird = require('bluebird');
+import JSZip from 'jszip';
+import Bluebird from 'bluebird';
 import { ITSResolvable } from 'ts-type';
-import { tw2cn_min } from 'cjk-conv/lib/zh/convert/min';
+import { tw2cn_min } from '@lazy-cjk/zh-convert/min';
 export declare function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>): Bluebird<JSZip>;
 declare function cn2tw_min(input: string): string;
 export declare type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;

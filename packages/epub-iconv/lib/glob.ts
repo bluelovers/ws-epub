@@ -6,11 +6,11 @@ import FastGlob from '@bluelovers/fast-glob';
 import { ITSResolvable, ITSValueOrArray } from 'ts-type';
 import { IEpubIconvOptions } from './buffer';
 import { handleZipFile } from './fs';
-import * as path from 'upath2';
+import path from 'upath2';
 import { outputFile, pathExistsSync } from 'fs-extra';
 import { console } from 'debug-color2';
 import { handleOptions, handlePattern } from './options';
-import Bluebird = require('bluebird');
+import Bluebird from 'bluebird';
 
 export interface IEpubIconvGlobOptions extends IEpubIconvOptions
 {
@@ -114,3 +114,4 @@ export function handleGlob(pattern: ITSResolvable<ITSValueOrArray<string>>, opti
 		})
 	;
 }
+
