@@ -48,16 +48,16 @@
     "sort-package-json": "npx sort-package-json ./package.json"
   },
   "dependencies": {
-    "@lazy-glob/sort-tree": "^1.0.4",
-    "@node-novel/normalize": "^1.0.17",
+    "@lazy-glob/sort-tree": "^1.0.5",
+    "@node-novel/normalize": "^1.0.19",
     "array-hyper-unique": "^1.1.2",
     "bluebird": "^3.7.2",
     "crlf-normalize": "^1.0.3",
     "debug-color2": "^1.1.7",
     "fs-iconv": "^3.0.7",
     "moment": "^2.26.0",
-    "node-novel-globby": "^2.0.17",
-    "node-novel-info": "^3.0.3",
+    "node-novel-globby": "^2.0.18",
+    "node-novel-info": "^3.0.5",
     "uni-string": "^1.1.8",
     "update-notifier": "^4.1.0",
     "yargs": "^15.3.1"

@@ -77,8 +77,8 @@
     "epub2": "^2.0.1",
     "fs-iconv": "^3.0.7",
     "html-minifier": "^4.0.0",
-    "node-novel-globby": "^2.0.17",
-    "node-novel-info": "^3.0.3",
+    "node-novel-globby": "^2.0.18",
+    "node-novel-info": "^3.0.5",
     "yargs": "^15.3.1",
     "zero-width": "^1.0.11"
   }

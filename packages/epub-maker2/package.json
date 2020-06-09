@@ -81,7 +81,7 @@
     "jszip": "^3.4.0",
     "jszip-fixed-date": "^1.0.1",
     "moment": "^2.26.0",
-    "node-novel-info": "^3.0.3",
+    "node-novel-info": "^3.0.5",
     "postcss": "^7.0.32",
     "postcss-epub": "^3.0.1",
     "postcss-scss": "^2.1.1",

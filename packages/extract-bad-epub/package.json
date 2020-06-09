@@ -80,7 +80,7 @@
     "jsdom-extra": "^3.0.6",
     "jszip": "^3.4.0",
     "lodash": "^4.17.15",
-    "node-novel-info": "^3.0.3",
+    "node-novel-info": "^3.0.5",
     "upath2": "^3.0.5"
   },
   "publishConfig": {
