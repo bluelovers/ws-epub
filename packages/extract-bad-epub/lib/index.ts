@@ -183,9 +183,15 @@ export function files(files: JSZip.JSZipObject[], cache: ICache = {})
 
 			let innerText = fixText($(document.body).text());
 
+			let name = file.name;
+
+			name = name.replace(/\d+/g, (s) => {
+				return padNum(s, 4);
+			});
+
 			return <IFile>{
 				index,
-				name: file.name,
+				name,
 				isDir: file.dir,
 				title,
 				innerText,
@@ -253,9 +259,9 @@ export function load(file: string, cache: ICache = {})
 	return Bluebird.resolve(readFile(file)).then(buf => buffer(buf, cache))
 }
 
-export function padNum(n: string | number)
+export function padNum(n: string | number, size: number = 3)
 {
-	return n.toString().padStart(3, '0');
+	return n.toString().padStart(size, '0');
 }
 
 export function saveTxt(options: IReturnData & {

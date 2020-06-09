@@ -7,8 +7,8 @@
   ],
   "scripts": {
     "lerna:publish": "lerna publish",
-    "ncu": "npx npm-check-updates -u",
-    "sort-package-json": "npx \"sort-package-json\"",
+    "ncu": "npx yarn-tool ncu -u && npx yarn-tool ws exec yarn-tool ncu -- -u",
+    "sort-package-json": "npx yarn-tool sort && npx yarn-tool ws exec yarn-tool sort",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

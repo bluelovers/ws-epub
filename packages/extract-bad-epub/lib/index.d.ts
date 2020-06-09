@@ -40,7 +40,7 @@ export declare function saveAttach(options: IReturnData & {
     cwd: string;
 }): Bluebird<void[]>;
 export declare function load(file: string, cache?: ICache): Bluebird<IReturnData>;
-export declare function padNum(n: string | number): string;
+export declare function padNum(n: string | number, size?: number): string;
 export declare function saveTxt(options: IReturnData & {
     cwd: string;
 }): Bluebird<string[]>;
