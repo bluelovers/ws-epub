@@ -1,6 +1,6 @@
 {
   "name": "extract-bad-epub",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "從各種錯誤不合規範的 epub 內暴力提取 txt",
   "keywords": [
     "Google Play Books",
