@@ -69,8 +69,6 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 		options.outputDir = path.join(cwd, options.outputDir);
 	}
 
-	//console.log(srcFile, options.outputDir);
-
 	const PATH_NOVEL_MAIN = options.outputDir;
 
 	// @ts-ignore
@@ -121,7 +119,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 						skip = true;
 					}
 				}
-				else if (epub.ncx_depth > 1)
+				else if (epub.ncx_depth >= 0)
 				{
 					if (!elem.level)
 					{
