@@ -34,9 +34,9 @@
   "dependencies": {
     "@types/cheerio": "*",
     "@types/jquery": "*",
-    "crlf-normalize": "^1.0.3",
+    "crlf-normalize": "^1.0.5",
     "html-minifier": "^4.0.0",
-    "zero-width": "^1.0.11"
+    "zero-width": "^1.0.13"
   },
   "publishConfig": {
     "access": "public"

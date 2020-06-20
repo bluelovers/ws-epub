@@ -4,17 +4,15 @@ import yargs from 'yargs';
 import path from 'path';
 
 import txtMerge from '../index';
-import PACKAGE_JSON = require('../package.json');
-import updateNotifier from 'update-notifier';
 import console from 'debug-color2';
 
 console.enabledColor = true;
 
+import { updateNotifier } from '@yarn-tool/update-notifier';
+
 const CWD = process.cwd();
 
-updateNotifier({
-	pkg: PACKAGE_JSON,
-}).notify();
+updateNotifier(path.join(__dirname, '..'));
 
 let cli = yargs
 	.default({

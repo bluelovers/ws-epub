@@ -75,13 +75,13 @@
     "@node-novel/epub-util": "^1.0.3",
     "bluebird": "^3.7.2",
     "execall2": "^1.1.4",
-    "fs-iconv": "^3.0.7",
+    "fs-iconv": "^3.0.9",
     "html-minifier": "^4.0.0",
     "jsdom-extra": "^3.0.6",
-    "jszip": "^3.4.0",
+    "jszip": "^3.5.0",
     "lodash": "^4.17.15",
-    "node-novel-info": "^3.0.5",
-    "upath2": "^3.0.5"
+    "node-novel-info": "^3.0.7",
+    "upath2": "^3.0.6"
   },
   "publishConfig": {
     "access": "public"
