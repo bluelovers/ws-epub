@@ -57,8 +57,8 @@
     "sort-package-json": "npx yarn-tool sort"
   },
   "dependencies": {
-    "adm-zip": "^0.4.14",
-    "array-hyper-unique": "^1.1.8",
+    "adm-zip": "^0.4.16",
+    "array-hyper-unique": "^1.1.9",
     "bluebird": "^3.7.2",
     "crlf-normalize": "^1.0.5",
     "xml2js": "^0.4.23"

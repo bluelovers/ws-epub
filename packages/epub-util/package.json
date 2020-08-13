@@ -36,7 +36,7 @@
     "@types/jquery": "*",
     "crlf-normalize": "^1.0.5",
     "html-minifier": "^4.0.0",
-    "zero-width": "^1.0.13"
+    "zero-width": "^1.0.15"
   },
   "publishConfig": {
     "access": "public"
