@@ -1,6 +1,6 @@
 {
   "name": "jszip-fixed-date",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "allow create same zip when context is same by jszip",
   "keywords": [
     "deflate",

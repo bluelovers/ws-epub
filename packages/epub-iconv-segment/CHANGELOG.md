@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/bluelovers/ws-epub/compare/epub-iconv-segment@1.0.2...epub-iconv-segment@1.0.3) (2020-08-13)
+
+
+### ♻️　Chores
+
+* update deps ([fdf8f1d](https://github.com/bluelovers/ws-epub/commit/fdf8f1d5eefac9e040f8d4fc34fa545e8e7b52e4))
+
+
+
+
+
 ## [1.0.2](https://github.com/bluelovers/ws-epub/compare/epub-iconv-segment@1.0.1...epub-iconv-segment@1.0.2) (2020-06-20)
 
 
