@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.9](https://github.com/bluelovers/ws-epub/compare/extract-bad-epub@1.0.8...extract-bad-epub@1.0.9) (2021-02-12)
+
+
+### ♻️　Chores
+
+* update deps ([b4738bb](https://github.com/bluelovers/ws-epub/commit/b4738bb61982286d8770cfae267717b9cac58e4f))
+
+
+
+
+
 ## [1.0.8](https://github.com/bluelovers/ws-epub/compare/extract-bad-epub@1.0.7...extract-bad-epub@1.0.8) (2020-08-13)
 
 

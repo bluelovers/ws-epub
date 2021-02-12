@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/bluelovers/ws-epub/compare/epub-maker2@3.0.4...epub-maker2@3.0.5) (2021-02-12)
+
+
+### ♻️　Chores
+
+* update deps ([b4738bb](https://github.com/bluelovers/ws-epub/commit/b4738bb61982286d8770cfae267717b9cac58e4f))
+
+
+
+
+
 ## [3.0.4](https://github.com/bluelovers/ws-epub/compare/epub-maker2@3.0.3...epub-maker2@3.0.4) (2020-08-13)
 
 
