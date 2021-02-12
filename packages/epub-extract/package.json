@@ -73,13 +73,13 @@
   },
   "dependencies": {
     "@node-novel/epub-util": "^1.0.5",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.5",
     "epub2": "^2.0.3",
-    "fs-iconv": "^3.0.11",
+    "fs-iconv": "^3.0.12",
     "html-minifier": "^4.0.0",
     "node-novel-globby": "^2.0.18",
-    "node-novel-info": "^3.0.11",
-    "yargs": "^15.4.1",
+    "node-novel-info": "^3.0.13",
+    "yargs": "^16.2.0",
     "zero-width": "^1.0.15"
   }
 }

@@ -49,18 +49,18 @@
   },
   "dependencies": {
     "@lazy-glob/sort-tree": "^1.0.5",
-    "@node-novel/normalize": "^1.0.25",
-    "@yarn-tool/update-notifier": "^1.0.14",
+    "@node-novel/normalize": "^1.0.27",
+    "@yarn-tool/update-notifier": "^1.0.17",
     "array-hyper-unique": "^1.1.9",
     "bluebird": "^3.7.2",
     "crlf-normalize": "^1.0.5",
     "debug-color2": "^1.2.3",
-    "fs-iconv": "^3.0.11",
-    "moment": "^2.27.0",
+    "fs-iconv": "^3.0.12",
+    "moment": "^2.29.1",
     "node-novel-globby": "^2.0.18",
-    "node-novel-info": "^3.0.11",
+    "node-novel-info": "^3.0.13",
     "uni-string": "^1.1.10",
-    "upath2": "^3.1.6",
-    "yargs": "^15.4.1"
+    "upath2": "^3.1.7",
+    "yargs": "^16.2.0"
   }
 }

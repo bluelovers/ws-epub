@@ -101,8 +101,8 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@lazy-cjk/zh-convert": "^1.0.31",
+    "@lazy-cjk/zh-convert": "^1.0.34",
     "epub-iconv": "^1.0.13",
-    "novel-segment-cli": "^1.1.69"
+    "novel-segment-cli": "^1.1.75"
   }
 }
