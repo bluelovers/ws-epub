@@ -14,7 +14,7 @@ describe(`describe`, () =>
 		})
 		.forEach(srcFile => {
 
-			test(relative(__dirname, srcFile), async (done) =>
+			test(relative(__dirname, srcFile), async () =>
 			{
 				let actual = await epubExtract(srcFile, {
 					cwd: __dirname,
@@ -25,7 +25,6 @@ describe(`describe`, () =>
 				expect(actual).toBeTruthy();
 				expect(relative(__dirname, actual)).toMatchSnapshot();
 
-				done();
 			});
 
 		})

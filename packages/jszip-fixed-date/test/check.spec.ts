@@ -3,7 +3,7 @@ import Bluebird from 'bluebird';
 import JSZip from 'jszip';
 import crypto from 'crypto';
 
-test(`check`, async (done) =>
+test(`check`, async () =>
 {
 
 	let ret = await Bluebird.props({
@@ -50,7 +50,6 @@ test(`check`, async (done) =>
 	expect(ret.zip1.md5).toMatchSnapshot();
 	expect(ret.zip3.md5).toMatchSnapshot();
 
-	done();
 });
 
 function createZip()
