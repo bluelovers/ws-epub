@@ -92,6 +92,7 @@
     "test": "echo \"Error: no test specified\"",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
@@ -101,8 +102,9 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@lazy-cjk/zh-convert": "^1.0.34",
+    "@lazy-cjk/zh-convert": "^1.0.35",
     "epub-iconv": "^1.0.14",
-    "novel-segment-cli": "^1.1.75"
+    "novel-segment-cli": "^1.1.79",
+    "tslib": "^2.3.0"
   }
 }

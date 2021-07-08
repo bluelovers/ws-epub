@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const node_novel_globby_1 = require("node-novel-globby");
-const yargs_1 = __importDefault(require("yargs"));
-const path_1 = __importDefault(require("path"));
-const index_1 = __importDefault(require("../index"));
-const bluebird_1 = __importDefault(require("bluebird"));
+const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
+const path_1 = (0, tslib_1.__importDefault)(require("path"));
+const index_1 = (0, tslib_1.__importDefault)(require("../index"));
+const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
 let cli = yargs_1.default
     .usage("$0 [-o dir] [-i file]")
     .example('$0 -o epub name.epub', 'extract name.epub to epub dir')
@@ -22,7 +20,9 @@ let cli = yargs_1.default
     .nargs('i', 1)
     .describe('i', 'input file path');
 //console.log(cli.argv);
+// @ts-ignore
 let srcFile = (cli.argv.input || cli.argv._[0]);
+// @ts-ignore
 let outputDir = cli.argv.output;
 (async () => {
     let cwd = process.cwd();
@@ -37,22 +37,24 @@ let outputDir = cli.argv.output;
     let options = {
         cwd,
         outputDir,
+        // @ts-ignore
         log: cli.argv.v,
     };
     if (!srcFile) {
-        ls = await node_novel_globby_1.globby([
+        ls = await (0, node_novel_globby_1.globby)([
             '*.epub',
         ], {
             cwd,
             absolute: true,
         });
+        // @ts-ignore
         if (cli.argv.all === true) {
             if (!ls.length) {
                 return bluebird_1.default.reject(`can't found any epub file in "${cwd}"`);
             }
             return bluebird_1.default
                 .map(ls, function (srcFile) {
-                return index_1.default(srcFile, options);
+                return (0, index_1.default)(srcFile, options);
             })
                 .then(function (ls) {
                 return ls.join("\n");
@@ -67,7 +69,7 @@ let outputDir = cli.argv.output;
         console.log(['current epub list:'].concat(ls || []).join("\n- "));
     }
     else {
-        return await index_1.default(srcFile, options);
+        return await (0, index_1.default)(srcFile, options);
     }
 })()
     .catch(function (e) {

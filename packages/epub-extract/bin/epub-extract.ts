@@ -26,7 +26,9 @@ let cli = yargs
 
 //console.log(cli.argv);
 
+// @ts-ignore
 let srcFile: string = (cli.argv.input || cli.argv._[0]) as string;
+// @ts-ignore
 let outputDir: string = cli.argv.output as string;
 
 (async () =>
@@ -48,6 +50,7 @@ let outputDir: string = cli.argv.output as string;
 	let options: IOptions = {
 		cwd,
 		outputDir,
+		// @ts-ignore
 		log: cli.argv.v as boolean,
 	};
 
@@ -60,6 +63,7 @@ let outputDir: string = cli.argv.output as string;
 			absolute: true,
 		});
 
+		// @ts-ignore
 		if (cli.argv.all === true)
 		{
 			if (!ls.length)

@@ -22,6 +22,7 @@ import * as libEpubtypes from './epub-types';
 import JSZip from 'jszip';
 import fixedJSZipDate from 'jszip-fixed-date';
 import Bluebird from 'bluebird';
+import { createJSZipGeneratorOptions } from '@node-novel/epub-util/lib/const';
 
 export { shortid, hashSum }
 
@@ -460,19 +461,11 @@ export class EpubMaker
 		// @ts-ignore
 		return this.build(options).then(async function (epubZip)
 		{
-			let generateOptions = Object.assign({
-				type: 'nodebuffer',
-				mimeType: 'application/epub+zip',
-				compression: 'DEFLATE',
-				compressionOptions: {
-					level: 9
-				},
-			}, self.epubConfig.options.generateOptions, options);
+			let generateOptions = Object.assign(createJSZipGeneratorOptions(), self.epubConfig.options.generateOptions, options);
 
 			console.info('generating epub for: ' + self.epubConfig.title);
-			let content = await epubZip.generateAsync(generateOptions);
 
-			return content;
+			return epubZip.generateAsync(generateOptions);
 		});
 	}
 }

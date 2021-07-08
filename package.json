@@ -16,35 +16,39 @@
     "sort-package-json": "npx yarn-tool sort && npx yarn-tool ws exec yarn-tool sort"
   },
   "resolutions": {},
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
   "devDependencies": {
-    "@bluelovers/tsconfig": "^1.0.20",
+    "@bluelovers/tsconfig": "^1.0.24",
     "@types/autoprefixer": "^9.7.2",
-    "@types/bluebird": "^3.5.33",
-    "@types/fs-extra": "^9.0.7",
-    "@types/he": "^1.1.1",
-    "@types/html-minifier": "^4.0.0",
-    "@types/imagemin": "^7.0.0",
-    "@types/imagemin-mozjpeg": "^8.0.0",
-    "@types/imagemin-optipng": "^5.2.0",
+    "@types/bluebird": "^3.5.36",
+    "@types/fs-extra": "^9.0.12",
+    "@types/he": "^1.1.2",
+    "@types/html-minifier": "^4.0.1",
+    "@types/imagemin": "^7.0.1",
+    "@types/imagemin-mozjpeg": "^8.0.1",
+    "@types/imagemin-optipng": "^5.2.1",
     "@types/imagemin-pngquant": "^7.0.0",
     "@types/imagemin-webp": "^5.1.1",
     "@types/is-relative": "^1.0.0",
-    "@types/jest": "^26.0.20",
-    "@types/js-beautify": "^1.13.1",
+    "@types/jest": "^26.0.24",
+    "@types/js-beautify": "^1.13.2",
     "@types/jszip": "^3.4.1",
-    "@types/lodash": "^4.14.168",
-    "@types/markdown-it": "^12.0.1",
-    "@types/micromatch": "^4.0.1",
-    "@types/node": "^14.14.26",
+    "@types/lodash": "^4.14.171",
+    "@types/markdown-it": "^12.0.3",
+    "@types/markdown-it-emoji": "^2.0.1",
+    "@types/micromatch": "^4.0.2",
+    "@types/node": "^16.0.1",
     "@types/shortid": "^0.0.29",
-    "@types/uuid": "^8.3.0",
-    "@types/xml2js": "^0.4.8",
-    "@types/yargs": "^16.0.0",
-    "jest": "^26.6.3",
-    "novel-txt-merge": "^1.0.28",
-    "ts-jest": "^26.5.1"
+    "@types/uuid": "^8.3.1",
+    "@types/xml2js": "^0.4.9",
+    "@types/yargs": "^17.0.2",
+    "jest": "^27.0.6",
+    "novel-txt-merge": "^1.0.29",
+    "ts-jest": "^27.0.3"
   },
   "peerDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^4.0.0"
   }
 }

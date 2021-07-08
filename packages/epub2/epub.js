@@ -1,8 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-const epub_1 = __importDefault(require("./lib/epub"));
+const tslib_1 = require("tslib");
+const epub_1 = (0, tslib_1.__importDefault)(require("./lib/epub"));
 module.exports = epub_1.default;
 /*
 // @ts-ignore

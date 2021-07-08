@@ -23,6 +23,7 @@
     "test": "echo \"Error: no test specified\"",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
@@ -34,9 +35,10 @@
   "dependencies": {
     "@types/cheerio": "*",
     "@types/jquery": "*",
-    "crlf-normalize": "^1.0.5",
+    "crlf-normalize": "^1.0.6",
     "html-minifier": "^4.0.0",
-    "zero-width": "^1.0.15"
+    "tslib": "^2.3.0",
+    "zero-width": "^1.0.16"
   },
   "publishConfig": {
     "access": "public"

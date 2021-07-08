@@ -27,8 +27,8 @@
     "test": "jest",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
-    "prepublishOnly": "yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
     "ncu": "npx yarn-tool ncu -u",
     "sort-package-json": "npx sort-package-json ./package.json",
@@ -36,6 +36,7 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@types/jszip": "*"
+    "@types/jszip": "*",
+    "tslib": "^2.3.0"
   }
 }

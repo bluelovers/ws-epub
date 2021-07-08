@@ -50,6 +50,7 @@
     "test": "echo \"Error: no test specified\"",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
@@ -57,10 +58,11 @@
     "sort-package-json": "npx yarn-tool sort"
   },
   "dependencies": {
-    "adm-zip": "^0.5.2",
+    "adm-zip": "^0.5.5",
     "array-hyper-unique": "^1.1.9",
     "bluebird": "^3.7.2",
-    "crlf-normalize": "^1.0.5",
+    "crlf-normalize": "^1.0.6",
+    "tslib": "^2.3.0",
     "xml2js": "^0.4.23"
   },
   "engine": [

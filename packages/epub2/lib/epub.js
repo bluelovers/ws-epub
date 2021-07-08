@@ -2,17 +2,15 @@
 /**
  * Created by user on 2020/6/10.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EPub = void 0;
+const tslib_1 = require("tslib");
 const events_1 = require("events");
 const zipfile_1 = require("../zipfile");
-const xml2js_1 = __importDefault(require("xml2js"));
+const xml2js_1 = (0, tslib_1.__importDefault)(require("xml2js"));
 const array_hyper_unique_1 = require("array-hyper-unique");
-const path_1 = __importDefault(require("path"));
-const url_1 = __importDefault(require("url"));
+const path_1 = (0, tslib_1.__importDefault)(require("path"));
+const url_1 = (0, tslib_1.__importDefault)(require("url"));
 const crlf_normalize_1 = require("crlf-normalize");
 const types_1 = require("./types");
 /**
@@ -390,7 +388,7 @@ class EPub extends events_1.EventEmitter {
                             this.metadata['contribute'].push(n);
                             this.metadata['author_link_map'][n] = (t[n] || '').toString().trim();
                         }
-                        this.metadata['contribute'] = array_hyper_unique_1.array_unique(this.metadata['contribute']);
+                        this.metadata['contribute'] = (0, array_hyper_unique_1.array_unique)(this.metadata['contribute']);
                     }
                     break;
                 default:
@@ -730,7 +728,7 @@ class EPub extends events_1.EventEmitter {
                     callback(new Error(`Reading archive failed "${chapterId}", ${this.manifest[chapterId].href}`));
                     return;
                 }
-                callback(null, crlf_normalize_1.crlf(data.toString("utf-8")));
+                callback(null, (0, crlf_normalize_1.crlf)(data.toString("utf-8")));
             }).bind(this));
         }
         else {

@@ -1,29 +1,8 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpubMaker = exports.slugifyWithFallback = exports.slugify = exports.hashSum = exports.shortid = exports.EnumSectionCollectType = exports.EnumEpubTypeName = exports.EnumEpubType = void 0;
-const slugify_1 = __importDefault(require("slugify"));
+const tslib_1 = require("tslib");
+const slugify_1 = (0, tslib_1.__importDefault)(require("slugify"));
 const template_1 = require("./template");
 const fs_iconv_1 = require("fs-iconv");
 const zip_1 = require("./epubtpl-lib/zip");
@@ -34,8 +13,9 @@ Object.defineProperty(exports, "hashSum", { enumerable: true, get: function () {
 Object.defineProperty(exports, "shortid", { enumerable: true, get: function () { return util_1.shortid; } });
 const epub_types_1 = require("./epub-types");
 Object.defineProperty(exports, "EnumEpubType", { enumerable: true, get: function () { return epub_types_1.EnumEpubType; } });
-const libEpubtypes = __importStar(require("./epub-types"));
-const jszip_fixed_date_1 = __importDefault(require("jszip-fixed-date"));
+const libEpubtypes = (0, tslib_1.__importStar)(require("./epub-types"));
+const jszip_fixed_date_1 = (0, tslib_1.__importDefault)(require("jszip-fixed-date"));
+const const_1 = require("@node-novel/epub-util/lib/const");
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
         // @ts-ignore
@@ -45,7 +25,7 @@ function slugify(input, ...argv) {
 exports.slugify = slugify;
 function slugifyWithFallback(input, ...argv) {
     let ret = slugify(input, ...argv);
-    return ret || util_1.hashSum(input);
+    return ret || (0, util_1.hashSum)(input);
 }
 exports.slugifyWithFallback = slugifyWithFallback;
 class EpubMaker {
@@ -69,7 +49,7 @@ class EpubMaker {
     }
     slugifyWithFallback(input, ...argv) {
         let ret = this.slugify(input, ...argv);
-        return ret || util_1.hashSum(input);
+        return ret || (0, util_1.hashSum)(input);
     }
     withTitle(title, title_short) {
         this.epubConfig.title = title;
@@ -132,7 +112,7 @@ class EpubMaker {
         }
     }
     withModificationDate(modificationDate, ...argv) {
-        let data = util_1.moment(modificationDate, ...argv).local();
+        let data = (0, util_1.moment)(modificationDate, ...argv).local();
         this.epubConfig.modification = data;
         this.epubConfig.modificationDate = data.format(EpubMaker.dateFormat);
         this.epubConfig.modificationDateYMD = data.format('YYYY-MM-DD');
@@ -143,7 +123,7 @@ class EpubMaker {
         return this;
     }
     withCover(coverUrl, rightsConfig) {
-        let cover = zip_1.parseFileSetting(coverUrl, this.epubConfig);
+        let cover = (0, zip_1.parseFileSetting)(coverUrl, this.epubConfig);
         if (cover && rightsConfig) {
             cover.rights = rightsConfig;
         }
@@ -160,7 +140,7 @@ class EpubMaker {
         return this;
     }
     withStylesheetUrl(stylesheetUrl, replaceOriginal) {
-        let data = zip_1.parseFileSetting(stylesheetUrl, this.epubConfig);
+        let data = (0, zip_1.parseFileSetting)(stylesheetUrl, this.epubConfig);
         this.epubConfig.stylesheet = Object.assign(this.epubConfig.stylesheet, data, {
             replaceOriginal: replaceOriginal,
         });
@@ -180,7 +160,7 @@ class EpubMaker {
         return this;
     }
     withAdditionalFile(fileUrl, folder, filename) {
-        let _file = zip_1.parseFileSetting(fileUrl, this.epubConfig);
+        let _file = (0, zip_1.parseFileSetting)(fileUrl, this.epubConfig);
         _file = Object.assign({}, _file, {
             folder: folder,
             name: filename
@@ -226,7 +206,7 @@ class EpubMaker {
         return this;
     }
     setPublicationDate(new_data) {
-        let data = util_1.moment(new_data);
+        let data = (0, util_1.moment)(new_data);
         this.epubConfig.publication = data;
         this.epubConfig.publicationDate = data.format(EpubMaker.dateFormat);
         this.epubConfig.publicationDateYMD = data.format('YYYY-MM-DD');
@@ -250,13 +230,13 @@ class EpubMaker {
         }
         else if (!this.epubConfig.slug) {
             // @ts-ignore
-            this.epubConfig.slug = util_1.shortid();
+            this.epubConfig.slug = (0, util_1.shortid)();
             filename = this.epubConfig.slug;
         }
         else {
             filename = this.epubConfig.slug;
         }
-        return fs_iconv_1.trimFilename(filename) + (noExt ? '' : ext);
+        return (0, fs_iconv_1.trimFilename)(filename) + (noExt ? '' : ext);
     }
     vaild() {
         let ret = [];
@@ -269,7 +249,7 @@ class EpubMaker {
         return null;
     }
     withContextDate(epubContextDate) {
-        this.epubConfig.epubContextDate = util_1.moment(epubContextDate).local();
+        this.epubConfig.epubContextDate = (0, util_1.moment)(epubContextDate).local();
         return this;
     }
     build(options) {
@@ -278,7 +258,7 @@ class EpubMaker {
             this.setPublicationDate();
         }
         if (!this.epubConfig.uuid) {
-            this.withUuid(uuid_1.createUUID(this.epubConfig));
+            this.withUuid((0, uuid_1.createUUID)(this.epubConfig));
         }
         this.epubConfig.$auto();
         let chk = this.vaild();
@@ -295,7 +275,7 @@ class EpubMaker {
             .tap((epubZip) => {
             if (this.epubConfig.epubContextDate) {
                 let date = this.epubConfig.epubContextDate.toDate();
-                return jszip_fixed_date_1.default(epubZip, date);
+                return (0, jszip_fixed_date_1.default)(epubZip, date);
             }
         });
     }
@@ -309,17 +289,9 @@ class EpubMaker {
         let self = this;
         // @ts-ignore
         return this.build(options).then(async function (epubZip) {
-            let generateOptions = Object.assign({
-                type: 'nodebuffer',
-                mimeType: 'application/epub+zip',
-                compression: 'DEFLATE',
-                compressionOptions: {
-                    level: 9
-                },
-            }, self.epubConfig.options.generateOptions, options);
+            let generateOptions = Object.assign((0, const_1.createJSZipGeneratorOptions)(), self.epubConfig.options.generateOptions, options);
             console.info('generating epub for: ' + self.epubConfig.title);
-            let content = await epubZip.generateAsync(generateOptions);
-            return content;
+            return epubZip.generateAsync(generateOptions);
         });
     }
 }

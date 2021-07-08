@@ -94,6 +94,7 @@
     "test": "ts-node ./test/demo",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
@@ -104,18 +105,19 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@lazy-cjk/zh-convert": "^1.0.34",
+    "@lazy-cjk/zh-convert": "^1.0.35",
     "@node-novel/epub-util": "^1.0.5",
-    "@yarn-tool/update-notifier": "^1.0.17",
+    "@yarn-tool/update-notifier": "^1.0.18",
     "bluebird": "^3.7.2",
-    "cjk-conv": "^1.2.123",
+    "cjk-conv": "^1.2.126",
     "debug-color2": "^1.2.3",
-    "fs-extra": "^9.1.0",
-    "iconv-jschardet": "^2.0.12",
+    "fs-extra": "^10.0.0",
+    "iconv-jschardet": "^2.0.17",
     "jszip": "^3.6.0",
     "sort-object-keys2": "^2.0.3",
-    "ts-type": "^1.2.34",
-    "upath2": "^3.1.7",
-    "yargs": "^16.2.0"
+    "ts-type": "^1.2.35",
+    "tslib": "^2.3.0",
+    "upath2": "^3.1.9",
+    "yargs": "^17.0.1"
   }
 }
