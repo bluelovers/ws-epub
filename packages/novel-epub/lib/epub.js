@@ -1,29 +1,8 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._withSection = exports.createMarkdownSection = exports.createContributeSection = exports.addContributeSection = exports._hookAfterEpub = exports._hookAfterVolume = exports._handleVolumeImageEach = exports._handleVolumeImage = exports.getAttachMetaByRow = exports.getAttachMeta = exports.makeChapterID = exports.makeVolumeID = exports.makePrefixID = exports.addMarkdown = exports._handleVolume = exports.EnumPrefixIDTitle = exports.EnumPrefixIDType = exports.SymCache = void 0;
-const epub_maker2_1 = __importDefault(require("epub-maker2"));
+const tslib_1 = require("tslib");
+const epub_maker2_1 = (0, tslib_1.__importDefault)(require("epub-maker2"));
 const util_1 = require("./util");
 const util_2 = require("epub-maker2/src/lib/util");
 const crlf_normalize_1 = require("crlf-normalize");
@@ -33,10 +12,10 @@ const html_1 = require("./html");
 const md_1 = require("./md");
 const ext_1 = require("./ext");
 const str_util_1 = require("str-util");
-const bluebird_1 = __importDefault(require("bluebird"));
-const upath2_1 = __importDefault(require("upath2"));
-const fs_iconv_1 = __importDefault(require("fs-iconv"));
-const novelGlobby = __importStar(require("node-novel-globby/g"));
+const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
+const upath2_1 = (0, tslib_1.__importDefault)(require("upath2"));
+const fs_iconv_1 = (0, tslib_1.__importDefault)(require("fs-iconv"));
+const g_1 = require("node-novel-globby/g");
 const log_1 = require("./log");
 exports.SymCache = Symbol('cache');
 var EnumPrefixIDType;
@@ -63,9 +42,9 @@ function _handleVolume(volume, dirname, _data_) {
         if (!volume[exports.SymCache].cover) {
             volume[exports.SymCache].cover = true;
             let file = upath2_1.default.join(dirname, 'README.md');
-            let meta = await util_1.fsLowCheckLevelMdconfAsync(file).catch(e => null);
+            let meta = await (0, util_1.fsLowCheckLevelMdconfAsync)(file).catch(e => null);
             //console.log(file, meta);
-            await bluebird_1.default.resolve(novelGlobby.globby([
+            await bluebird_1.default.resolve((0, g_1.globby)([
                 'cover.*',
             ], {
                 cwd: dirname,
@@ -109,7 +88,7 @@ function _handleVolume(volume, dirname, _data_) {
                     if (meta.novel.preface) {
                         _ok = true;
                         //data.content = crlf(meta.novel.preface);
-                        data.content = util_2.htmlPreface({
+                        data.content = (0, util_2.htmlPreface)({
                             infoPreface: meta.novel.preface,
                         }).infoPrefaceHTML;
                     }
@@ -152,7 +131,7 @@ function addMarkdown(options) {
         const vid = volume.id;
         const { processReturn } = _data_;
         let source = await fs_iconv_1.default.readFile(file);
-        let mdReturn = md_1.handleMarkdown(source, {
+        let mdReturn = (0, md_1.handleMarkdown)(source, {
             ..._data_,
             cwd: dirname,
             vid,
@@ -182,7 +161,7 @@ function makeChapterID(count_idx) {
 }
 exports.makeChapterID = makeChapterID;
 function getAttachMeta(dirname) {
-    return util_1.fsLowCheckLevelMdconfAsync(upath2_1.default.join(dirname, 'ATTACH.md'))
+    return (0, util_1.fsLowCheckLevelMdconfAsync)(upath2_1.default.join(dirname, 'ATTACH.md'))
         // @ts-ignore
         .then((v) => {
         if (v.attach) {
@@ -228,7 +207,7 @@ async function getAttachMetaByRow(row) {
 exports.getAttachMetaByRow = getAttachMetaByRow;
 function _handleVolumeImage(volume, dirname, _data_) {
     const globImages = [
-        ...ext_1.toGlobExtImage(),
+        ...(0, ext_1.toGlobExtImage)(),
         '!cover.*',
         '!*.txt',
     ];
@@ -249,7 +228,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
             vid = volume.id;
         }
         volume[exports.SymCache].image = true;
-        return novelGlobby.globby(globImages, {
+        return (0, g_1.globby)(globImages, {
             cwd: dirname,
             absolute: true,
         })
@@ -278,7 +257,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
 
                 epub.withAdditionalFile(img, 'image', name);
                  */
-                let ret = store_1.handleAttachFile(img, {
+                let ret = (0, store_1.handleAttachFile)(img, {
                     vid,
                     epub,
                     epubOptions,
@@ -291,7 +270,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
                 if (ret && !arr.includes(ret.returnPath)) {
                     arr.push(ret.returnPath);
                     arr2.push({
-                        attr: ` alt="（IMG：${str_util_1.toFullWidth('' + ret.data.basename)}）"`,
+                        attr: ` alt="（IMG：${(0, str_util_1.toFullWidth)('' + ret.data.basename)}）"`,
                         src: ret.returnPath,
                     });
                 }
@@ -301,7 +280,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
                 Object.values(md_attach.images)
                     .forEach(v => {
                     if (v) {
-                        let ret = store_1.handleAttachFile(v, {
+                        let ret = (0, store_1.handleAttachFile)(v, {
                             vid,
                             epub,
                             epubOptions,
@@ -314,14 +293,14 @@ function _handleVolumeImage(volume, dirname, _data_) {
                         if (ret && !arr.includes(ret.returnPath)) {
                             arr.push(ret.returnPath);
                             arr2.push({
-                                attr: ` alt="（插圖${str_util_1.toFullWidth(v)}）"`,
+                                attr: ` alt="（插圖${(0, str_util_1.toFullWidth)(v)}）"`,
                                 src: ret.returnPath,
                             });
                         }
                     }
                 });
             }
-            arr = array_hyper_unique_1.array_unique(arr);
+            arr = (0, array_hyper_unique_1.array_unique)(arr);
             if (arr.length) {
                 if (volume instanceof epub_maker2_1.default.Section) {
                     if (volume.content && volume.content.cover && volume.content.cover.name) {
@@ -331,7 +310,7 @@ function _handleVolumeImage(volume, dirname, _data_) {
                 let chapter = new epub_maker2_1.default.Section("non-specific backmatter" /* NON_SPECIFIC_BACKMATTER */, makePrefixID(processReturn.temp.count_idx++, "image" /* IMAGE */), {
                     title: "\u63D2\u5716" /* IMAGE */,
                     content: arr2.reduce(function (a, b) {
-                        let html = html_1.novelImage(b.src, {
+                        let html = (0, html_1.novelImage)(b.src, {
                             attr: b.attr,
                         });
                         a.push(html);
@@ -351,7 +330,7 @@ function _handleVolumeImageEach(ls, _data_) {
     const { processReturn, epub, store, epubOptions, cwd } = _data_;
     const temp = processReturn.temp;
     return bluebird_1.default
-        .resolve(array_hyper_unique_1.array_unique(ls))
+        .resolve((0, array_hyper_unique_1.array_unique)(ls))
         .mapSeries(async function (row) {
         let key = row.vol_key;
         let volume = temp.cacheTreeSection[key];
@@ -370,7 +349,7 @@ exports._handleVolumeImageEach = _handleVolumeImageEach;
 function _hookAfterVolume(ls, _data_, afterVolumeTasks) {
     const { processReturn, epub, store, epubOptions, cwd } = _data_;
     const temp = processReturn.temp;
-    ls = array_hyper_unique_1.array_unique(ls);
+    ls = (0, array_hyper_unique_1.array_unique)(ls);
     return bluebird_1.default
         .resolve(ls)
         .mapSeries(async function (row, index) {
@@ -415,7 +394,7 @@ function addContributeSection(volume, dirname, _data_, row) {
             return;
         }
         volume[exports.SymCache].contribute = false;
-        return novelGlobby.globby([
+        return (0, g_1.globby)([
             'CONTRIBUTE.md',
         ], {
             cwd: dirname,
@@ -429,7 +408,7 @@ function addContributeSection(volume, dirname, _data_, row) {
                 const { processReturn } = _data_;
                 let file = ls[0];
                 let source = await fs_iconv_1.default.readFile(file);
-                let mdReturn = md_1.handleMarkdown(source, {
+                let mdReturn = (0, md_1.handleMarkdown)(source, {
                     ..._data_,
                     cwd: dirname,
                     vid,

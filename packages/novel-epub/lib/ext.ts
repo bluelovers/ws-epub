@@ -25,7 +25,7 @@ export function toGlobExtImage()
 		`images/*.{${exts}}`,
 		`img/*.{${exts}}`,
 		`imgs/*.{${exts}}`,
-	]
+	] as const
 }
 
 export function isAllowExtImage(ext: string)

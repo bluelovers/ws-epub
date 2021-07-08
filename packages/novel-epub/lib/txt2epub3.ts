@@ -7,8 +7,6 @@ import { chkInfo, IMdconfMeta, mdconf_parse } from 'node-novel-info';
 import { fsLowCheckLevelMdconfAsync, pathDirNormalize } from './util';
 import { console } from './log';
 import { createUUID } from 'epub-maker2/src/lib/uuid';
-import { normalize_strip } from '@node-novel/normalize';
-import { Console } from 'debug-color2';
 import { crlf } from 'crlf-normalize';
 import { EnumEpubConfigVertical } from 'epub-maker2/src/config';
 import { NodeNovelInfo } from 'node-novel-info/class';
@@ -31,7 +29,6 @@ import {
 	SymCache,
 	IEpubMakerSectionWithCache, addMarkdown, EnumPrefixIDType, EnumPrefixIDTitle, createMarkdownSection,
 } from './epub';
-import fs from 'fs-iconv';
 import Bluebird from 'bluebird';
 import path from 'upath2';
 import moment from 'moment';
@@ -42,6 +39,8 @@ import { EpubStore } from './store';
 import { splitTxt } from './html';
 import { handleMarkdown } from './md';
 import { createEpubContextDate, EPUB_CONTEXT_DATE } from '@node-novel/epub-util/lib/const';
+import { loadFile } from 'fs-iconv';
+import { readFile, outputFile, pathExistsSync } from 'fs-extra';
 
 export { console }
 
@@ -134,19 +133,19 @@ export function getNovelConf(options: IOptions, cache = {}): Bluebird<IMdconfMet
 					confPath = options.inputPath;
 				}
 
-				if (fs.existsSync(path.join(confPath, 'meta.md')))
+				if (pathExistsSync(path.join(confPath, 'meta.md')))
 				{
 					let file = path.join(confPath, 'meta.md');
 
-					meta = await fs.readFile(file)
+					meta = await readFile(file)
 						.then(mdconf_parse)
 					;
 				}
-				else if (fs.existsSync(path.join(confPath, 'README.md')))
+				else if (pathExistsSync(path.join(confPath, 'README.md')))
 				{
 					let file = path.join(confPath, 'README.md');
 
-					meta = await fs.readFile(file)
+					meta = await readFile(file)
 						.then(mdconf_parse)
 					;
 				}
@@ -372,9 +371,9 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 		{
 			let file = path.join(TXT_PATH, 'FOREWORD.md');
 
-			if (fs.pathExistsSync(file))
+			if (pathExistsSync(file))
 			{
-				let source = await fs.readFile(file);
+				let source = await readFile(file);
 
 				let mdReturn = handleMarkdown(source, {
 					cwd: TXT_PATH,
@@ -592,7 +591,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 					let name = value.chapter_title;
 
-					let txt = await fs.loadFile(value.path, {
+					let txt = await loadFile(value.path, {
 							autoDecode: true,
 						})
 						.then(async function (data)
@@ -622,6 +621,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 					{
 						let {
 							source_idx,
+							source_totals,
 							volume_title,
 							chapter_title,
 							dir,
@@ -638,7 +638,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						});
 						 */
 
-						console.info(source_idx, volume_title, chapter_title)
+						console.info(`${source_idx}／${source_totals}`, volume_title, chapter_title)
 					}
 
 					let chapter = new EpubMaker.Section(EnumEpubTypeName.CHAPTER, makeChapterID(temp.count_idx++), {
@@ -767,7 +767,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 								{
 									let file = ls[0];
 
-									let source = await fs.readFile(file);
+									let source = await readFile(file);
 
 									let mdReturn = handleMarkdown(source, {
 										..._data_,
@@ -824,7 +824,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 
 		let { file, filename, now, basename, ext } = _file_data;
 
-		await fs.outputFile(file, data);
+		await outputFile(file, data);
 
 		const stat = processReturn.data.stat;
 

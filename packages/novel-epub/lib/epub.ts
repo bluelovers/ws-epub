@@ -16,7 +16,7 @@ import { toFullWidth } from 'str-util';
 import Bluebird from 'bluebird';
 import path from 'upath2';
 import fs from 'fs-iconv';
-import * as novelGlobby from 'node-novel-globby/g';
+import { globby } from 'node-novel-globby/g';
 import { console } from './log';
 
 export const SymCache = Symbol('cache');
@@ -106,7 +106,7 @@ export function _handleVolume(volume: IEpubMakerSectionWithCache, dirname: strin
 
 				//console.log(file, meta);
 
-				await Bluebird.resolve(novelGlobby.globby([
+				await Bluebird.resolve(globby([
 						'cover.*',
 					], {
 						cwd: dirname,
@@ -386,7 +386,7 @@ export function _handleVolumeImage(volume: IEpubMakerSectionWithCache | EpubMake
 
 			volume[SymCache].image = true;
 
-			return novelGlobby.globby(globImages, {
+			return globby(globImages, {
 					cwd: dirname,
 					absolute: true,
 				})
@@ -619,7 +619,7 @@ export function addContributeSection(volume: IEpubMakerSectionWithCache, dirname
 
 			volume[SymCache].contribute = false;
 
-			return novelGlobby.globby([
+			return globby([
 				'CONTRIBUTE.md',
 			], {
 				cwd: dirname,

@@ -2,31 +2,10 @@
 /**
  * Created by user on 2017/12/16/016.
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeFilename = exports.create = exports.makeOptions = exports.getNovelConf = exports.defaultOptions = exports.console = void 0;
-const epub_maker2_1 = __importStar(require("epub-maker2"));
+const tslib_1 = require("tslib");
+const epub_maker2_1 = (0, tslib_1.__importStar)(require("epub-maker2"));
 const node_novel_info_1 = require("node-novel-info");
 const util_1 = require("./util");
 const log_1 = require("./log");
@@ -37,17 +16,18 @@ const class_1 = require("node-novel-info/class");
 const sort_tree_1 = require("@lazy-glob/sort-tree");
 const util_2 = require("node-novel-globby/lib/util");
 const epub_1 = require("./epub");
-const fs_iconv_1 = __importDefault(require("fs-iconv"));
-const bluebird_1 = __importDefault(require("bluebird"));
-const upath2_1 = __importDefault(require("upath2"));
-const moment_1 = __importDefault(require("moment"));
-const novelGlobby = __importStar(require("node-novel-globby/g"));
-const deepmerge_plus_1 = __importDefault(require("deepmerge-plus"));
+const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
+const upath2_1 = (0, tslib_1.__importDefault)(require("upath2"));
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
+const novelGlobby = (0, tslib_1.__importStar)(require("node-novel-globby/g"));
+const deepmerge_plus_1 = (0, tslib_1.__importDefault)(require("deepmerge-plus"));
 const util_3 = require("util");
 const store_1 = require("./store");
 const html_1 = require("./html");
 const md_1 = require("./md");
 const const_1 = require("@node-novel/epub-util/lib/const");
+const fs_iconv_1 = require("fs-iconv");
+const fs_extra_1 = require("fs-extra");
 exports.defaultOptions = Object.freeze({
     epubTemplate: 'lightnovel',
     //epubLanguage: 'zh',
@@ -72,18 +52,18 @@ function getNovelConf(options, cache = {}) {
             else {
                 confPath = options.inputPath;
             }
-            if (fs_iconv_1.default.existsSync(upath2_1.default.join(confPath, 'meta.md'))) {
+            if ((0, fs_extra_1.pathExistsSync)(upath2_1.default.join(confPath, 'meta.md'))) {
                 let file = upath2_1.default.join(confPath, 'meta.md');
-                meta = await fs_iconv_1.default.readFile(file)
+                meta = await (0, fs_extra_1.readFile)(file)
                     .then(node_novel_info_1.mdconf_parse);
             }
-            else if (fs_iconv_1.default.existsSync(upath2_1.default.join(confPath, 'README.md'))) {
+            else if ((0, fs_extra_1.pathExistsSync)(upath2_1.default.join(confPath, 'README.md'))) {
                 let file = upath2_1.default.join(confPath, 'README.md');
-                meta = await fs_iconv_1.default.readFile(file)
+                meta = await (0, fs_extra_1.readFile)(file)
                     .then(node_novel_info_1.mdconf_parse);
             }
         }
-        meta = node_novel_info_1.chkInfo(meta);
+        meta = (0, node_novel_info_1.chkInfo)(meta);
         return meta;
     })
         .catch((e) => {
@@ -94,7 +74,7 @@ function getNovelConf(options, cache = {}) {
     })
         .tap(meta => {
         if (!meta || !meta.novel || !meta.novel.title) {
-            throw new Error(`not a valid novelInfo data, ${util_3.inspect(options)}`);
+            throw new Error(`not a valid novelInfo data, ${(0, util_3.inspect)(options)}`);
         }
         return meta;
     });
@@ -133,7 +113,7 @@ function create(options, cache = {}) {
         options = makeOptions(options);
         //console.dir(options, {colors: true});
         const novelID = options.novelID;
-        const TXT_PATH = util_1.pathDirNormalize(options.inputPath);
+        const TXT_PATH = (0, util_1.pathDirNormalize)(options.inputPath);
         let meta = await getNovelConf(options, cache);
         const metaLib = new class_1.NodeNovelInfo(meta, {
             throw: false,
@@ -142,6 +122,8 @@ function create(options, cache = {}) {
         let globby_patterns;
         let globby_options = Object.assign({}, options.globbyOptions, {
             cwd: TXT_PATH,
+            //useDefaultPatternsExclude: true,
+            //checkRoman: true,
         });
         {
             [globby_patterns, globby_options] = novelGlobby.getOptions2(globby_options);
@@ -153,7 +135,7 @@ function create(options, cache = {}) {
         let epub = new epub_maker2_1.default()
             .withTemplate(options.epubTemplate)
             .withLanguage(options.epubLanguage)
-            .withUuid(uuid_1.createUUID(epub_maker2_1.hashSum([
+            .withUuid((0, uuid_1.createUUID)((0, epub_maker2_1.hashSum)([
             meta.novel.title,
             meta.novel.author,
         ])))
@@ -196,6 +178,7 @@ function create(options, cache = {}) {
         else {
             await novelGlobby.globby([
                 'cover.*',
+                // @ts-ignore
             ], Object.assign({}, globby_options, {
                 absolute: true,
             }))
@@ -208,7 +191,7 @@ function create(options, cache = {}) {
         }
         if (options.epubContextDate) {
             if (typeof options.epubContextDate == 'boolean') {
-                options.epubContextDate = const_1.createEpubContextDate();
+                options.epubContextDate = (0, const_1.createEpubContextDate)();
             }
             epub.withContextDate(options.epubContextDate);
         }
@@ -217,12 +200,12 @@ function create(options, cache = {}) {
         let count_idx = 0;
         {
             let file = upath2_1.default.join(TXT_PATH, 'FOREWORD.md');
-            if (fs_iconv_1.default.pathExistsSync(file)) {
-                let source = await fs_iconv_1.default.readFile(file);
-                let mdReturn = md_1.handleMarkdown(source, {
+            if ((0, fs_extra_1.pathExistsSync)(file)) {
+                let source = await (0, fs_extra_1.readFile)(file);
+                let mdReturn = (0, md_1.handleMarkdown)(source, {
                     cwd: TXT_PATH,
                 });
-                epub_1.createMarkdownSection({
+                (0, epub_1.createMarkdownSection)({
                     target: epub,
                     mdReturn,
                     processReturn: {
@@ -245,7 +228,7 @@ function create(options, cache = {}) {
             return ls;
         })
             .then(function (ls) {
-            return sort_tree_1.sortTree(ls, null, globby_options);
+            return (0, sort_tree_1.sortTree)(ls, null, globby_options);
         })
             .then(function (ls) {
             //console.dir(ls);
@@ -267,7 +250,7 @@ function create(options, cache = {}) {
             //const SymCache = Symbol('cache');
             //let _new_top_level: EpubMaker.Section;
             //let _old_top_level: EpubMaker.Section;
-            return util_2.foreachArrayDeepAsync(_ls, async ({ value, index, array, cache, }) => {
+            return (0, util_2.foreachArrayDeepAsync)(_ls, async ({ value, index, array, cache, }) => {
                 const { volume_title, chapter_title } = value;
                 const { temp, data } = cache;
                 const { stat } = data;
@@ -275,11 +258,11 @@ function create(options, cache = {}) {
                 /**
                  * 去除掉排序ID後的章節名稱
                  */
-                let vs_ret = util_2.eachVolumeTitle(volume_title, true);
+                let vs_ret = (0, util_2.eachVolumeTitle)(volume_title, true);
                 /**
                  * 章節名稱 含 排序用的ID 來避免同一個資料夾下 有兩個相同 章節名稱
                  */
-                let vs_ret2 = util_2.eachVolumeTitle(value.dir, false);
+                let vs_ret2 = (0, util_2.eachVolumeTitle)(value.dir, false);
                 const dirname = value.path_dir;
                 let _ds = upath2_1.default.normalize(dirname).split('/');
                 const volume = await bluebird_1.default
@@ -293,7 +276,7 @@ function create(options, cache = {}) {
                         && (dirname.length < temp.prev_volume_dir.length
                         //|| temp.prev_volume_dir.indexOf(dirname) == -1
                         )) {
-                        await epub_1._handleVolumeImage(temp.prev_volume, temp.prev_volume_row.dirname, {
+                        await (0, epub_1._handleVolumeImage)(temp.prev_volume, temp.prev_volume_row.dirname, {
                             epub,
                             processReturn: cache,
                             epubOptions: options,
@@ -326,12 +309,12 @@ function create(options, cache = {}) {
                         temp.count_d++;
                         stat.volume++;
                         temp.cache_vol[key] = (temp.cache_vol[key] | 0);
-                        let vid = epub_1.makeVolumeID(temp.count_idx++);
+                        let vid = (0, epub_1.makeVolumeID)(temp.count_idx++);
                         vc = cacheTreeSection[key] = new epub_maker2_1.default.Section('auto-toc', vid, {
                             title: title,
                         }, false, true);
                         vc[epub_1.SymCache] = vc[epub_1.SymCache] || {};
-                        await epub_1._handleVolume(vc, _nav_dir, {
+                        await (0, epub_1._handleVolume)(vc, _nav_dir, {
                             epub,
                             store,
                             epubOptions: options,
@@ -341,7 +324,7 @@ function create(options, cache = {}) {
                         });
                         if (index == 0) {
                             if (temp._old_top_level) {
-                                await epub_1._handleVolumeImageEach(temp.cache_top_subs[temp._old_top_level.id], {
+                                await (0, epub_1._handleVolumeImageEach)(temp.cache_top_subs[temp._old_top_level.id], {
                                     epub,
                                     processReturn: cache,
                                     epubOptions: options,
@@ -370,14 +353,14 @@ function create(options, cache = {}) {
                 }, null);
                 const row = value;
                 let name = value.chapter_title;
-                let txt = await fs_iconv_1.default.loadFile(value.path, {
+                let txt = await (0, fs_iconv_1.loadFile)(value.path, {
                     autoDecode: true,
                 })
                     .then(async function (data) {
-                    let txt = crlf_normalize_1.crlf(data.toString());
+                    let txt = (0, crlf_normalize_1.crlf)(data.toString());
                     if (value.ext == '.txt') {
-                        let attach = await epub_1.getAttachMetaByRow(row);
-                        return html_1.splitTxt(txt, {
+                        let attach = await (0, epub_1.getAttachMetaByRow)(row);
+                        return (0, html_1.splitTxt)(txt, {
                             attach,
                             store,
                             vid: volume.id,
@@ -390,7 +373,7 @@ function create(options, cache = {}) {
                     return txt;
                 });
                 if (!options.noLog) {
-                    let { source_idx, volume_title, chapter_title, dir, file, } = row;
+                    let { source_idx, source_totals, volume_title, chapter_title, dir, file, } = row;
                     /*
                     console.dir({
                         source_idx,
@@ -400,9 +383,9 @@ function create(options, cache = {}) {
                         file,
                     });
                      */
-                    log_1.console.info(source_idx, volume_title, chapter_title);
+                    log_1.console.info(`${source_idx}／${source_totals}`, volume_title, chapter_title);
                 }
-                let chapter = new epub_maker2_1.default.Section("chapter" /* CHAPTER */, epub_1.makeChapterID(temp.count_idx++), {
+                let chapter = new epub_maker2_1.default.Section("chapter" /* CHAPTER */, (0, epub_1.makeChapterID)(temp.count_idx++), {
                     title: name,
                     content: txt,
                 }, true, false);
@@ -455,7 +438,7 @@ function create(options, cache = {}) {
                     cwdRoot: TXT_PATH,
                 });
                  */
-                await epub_1._hookAfterVolume(temp.cache_volume_row, {
+                await (0, epub_1._hookAfterVolume)(temp.cache_volume_row, {
                     epub,
                     processReturn,
                     epubOptions: options,
@@ -474,7 +457,7 @@ function create(options, cache = {}) {
             });
         })
             .tap(async (processReturn) => {
-            await epub_1._hookAfterEpub(epub, {
+            await (0, epub_1._hookAfterEpub)(epub, {
                 epub,
                 processReturn,
                 epubOptions: options,
@@ -494,12 +477,12 @@ function create(options, cache = {}) {
                         .then(async (ls) => {
                         if (ls.length) {
                             let file = ls[0];
-                            let source = await fs_iconv_1.default.readFile(file);
-                            let mdReturn = md_1.handleMarkdown(source, {
+                            let source = await (0, fs_extra_1.readFile)(file);
+                            let mdReturn = (0, md_1.handleMarkdown)(source, {
                                 ..._data_,
                                 cwd: cwdRoot,
                             });
-                            epub_1.createContributeSection({
+                            (0, epub_1.createContributeSection)({
                                 target: epub,
                                 mdReturn,
                                 processReturn,
@@ -509,7 +492,7 @@ function create(options, cache = {}) {
                     if (epub[epub_1.SymCache] == null) {
                         epub[epub_1.SymCache] = {};
                     }
-                    await epub_1._handleVolumeImage(epub, TXT_PATH, {
+                    await (0, epub_1._handleVolumeImage)(epub, TXT_PATH, {
                         epub,
                         processReturn: processReturn,
                         epubOptions: options,
@@ -534,7 +517,7 @@ function create(options, cache = {}) {
         let data = await epub.makeEpub();
         let _file_data = makeFilename(options, epub, meta);
         let { file, filename, now, basename, ext } = _file_data;
-        await fs_iconv_1.default.outputFile(file, data);
+        await (0, fs_extra_1.outputFile)(file, data);
         const stat = processReturn.data.stat;
         log_1.console.success(filename, now.format(), stat);
         return {
@@ -584,7 +567,7 @@ function makeFilename(options, epub, meta) {
     }
     const basename = filename;
     let ext = epub_maker2_1.default.defaultExt;
-    let now = moment_1.default();
+    let now = (0, moment_1.default)();
     if (options.padEndDate) {
         filename += '_' + now.format('YYYYMMDD_HHmmss');
     }
