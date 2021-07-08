@@ -1,6 +1,6 @@
 {
   "name": "epub-extract",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "epub-extract for node-novel style",
   "keywords": [
     "Google Play Books",
@@ -72,9 +72,9 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@node-novel/epub-util": "^1.0.6",
+    "@node-novel/epub-util": "^1.0.7",
     "cheerio": "^1.0.0-rc.10",
-    "epub2": "^2.0.5",
+    "epub2": "^2.0.6",
     "fs-iconv": "^3.0.16",
     "html-minifier": "^4.0.0",
     "node-novel-globby": "^2.0.19",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.6](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.5...novel-epub@2.0.6) (2021-07-08)
+
+
+### ✨　Features
+
+* add source_totals ([3073b4b](https://github.com/bluelovers/ws-epub/commit/3073b4bf0d303594a134f2c2040c0734c92d391a))
+
+
+
+
+
 ## [2.0.5](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.4...novel-epub@2.0.5) (2021-02-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.30](https://github.com/bluelovers/ws-epub/compare/novel-txt-merge@1.0.29...novel-txt-merge@1.0.30) (2021-07-08)
+
+
+### 🔖　Miscellaneous
+
+* . ([27e01e3](https://github.com/bluelovers/ws-epub/commit/27e01e3ec1e5cfe0dfdad53b7c0892ca202e55d5))
+
+
+
+
+
 ## [1.0.29](https://github.com/bluelovers/ws-epub/compare/novel-txt-merge@1.0.28...novel-txt-merge@1.0.29) (2021-02-12)
 
 
