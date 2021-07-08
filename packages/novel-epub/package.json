@@ -1,6 +1,6 @@
 {
   "name": "novel-epub",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "製作 node-novel 風格的 ePub 電子書 / create epub from node-novel style",
   "keywords": [
     "archive",

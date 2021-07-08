@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.7](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.6...novel-epub@2.0.7) (2021-07-08)
+
+
+### 🔖　Miscellaneous
+
+* . ([413e706](https://github.com/bluelovers/ws-epub/commit/413e706004f0466578f74f87d554e887c44ad536))
+
+
+
+
+
 ## [2.0.6](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.5...novel-epub@2.0.6) (2021-07-08)
 
 
