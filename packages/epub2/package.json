@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.5",
-    "array-hyper-unique": "^1.1.9",
+    "array-hyper-unique": "^1.1.10",
     "bluebird": "^3.7.2",
     "crlf-normalize": "^1.0.6",
     "tslib": "^2.3.0",

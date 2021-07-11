@@ -75,7 +75,7 @@
     "@bluelovers/fast-glob": "^3.0.4",
     "@node-novel/epub-util": "^1.0.7",
     "bluebird": "^3.7.2",
-    "execall2": "^2.0.9",
+    "execall2": "^2.0.11",
     "fs-iconv": "^3.0.16",
     "html-minifier": "^4.0.0",
     "jsdom-extra": "^3.0.7",
