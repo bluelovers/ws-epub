@@ -638,7 +638,7 @@ export function create(options: IOptions, cache = {}): Bluebird<INovelEpubReturn
 						});
 						 */
 
-						console.info(`${(source_idx + 1).toString().padStart(4, '0')}／${source_totals.toString().padStart(4, '0')}`, volume_title, chapter_title)
+						console.info(`[${(source_idx + 1).toString().padStart(4, '0')}／${source_totals.toString().padStart(4, '0')}]`, volume_title, `／`, chapter_title)
 					}
 
 					let chapter = new EpubMaker.Section(EnumEpubTypeName.CHAPTER, makeChapterID(temp.count_idx++), {

@@ -383,7 +383,7 @@ function create(options, cache = {}) {
                         file,
                     });
                      */
-                    log_1.console.info(`${(source_idx + 1).toString().padStart(4, '0')}／${source_totals.toString().padStart(4, '0')}`, volume_title, chapter_title);
+                    log_1.console.info(`[${(source_idx + 1).toString().padStart(4, '0')}／${source_totals.toString().padStart(4, '0')}]`, volume_title, `／`, chapter_title);
                 }
                 let chapter = new epub_maker2_1.default.Section("chapter" /* CHAPTER */, (0, epub_1.makeChapterID)(temp.count_idx++), {
                     title: name,

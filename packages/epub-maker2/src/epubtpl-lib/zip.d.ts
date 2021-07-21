@@ -2,7 +2,7 @@
  * Created by user on 2017/12/12/012.
  */
 /// <reference types="bluebird" />
-import JSZip = require('jszip');
+import JSZip from 'jszip';
 import { IFiles, EpubConfig, IEpubConfig } from '../config';
 import { EpubMaker } from '../index';
 import { BPromise } from '../lib/util';

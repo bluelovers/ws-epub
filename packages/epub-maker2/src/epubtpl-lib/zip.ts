@@ -9,7 +9,7 @@ import path from 'upath2';
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 import { hashSum, BPromise } from '../lib/util';
-import { console } from 'debug-color2';
+import console from 'debug-color2/logger';
 
 export { JSZip }
 
@@ -66,7 +66,7 @@ export function addStaticFiles(zip, staticFiles: IFiles[])
 		[k: string]: IFiles,
 	};
 
-	return BPromise.mapSeries(staticFiles, async function (_file: IFiles)
+	return BPromise.mapSeries(staticFiles, async function (_file: IFiles, index, length)
 		{
 			let file: IFiles;
 
@@ -82,10 +82,14 @@ export function addStaticFiles(zip, staticFiles: IFiles[])
 				_file.mime = _file.mime || cf.mime;
 			}
 
+			let label: string = `[${(index + 1).toString().padStart(4, '0')}／${length.toString().padStart(4, '0')}]`;
+
+			console.debug(`處理附加檔案`, label, _file)
+
 			file = await fetchFile(_file)
 				.catch(e => {
 
-					console.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, _file, e);
+					console.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, label, _file, e);
 
 					return null
 				})
