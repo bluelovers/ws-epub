@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.10](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.9...novel-epub@2.0.10) (2021-07-21)
+
+
+### ✨　Features
+
+* 改善訊息顯示 ([d270919](https://github.com/bluelovers/ws-epub/commit/d270919cccd0077bda23552996c3cfa31ab48600))
+* 修正數字顯示 ([dd917bc](https://github.com/bluelovers/ws-epub/commit/dd917bc14d2b58ca8e2354e4663090dbf9291cc0))
+
+
+### ♻️　Chores
+
+* **deps:** update deps ([ed9cc80](https://github.com/bluelovers/ws-epub/commit/ed9cc80648b09f1b85fd001b757f51da3881980e))
+
+
+
+
+
 ## [2.0.9](https://github.com/bluelovers/ws-epub/compare/novel-epub@2.0.8...novel-epub@2.0.9) (2021-07-11)
 
 

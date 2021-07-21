@@ -1,6 +1,6 @@
 {
   "name": "epub-iconv-segment",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "簡易型 epub 簡繁轉換",
   "keywords": [
     "Google Play Books",
@@ -103,7 +103,7 @@
   },
   "dependencies": {
     "@lazy-cjk/zh-convert": "^1.0.37",
-    "epub-iconv": "^1.0.16",
+    "epub-iconv": "^1.0.17",
     "novel-segment-cli": "^1.1.82",
     "tslib": "^2.3.0"
   }
