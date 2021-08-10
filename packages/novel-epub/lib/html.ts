@@ -7,7 +7,7 @@ import { IAttachMetaData } from './epub';
 import { cn2tw_min, tw2cn_min } from '@lazy-cjk/zh-convert/min';
 import { allowedHtmlTagList } from './tags';
 import { getAttachID, handleAttachFile } from './store';
-import { toHalfWidth, toFullWidth } from 'str-util';
+import { toFullWidth } from 'str-util';
 import { console } from './log';
 import { parse as parseNodeNovelTxtTag } from '@node-novel/parse-txt-tag';
 
@@ -18,7 +18,7 @@ export function novelImage(src: string, options: {
 {
 	let { failback = '', attr = '' } = options || {};
 
-	if (failback && failback.length)
+	if (failback?.length)
 	{
 		failback = ` lowsrc="${failback}" `;
 	}
@@ -135,7 +135,7 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 	}).context;
 
 	context = ('<div>' + context
-		.replace(/^[ ]*[－＝\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
+		.replace(/^[ ]*[－＝‐\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
 
 		//.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
 
@@ -144,7 +144,7 @@ export function splitTxt(txt, plusData?: IInternalProcessContextOptions)
 
 		.replace(/<div><hr\/><\/div>/g, '<hr class="linehr"/>')
 
-		.replace(/<div>[ ]*([－＝—=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
+		.replace(/<div>[ ]*([－＝—=─═─＝=══－‐\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
 
 		.replace(/<div><\/div>/g, '<div class="linegroup softbreak">　 </div>')
 		.replace(/<div>/g, '<div class="linegroup calibre1">')

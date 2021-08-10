@@ -12,7 +12,7 @@ const log_1 = require("./log");
 const parse_txt_tag_1 = require("@node-novel/parse-txt-tag");
 function novelImage(src, options = {}) {
     let { failback = '', attr = '' } = options || {};
-    if (failback && failback.length) {
+    if (failback === null || failback === void 0 ? void 0 : failback.length) {
         failback = ` lowsrc="${failback}" `;
     }
     else {
@@ -26,10 +26,10 @@ function splitTxt(txt, plusData) {
     const { images } = attach || {};
     if (epubOptions.iconv) {
         if (epubOptions.iconv === 'cn') {
-            txt = min_1.tw2cn_min(txt);
+            txt = (0, min_1.tw2cn_min)(txt);
         }
         else if (epubOptions.iconv === 'tw') {
-            txt = min_1.cn2tw_min(txt);
+            txt = (0, min_1.cn2tw_min)(txt);
         }
     }
     let context = txt
@@ -41,15 +41,15 @@ function splitTxt(txt, plusData) {
         //console.log(m);
         return `<${m[1].replace(/\/+$/, '')} class="inner-image"/>`;
     });
-    context = parse_txt_tag_1.parse(context, {
+    context = (0, parse_txt_tag_1.parse)(context, {
         on: {
             img({ tagName, innerContext, }) {
                 if (images && store && innerContext) {
-                    let { id, input } = store_1.getAttachID(innerContext, {
+                    let { id, input } = (0, store_1.getAttachID)(innerContext, {
                         images,
                     });
                     if (input) {
-                        let ret = store_1.handleAttachFile(input, {
+                        let ret = (0, store_1.handleAttachFile)(input, {
                             ...plusData,
                             store,
                             epubOptions,
@@ -61,7 +61,7 @@ function splitTxt(txt, plusData) {
                         });
                         if (ret) {
                             let _options = {
-                                attr: ` alt="（插圖${str_util_1.toFullWidth(id)}）"`,
+                                attr: ` alt="（插圖${(0, str_util_1.toFullWidth)(id)}）"`,
                             };
                             if (ret.ok && !ret.isFile) {
                                 _options.failback = ret.input;
@@ -88,12 +88,12 @@ function splitTxt(txt, plusData) {
         }
     }).context;
     context = ('<div>' + context
-        .replace(/^[ ]*[－＝\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
+        .replace(/^[ ]*[－＝‐\-—\=─–]{3,}[ ]*$/mg, '<hr/>')
         //.replace(/^([－＝\-—\=─═─＝=══－\-─—◆◇]+)$/mg, '<span class="overflow-line">$1</span>')
         .replace(/\n/g, '</div>\n<div>')
         + '</div>')
         .replace(/<div><hr\/><\/div>/g, '<hr class="linehr"/>')
-        .replace(/<div>[ ]*([－＝—=─═─＝=══－\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
+        .replace(/<div>[ ]*([－＝—=─═─＝=══－‐\-─—～◆◇\*＊\+＊＊↣◇◆☆★■□☆◊▃\p{Punctuation}]+)[ ]*<\/div>/ug, '<div class="linegroup calibre1 overflow-line">$1</div>')
         .replace(/<div><\/div>/g, '<div class="linegroup softbreak">　 </div>')
         .replace(/<div>/g, '<div class="linegroup calibre1">');
     return context;
