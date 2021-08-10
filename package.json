@@ -35,18 +35,18 @@
     "@types/jest": "^26.0.24",
     "@types/js-beautify": "^1.13.2",
     "@types/jszip": "^3.4.1",
-    "@types/lodash": "^4.14.171",
+    "@types/lodash": "^4.14.172",
     "@types/markdown-it": "^12.0.3",
     "@types/markdown-it-emoji": "^2.0.2",
     "@types/micromatch": "^4.0.2",
-    "@types/node": "^16.4.0",
+    "@types/node": "^16.4.13",
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.3.1",
     "@types/xml2js": "^0.4.9",
     "@types/yargs": "^17.0.2",
     "jest": "^27.0.6",
-    "novel-txt-merge": "^1.0.31",
-    "ts-jest": "^27.0.3"
+    "novel-txt-merge": "^1.0.32",
+    "ts-jest": "^27.0.4"
   },
   "peerDependencies": {
     "lerna": "^4.0.0"
