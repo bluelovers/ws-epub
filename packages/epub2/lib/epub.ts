@@ -760,7 +760,7 @@ export class EPub extends EventEmitter
 						: (branch[i].navLabel && branch[i].navLabel.text || branch[i].navLabel || "").trim();
 					*/
 
-					title = (branch[i].navLabel && branch[i].navLabel.text || branch[i].navLabel || "").trim();
+					title = (branch[i].navLabel && branch[i].navLabel.text || "").trim();
 				}
 				var order = Number(branch[i]["@"] && branch[i]["@"].playOrder || 0);
 				if (isNaN(order))
