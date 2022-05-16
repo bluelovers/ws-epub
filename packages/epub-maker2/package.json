@@ -94,9 +94,9 @@
     "uuid-by-string": "^3.0.7"
   },
   "optionalDependencies": {
-    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-mozjpeg": "< 10 >= 9",
     "imagemin-optipng": "^8.0.0",
     "imagemin-pngquant": "^9.0.2",
-    "imagemin-webp": "^7.0.0"
+    "imagemin-webp": "< 7 >= 6"
   }
 }
