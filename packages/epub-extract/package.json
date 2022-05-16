@@ -75,12 +75,12 @@
     "@node-novel/epub-util": "^1.0.7",
     "cheerio": "^1.0.0-rc.10",
     "epub2": "^2.0.7",
-    "fs-iconv": "^3.1.2",
+    "fs-iconv": "^3.1.9",
     "html-minifier": "^4.0.0",
     "node-novel-globby": "^2.0.19",
-    "node-novel-info": "^3.0.14",
-    "tslib": "^2.3.0",
-    "yargs": "^17.1.0",
-    "zero-width": "^1.0.16"
+    "node-novel-info": "^3.0.15",
+    "tslib": "^2.4.0",
+    "yargs": "^17.5.1",
+    "zero-width": "^1.0.17"
   }
 }

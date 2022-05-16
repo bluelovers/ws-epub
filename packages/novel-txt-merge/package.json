@@ -50,19 +50,19 @@
   },
   "dependencies": {
     "@lazy-glob/sort-tree": "^1.0.6",
-    "@node-novel/normalize": "^1.0.28",
-    "@yarn-tool/update-notifier": "^1.0.20",
-    "array-hyper-unique": "^1.1.10",
+    "@node-novel/normalize": "^1.0.30",
+    "@yarn-tool/update-notifier": "^1.0.26",
+    "array-hyper-unique": "^2.0.6",
     "bluebird": "^3.7.2",
-    "crlf-normalize": "^1.0.6",
+    "crlf-normalize": "^1.0.7",
     "debug-color2": "^1.2.7",
-    "fs-iconv": "^3.1.2",
-    "moment": "^2.29.1",
+    "fs-iconv": "^3.1.9",
+    "moment": "^2.29.3",
     "node-novel-globby": "^2.0.19",
-    "node-novel-info": "^3.0.14",
-    "tslib": "^2.3.0",
-    "uni-string": "^1.1.11",
-    "upath2": "^3.1.9",
-    "yargs": "^17.1.0"
+    "node-novel-info": "^3.0.15",
+    "tslib": "^2.4.0",
+    "uni-string": "^1.1.12",
+    "upath2": "^3.1.13",
+    "yargs": "^17.5.1"
   }
 }

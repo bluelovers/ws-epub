@@ -105,19 +105,19 @@
   },
   "dependencies": {
     "@bluelovers/fast-glob": "^3.0.4",
-    "@lazy-cjk/zh-convert": "^1.0.38",
+    "@lazy-cjk/zh-convert": "^1.0.44",
     "@node-novel/epub-util": "^1.0.7",
-    "@yarn-tool/update-notifier": "^1.0.20",
+    "@yarn-tool/update-notifier": "^1.0.26",
     "bluebird": "^3.7.2",
-    "cjk-conv": "^1.2.130",
+    "cjk-conv": "^1.2.139",
     "debug-color2": "^1.2.7",
-    "fs-extra": "^10.0.0",
-    "iconv-jschardet": "^2.0.17",
-    "jszip": "^3.7.1",
+    "fs-extra": "^10.1.0",
+    "iconv-jschardet": "^2.0.26",
+    "jszip": "^3.9.1",
     "sort-object-keys2": "^2.0.3",
-    "ts-type": "^1.2.39",
-    "tslib": "^2.3.0",
-    "upath2": "^3.1.9",
-    "yargs": "^17.1.0"
+    "ts-type": "^2.1.6",
+    "tslib": "^2.4.0",
+    "upath2": "^3.1.13",
+    "yargs": "^17.5.1"
   }
 }

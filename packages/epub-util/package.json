@@ -35,10 +35,10 @@
   "dependencies": {
     "@types/cheerio": "*",
     "@types/jquery": "*",
-    "crlf-normalize": "^1.0.6",
+    "crlf-normalize": "^1.0.7",
     "html-minifier": "^4.0.0",
-    "tslib": "^2.3.0",
-    "zero-width": "^1.0.16"
+    "tslib": "^2.4.0",
+    "zero-width": "^1.0.17"
   },
   "publishConfig": {
     "access": "public"

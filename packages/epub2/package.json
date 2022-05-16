@@ -58,11 +58,11 @@
     "sort-package-json": "npx yarn-tool sort"
   },
   "dependencies": {
-    "adm-zip": "^0.5.5",
-    "array-hyper-unique": "^1.1.10",
+    "adm-zip": "^0.5.9",
+    "array-hyper-unique": "^2.0.6",
     "bluebird": "^3.7.2",
-    "crlf-normalize": "^1.0.6",
-    "tslib": "^2.3.0",
+    "crlf-normalize": "^1.0.7",
+    "tslib": "^2.4.0",
     "xml2js": "^0.4.23"
   },
   "engine": [

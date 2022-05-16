@@ -75,15 +75,15 @@
     "@bluelovers/fast-glob": "^3.0.4",
     "@node-novel/epub-util": "^1.0.7",
     "bluebird": "^3.7.2",
-    "execall2": "^2.0.11",
-    "fs-iconv": "^3.1.2",
+    "execall2": "^2.0.21",
+    "fs-iconv": "^3.1.9",
     "html-minifier": "^4.0.0",
     "jsdom-extra": "^3.0.7",
-    "jszip": "^3.7.1",
+    "jszip": "^3.9.1",
     "lodash": "^4.17.21",
-    "node-novel-info": "^3.0.14",
-    "tslib": "^2.3.0",
-    "upath2": "^3.1.9"
+    "node-novel-info": "^3.0.15",
+    "tslib": "^2.4.0",
+    "upath2": "^3.1.13"
   },
   "publishConfig": {
     "access": "public"
