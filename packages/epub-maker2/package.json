@@ -1,6 +1,6 @@
 {
   "name": "epub-maker2",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "description": "Easily create epub files with javascript",
   "keywords": [
     "archive",
@@ -54,7 +54,7 @@
     "defaults"
   ],
   "dependencies": {
-    "@node-novel/epub-util": "^1.0.8",
+    "@node-novel/epub-util": "^1.0.9",
     "@node-novel/fetch-file-or-url": "^1.1.16",
     "@types/bluebird": "^3",
     "@types/bluebird-global": "^3",
@@ -80,7 +80,7 @@
     "imagemin-webp": "^7.0.0",
     "js-beautify": "^1.14.3",
     "jszip": "^3.9.1",
-    "jszip-fixed-date": "^1.0.4",
+    "jszip-fixed-date": "^1.0.5",
     "moment": "^2.29.3",
     "node-novel-info": "^3.0.15",
     "postcss": "^8.4.13",

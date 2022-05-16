@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.9](https://github.com/bluelovers/ws-epub/compare/epub2@2.0.7...epub2@2.0.9) (2022-05-16)
+
+
+### ♻️　Chores
+
+* **deps:** update deps ([17f7288](https://github.com/bluelovers/ws-epub/commit/17f7288bd89377a886555ead374c78eebd552c84))
+* **deps:** update deps ([04831e9](https://github.com/bluelovers/ws-epub/commit/04831e90a4552a048b4fb6a3234cc86619b82270))
+
+
+
+
+
 ## [2.0.8](https://github.com/bluelovers/ws-epub/compare/epub2@2.0.7...epub2@2.0.8) (2022-05-16)
 
 
