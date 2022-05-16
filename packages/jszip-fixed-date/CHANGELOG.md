@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/bluelovers/ws-epub/compare/jszip-fixed-date@1.0.3...jszip-fixed-date@1.0.4) (2022-05-16)
+
+
+### ♻️　Chores
+
+* **deps:** update deps ([04831e9](https://github.com/bluelovers/ws-epub/commit/04831e90a4552a048b4fb6a3234cc86619b82270))
+
+
+
+
+
 ## [1.0.3](https://github.com/bluelovers/ws-epub/compare/jszip-fixed-date@1.0.2...jszip-fixed-date@1.0.3) (2021-07-08)
 
 
