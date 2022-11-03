@@ -60,7 +60,7 @@
   ],
   "dependencies": {
     "@node-novel/epub-util": "^1.0.9",
-    "@node-novel/fetch-file-or-url": "^1.1.17",
+    "@node-novel/fetch-file-or-url": "^1.1.18",
     "@types/bluebird": "^3",
     "@types/bluebird-global": "^3",
     "@types/hash-sum": "^1.0.0",

@@ -3,4 +3,4 @@
  */
 import { EPub } from '../index';
 import { EPub as libEPub } from './epub';
-export declare function fixToc(epub: EPub | libEPub): EPub | libEPub;
+export declare function fixToc(epub: EPub | libEPub): libEPub | EPub;
