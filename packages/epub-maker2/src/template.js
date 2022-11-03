@@ -2,31 +2,10 @@
 /**
  * Created by user on 2017/12/12/012.
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.templateManagers = exports.TemplateManagers = exports.defaultList = exports.defaultPath = void 0;
-const upath2_1 = __importDefault(require("upath2"));
+const tslib_1 = require("tslib");
+const upath2_1 = tslib_1.__importDefault(require("upath2"));
 const util_1 = require("./lib/util");
 exports.defaultPath = upath2_1.default.join(__dirname, './epubtpl');
 exports.defaultList = {
@@ -58,6 +37,7 @@ class TemplateManagers {
     }
     _get(t) {
         return util_1.BPromise.resolve().then(async function () {
+            var _a;
             let fn = async function (b) {
                 if (!b) {
                     //
@@ -84,7 +64,7 @@ class TemplateManagers {
                 //
             }
             else if (typeof t == 'string') {
-                let b = await Promise.resolve().then(() => __importStar(require(t)));
+                let b = await (_a = t, Promise.resolve().then(() => tslib_1.__importStar(require(_a))));
                 r = await fn(b);
             }
             else {

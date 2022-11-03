@@ -13,7 +13,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/jszip-fixed-date"
   },
   "license": "ISC",
   "author": "bluelovers",
@@ -25,6 +26,10 @@
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
     "test": "jest",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
     "preversion": "yarn run test",
@@ -37,6 +42,6 @@
   },
   "dependencies": {
     "@types/jszip": "*",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.1"
   }
 }

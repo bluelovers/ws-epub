@@ -8,13 +8,12 @@ import * as novelGlobbyBase from 'node-novel-globby/g';
 import path from 'path';
 import BluebirdPromise from 'bluebird';
 import moment from 'moment';
-import { mdconf_parse, IMdconfMeta } from 'node-novel-info';
+import { mdconf_parse, IMdconfMeta, getNovelTitleFromMeta } from 'node-novel-info';
 import { crlf, CRLF, LF } from 'crlf-normalize';
 import fs, { trimFilename } from 'fs-iconv';
 import UString from 'uni-string';
 import { sortTree } from '@lazy-glob/sort-tree';
 import { NodeNovelInfo } from 'node-novel-info/class';
-import { getNovelTitleFromMeta } from 'node-novel-info';
 import {
 	eachVolumeTitle,
 	foreachArrayDeepAsync,
@@ -32,7 +31,7 @@ import {
 	TPL_VOLUME_START,
 } from './lib/tpl';
 import { makeDefaultTplData, replaceTpl } from './lib/index';
-import console from 'debug-color2';
+import { console } from 'debug-color2';
 
 const hr_len = TPL_HR_LEN;
 const eol = TPL_EOL;

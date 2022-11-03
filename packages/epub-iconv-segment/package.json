@@ -78,7 +78,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/epub-iconv-segment"
   },
   "license": "ISC",
   "author": "bluelovers",
@@ -90,6 +91,10 @@
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
     "test": "echo \"Error: no test specified\"",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
     "preversion": "yarn run test",
@@ -102,9 +107,9 @@
     "tsc:esm": "tsc -p tsconfig.esm.json"
   },
   "dependencies": {
-    "@lazy-cjk/zh-convert": "^1.0.44",
+    "@lazy-cjk/zh-convert": "^1.0.47",
     "epub-iconv": "^1.0.20",
-    "novel-segment-cli": "^1.1.111",
-    "tslib": "^2.4.0"
+    "novel-segment-cli": "^1.1.117",
+    "tslib": "^2.4.1"
   }
 }

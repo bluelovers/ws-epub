@@ -29,7 +29,7 @@ __1.EpubMaker.prototype.downloadEpub = function downloadEpub(callback, options) 
         if (callback && typeof (callback) === 'function') {
             await callback(epubZipContent, filename);
         }
-        file_saver_1.saveAs(epubZipContent, filename);
+        (0, file_saver_1.saveAs)(epubZipContent, filename);
         return epubZipContent;
     });
 };

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpubMaker = exports.slugifyWithFallback = exports.slugify = exports.hashSum = exports.shortid = exports.EnumSectionCollectType = exports.EnumEpubTypeName = exports.EnumEpubType = void 0;
 const tslib_1 = require("tslib");
-const slugify_1 = (0, tslib_1.__importDefault)(require("slugify"));
+const slugify_1 = tslib_1.__importDefault(require("slugify"));
 const template_1 = require("./template");
 const fs_iconv_1 = require("fs-iconv");
 const zip_1 = require("./epubtpl-lib/zip");
@@ -13,8 +13,11 @@ Object.defineProperty(exports, "hashSum", { enumerable: true, get: function () {
 Object.defineProperty(exports, "shortid", { enumerable: true, get: function () { return util_1.shortid; } });
 const epub_types_1 = require("./epub-types");
 Object.defineProperty(exports, "EnumEpubType", { enumerable: true, get: function () { return epub_types_1.EnumEpubType; } });
-const libEpubtypes = (0, tslib_1.__importStar)(require("./epub-types"));
-const jszip_fixed_date_1 = (0, tslib_1.__importDefault)(require("jszip-fixed-date"));
+Object.defineProperty(exports, "EnumEpubTypeName", { enumerable: true, get: function () { return epub_types_1.EnumEpubTypeName; } });
+const var_1 = require("./var");
+Object.defineProperty(exports, "EnumSectionCollectType", { enumerable: true, get: function () { return var_1.EnumSectionCollectType; } });
+const libEpubtypes = tslib_1.__importStar(require("./epub-types"));
+const jszip_fixed_date_1 = tslib_1.__importDefault(require("jszip-fixed-date"));
 const const_1 = require("@node-novel/epub-util/lib/const");
 function slugify(input, ...argv) {
     let fn = EpubMaker.libSlugify ||
@@ -383,10 +386,10 @@ exports.EpubMaker = EpubMaker;
         }
         ;
         collectToc() {
-            return this.collectSections(this, "includeInToc" /* INCLUDE_IN_TOC */);
+            return this.collectSections(this, "includeInToc" /* EnumSectionCollectType.INCLUDE_IN_TOC */);
         }
         collectLandmarks() {
-            return this.collectSections(this, "includeInLandmarks" /* INCLUDE_IN_LANDMARKS */);
+            return this.collectSections(this, "includeInLandmarks" /* EnumSectionCollectType.INCLUDE_IN_LANDMARKS */);
         }
         collectSections(section, prop) {
             let sections = section[prop] ? [section] : [];

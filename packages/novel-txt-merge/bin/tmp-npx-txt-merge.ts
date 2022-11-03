@@ -4,7 +4,7 @@ import yargs from 'yargs';
 import path from 'path';
 
 import txtMerge from '../index';
-import console from 'debug-color2';
+import { console } from 'debug-color2';
 
 console.enabledColor = true;
 

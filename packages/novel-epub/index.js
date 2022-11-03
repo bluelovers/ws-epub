@@ -10,7 +10,7 @@ Object.defineProperty(exports, "makeFilename", { enumerable: true, get: function
 Object.defineProperty(exports, "makeOptions", { enumerable: true, get: function () { return txt2epub3_1.makeOptions; } });
 Object.defineProperty(exports, "defaultOptions", { enumerable: true, get: function () { return txt2epub3_1.defaultOptions; } });
 function novelEpub(options) {
-    return txt2epub3_1.create(options);
+    return (0, txt2epub3_1.create)(options);
 }
 exports.novelEpub = novelEpub;
 exports.default = novelEpub;

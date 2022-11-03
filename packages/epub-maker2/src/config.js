@@ -1,13 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpubConfig = exports.EnumEpubConfigVertical = void 0;
+const tslib_1 = require("tslib");
 const index_1 = require("./index");
 const util_1 = require("./lib/util");
 const const_1 = require("node-novel-info/lib/const");
-const deepmerge_plus_1 = __importDefault(require("deepmerge-plus"));
+const deepmerge_plus_1 = tslib_1.__importDefault(require("deepmerge-plus"));
 const util_2 = require("./lib/util");
 const uuid_1 = require("./lib/uuid");
 const he_1 = require("he");
@@ -39,10 +37,10 @@ class EpubConfig {
     setModification(val, ...argv) {
         let data;
         if (val === true) {
-            data = util_1.moment();
+            data = (0, util_1.moment)();
         }
         else {
-            data = util_1.moment(val, ...argv);
+            data = (0, util_1.moment)(val, ...argv);
         }
         let self = this;
         self.modification = data.local();
@@ -51,10 +49,10 @@ class EpubConfig {
     setPublication(val, ...argv) {
         let data;
         if (val === true) {
-            data = util_1.moment();
+            data = (0, util_1.moment)();
         }
         else {
-            data = util_1.moment(val, ...argv);
+            data = (0, util_1.moment)(val, ...argv);
         }
         let self = this;
         self.publication = data.local();
@@ -85,7 +83,7 @@ class EpubConfig {
             'media-type': '',
         }, data);
         link.href = (link.href || data.href || '').toString();
-        link.rel = link.rel || rel || data.rel || 'link-' + util_1.hashSum(link);
+        link.rel = link.rel || rel || data.rel || 'link-' + (0, util_1.hashSum)(link);
         this.links = this.links || [];
         this.links.push(link);
         return this;
@@ -154,7 +152,7 @@ class EpubConfig {
                  */
                 let encodeAuthors = Object.entries(self.authors)
                     .reduce((a, b) => {
-                    let [key, value] = b.map(v => v && he_1.encode(`${v}`) || v);
+                    let [key, value] = b.map(v => v && (0, he_1.encode)(`${v}`) || v);
                     a[key] = value;
                     return a;
                 }, {});
@@ -173,18 +171,18 @@ class EpubConfig {
         {
             self.tags.push('epub-maker2');
             if (self.tags) {
-                self.tags = util_1.array_unique(self.tags);
+                self.tags = (0, util_1.array_unique)(self.tags);
             }
         }
         if (self.titles) {
             self.titles = self.titles.filter(v => v && v != self.title && v != self.title_short);
-            self.titles = util_1.array_unique(self.titles);
+            self.titles = (0, util_1.array_unique)(self.titles);
         }
-        self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : uuid_1.createUUID(self);
+        self.uuid = (self.uuid && typeof self.uuid == 'string') ? self.uuid : (0, uuid_1.createUUID)(self);
         self.slug = self.slug
             // @ts-ignore
-            || index_1.slugify(self.title)
-            || util_1.hashSum(self.title);
+            || (0, index_1.slugify)(self.title)
+            || (0, util_1.hashSum)(self.title);
         if (!self.modification) {
             self.modification = self.publication.clone();
         }
@@ -196,7 +194,7 @@ class EpubConfig {
             this.setPublication(true);
         }
         if (self.epubContextDate) {
-            self.epubContextDate = util_1.moment(self.epubContextDate);
+            self.epubContextDate = (0, util_1.moment)(self.epubContextDate);
         }
         if (self.infoPreface) {
             /*
@@ -204,7 +202,7 @@ class EpubConfig {
 
             self.infoPrefaceHTML = self.infoPrefaceHTML || self.infoPreface.replace(/\n/g, '<br/>')
             */
-            util_2.htmlPreface(self);
+            (0, util_2.htmlPreface)(self);
         }
         //console.log(self.infoPreface, self.infoPrefaceHTML);
         self.publicationDate = self.publication.format(EpubConfig.dateFormat);

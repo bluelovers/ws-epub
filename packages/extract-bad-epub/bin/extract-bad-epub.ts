@@ -4,7 +4,7 @@ import { load, saveAttach, autoExtract } from '../lib/index';
 import FastGlob from '@bluelovers/fast-glob/bluebird';
 import Bluebird from 'bluebird';
 import path from 'path';
-import console from 'debug-color2';
+import { console } from 'debug-color2';
 
 console.setOptions({
 	time: true,

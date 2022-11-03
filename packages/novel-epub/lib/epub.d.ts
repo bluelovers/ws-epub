@@ -23,7 +23,7 @@ export interface IEpubRuntimeReturnCacheVolumeRow {
     dirname: string;
     value: IReturnRow;
 }
-export declare type IEpubRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
+export type IEpubRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
     stat: INovelEpubReturnInfo["stat"];
 }, {
     cache_vol: {

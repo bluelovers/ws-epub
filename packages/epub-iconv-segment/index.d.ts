@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { IEpubIconvGlobOptions } from 'epub-iconv/lib/glob';
 import { ITSResolvable, ITSValueOrArray } from 'ts-type';
 import Bluebird from 'bluebird';

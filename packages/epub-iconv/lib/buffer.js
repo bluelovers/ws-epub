@@ -2,14 +2,12 @@
 /**
  * Created by user on 2019/7/31.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleZipBuffer = exports.handleZipObject = exports.loadZipBuffer = void 0;
-const jszip_1 = __importDefault(require("jszip"));
-const bluebird_1 = __importDefault(require("bluebird"));
-const iconv_jschardet_1 = __importDefault(require("iconv-jschardet"));
+const tslib_1 = require("tslib");
+const jszip_1 = tslib_1.__importDefault(require("jszip"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
+const iconv_jschardet_1 = tslib_1.__importDefault(require("iconv-jschardet"));
 const min_1 = require("@lazy-cjk/zh-convert/min");
 const const_1 = require("@node-novel/epub-util/lib/const");
 const options_1 = require("./options");
@@ -19,7 +17,7 @@ function loadZipBuffer(zipBuffer) {
 }
 exports.loadZipBuffer = loadZipBuffer;
 function cn2tw_min(input) {
-    return min_1.cn2tw_min(input, {
+    return (0, min_1.cn2tw_min)(input, {
         safe: false
     });
 }
@@ -27,7 +25,7 @@ function handleZipObject(zip, options) {
     return bluebird_1.default.resolve(zip)
         .then(async (zip) => {
         let fnIconv;
-        options = options_1.handleOptions(options);
+        options = (0, options_1.handleOptions)(options);
         {
             options.iconvFn = options.iconvFn || {};
             let { tw = cn2tw_min, cn = min_1.tw2cn_min } = options.iconvFn;
@@ -69,7 +67,7 @@ exports.handleZipObject = handleZipObject;
 function handleZipBuffer(zipBuffer, options) {
     return loadZipBuffer(zipBuffer)
         .then(buf => handleZipObject(buf, options))
-        .then(zip => zip.generateAsync(const_1.createJSZipGeneratorOptions()));
+        .then(zip => zip.generateAsync((0, const_1.createJSZipGeneratorOptions)()));
 }
 exports.handleZipBuffer = handleZipBuffer;
 //# sourceMappingURL=buffer.js.map

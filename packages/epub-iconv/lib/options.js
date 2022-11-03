@@ -2,14 +2,12 @@
 /**
  * Created by user on 2019/8/1.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handlePattern = exports.handleOptions = void 0;
-const core_1 = __importDefault(require("sort-object-keys2/core"));
+const tslib_1 = require("tslib");
+const core_1 = tslib_1.__importDefault(require("sort-object-keys2/core"));
 function handleOptions(opts, ...argv) {
-    let ret = core_1.default(Object.assign({}, opts, ...argv), {
+    let ret = (0, core_1.default)(Object.assign({}, opts, ...argv), {
         keys: [
             'cwd',
             'output',

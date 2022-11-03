@@ -32,4 +32,4 @@ export interface IInternalProcessVolumeOptions extends Omit<IInternalProcessOpti
 export interface IInternalProcessEpubOptions extends IInternalProcessOptions {
     processReturn: IEpubRuntimeReturn;
 }
-export declare type IResolvableBluebird<T> = ITSResolvable<T> | Bluebird<T>;
+export type IResolvableBluebird<T> = ITSResolvable<T> | Bluebird<T>;

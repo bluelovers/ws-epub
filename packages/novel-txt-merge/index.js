@@ -2,46 +2,24 @@
 /**
  * Created by user on 2018/1/28/028.
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeFilename = exports.getMetaTitles = exports.txtMerge = void 0;
-const novelGlobby = __importStar(require("node-novel-globby"));
-const novelGlobbyBase = __importStar(require("node-novel-globby/g"));
-const path_1 = __importDefault(require("path"));
-const bluebird_1 = __importDefault(require("bluebird"));
-const moment_1 = __importDefault(require("moment"));
+const tslib_1 = require("tslib");
+const novelGlobby = tslib_1.__importStar(require("node-novel-globby"));
+const novelGlobbyBase = tslib_1.__importStar(require("node-novel-globby/g"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
+const moment_1 = tslib_1.__importDefault(require("moment"));
 const node_novel_info_1 = require("node-novel-info");
 const crlf_normalize_1 = require("crlf-normalize");
-const fs_iconv_1 = __importStar(require("fs-iconv"));
-const uni_string_1 = __importDefault(require("uni-string"));
+const fs_iconv_1 = tslib_1.__importStar(require("fs-iconv"));
+const uni_string_1 = tslib_1.__importDefault(require("uni-string"));
 const sort_tree_1 = require("@lazy-glob/sort-tree");
 const class_1 = require("node-novel-info/class");
-const node_novel_info_2 = require("node-novel-info");
 const util_1 = require("node-novel-globby/lib/util");
 const tpl_1 = require("./lib/tpl");
 const index_1 = require("./lib/index");
-const debug_color2_1 = __importDefault(require("debug-color2"));
+const debug_color2_1 = require("debug-color2");
 const hr_len = tpl_1.TPL_HR_LEN;
 const eol = tpl_1.TPL_EOL;
 const eol2 = tpl_1.TPL_EOL2;
@@ -64,7 +42,7 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
         inputOptions = noSave;
         ({ noSave } = inputOptions);
     }
-    let _o = index_1.makeDefaultTplData(inputOptions, {
+    let _o = (0, index_1.makeDefaultTplData)(inputOptions, {
         inputPath,
         outputPath,
         outputFilename,
@@ -103,7 +81,7 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
         })
             .then(async function (ls) {
             let data = await fs_iconv_1.default.readFile(ls[0]);
-            return node_novel_info_1.mdconf_parse(data, {
+            return (0, node_novel_info_1.mdconf_parse)(data, {
                 throw: false,
             });
         })
@@ -111,11 +89,11 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
             //console.log(ls);
         })
             .catch(function () {
-            debug_color2_1.default.warn(`[WARN] README.md not exists! (${path_1.default.join(globby_options.cwd, 'README.md')})`);
+            debug_color2_1.console.warn(`[WARN] README.md not exists! (${path_1.default.join(globby_options.cwd, 'README.md')})`);
         });
         //console.log(globby_patterns);
         return novelGlobbyBase.globbyASync(globby_patterns, globby_options)
-            .then(ls => sort_tree_1.sortTree(ls, null, globby_options))
+            .then(ls => (0, sort_tree_1.sortTree)(ls, null, globby_options))
             .then(function (ls) {
             return novelGlobby.globToListArrayDeep(ls, globby_options);
         })
@@ -132,13 +110,13 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
             //let count_f = 0;
             //let count_d = 0;
             //let count_idx = 0;
-            return util_1.foreachArrayDeepAsync(_ls, async ({ value, index, array, cache, }) => {
+            return (0, util_1.foreachArrayDeepAsync)(_ls, async ({ value, index, array, cache, }) => {
                 const { volume_title, chapter_title } = value;
                 const { temp, data } = cache;
                 //temp.cache_vol = temp.cache_vol || {};
                 //temp.toc = temp.toc || [];
                 //temp.context = temp.context || [];
-                let vs_ret = util_1.eachVolumeTitle(volume_title, true);
+                let vs_ret = (0, util_1.eachVolumeTitle)(volume_title, true);
                 vs_ret.titles_full
                     .forEach(function (key, index) {
                     let title = vs_ret.titles[index];
@@ -155,7 +133,7 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
                     //let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}章：${vol_key}${eol}`;
                     //data.context.push(`${hr1}CHECK${eol}${_vol_prefix}${vs_ret.titles[vi]}${eol}${hr1}${eol}`);
                     let _vol_prefix = `第${String(++temp.count_idx).padStart(5, '0')}章：${vol_key}`;
-                    let s = index_1.replaceTpl(inputOptions.tplVolumeStart, {
+                    let s = (0, index_1.replaceTpl)(inputOptions.tplVolumeStart, {
                         ...tplBaseData,
                         prefix: _vol_prefix,
                         title: vs_ret.titles[vi],
@@ -168,7 +146,7 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
                 let txt = await fs_iconv_1.default.readFile(value.path);
                 temp.count_f++;
                 //data.context.push(`${hr2}BEGIN${eol}${_prefix}${chapter_title}${eol}${hr2}BODY${eol2}${txt}${eol2}${hr2}END${eol2}`);
-                let s = index_1.replaceTpl(inputOptions.tplVolumeStart, {
+                let s = (0, index_1.replaceTpl)(inputOptions.tplVolumeStart, {
                     ...tplBaseData,
                     prefix: _prefix,
                     title: chapter_title,
@@ -202,7 +180,7 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
                     tplBaseData,
                 });
                 let txt = a.join(eol);
-                txt = crlf_normalize_1.crlf(txt, eol);
+                txt = (0, crlf_normalize_1.crlf)(txt, eol);
                 let fullpath = path_1.default.join(PATH_CWD, outputDirPathPrefix, `${filename2}`);
                 if (!noSave) {
                     await fs_iconv_1.default.outputFile(fullpath, txt);
@@ -215,24 +193,24 @@ function txtMerge(inputPath, outputPath, outputFilename, noSave, inputOptions) {
                 };
             })
                 .tap(function (data) {
-                debug_color2_1.default.success('[DONE] done.');
-                debug_color2_1.default.info(`Total D: ${data.temp.count_d}\nTotal F: ${data.temp.count_f}\n\n[FILENAME] ${data.filename}`);
+                debug_color2_1.console.success('[DONE] done.');
+                debug_color2_1.console.info(`Total D: ${data.temp.count_d}\nTotal F: ${data.temp.count_f}\n\n[FILENAME] ${data.filename}`);
             })
                 // @ts-ignore
                 .tapCatch(function (e) {
-                debug_color2_1.default.error(`[ERROR] something wrong!!`);
-                debug_color2_1.default.trace(e);
+                debug_color2_1.console.error(`[ERROR] something wrong!!`);
+                debug_color2_1.console.trace(e);
             });
         })
             .tapCatch(function (e) {
-            debug_color2_1.default.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
-            debug_color2_1.default.trace(e);
+            debug_color2_1.console.error(`[ERROR] can't found any file in '${TXT_PATH}'`);
+            debug_color2_1.console.trace(e);
         });
     });
 }
 exports.txtMerge = txtMerge;
 function getMetaTitles(meta) {
-    return node_novel_info_2.getNovelTitleFromMeta(meta);
+    return (0, node_novel_info_1.getNovelTitleFromMeta)(meta);
 }
 exports.getMetaTitles = getMetaTitles;
 /**
@@ -297,7 +275,7 @@ function makeFilename(meta, outputFilename, a = [], _ls, _argv = {}) {
         a.unshift(txt);
     }
     if (inputOptions && inputOptions.tplBannerStart) {
-        let s = index_1.replaceTpl(inputOptions.tplBannerStart, {
+        let s = (0, index_1.replaceTpl)(inputOptions.tplBannerStart, {
             ...tplBaseData,
             title: metaLib.title(),
             author: metaLib.authors().join(' , '),
@@ -321,16 +299,16 @@ function makeFilename(meta, outputFilename, a = [], _ls, _argv = {}) {
         }
     }
     filename = filename || 'temp';
-    let filename2 = fs_iconv_1.trimFilename(filename)
+    let filename2 = (0, fs_iconv_1.trimFilename)(filename)
         .replace(/\./, '_')
         .replace(/^[_+\-]+|[_+\-]+$/, '');
     filename2 = uni_string_1.default.create(filename2).split('').slice(0, 20).join('');
-    filename2 = fs_iconv_1.trimFilename(filename2);
+    filename2 = (0, fs_iconv_1.trimFilename)(filename2);
     if (!filename2) {
-        debug_color2_1.default.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
+        debug_color2_1.console.error(`[ERROR] Bad Filename: ${filename} => ${filename2}`);
         filename2 = 'temp';
     }
-    filename += '_' + moment_1.default().local().format('YYYYMMDDHHmm');
+    filename += '_' + (0, moment_1.default)().local().format('YYYYMMDDHHmm');
     filename2 = `${filename2}.out.txt`;
     return filename2;
 }

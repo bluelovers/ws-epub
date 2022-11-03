@@ -162,15 +162,7 @@ export declare class EpubConfig implements IEpubConfig {
     $auto(): this;
     entries(auto?: boolean): IEpubConfig;
     toJSON(auto?: boolean, replacer?: any, space?: string): string;
-    toArray(auto?: boolean): [string, string | number | boolean | ICover | IRightsConfig | IStylesheet | ICollection | string[] | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
-        libSlugify?: ISlugify;
-        ext?: string;
-        generateOptions?: any;
-    } | ((auto?: boolean) => IEpubConfig) | ((val: any, ...argv: any[]) => this) | ((vertical?: boolean | EnumEpubConfigVertical) => this) | (() => this) | ((val: any, ...argv: any[]) => this) | ((name: string, url?: string) => this) | ((data: string | EpubMetaLink, rel?: string) => this) | ((type: string, id?: string) => this) | (() => any) | ((auto?: boolean, replacer?: any, space?: string) => string) | ((auto?: boolean) => [string, string | number | boolean | ICover | IRightsConfig | IStylesheet | ICollection | string[] | EpubMaker.Section[] | IFiles[] | moment.Moment | EpubMetaLink[] | Date | (string | number)[] | moment.MomentInputObject | Record<string, string> | {
-        libSlugify?: ISlugify;
-        ext?: string;
-        generateOptions?: any;
-    } | ((auto?: boolean) => IEpubConfig) | ((val: any, ...argv: any[]) => this) | ((vertical?: boolean | EnumEpubConfigVertical) => this) | (() => this) | ((val: any, ...argv: any[]) => this) | ((name: string, url?: string) => this) | ((data: string | EpubMetaLink, rel?: string) => this) | ((type: string, id?: string) => this) | (() => any) | ((auto?: boolean, replacer?: any, space?: string) => string) | any][])][];
+    toArray(auto?: boolean): [string, any][];
 }
 export declare namespace EpubConfig {
     let dateFormat: string;

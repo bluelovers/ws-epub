@@ -7,7 +7,7 @@ import { IMdconfMeta } from 'node-novel-info';
 import { IForeachArrayDeepReturn } from 'node-novel-globby/lib/util';
 import { EnumTxtStyle } from './lib/tpl';
 import { makeDefaultTplData } from './lib/index';
-export declare type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
+export type ITxtRuntimeReturn = IForeachArrayDeepReturn<IReturnRow, any, {
     toc: string[];
     context: string[];
 }, {

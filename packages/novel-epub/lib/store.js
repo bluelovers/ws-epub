@@ -1,14 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAttachID = exports.handleAttachFile = exports.parsePath = exports.isEncodeURI = exports.isHashedLike = exports.isBadName = exports.defaultChkExt = exports.EpubStore = void 0;
+const tslib_1 = require("tslib");
 const epub_maker2_1 = require("epub-maker2");
-const path_1 = __importDefault(require("path"));
-const lazy_url_1 = __importDefault(require("lazy-url"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const lazy_url_1 = tslib_1.__importDefault(require("lazy-url"));
 const fs_extra_1 = require("fs-extra");
-const execall2_1 = __importDefault(require("execall2"));
+const execall2_1 = tslib_1.__importDefault(require("execall2"));
 const transliteration_1 = require("transliteration");
 const str_util_1 = require("str-util");
 const log_1 = require("./log");
@@ -27,7 +25,7 @@ class EpubStore {
             let i = 0;
             name = name || _data.name;
             try {
-                name = transliteration_1.slugify(name).trim().slice(0, 22).trim() || name;
+                name = (0, transliteration_1.slugify)(name).trim().slice(0, 22).trim() || name;
             }
             catch (e) {
             }
@@ -90,12 +88,12 @@ function isBadName(input) {
 }
 exports.isBadName = isBadName;
 function isHashedLike(input, maxCount = 3) {
-    let r = execall2_1.default(/([a-f][0-9]|[0-9][a-f])/ig, input);
+    let r = (0, execall2_1.default)(/([a-f][0-9]|[0-9][a-f])/ig, input);
     return r.length >= maxCount;
 }
 exports.isHashedLike = isHashedLike;
 function isEncodeURI(input, maxCount = 3) {
-    let r = execall2_1.default(/(%[0-9a-f]{2,})/ig, input);
+    let r = (0, execall2_1.default)(/(%[0-9a-f]{2,})/ig, input);
     return r.length >= maxCount;
 }
 exports.isEncodeURI = isEncodeURI;
@@ -109,7 +107,7 @@ function parsePath(input, options) {
     try {
         const isFile = true;
         let tempInput;
-        if (cwd && fs_extra_1.pathExistsSync(tempInput = path_1.default.resolve(cwd, input))) {
+        if (cwd && (0, fs_extra_1.pathExistsSync)(tempInput = path_1.default.resolve(cwd, input))) {
             let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
@@ -119,7 +117,7 @@ function parsePath(input, options) {
                 data,
             });
         }
-        else if (fs_extra_1.pathExistsSync(tempInput = path_1.default.resolve(input))) {
+        else if ((0, fs_extra_1.pathExistsSync)(tempInput = path_1.default.resolve(input))) {
             let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
@@ -129,7 +127,7 @@ function parsePath(input, options) {
                 data,
             });
         }
-        else if (fs_extra_1.pathExistsSync(tempInput = fs_extra_1.realpathSync(input))) {
+        else if ((0, fs_extra_1.pathExistsSync)(tempInput = (0, fs_extra_1.realpathSync)(input))) {
             let data = path_1.default.parse(tempInput);
             let { ext, name } = data;
             name = decodeURIComponent(name);
@@ -144,11 +142,11 @@ function parsePath(input, options) {
              * 當使用本地圖片時只允許指定的副檔名
              */
             if (isFile) {
-                if (!ext_1.isAllowExtImage(ext)) {
+                if (!(0, ext_1.isAllowExtImage)(ext)) {
                     log_1.console.error(`'${ext}' 副導名不在允許清單內, ${ext_1.allowExtImage}`);
                     return null;
                 }
-                else if (!util_1.pathAtParent(tempInput, cwdRoot)) {
+                else if (!(0, util_1.pathAtParent)(tempInput, cwdRoot)) {
                     log_1.console.error(`檔案路徑必須要存在於目前小說資料夾下，不允許讀取其他資料夾\n${cwdRoot}\n${tempInput}`);
                     return null;
                 }
@@ -173,7 +171,7 @@ function parsePath(input, options) {
             let name = path_1.default.basename(pathname, ext);
             let data = new lazy_url_1.default(u).toObject();
             if (!name) {
-                name = epub_maker2_1.hashSum(input);
+                name = (0, epub_maker2_1.hashSum)(input);
             }
             return {
                 isFile,
@@ -240,7 +238,7 @@ function handleAttachFile(input, plusData) {
 exports.handleAttachFile = handleAttachFile;
 function getAttachID(id, attach, returnFailbackObject) {
     const { images } = attach || {};
-    id = str_util_1.toHalfWidth(id).trim();
+    id = (0, str_util_1.toHalfWidth)(id).trim();
     if (!images[id]) {
         id = id.toLowerCase();
     }

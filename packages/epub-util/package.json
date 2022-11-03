@@ -9,7 +9,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/epub-util"
   },
   "license": "ISC",
   "author": "bluelovers",
@@ -21,6 +22,10 @@
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
     "test": "echo \"Error: no test specified\"",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
     "preversion": "yarn run test",
@@ -35,10 +40,10 @@
   "dependencies": {
     "@types/cheerio": "*",
     "@types/jquery": "*",
-    "crlf-normalize": "^1.0.7",
+    "crlf-normalize": "^1.0.18",
     "html-minifier": "^4.0.0",
-    "tslib": "^2.4.0",
-    "zero-width": "^1.0.17"
+    "tslib": "^2.4.1",
+    "zero-width": "^1.0.25"
   },
   "publishConfig": {
     "access": "public"

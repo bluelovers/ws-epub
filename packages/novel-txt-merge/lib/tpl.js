@@ -22,7 +22,7 @@ var EnumTxtStyle;
 })(EnumTxtStyle = exports.EnumTxtStyle || (exports.EnumTxtStyle = {}));
 exports.SHU_BOOK_BANNER = '(= 書僕開放格式 =)${eol}(= 書名：${title} =)${eol}(= 作者：${author} =)${eol}(= 語言：${lang} =)';
 exports.presetTxtStyle = {
-    [0 /* NONE */]: {
+    [0 /* EnumTxtStyle.NONE */]: {
         'tplBannerStart': '',
         'tplVolumeStart': '${prefix}${eol}${title}',
         'tplChapterStart': '${prefix}${eol}${title}',
@@ -33,8 +33,8 @@ exports.presetTxtStyle = {
         'hr13': exports.TPL_HR2 + 'END',
     },
 };
-exports.presetTxtStyle[16 /* SHU_BOOK */] = {
-    ...exports.presetTxtStyle[0 /* NONE */],
+exports.presetTxtStyle[16 /* EnumTxtStyle.SHU_BOOK */] = {
+    ...exports.presetTxtStyle[0 /* EnumTxtStyle.NONE */],
     'tplBannerStart': exports.SHU_BOOK_BANNER,
     'tplVolumeStart': '= ${prefix} =${eol}${title}',
     'tplChapterStart': '= ${prefix} =${eol}${title}',

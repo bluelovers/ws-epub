@@ -2,7 +2,6 @@
  * Created by user on 2018/2/7/007.
  */
 
-// @ts-ignore
 import { EPub, SYMBOL_RAW_DATA } from 'epub2';
 import { fixToc } from 'epub2/lib/toc';
 import cheerio from 'cheerio';
@@ -292,7 +291,7 @@ export function epubExtract(srcFile: string, options: IOptions = {}): Promise<st
 
 				tags: epub.metadata.subject,
 
-				contribute: epub.metadata.contribute,
+				contribute: epub.metadata['contribute'],
 			};
 
 			await Promise.mapSeries(volume_list,async function (volume)

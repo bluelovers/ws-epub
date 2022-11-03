@@ -9,7 +9,7 @@ import path from 'upath2';
 import { EpubMaker } from '../index';
 import { fetchFile } from './ajax';
 import { hashSum, BPromise } from '../lib/util';
-import console from 'debug-color2/logger';
+import { consoleLogger as console } from 'debug-color2/logger';
 
 export { JSZip }
 

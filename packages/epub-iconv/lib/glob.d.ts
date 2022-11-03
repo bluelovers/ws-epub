@@ -1,7 +1,6 @@
 /**
  * Created by user on 2019/7/31.
  */
-/// <reference types="node" />
 import { ITSResolvable, ITSValueOrArray } from 'ts-type';
 import { IEpubIconvOptions } from './buffer';
 import Bluebird from 'bluebird';

@@ -27,12 +27,12 @@ function htmlminify(html, options = {}) {
         ],
     }, options);
     try {
-        let ret = html_minifier_1.minify(html, options);
+        let ret = (0, html_minifier_1.minify)(html, options);
         return ret;
     }
     catch (e) {
         try {
-            let ret = js_beautify_1.html_beautify(html, {
+            let ret = (0, js_beautify_1.html_beautify)(html, {
                 end_with_newline: true,
                 indent_char: '',
                 indent_inner_html: false,

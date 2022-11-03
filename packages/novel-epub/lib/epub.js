@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports._withSection = exports.createMarkdownSection = exports.createContributeSection = exports.addContributeSection = exports._hookAfterEpub = exports._hookAfterVolume = exports._handleVolumeImageEach = exports._handleVolumeImage = exports.getAttachMetaByRow = exports.getAttachMeta = exports.makeChapterID = exports.makeVolumeID = exports.makePrefixID = exports.addMarkdown = exports._handleVolume = exports.EnumPrefixIDTitle = exports.EnumPrefixIDType = exports.SymCache = void 0;
 const tslib_1 = require("tslib");
-const epub_maker2_1 = (0, tslib_1.__importDefault)(require("epub-maker2"));
+const epub_maker2_1 = tslib_1.__importDefault(require("epub-maker2"));
 const util_1 = require("./util");
 const util_2 = require("epub-maker2/src/lib/util");
 const crlf_normalize_1 = require("crlf-normalize");
@@ -12,9 +12,9 @@ const html_1 = require("./html");
 const md_1 = require("./md");
 const ext_1 = require("./ext");
 const str_util_1 = require("str-util");
-const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
-const upath2_1 = (0, tslib_1.__importDefault)(require("upath2"));
-const fs_iconv_1 = (0, tslib_1.__importDefault)(require("fs-iconv"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
+const upath2_1 = tslib_1.__importDefault(require("upath2"));
+const fs_iconv_1 = tslib_1.__importDefault(require("fs-iconv"));
 const g_1 = require("node-novel-globby/g");
 const log_1 = require("./log");
 exports.SymCache = Symbol('cache');
@@ -115,9 +115,9 @@ function _handleVolume(volume, dirname, _data_) {
                     dirname,
                     _data_,
                     file,
-                    epubType: "foreword" /* FOREWORD */,
-                    epubPrefix: "foreword" /* FOREWORD */,
-                    epubTitle: "FOREWORD" /* FOREWORD */,
+                    epubType: "foreword" /* EnumEpubTypeName.FOREWORD */,
+                    epubPrefix: "foreword" /* EnumPrefixIDType.FOREWORD */,
+                    epubTitle: "FOREWORD" /* EnumPrefixIDTitle.FOREWORD */,
                 });
             }
         }
@@ -153,11 +153,11 @@ function makePrefixID(count_idx, prefix) {
 }
 exports.makePrefixID = makePrefixID;
 function makeVolumeID(count_idx) {
-    return makePrefixID(count_idx, "volume" /* VOLUME */);
+    return makePrefixID(count_idx, "volume" /* EnumPrefixIDType.VOLUME */);
 }
 exports.makeVolumeID = makeVolumeID;
 function makeChapterID(count_idx) {
-    return makePrefixID(count_idx, "chapter" /* CHAPTER */);
+    return makePrefixID(count_idx, "chapter" /* EnumPrefixIDType.CHAPTER */);
 }
 exports.makeChapterID = makeChapterID;
 function getAttachMeta(dirname) {
@@ -307,8 +307,8 @@ function _handleVolumeImage(volume, dirname, _data_) {
                         arr.unshift(volume.content.cover.name);
                     }
                 }
-                let chapter = new epub_maker2_1.default.Section("non-specific backmatter" /* NON_SPECIFIC_BACKMATTER */, makePrefixID(processReturn.temp.count_idx++, "image" /* IMAGE */), {
-                    title: "\u63D2\u5716" /* IMAGE */,
+                let chapter = new epub_maker2_1.default.Section("non-specific backmatter" /* EnumEpubTypeName.NON_SPECIFIC_BACKMATTER */, makePrefixID(processReturn.temp.count_idx++, "image" /* EnumPrefixIDType.IMAGE */), {
+                    title: "\u63D2\u5716" /* EnumPrefixIDTitle.IMAGE */,
                     content: arr2.reduce(function (a, b) {
                         let html = (0, html_1.novelImage)(b.src, {
                             attr: b.attr,
@@ -428,9 +428,9 @@ exports.addContributeSection = addContributeSection;
 function createContributeSection(options) {
     return createMarkdownSection({
         ...options,
-        epubType: "non-specific backmatter" /* NON_SPECIFIC_BACKMATTER */,
-        epubTitle: "CONTRIBUTE" /* CONTRIBUTE */,
-        epubPrefix: "contribute" /* CONTRIBUTE */,
+        epubType: "non-specific backmatter" /* EnumEpubTypeName.NON_SPECIFIC_BACKMATTER */,
+        epubTitle: "CONTRIBUTE" /* EnumPrefixIDTitle.CONTRIBUTE */,
+        epubPrefix: "contribute" /* EnumPrefixIDType.CONTRIBUTE */,
     });
 }
 exports.createContributeSection = createContributeSection;

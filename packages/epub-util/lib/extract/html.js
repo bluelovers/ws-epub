@@ -10,7 +10,7 @@ function fixHtml(html) {
         conservativeCollapse: true,
         caseSensitive: true,
     };
-    return html_minifier_1.minify(html_minifier_1.minify(crlf_normalize_1.crlf(html), options)
+    return (0, html_minifier_1.minify)((0, html_minifier_1.minify)((0, crlf_normalize_1.crlf)(html), options)
         .replace(/(?<=<br\/?>)(?!\s*[\r\n])/ig, '\n')
         .replace(/(?<=<\/p>)(?!\s*[\r\n])/ig, '\n'), options);
 }

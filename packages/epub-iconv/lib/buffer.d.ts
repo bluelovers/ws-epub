@@ -8,7 +8,7 @@ import { ITSResolvable } from 'ts-type';
 import { tw2cn_min } from '@lazy-cjk/zh-convert/min';
 export declare function loadZipBuffer(zipBuffer: ITSResolvable<Buffer>): Bluebird<JSZip>;
 declare function cn2tw_min(input: string): string;
-export declare type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;
+export type IIconvFn = ((input: string) => ITSResolvable<string>) | typeof cn2tw_min | typeof tw2cn_min;
 export interface IEpubIconvOptions {
     iconv?: 'cn' | 'tw';
     iconvFn?: {

@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeDefaultTplData = exports.replaceTpl = void 0;
 const tpl_1 = require("./tpl");
-const debug_color2_1 = __importDefault(require("debug-color2"));
+const debug_color2_1 = require("debug-color2");
 function replaceTpl(tpl, data) {
     let r = new RegExp(`\\$\\{(${Object.keys(data).join('|')})\\}`, 'gu');
     return tpl
@@ -26,15 +23,15 @@ function makeDefaultTplData(inputOptions, opts) {
                 ...inputOptions,
                 ...c,
             };
-            debug_color2_1.default.info('將 inputConfigPath 內設定合併至本次執行參數內');
-            debug_color2_1.default.dir(inputOptions);
+            debug_color2_1.console.info('將 inputConfigPath 內設定合併至本次執行參數內');
+            debug_color2_1.console.dir(inputOptions);
         }
         catch (e) {
-            debug_color2_1.default.error('[ERROR]', '讀取 inputConfigPath 時發生錯誤', e.message);
+            debug_color2_1.console.error('[ERROR]', '讀取 inputConfigPath 時發生錯誤', e.message);
         }
     }
     //inputOptions.txtStyle = EnumTxtStyle.SHU_BOOK;
-    let txtStyle = tpl_1.presetTxtStyle[inputOptions.txtStyle] || tpl_1.presetTxtStyle[0 /* NONE */];
+    let txtStyle = tpl_1.presetTxtStyle[inputOptions.txtStyle] || tpl_1.presetTxtStyle[0 /* EnumTxtStyle.NONE */];
     let tplBaseData = {};
     [
         'tplBannerStart',

@@ -2,23 +2,21 @@
 /**
  * Created by user on 2017/12/15/015.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compileCss = exports.postcssStripInlineComments = exports.postcss_epub = exports.autoprefixer = exports.postcss = void 0;
-const postcss_1 = __importDefault(require("postcss"));
+const tslib_1 = require("tslib");
+const postcss_1 = tslib_1.__importDefault(require("postcss"));
 exports.postcss = postcss_1.default;
-const autoprefixer_1 = __importDefault(require("autoprefixer"));
+const autoprefixer_1 = tslib_1.__importDefault(require("autoprefixer"));
 exports.autoprefixer = autoprefixer_1.default;
-const postcss_epub_1 = __importDefault(require("postcss-epub"));
+const postcss_epub_1 = tslib_1.__importDefault(require("postcss-epub"));
 exports.postcss_epub = postcss_epub_1.default;
-const postcss_strip_inline_comments_1 = __importDefault(require("postcss-strip-inline-comments"));
+const postcss_strip_inline_comments_1 = tslib_1.__importDefault(require("postcss-strip-inline-comments"));
 exports.postcssStripInlineComments = postcss_strip_inline_comments_1.default;
 async function compileCss(css) {
-    let result = await postcss_1.default([
+    let result = await (0, postcss_1.default)([
         postcss_epub_1.default,
-        autoprefixer_1.default({
+        (0, autoprefixer_1.default)({
             add: true,
             remove: false,
             flexbox: false,

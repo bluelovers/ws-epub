@@ -4,6 +4,6 @@
 
 export * from './lib/index';
 
-import autoExtract from './lib/index';
+import { autoExtract } from './lib/index';
 
 export default autoExtract;

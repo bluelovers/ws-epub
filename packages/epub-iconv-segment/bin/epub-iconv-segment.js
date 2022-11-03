@@ -1,34 +1,13 @@
 #!/usr/bin/env node
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const update_notifier_1 = __importDefault(require("@yarn-tool/update-notifier"));
-const yargs_1 = __importDefault(require("yargs"));
-const __1 = __importDefault(require(".."));
-const path = __importStar(require("path"));
-const pkg = __importStar(require("../package.json"));
-update_notifier_1.default(path.join(__dirname, '..'));
+const tslib_1 = require("tslib");
+const update_notifier_1 = tslib_1.__importDefault(require("@yarn-tool/update-notifier"));
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
+const __1 = tslib_1.__importDefault(require(".."));
+const path = tslib_1.__importStar(require("path"));
+const pkg = tslib_1.__importStar(require("../package.json"));
+(0, update_notifier_1.default)(path.join(__dirname, '..'));
 let argv = yargs_1.default
     .scriptName(pkg.name)
     .example(`epub-iconv --iconv cn *.epub`, ``)
@@ -65,7 +44,7 @@ let argv = yargs_1.default
     if (!pattern.length) {
         pattern = ['*.epub'];
     }
-    return __1.default(pattern, options);
+    return (0, __1.default)(pattern, options);
 })
     .argv;
 //# sourceMappingURL=epub-iconv-segment.js.map

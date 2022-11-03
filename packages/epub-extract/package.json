@@ -45,7 +45,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/epub-extract"
   },
   "license": "ISC",
   "author": "bluelovers",
@@ -61,8 +62,13 @@
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
     "test": "jest",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
+    "preversion": "yarn run test",
     "prepublish:lockfile": "npx sync-lockfile .",
     "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
     "postpublish_": "git commit -m \"chore(release): publish\" .",
@@ -73,14 +79,14 @@
   },
   "dependencies": {
     "@node-novel/epub-util": "^1.0.9",
-    "cheerio": "^1.0.0-rc.10",
-    "epub2": "^2.0.9",
-    "fs-iconv": "^3.1.9",
+    "cheerio": "^1.0.0-rc.12",
+    "epub2": "^3.0.0",
+    "fs-iconv": "^3.1.17",
     "html-minifier": "^4.0.0",
-    "node-novel-globby": "^2.0.19",
+    "node-novel-globby": "^2.0.23",
     "node-novel-info": "^3.0.15",
-    "tslib": "^2.4.0",
-    "yargs": "^17.5.1",
-    "zero-width": "^1.0.17"
+    "tslib": "^2.4.1",
+    "yargs": "^17.6.2",
+    "zero-width": "^1.0.25"
   }
 }

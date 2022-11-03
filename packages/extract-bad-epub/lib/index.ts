@@ -9,12 +9,12 @@ import { BufferFrom, decode, ENUM_NODE_ENCODING } from 'iconv-jschardet';
 import { JSDOM, createJSDOM, IJSDOM, asyncJSDOM } from 'jsdom-extra';
 import path from 'upath2';
 import { stringify } from 'mdconf2';
-import console from 'debug-color2';
-import execall from 'execall2';
+import { console } from 'debug-color2';
+import { execall } from 'execall2';
 import { cloneDeep } from 'lodash';
-import fixJQuery from '@node-novel/epub-util/lib/extract/jquery';
-import fixHtml, { fixHtml2 } from '@node-novel/epub-util/lib/extract/html';
-import fixText from '@node-novel/epub-util/lib/extract/text';
+import { fixJQuery } from '@node-novel/epub-util/lib/extract/jquery';
+import { fixHtml2 } from '@node-novel/epub-util/lib/extract/html';
+import { fixText } from '@node-novel/epub-util/lib/extract/text';
 
 export interface IImages extends Record<string, string>
 {

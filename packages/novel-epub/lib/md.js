@@ -2,15 +2,13 @@
 /**
  * Created by user on 2019/7/22.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleMarkdown = exports.render = exports.createMarkdownIt = void 0;
-const markdown_it_1 = __importDefault(require("markdown-it"));
+const tslib_1 = require("tslib");
+const markdown_it_1 = tslib_1.__importDefault(require("markdown-it"));
 const lodash_1 = require("lodash");
 function createMarkdownIt(options, plusData) {
-    options = lodash_1.defaultsDeep({}, options, {
+    options = (0, lodash_1.defaultsDeep)({}, options, {
         html: true,
         linkify: true,
         breaks: true,
@@ -96,7 +94,7 @@ function render(input, options = {}) {
 }
 exports.render = render;
 function handleMarkdown(txt, plusData) {
-    lodash_1.defaultsDeep(plusData = plusData || {}, {
+    (0, lodash_1.defaultsDeep)(plusData = plusData || {}, {
         md: null,
         mdEnv: {},
     });

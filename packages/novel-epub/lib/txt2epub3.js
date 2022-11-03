@@ -5,7 +5,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.makeFilename = exports.create = exports.makeOptions = exports.getNovelConf = exports.defaultOptions = exports.console = void 0;
 const tslib_1 = require("tslib");
-const epub_maker2_1 = (0, tslib_1.__importStar)(require("epub-maker2"));
+const epub_maker2_1 = tslib_1.__importStar(require("epub-maker2"));
 const node_novel_info_1 = require("node-novel-info");
 const util_1 = require("./util");
 const log_1 = require("./log");
@@ -16,11 +16,11 @@ const class_1 = require("node-novel-info/class");
 const sort_tree_1 = require("@lazy-glob/sort-tree");
 const util_2 = require("node-novel-globby/lib/util");
 const epub_1 = require("./epub");
-const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
-const upath2_1 = (0, tslib_1.__importDefault)(require("upath2"));
-const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
-const novelGlobby = (0, tslib_1.__importStar)(require("node-novel-globby/g"));
-const deepmerge_plus_1 = (0, tslib_1.__importDefault)(require("deepmerge-plus"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
+const upath2_1 = tslib_1.__importDefault(require("upath2"));
+const moment_1 = tslib_1.__importDefault(require("moment"));
+const novelGlobby = tslib_1.__importStar(require("node-novel-globby/g"));
+const deepmerge_plus_1 = tslib_1.__importDefault(require("deepmerge-plus"));
 const util_3 = require("util");
 const store_1 = require("./store");
 const html_1 = require("./html");
@@ -214,9 +214,9 @@ function create(options, cache = {}) {
                             count_idx,
                         }
                     },
-                    epubType: "foreword" /* FOREWORD */,
-                    epubTitle: "FOREWORD" /* FOREWORD */,
-                    epubPrefix: "foreword" /* FOREWORD */,
+                    epubType: "foreword" /* EnumEpubTypeName.FOREWORD */,
+                    epubTitle: "FOREWORD" /* EnumPrefixIDTitle.FOREWORD */,
+                    epubPrefix: "foreword" /* EnumPrefixIDType.FOREWORD */,
                 });
                 count_idx++;
             }
@@ -385,7 +385,7 @@ function create(options, cache = {}) {
                      */
                     log_1.console.info(`[${(source_idx + 1).toString().padStart(4, '0')}／${source_totals.toString().padStart(4, '0')}]`, volume_title, `／`, chapter_title);
                 }
-                let chapter = new epub_maker2_1.default.Section("chapter" /* CHAPTER */, (0, epub_1.makeChapterID)(temp.count_idx++), {
+                let chapter = new epub_maker2_1.default.Section("chapter" /* EnumEpubTypeName.CHAPTER */, (0, epub_1.makeChapterID)(temp.count_idx++), {
                     title: name,
                     content: txt,
                 }, true, false);

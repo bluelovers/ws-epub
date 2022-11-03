@@ -5,12 +5,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addSubSections = exports.addCover = exports.addFiles = exports.addStaticFiles = exports.parseFileSetting = exports.JSZip = void 0;
 const tslib_1 = require("tslib");
-const jszip_1 = (0, tslib_1.__importDefault)(require("jszip"));
+const jszip_1 = tslib_1.__importDefault(require("jszip"));
 exports.JSZip = jszip_1.default;
-const upath2_1 = (0, tslib_1.__importDefault)(require("upath2"));
+const upath2_1 = tslib_1.__importDefault(require("upath2"));
 const ajax_1 = require("./ajax");
 const util_1 = require("../lib/util");
-const logger_1 = (0, tslib_1.__importDefault)(require("debug-color2/logger"));
+const logger_1 = require("debug-color2/logger");
 /*
 export async function addMimetype(zip: JSZip, epub: EpubMaker, options)
 {
@@ -59,10 +59,10 @@ function addStaticFiles(zip, staticFiles) {
             _file.mime = _file.mime || cf.mime;
         }
         let label = `[${(index + 1).toString().padStart(4, '0')}／${length.toString().padStart(4, '0')}]`;
-        logger_1.default.debug(`處理附加檔案`, label, _file);
+        logger_1.consoleLogger.debug(`處理附加檔案`, label, _file);
         file = await (0, ajax_1.fetchFile)(_file)
             .catch(e => {
-            logger_1.default.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, label, _file, e);
+            logger_1.consoleLogger.warn(`[SKIP] 處理附加檔案時失敗，忽略附加此檔案`, label, _file, e);
             return null;
         });
         if (!file) {
@@ -116,7 +116,7 @@ async function addCover(zip, epub, options) {
         epub.epubConfig.cover.basename = 'CoverDesign';
         let file = await (0, ajax_1.fetchFile)(epub.epubConfig.cover)
             .catch(e => {
-            logger_1.default.error(e && e.meggage || `can't fetch cover`);
+            logger_1.consoleLogger.error(e && e.meggage || `can't fetch cover`);
             return null;
         });
         if (!file) {

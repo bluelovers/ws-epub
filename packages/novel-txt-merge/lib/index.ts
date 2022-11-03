@@ -1,6 +1,6 @@
 import { ITxtMergeOptions } from '../index';
 import { EnumTxtStyle, presetTxtStyle, TPL_EOL, TPL_EOL2 } from './tpl';
-import console from 'debug-color2';
+import { console } from 'debug-color2';
 
 export interface ITplData
 {

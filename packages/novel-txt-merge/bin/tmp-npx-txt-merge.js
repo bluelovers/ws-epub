@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const yargs_1 = __importDefault(require("yargs"));
-const path_1 = __importDefault(require("path"));
-const index_1 = __importDefault(require("../index"));
-const debug_color2_1 = __importDefault(require("debug-color2"));
-debug_color2_1.default.enabledColor = true;
+const tslib_1 = require("tslib");
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const index_1 = tslib_1.__importDefault(require("../index"));
+const debug_color2_1 = require("debug-color2");
+debug_color2_1.console.enabledColor = true;
 const update_notifier_1 = require("@yarn-tool/update-notifier");
 const CWD = process.cwd();
-update_notifier_1.updateNotifier(path_1.default.join(__dirname, '..'));
+(0, update_notifier_1.updateNotifier)(path_1.default.join(__dirname, '..'));
 let cli = yargs_1.default
     .default({
 //input: process.cwd(),
@@ -23,6 +21,12 @@ let cli = yargs_1.default
     normalize: true,
     type: 'string',
     desc: 'source novel txt folder path 要打包的 txt 來源資料夾',
+    /*
+    default: function ()
+    {
+        //return process.cwd();
+    },
+    */
 })
     .option('output', {
     alias: ['o'],
@@ -60,18 +64,18 @@ let cli = yargs_1.default
     if (!path_1.default.isAbsolute(outputPath)) {
         outputPath = path_1.default.join(CWD, outputPath);
     }
-    debug_color2_1.default.log(`currentPath:\n  `, inputPath);
-    debug_color2_1.default.log(`inputPath:\n  `, inputPath);
-    debug_color2_1.default.log(`outputPath:\n  `, outputPath);
+    debug_color2_1.console.log(`currentPath:\n  `, inputPath);
+    debug_color2_1.console.log(`inputPath:\n  `, inputPath);
+    debug_color2_1.console.log(`outputPath:\n  `, outputPath);
     if (inputPath.indexOf(__dirname) == 0 || outputPath.indexOf(__dirname) == 0) {
-        debug_color2_1.default.error(`[FAIL] path not allow`);
+        debug_color2_1.console.error(`[FAIL] path not allow`);
         yargs.showHelp();
         process.exit(1);
         return;
     }
-    debug_color2_1.default.log(`\n`);
+    debug_color2_1.console.log(`\n`);
     //console.log(666, yargs.argv);
-    return index_1.default(inputPath, outputPath, {
+    return (0, index_1.default)(inputPath, outputPath, {
         txtStyle: yargs.argv.txtStyle,
         inputConfigPath: yargs.argv.configPath,
     });

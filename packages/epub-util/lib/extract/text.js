@@ -1,29 +1,11 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fixText = void 0;
-const lib_1 = __importStar(require("zero-width/lib"));
+const tslib_1 = require("tslib");
+const lib_1 = tslib_1.__importStar(require("zero-width/lib"));
 const crlf_normalize_1 = require("crlf-normalize");
 function fixText(text) {
-    return crlf_normalize_1.crlf(lib_1.default(lib_1.nbspToSpace(text)))
+    return (0, crlf_normalize_1.crlf)((0, lib_1.default)((0, lib_1.nbspToSpace)(text)))
         .replace(/^\n{2,}|\n{2,}$/g, '\n');
 }
 exports.fixText = fixText;

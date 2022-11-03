@@ -19,6 +19,6 @@ export interface IOptions {
     noVolume?: boolean;
 }
 export declare function epubExtract(srcFile: string, options?: IOptions): Promise<string>;
-export declare function getCheerio(doc: string): CheerioStatic;
+export declare function getCheerio(doc: string): cheerio.Root;
 export { fixText };
 export default epubExtract;

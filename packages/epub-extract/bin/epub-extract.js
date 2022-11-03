@@ -3,10 +3,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const node_novel_globby_1 = require("node-novel-globby");
-const yargs_1 = (0, tslib_1.__importDefault)(require("yargs"));
-const path_1 = (0, tslib_1.__importDefault)(require("path"));
-const index_1 = (0, tslib_1.__importDefault)(require("../index"));
-const bluebird_1 = (0, tslib_1.__importDefault)(require("bluebird"));
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const index_1 = tslib_1.__importDefault(require("../index"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
 let cli = yargs_1.default
     .usage("$0 [-o dir] [-i file]")
     .example('$0 -o epub name.epub', 'extract name.epub to epub dir')

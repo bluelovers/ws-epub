@@ -3,36 +3,15 @@
 /**
  * Created by user on 2018/2/18/018.
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const yargs_1 = __importDefault(require("yargs"));
-const path_1 = __importDefault(require("path"));
-const index_1 = __importStar(require("../index"));
+const tslib_1 = require("tslib");
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const index_1 = tslib_1.__importStar(require("../index"));
 const log_1 = require("../lib/log");
 const update_notifier_1 = require("@yarn-tool/update-notifier");
 const CWD = process.cwd();
-update_notifier_1.updateNotifier(path_1.default.join(__dirname, '..'));
+(0, update_notifier_1.updateNotifier)(path_1.default.join(__dirname, '..'));
 let cli = yargs_1.default
     .default({
 //input: process.cwd(),
@@ -44,6 +23,12 @@ let cli = yargs_1.default
     normalize: true,
     type: 'string',
     desc: '小說資料夾路徑 source novel txt folder path',
+    /*
+    default: function ()
+    {
+        //return process.cwd();
+    },
+    */
 })
     .option('output', {
     alias: ['o'],
@@ -139,8 +124,8 @@ let cli = yargs_1.default
         iconv: yargs.argv.iconv,
         epubContextDate: yargs.argv.epubContextDate,
     };
-    log_1.console.dir(index_1.makeOptions(options));
-    return index_1.default(options);
+    log_1.console.dir((0, index_1.makeOptions)(options));
+    return (0, index_1.default)(options);
     //yargs.showHelp('log');
 })
     .version()

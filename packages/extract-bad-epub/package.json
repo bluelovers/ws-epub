@@ -45,7 +45,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/extract-bad-epub"
   },
   "license": "ISC",
   "author": "bluelovers",
@@ -60,6 +61,10 @@
     "coverage": "npx nyc yarn run test",
     "lint": "npx eslint **/*.ts",
     "test": "echo \"Error: no test specified\"",
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
     "npm:publish": "npm publish",
     "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
     "preversion": "yarn run test",
@@ -75,15 +80,15 @@
     "@bluelovers/fast-glob": "^3.0.4",
     "@node-novel/epub-util": "^1.0.9",
     "bluebird": "^3.7.2",
-    "execall2": "^2.0.21",
-    "fs-iconv": "^3.1.9",
+    "execall2": "^2.0.22",
+    "fs-iconv": "^3.1.17",
     "html-minifier": "^4.0.0",
     "jsdom-extra": "^3.0.7",
-    "jszip": "^3.9.1",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "node-novel-info": "^3.0.15",
-    "tslib": "^2.4.0",
-    "upath2": "^3.1.13"
+    "tslib": "^2.4.1",
+    "upath2": "^3.1.19"
   },
   "publishConfig": {
     "access": "public"

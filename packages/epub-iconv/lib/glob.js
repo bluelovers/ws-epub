@@ -2,24 +2,22 @@
 /**
  * Created by user on 2019/7/31.
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleGlob = void 0;
-const fast_glob_1 = __importDefault(require("@bluelovers/fast-glob"));
+const tslib_1 = require("tslib");
+const fast_glob_1 = tslib_1.__importDefault(require("@bluelovers/fast-glob"));
 const fs_1 = require("./fs");
-const upath2_1 = __importDefault(require("upath2"));
+const upath2_1 = tslib_1.__importDefault(require("upath2"));
 const fs_extra_1 = require("fs-extra");
 const debug_color2_1 = require("debug-color2");
 const options_1 = require("./options");
-const bluebird_1 = __importDefault(require("bluebird"));
+const bluebird_1 = tslib_1.__importDefault(require("bluebird"));
 function handleGlob(pattern, options) {
     options = options || {};
     let { cwd = process.cwd(), showLog = true } = options;
     cwd = upath2_1.default.resolve(cwd);
     let { output = cwd } = options;
-    options = options_1.handleOptions(options, {
+    options = (0, options_1.handleOptions)(options, {
         cwd,
         output: upath2_1.default.resolve(cwd, output),
         showLog,
@@ -27,7 +25,7 @@ function handleGlob(pattern, options) {
     ({ cwd, output } = options);
     const startTime = Date.now();
     return bluebird_1.default.resolve(pattern)
-        .then(pattern => options_1.handlePattern(pattern))
+        .then(pattern => (0, options_1.handlePattern)(pattern))
         .tap(pattern => {
         if (showLog) {
             debug_color2_1.console.dir({
@@ -50,7 +48,7 @@ function handleGlob(pattern, options) {
             root: cwd,
             file,
             fullpath,
-            buffer: fs_1.handleZipFile(fullpath, options),
+            buffer: (0, fs_1.handleZipFile)(fullpath, options),
         })
             .then(async (ret) => {
             let output_path;
@@ -63,8 +61,8 @@ function handleGlob(pattern, options) {
                 }
                 output_path = upath2_1.default.join(output, name + padend + ext);
                 idx++;
-            } while (fs_extra_1.pathExistsSync(output_path));
-            await fs_extra_1.outputFile(output_path, ret.buffer);
+            } while ((0, fs_extra_1.pathExistsSync)(output_path));
+            await (0, fs_extra_1.outputFile)(output_path, ret.buffer);
             if (showLog) {
                 debug_color2_1.console.info(ret.file, `=>`, upath2_1.default.normalize(output_path));
             }

@@ -2,7 +2,7 @@
  * Created by user on 2019/5/10.
  */
 export declare const TPL_HR_LEN = 15;
-export declare const TPL_EOL = "\r\n";
+export declare const TPL_EOL: import("crlf-normalize").EnumLineBreak.CRLF;
 export declare const TPL_EOL2: string;
 export declare const TPL_HR1: string;
 export declare const TPL_HR2: string;
