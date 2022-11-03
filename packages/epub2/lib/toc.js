@@ -29,5 +29,4 @@ function fixToc(epub) {
     return epub;
 }
 exports.fixToc = fixToc;
-exports.default = exports;
 //# sourceMappingURL=toc.js.map

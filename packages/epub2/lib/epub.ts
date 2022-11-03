@@ -6,11 +6,13 @@ import { EventEmitter } from "events";
 import { IZipFile, ZipFile } from '../zipfile';
 import xml2js from 'xml2js';
 import { array_unique } from 'array-hyper-unique';
-import NodePath from "path";
-import NodeUrl from "url";
+import { dirname as pathDirname, posix } from "path";
+import { resolve as urlResolve } from "url";
 import { crlf } from 'crlf-normalize';
 
 import { SYMBOL_RAW_DATA } from './types';
+import { isEpub } from './epub/isEpub';
+import { IMetadata, IMetadataList, INcx, INcxTree, ISpine, ISpineContents, TocElement } from "./epub/const";
 
 /**
  *  new EPub(fname[, imageroot][, linkroot])
@@ -39,13 +41,13 @@ import { SYMBOL_RAW_DATA } from './types';
  **/
 export class EPub extends EventEmitter
 {
-	metadata: EPub.IMetadata;
-	manifest: EPub.IMetadataList;
-	spine: EPub.ISpine;
-	flow: EPub.ISpineContents;
-	toc: EPub.ISpineContents;
+	metadata: IMetadata;
+	manifest: IMetadataList;
+	spine: ISpine;
+	flow: ISpineContents;
+	toc: ISpineContents;
 
-	ncx: EPub.INcx;
+	ncx: INcx;
 	ncx_depth: number;
 
 	filename: string;
@@ -172,7 +174,7 @@ export class EPub extends EventEmitter
 				return;
 			}
 
-			if (!EPub.isEpub(data, true))
+			if (!isEpub(data, true))
 			{
 				this.emit("error", new Error("Unsupported mime type"));
 				return;
@@ -182,7 +184,7 @@ export class EPub extends EventEmitter
 		});
 	}
 
-	protected _Elem(element: EPub.TocElement)
+	protected _Elem(element: TocElement)
 	{
 		const SYMBOL_RAW_DATA = this._getStatic().SYMBOL_RAW_DATA;
 
@@ -390,7 +392,7 @@ export class EPub extends EventEmitter
 	 *
 	 *  Parses "metadata" block (book metadata, title, author etc.)
 	 **/
-	parseMetadata(metadata: EPub.IMetadata)
+	parseMetadata(metadata: IMetadata)
 	{
 		let i, j, len, keys, keyparts, key;
 		const _self = this;
@@ -719,7 +721,7 @@ export class EPub extends EventEmitter
 	 *  Walks the NavMap object through all levels and finds elements
 	 *  for TOC
 	 **/
-	walkNavMap(branch, path, id_list, level?: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?)
+	walkNavMap(branch, path, id_list, level?: number, pe?: TocElement, parentNcx?: INcxTree, ncx_idx?)
 	{
 		ncx_idx = ncx_idx || {
 			index: 0,
@@ -746,7 +748,7 @@ export class EPub extends EventEmitter
 
 		for (var i = 0; i < branch.length; i++)
 		{
-			let element: EPub.TocElement;
+			let element: TocElement;
 			let currentNcx;
 
 			if (branch[i].navLabel)
@@ -864,7 +866,7 @@ export class EPub extends EventEmitter
 			var i, len, path = this.rootFile.split("/"), keys = Object.keys(this.manifest);
 			path.pop();
 
-			let basePath = NodePath.dirname(meta.href);
+			let basePath = pathDirname(meta.href);
 			let baseHref = meta.href;
 
 			// remove linebreaks (no multi line matches in JS regex!)
@@ -898,7 +900,7 @@ export class EPub extends EventEmitter
 			// replace images
 			str = str.replace(/(?<=\s|^)(src\s*=\s*)(["']?)([^"'\n]*?)(\2)/g, (o, a, d, b, c) => {
 
-				let img = NodePath.posix.join(basePath, b);
+				let img = posix.join(basePath, b);
 				let element;
 
 				for (i = 0, len = keys.length; i < len; i++)
@@ -918,7 +920,7 @@ export class EPub extends EventEmitter
 
 				if (element)
 				{
-					let s = a + d + NodeUrl.resolve(this.imageroot, img) + c;
+					let s = a + d + urlResolve(this.imageroot, img) + c;
 
 					return s
 				}
@@ -1118,115 +1120,14 @@ export class EPub extends EventEmitter
 	}
 
 	static SYMBOL_RAW_DATA = SYMBOL_RAW_DATA;
-}
 
-export module EPub
-{
-	export const xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']) as xml2js.Options;
+	static readonly IMAGE_ROOT = '/images/';
+	static readonly LINK_ROOT = '/links/';
 
-	export const IMAGE_ROOT = '/images/';
-	export const LINK_ROOT = '/links/';
+	static readonly ELEM_MEDIA_TYPE = 'media-type';
+	static readonly ELEM_MEDIA_TYPE2 = 'mediaType';
 
-	//export const SYMBOL_RAW_DATA = Symbol.for('rawData');
-
-	export const ELEM_MEDIA_TYPE = 'media-type';
-	export const ELEM_MEDIA_TYPE2 = 'mediaType';
-
-	export interface TocElement
-	{
-		level?: number;
-		order?: number;
-		title?: string;
-		id?: string;
-		href?: string;
-
-		'media-type'?: string,
-		mediaType?: string,
-		'epub-type'?: string,
-		lang?: string,
-
-		series?: string,
-
-		contribute?: string[],
-		author_link_map?: {
-			[key: string]: string,
-		}
-	}
-
-	export interface ISpine
-	{
-		contents: ISpineContents,
-		toc?: TocElement,
-
-		itemref?: Object[],
-	}
-
-	export interface IMetadataList
-	{
-		[key: string]: EPub.TocElement,
-	}
-
-	export interface ISpineContents extends Array<EPub.TocElement>
-	{
-		[index: number]: EPub.TocElement,
-	}
-
-	export interface IMetadata
-	{
-		publisher?: string,
-		language?: string,
-		title?: string,
-		subject?: string[],
-		description?: string,
-
-		creator?: string,
-		creatorFileAs?: string,
-
-		date?: string,
-		ISBN?: string,
-		UUID?: string,
-		cover?
-
-		'file-as'?: string,
-
-		'belongs-to-collection'?: string,
-		'calibre:series'?: string,
-		'collection-type'?: string,
-
-		[key: string]: any,
-
-		[SYMBOL_RAW_DATA]?: IMetadata,
-	}
-
-	export interface INcx extends Array<INcxTree>
-	{
-		[index: number]: INcxTree
-	}
-
-	export interface INcxTree
-	{
-		id: string;
-		ncx_index: number;
-		ncx_index2?: number;
-		level?: number;
-		sub: INcxTree[],
-	}
-
-	export function isEpub(data: string, buf?: boolean): string
-	export function isEpub(data: Buffer, buf?: boolean): Buffer
-	export function isEpub(data, buf?: boolean)
-	export function isEpub(data, buf?: boolean)
-	{
-		let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();
-
-		if (txt === 'application/epub+zip')
-		{
-			return data;
-		}
-
-		return null;
-	}
-
+	static xml2jsOptions = Object.assign({}, xml2js.defaults['0.1']) as xml2js.Options;
 }
 
 export default EPub

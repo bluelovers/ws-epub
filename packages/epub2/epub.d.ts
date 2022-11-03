@@ -1,2 +1,2 @@
-import EPub from './lib/epub';
+import { EPub } from './lib/epub';
 export = EPub;

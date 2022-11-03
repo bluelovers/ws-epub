@@ -2,9 +2,8 @@
  * Created by user on 2018/3/18/018.
  */
 
-import EPub from '../index';
-
-import libEPub = require('../epub');
+import { EPub } from '../index';
+import { EPub as libEPub } from './epub';
 
 export function fixToc(epub: EPub | libEPub)
 {
@@ -46,5 +45,3 @@ export function fixToc(epub: EPub | libEPub)
 
 	return epub;
 }
-
-export default exports as typeof import('./toc');

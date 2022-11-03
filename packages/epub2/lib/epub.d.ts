@@ -2,10 +2,11 @@
  * Created by user on 2020/6/10.
  */
 /// <reference types="node" />
+/// <reference types="node" />
 import { EventEmitter } from "events";
 import { IZipFile } from '../zipfile';
 import xml2js from 'xml2js';
-import { SYMBOL_RAW_DATA } from './types';
+import { IMetadata, IMetadataList, INcx, INcxTree, ISpine, ISpineContents, TocElement } from "./epub/const";
 /**
  *  new EPub(fname[, imageroot][, linkroot])
  *  - fname (String): filename for the ebook
@@ -32,12 +33,12 @@ import { SYMBOL_RAW_DATA } from './types';
  *      /images/logo_img/OPT/logo.jpg
  **/
 export declare class EPub extends EventEmitter {
-    metadata: EPub.IMetadata;
-    manifest: EPub.IMetadataList;
-    spine: EPub.ISpine;
-    flow: EPub.ISpineContents;
-    toc: EPub.ISpineContents;
-    ncx: EPub.INcx;
+    metadata: IMetadata;
+    manifest: IMetadataList;
+    spine: ISpine;
+    flow: ISpineContents;
+    toc: ISpineContents;
+    ncx: INcx;
     ncx_depth: number;
     filename: string;
     imageroot: string;
@@ -70,7 +71,7 @@ export declare class EPub extends EventEmitter {
      *  are "application/epub+zip". On success runs root file check.
      **/
     checkMimeType(): void;
-    protected _Elem(element: EPub.TocElement): EPub.TocElement;
+    protected _Elem(element: TocElement): TocElement;
     /**
      *  EPub#getRootFiles() -> undefined
      *
@@ -97,7 +98,7 @@ export declare class EPub extends EventEmitter {
      *
      *  Parses "metadata" block (book metadata, title, author etc.)
      **/
-    parseMetadata(metadata: EPub.IMetadata): void;
+    parseMetadata(metadata: IMetadata): void;
     /**
      *  EPub#parseManifest() -> undefined
      *
@@ -126,7 +127,7 @@ export declare class EPub extends EventEmitter {
      *  Walks the NavMap object through all levels and finds elements
      *  for TOC
      **/
-    walkNavMap(branch: any, path: any, id_list: any, level?: number, pe?: EPub.TocElement, parentNcx?: EPub.INcxTree, ncx_idx?: any): any[];
+    walkNavMap(branch: any, path: any, id_list: any, level?: number, pe?: TocElement, parentNcx?: INcxTree, ncx_idx?: any): any[];
     /**
      *  EPub#getChapter(id, callback) -> undefined
      *  - id (String): Manifest id value for a chapter
@@ -165,71 +166,10 @@ export declare class EPub extends EventEmitter {
     getFile(id: string, callback: (error: Error, data?: Buffer, mimeType?: string) => void): void;
     readFile(filename: any, options: any, callback_: any): void;
     static SYMBOL_RAW_DATA: symbol;
-}
-export declare module EPub {
-    const xml2jsOptions: xml2js.Options;
-    const IMAGE_ROOT = "/images/";
-    const LINK_ROOT = "/links/";
-    const ELEM_MEDIA_TYPE = "media-type";
-    const ELEM_MEDIA_TYPE2 = "mediaType";
-    interface TocElement {
-        level?: number;
-        order?: number;
-        title?: string;
-        id?: string;
-        href?: string;
-        'media-type'?: string;
-        mediaType?: string;
-        'epub-type'?: string;
-        lang?: string;
-        series?: string;
-        contribute?: string[];
-        author_link_map?: {
-            [key: string]: string;
-        };
-    }
-    interface ISpine {
-        contents: ISpineContents;
-        toc?: TocElement;
-        itemref?: Object[];
-    }
-    interface IMetadataList {
-        [key: string]: EPub.TocElement;
-    }
-    interface ISpineContents extends Array<EPub.TocElement> {
-        [index: number]: EPub.TocElement;
-    }
-    interface IMetadata {
-        publisher?: string;
-        language?: string;
-        title?: string;
-        subject?: string[];
-        description?: string;
-        creator?: string;
-        creatorFileAs?: string;
-        date?: string;
-        ISBN?: string;
-        UUID?: string;
-        cover?: any;
-        'file-as'?: string;
-        'belongs-to-collection'?: string;
-        'calibre:series'?: string;
-        'collection-type'?: string;
-        [key: string]: any;
-        [SYMBOL_RAW_DATA]?: IMetadata;
-    }
-    interface INcx extends Array<INcxTree> {
-        [index: number]: INcxTree;
-    }
-    interface INcxTree {
-        id: string;
-        ncx_index: number;
-        ncx_index2?: number;
-        level?: number;
-        sub: INcxTree[];
-    }
-    function isEpub(data: string, buf?: boolean): string;
-    function isEpub(data: Buffer, buf?: boolean): Buffer;
-    function isEpub(data: any, buf?: boolean): any;
+    static readonly IMAGE_ROOT = "/images/";
+    static readonly LINK_ROOT = "/links/";
+    static readonly ELEM_MEDIA_TYPE = "media-type";
+    static readonly ELEM_MEDIA_TYPE2 = "mediaType";
+    static xml2jsOptions: xml2js.Options;
 }
 export default EPub;

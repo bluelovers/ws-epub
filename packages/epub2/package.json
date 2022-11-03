@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "2.0.9",
+  "version": "3.0.0",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",
@@ -32,9 +32,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bluelovers/ws-epub.git"
+    "url": "git+https://github.com/bluelovers/ws-epub.git",
+    "directory": "packages/epub2"
   },
   "license": "ISC",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/julien-c/epub/blob/master/LICENSE"
+    }
+  ],
   "author": "Andris Reinman",
   "contributors": [
     "andris <andris@node.ee>",
@@ -47,31 +54,23 @@
     "test": "test"
   },
   "scripts": {
+    "coverage": "yarn run test -- --coverage",
     "test": "echo \"Error: no test specified\"",
-    "npm:publish": "npm publish",
-    "npm:publish:lerna": "npx lerna publish --yes --cd-version patch",
-    "preversion": "yarn run test",
-    "prepublish:lockfile": "npx sync-lockfile .",
-    "prepublishOnly_": "yarn run ncu && yarn run sort-package-json && yarn run test",
-    "postpublish_": "git commit -m \"chore(release): publish\" .",
-    "ncu": "npx yarn-tool ncu -u",
-    "sort-package-json": "npx yarn-tool sort"
+    "test:jest": "jest --passWithNoTests",
+    "test:jest:snapshot": "yarn run test:jest -- -u",
+    "test:snapshot": "yarn run test -- -u",
+    "test:tsd": "ynpx tsd",
+    "preversion": "yarn run test"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",
-    "array-hyper-unique": "^2.0.6",
+    "array-hyper-unique": "^2.1.4",
     "bluebird": "^3.7.2",
-    "crlf-normalize": "^1.0.7",
-    "tslib": "^2.4.0",
+    "crlf-normalize": "^1.0.18",
+    "tslib": "^2.4.1",
     "xml2js": "^0.4.23"
   },
   "engine": [
     "node >=0.3.0"
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/julien-c/epub/blob/master/LICENSE"
-    }
   ]
 }

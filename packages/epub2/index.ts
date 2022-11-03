@@ -6,14 +6,8 @@ import Promise from 'bluebird';
 import path from 'path';
 import xml2js from 'xml2js';
 
-import libEPub from './lib/epub';
-
-import SYMBOL_RAW_DATA = libEPub.SYMBOL_RAW_DATA;
-
-export const SYMBOL_RAW_DATA: unique symbol = SYMBOL_RAW_DATA;
-
-// @ts-ignore
-export * from './epub';
+import { EPub as libEPub } from './lib/epub';
+import { TocElement } from './lib/epub/const';
 
 export { SYMBOL_RAW_DATA } from './lib/types';
 
@@ -43,6 +37,7 @@ export class EPub extends libEPub
 				}
 				else
 				{
+					// @ts-ignore
 					resolve(this);
 				}
 			});
@@ -83,7 +78,7 @@ export class EPub extends libEPub
 		}, id);
 	}
 
-	listImage(): libEPub.TocElement[]
+	listImage(): TocElement[]
 	{
 		const epub = this;
 		const mimes = [
@@ -115,11 +110,8 @@ export class EPub extends libEPub
 			}, [])
 			;
 	}
-}
 
-export module EPub
-{
-	export const xml2jsOptions = Object.assign({}, libEPub.xml2jsOptions, {
+	static override xml2jsOptions = Object.assign({}, libEPub.xml2jsOptions, {
 		normalize: null,
 	}) as xml2js.Options;
 
@@ -127,8 +119,7 @@ export module EPub
 	 * allow change Promise class
 	 * @type {PromiseConstructor}
 	 */
-	export let libPromise = Promise;
+	static libPromise = Promise;
 }
 
 export default EPub;
-

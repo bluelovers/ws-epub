@@ -7,12 +7,13 @@ exports.EPub = void 0;
 const tslib_1 = require("tslib");
 const events_1 = require("events");
 const zipfile_1 = require("../zipfile");
-const xml2js_1 = (0, tslib_1.__importDefault)(require("xml2js"));
+const xml2js_1 = tslib_1.__importDefault(require("xml2js"));
 const array_hyper_unique_1 = require("array-hyper-unique");
-const path_1 = (0, tslib_1.__importDefault)(require("path"));
-const url_1 = (0, tslib_1.__importDefault)(require("url"));
+const path_1 = require("path");
+const url_1 = require("url");
 const crlf_normalize_1 = require("crlf-normalize");
 const types_1 = require("./types");
+const isEpub_1 = require("./epub/isEpub");
 /**
  *  new EPub(fname[, imageroot][, linkroot])
  *  - fname (String): filename for the ebook
@@ -39,6 +40,10 @@ const types_1 = require("./types");
  *      /images/logo_img/OPT/logo.jpg
  **/
 class EPub extends events_1.EventEmitter {
+    _getStatic() {
+        // @ts-ignore
+        return this.__proto__.constructor;
+    }
     constructor(epubfile, imagewebroot, chapterwebroot, ...argv) {
         super();
         this.filename = epubfile;
@@ -50,10 +55,6 @@ class EPub extends events_1.EventEmitter {
         if (this.linkroot.substr(-1) != "/") {
             this.linkroot += "/";
         }
-    }
-    _getStatic() {
-        // @ts-ignore
-        return this.__proto__.constructor;
     }
     static create(epubfile, imagewebroot, chapterwebroot, ...argv) {
         let epub = new this(epubfile, imagewebroot, chapterwebroot, ...argv);
@@ -120,7 +121,7 @@ class EPub extends events_1.EventEmitter {
                 this.emit("error", new Error("Reading archive failed"));
                 return;
             }
-            if (!EPub.isEpub(data, true)) {
+            if (!(0, isEpub_1.isEpub)(data, true)) {
                 this.emit("error", new Error("Unsupported mime type"));
                 return;
             }
@@ -613,7 +614,7 @@ class EPub extends events_1.EventEmitter {
             let meta = self.manifest[chapterId];
             var i, len, path = this.rootFile.split("/"), keys = Object.keys(this.manifest);
             path.pop();
-            let basePath = path_1.default.dirname(meta.href);
+            let basePath = (0, path_1.dirname)(meta.href);
             let baseHref = meta.href;
             // remove linebreaks (no multi line matches in JS regex!)
             str = str.replace(/\r?\n/g, "\u0000");
@@ -636,7 +637,7 @@ class EPub extends events_1.EventEmitter {
             });
             // replace images
             str = str.replace(/(?<=\s|^)(src\s*=\s*)(["']?)([^"'\n]*?)(\2)/g, (o, a, d, b, c) => {
-                let img = path_1.default.posix.join(basePath, b);
+                let img = path_1.posix.join(basePath, b);
                 let element;
                 for (i = 0, len = keys.length; i < len; i++) {
                     let _arr = [
@@ -650,7 +651,7 @@ class EPub extends events_1.EventEmitter {
                     }
                 }
                 if (element) {
-                    let s = a + d + url_1.default.resolve(this.imageroot, img) + c;
+                    let s = a + d + (0, url_1.resolve)(this.imageroot, img) + c;
                     return s;
                 }
                 return o;
@@ -800,21 +801,10 @@ class EPub extends events_1.EventEmitter {
 }
 exports.EPub = EPub;
 EPub.SYMBOL_RAW_DATA = types_1.SYMBOL_RAW_DATA;
-(function (EPub) {
-    EPub.xml2jsOptions = Object.assign({}, xml2js_1.default.defaults['0.1']);
-    EPub.IMAGE_ROOT = '/images/';
-    EPub.LINK_ROOT = '/links/';
-    //export const SYMBOL_RAW_DATA = Symbol.for('rawData');
-    EPub.ELEM_MEDIA_TYPE = 'media-type';
-    EPub.ELEM_MEDIA_TYPE2 = 'mediaType';
-    function isEpub(data, buf) {
-        let txt = (typeof data == 'string' && !buf) ? data : data.toString("utf-8").toLowerCase().trim();
-        if (txt === 'application/epub+zip') {
-            return data;
-        }
-        return null;
-    }
-    EPub.isEpub = isEpub;
-})(EPub = exports.EPub || (exports.EPub = {}));
+EPub.IMAGE_ROOT = '/images/';
+EPub.LINK_ROOT = '/links/';
+EPub.ELEM_MEDIA_TYPE = 'media-type';
+EPub.ELEM_MEDIA_TYPE2 = 'mediaType';
+EPub.xml2jsOptions = Object.assign({}, xml2js_1.default.defaults['0.1']);
 exports.default = EPub;
 //# sourceMappingURL=epub.js.map

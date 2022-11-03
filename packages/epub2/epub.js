@@ -1,7 +1,6 @@
 "use strict";
-const tslib_1 = require("tslib");
-const epub_1 = (0, tslib_1.__importDefault)(require("./lib/epub"));
-module.exports = epub_1.default;
+const epub_1 = require("./lib/epub");
+module.exports = epub_1.EPub;
 /*
 // @ts-ignore
 declare module "epub"

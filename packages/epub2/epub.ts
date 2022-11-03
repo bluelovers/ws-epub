@@ -1,4 +1,4 @@
-import EPub from './lib/epub';
+import { EPub } from './lib/epub';
 
 //TODO: Cache parsed data
 
