@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.29](https://github.com/bluelovers/ws-epub/compare/epub-extract@1.0.28...epub-extract@1.0.29) (2022-11-03)
+
+
+
+### 🛠　Build System
+
+* update build ([cbcc1ab](https://github.com/bluelovers/ws-epub/commit/cbcc1abfd935d15a50d89b2d41fdead04f10f9da))
+
+
+
 ## [1.0.28](https://github.com/bluelovers/ws-epub/compare/epub-extract@1.0.26...epub-extract@1.0.28) (2022-05-16)
 
 

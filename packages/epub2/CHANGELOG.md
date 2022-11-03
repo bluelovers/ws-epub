@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/bluelovers/ws-epub/compare/epub2@2.0.9...epub2@3.0.1) (2022-11-03)
+
+
+### BREAKING CHANGES
+
+* code splitting and fix type
+
+
+
+### 📦　Code Refactoring
+
+* code splitting and fix type ([b51d147](https://github.com/bluelovers/ws-epub/commit/b51d1472a3311fe13c80f50400eac9e748c5ea9c))
+
+
+### 🔖　Miscellaneous
+
+* . ([7d663b8](https://github.com/bluelovers/ws-epub/commit/7d663b854154f40dac95241778a5dacc078207bd))
+
+
+
 ## [2.0.9](https://github.com/bluelovers/ws-epub/compare/epub2@2.0.7...epub2@2.0.9) (2022-05-16)
 
 

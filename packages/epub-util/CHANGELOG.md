@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/bluelovers/ws-epub/compare/@node-novel/epub-util@1.0.9...@node-novel/epub-util@1.0.10) (2022-11-03)
+
+
+
+### 🛠　Build System
+
+* update build ([cbcc1ab](https://github.com/bluelovers/ws-epub/commit/cbcc1abfd935d15a50d89b2d41fdead04f10f9da))
+
+
+
 ## [1.0.9](https://github.com/bluelovers/ws-epub/compare/@node-novel/epub-util@1.0.7...@node-novel/epub-util@1.0.9) (2022-05-16)
 
 

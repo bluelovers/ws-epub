@@ -1,6 +1,6 @@
 {
   "name": "epub2",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Parse ePub electronic book files with Node.JS",
   "keywords": [
     "archive",

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.11](https://github.com/bluelovers/ws-epub/compare/epub-iconv-segment@1.0.10...epub-iconv-segment@1.0.11) (2022-11-03)
+
+
+
+### 🛠　Build System
+
+* update build ([cbcc1ab](https://github.com/bluelovers/ws-epub/commit/cbcc1abfd935d15a50d89b2d41fdead04f10f9da))
+
+
+### 🔖　Miscellaneous
+
+* . ([7d663b8](https://github.com/bluelovers/ws-epub/commit/7d663b854154f40dac95241778a5dacc078207bd))
+
+
+
 ## [1.0.10](https://github.com/bluelovers/ws-epub/compare/epub-iconv-segment@1.0.8...epub-iconv-segment@1.0.10) (2022-05-16)
 
 
