@@ -685,7 +685,7 @@ class EPub extends events_1.EventEmitter {
             */
             // replace links
             str = str.replace(/(\shref\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (o, a, b, c) => {
-                var linkparts = b && b.split("#"), link = path.concat([(linkparts.shift() || "")]).join("/").trim(), element;
+                var linkparts = b && b.split("#") || [], link = path.concat([(linkparts.shift() || "")]).join("/").trim(), element;
                 for (i = 0, len = keys.length; i < len; i++) {
                     if (this.manifest[keys[i]].href.split("#")[0] == link) {
                         element = this.manifest[keys[i]];
