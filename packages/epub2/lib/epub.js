@@ -552,7 +552,7 @@ class EPub extends events_1.EventEmitter {
                     title: title
                 };
                 if (href) {
-                    href = path.concat([href]).join("/");
+                    href = path.concat([href]).join("/").split("#").shift();
                     element.href = href;
                     if (id_list[element.href]) {
                         // link existing object
