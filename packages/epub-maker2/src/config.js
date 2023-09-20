@@ -13,7 +13,7 @@ var EnumEpubConfigVertical;
 (function (EnumEpubConfigVertical) {
     EnumEpubConfigVertical[EnumEpubConfigVertical["NONE"] = 0] = "NONE";
     EnumEpubConfigVertical[EnumEpubConfigVertical["VERTICAL_RL"] = 1] = "VERTICAL_RL";
-})(EnumEpubConfigVertical = exports.EnumEpubConfigVertical || (exports.EnumEpubConfigVertical = {}));
+})(EnumEpubConfigVertical || (exports.EnumEpubConfigVertical = EnumEpubConfigVertical = {}));
 class EpubConfig {
     constructor(epubConfig = {}, options = {}) {
         if (epubConfig instanceof EpubConfig) {
@@ -253,7 +253,7 @@ exports.EpubConfig = EpubConfig;
     }
     EpubConfig.getDefaultEpubConfig = getDefaultEpubConfig;
     EpubConfig.defaultEpubConfig = getDefaultEpubConfig();
-})(EpubConfig = exports.EpubConfig || (exports.EpubConfig = {}));
+})(EpubConfig || (exports.EpubConfig = EpubConfig = {}));
 //let a = new EpubConfig({lang: 'zh'});
 //
 //a.addAuthor('菱影代理');

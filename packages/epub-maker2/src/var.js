@@ -9,5 +9,5 @@ var EnumSectionCollectType;
 (function (EnumSectionCollectType) {
     EnumSectionCollectType["INCLUDE_IN_TOC"] = "includeInToc";
     EnumSectionCollectType["INCLUDE_IN_LANDMARKS"] = "includeInLandmarks";
-})(EnumSectionCollectType = exports.EnumSectionCollectType || (exports.EnumSectionCollectType = {}));
+})(EnumSectionCollectType || (exports.EnumSectionCollectType = EnumSectionCollectType = {}));
 //# sourceMappingURL=var.js.map

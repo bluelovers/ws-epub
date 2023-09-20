@@ -400,7 +400,7 @@ exports.EpubMaker = EpubMaker;
         }
     }
     EpubMaker.Section = Section;
-})(EpubMaker = exports.EpubMaker || (exports.EpubMaker = {}));
+})(EpubMaker || (exports.EpubMaker = EpubMaker = {}));
 exports.default = EpubMaker;
 if (typeof window !== 'undefined') {
     // @ts-ignore

@@ -229,7 +229,7 @@ var Builder;
         });
     }
     Builder.addContent = addContent;
-})(Builder = exports.Builder || (exports.Builder = {}));
+})(Builder || (exports.Builder = Builder = {}));
 // @ts-ignore
 exports.builder = Builder;
 exports.default = exports.builder;

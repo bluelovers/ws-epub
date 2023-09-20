@@ -25,13 +25,13 @@ var EnumPrefixIDType;
     EnumPrefixIDType["IMAGE"] = "image";
     EnumPrefixIDType["CONTRIBUTE"] = "contribute";
     EnumPrefixIDType["FOREWORD"] = "foreword";
-})(EnumPrefixIDType = exports.EnumPrefixIDType || (exports.EnumPrefixIDType = {}));
+})(EnumPrefixIDType || (exports.EnumPrefixIDType = EnumPrefixIDType = {}));
 var EnumPrefixIDTitle;
 (function (EnumPrefixIDTitle) {
     EnumPrefixIDTitle["IMAGE"] = "\u63D2\u5716";
     EnumPrefixIDTitle["CONTRIBUTE"] = "CONTRIBUTE";
     EnumPrefixIDTitle["FOREWORD"] = "FOREWORD";
-})(EnumPrefixIDTitle = exports.EnumPrefixIDTitle || (exports.EnumPrefixIDTitle = {}));
+})(EnumPrefixIDTitle || (exports.EnumPrefixIDTitle = EnumPrefixIDTitle = {}));
 function _handleVolume(volume, dirname, _data_) {
     return bluebird_1.default
         .resolve(null)

@@ -37,7 +37,6 @@ class TemplateManagers {
     }
     _get(t) {
         return util_1.BPromise.resolve().then(async function () {
-            var _a;
             let fn = async function (b) {
                 if (!b) {
                     //
@@ -64,7 +63,7 @@ class TemplateManagers {
                 //
             }
             else if (typeof t == 'string') {
-                let b = await (_a = t, Promise.resolve().then(() => tslib_1.__importStar(require(_a))));
+                let b = await Promise.resolve(`${t}`).then(s => tslib_1.__importStar(require(s)));
                 r = await fn(b);
             }
             else {

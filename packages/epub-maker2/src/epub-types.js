@@ -18,13 +18,13 @@ var EnumEpubTypeName;
     EnumEpubTypeName["AFTERWORD"] = "afterword";
     EnumEpubTypeName["NON_SPECIFIC_BACKMATTER"] = "non-specific backmatter";
     EnumEpubTypeName["REARNOTE"] = "rearnote";
-})(EnumEpubTypeName = exports.EnumEpubTypeName || (exports.EnumEpubTypeName = {}));
+})(EnumEpubTypeName || (exports.EnumEpubTypeName = EnumEpubTypeName = {}));
 var EnumEpubTypeGroup;
 (function (EnumEpubTypeGroup) {
     EnumEpubTypeGroup["FRONT_MATTER"] = "Front Matter";
     EnumEpubTypeGroup["BODY_MATTER"] = "Body Matter";
     EnumEpubTypeGroup["BACK_MATTER"] = "Back Matter";
-})(EnumEpubTypeGroup = exports.EnumEpubTypeGroup || (exports.EnumEpubTypeGroup = {}));
+})(EnumEpubTypeGroup || (exports.EnumEpubTypeGroup = EnumEpubTypeGroup = {}));
 // source: http://www.idpf.org/epub/vocab/structure/epub-vocab-structure-20150826.html
 exports.epubtypes = [
     {
@@ -125,7 +125,7 @@ var EnumEpubType;
     EnumEpubType["afterword"] = "backmatter";
     EnumEpubType["non-specific backmatter"] = "backmatter";
     EnumEpubType["rearnote"] = "backmatter";
-})(EnumEpubType = exports.EnumEpubType || (exports.EnumEpubType = {}));
+})(EnumEpubType || (exports.EnumEpubType = EnumEpubType = {}));
 function getGroup(epubtype) {
     return EnumEpubType[epubtype];
 }

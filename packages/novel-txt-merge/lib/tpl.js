@@ -19,7 +19,7 @@ var EnumTxtStyle;
      * 書僕開放格式
      */
     EnumTxtStyle[EnumTxtStyle["SHU_BOOK"] = 16] = "SHU_BOOK";
-})(EnumTxtStyle = exports.EnumTxtStyle || (exports.EnumTxtStyle = {}));
+})(EnumTxtStyle || (exports.EnumTxtStyle = EnumTxtStyle = {}));
 exports.SHU_BOOK_BANNER = '(= 書僕開放格式 =)${eol}(= 書名：${title} =)${eol}(= 作者：${author} =)${eol}(= 語言：${lang} =)';
 exports.presetTxtStyle = {
     [0 /* EnumTxtStyle.NONE */]: {
