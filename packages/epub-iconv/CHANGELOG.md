@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.22](https://github.com/bluelovers/ws-epub/compare/epub-iconv@1.0.21...epub-iconv@1.0.22) (2023-09-20)
+
+
+
+### 📌　Dependencies
+
+* update deps ([a57d4fa](https://github.com/bluelovers/ws-epub/commit/a57d4fad89cdd42664cb12fbd693e2312c921cd4))
+
+
+
 ## [1.0.21](https://github.com/bluelovers/ws-epub/compare/epub-iconv@1.0.20...epub-iconv@1.0.21) (2022-11-03)
 
 

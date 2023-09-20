@@ -1,6 +1,6 @@
 {
   "name": "novel-txt-merge",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "description": "打包合併個別 txt 章節/目錄 => 單一整合 txt 小說合集",
   "keywords": [
     "book",
