@@ -140,3 +140,11 @@ bin/tsconfig.*.json
 __file_snapshots__
 __fixtures__
 /fixture/
+
+!/src/**/*.d.ts
+!/src/**/*.js
+!/src/**/*.d.cts
+!/src/**/*.d.mts
+!/src/**/*.cjs
+!/src/**/*.mjs
+!/src/**/*.jsx

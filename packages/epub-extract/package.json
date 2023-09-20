@@ -84,9 +84,9 @@
     "fs-iconv": "^3.1.17",
     "html-minifier": "^4.0.0",
     "node-novel-globby": "^2.0.23",
-    "node-novel-info": "^3.0.15",
-    "tslib": "^2.4.1",
-    "yargs": "^17.6.2",
-    "zero-width": "^1.0.25"
+    "node-novel-info": "^3.0.16",
+    "tslib": "^2.6.2",
+    "yargs": "^17.7.2",
+    "zero-width": "^1.0.27"
   }
 }
