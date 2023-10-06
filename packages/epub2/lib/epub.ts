@@ -783,7 +783,7 @@ export class EPub extends EventEmitter
 
 				if (href)
 				{
-					href = path.concat([href]).join("/");
+					href = path.concat([href]).join("/").split("#").shift();
 					element.href = href;
 
 					if (id_list[element.href])
