@@ -528,7 +528,7 @@ class EPub extends events_1.EventEmitter {
         for (var i = 0; i < branch.length; i++) {
             let element;
             let currentNcx;
-            if (branch[i].navLabel) {
+            if (branch[i].navLabel && branch[i].navLabel.text.length > 0) {
                 var title = '';
                 if (branch[i].navLabel && typeof branch[i].navLabel.text == 'string') {
                     /*
