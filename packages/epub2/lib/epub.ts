@@ -958,7 +958,7 @@ export class EPub extends EventEmitter
 			// replace links
 			str = str.replace(/(\shref\s*=\s*["']?)([^"'\s>]*?)(["'\s>])/g, (o, a, b, c) =>
 			{
-				var linkparts = b && b.split("#"),
+				var linkparts = b && b.split("#") || [],
 					link = path.concat([(linkparts.shift() || "")]).join("/").trim(),
 					element;
 
